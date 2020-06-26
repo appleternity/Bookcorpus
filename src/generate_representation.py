@@ -70,6 +70,7 @@ def draw_representation():
                 if frame["Frame"] not in lu:
                     lu[frame["Frame"]] = []
                 lu[frame["Frame"]].append(frame["LU"])
+        lu_map.append(lu)
 
     if content:
         vectors = model.transform(content)
@@ -81,10 +82,10 @@ def draw_representation():
     table = []
     data = []
     sorted_index = np.argsort(vectors, axis=1)[:, ::-1]
-    for count, index in enumerate(sorted_index[:10]):
+    for count, index in enumerate(sorted_index[:]):
         c = content[count]
         s = sentence[count]
-        lu = sentence[count]
+        lu = lu_map[count]
         tfidf_value = vectors[count, :]
        
         best_ten_index = index[:30]
@@ -231,6 +232,76 @@ def version_3(frame_info, max_value, min_value):
     )
     return template
 
+def version_4(frame_info, max_value, min_value, lu_map):
+    print(frame_info)
+    tfidf = frame_info["tfidf"]
+    color = (frame_info["tfidf"]-min_value)/(max_value-min_value)*0.6+0.2
+    bar_length = int(color*100)
+
+    lu_elements = []
+    for lu in set(lu_map[frame_info["frame"]]):
+        lu_elements.append(
+            """<span class="badge my_badge">{}</span>""".format(lu)
+        ) 
+
+    template = """
+        <tr style="color:rgba(0, 0, 0, {});">
+            <td tfidf="{}">
+                {}
+                <div class="bar_container">
+                    <div class="bar" style="width:{}%; background:rgba(0, 0, 0, {});"></div>
+                </div>
+            </td>
+            <td>{}</td>
+        </tr>
+    """.format(
+        color,
+        tfidf, 
+        frame_info["frame"], 
+        bar_length,
+        color,
+        "\n".join(lu_elements)
+    )
+    return template
+
+def version_5(frame_info, max_value, min_value, lu_map):
+    print(frame_info)
+    tfidf = frame_info["tfidf"]
+    color = (frame_info["tfidf"]-min_value)/(max_value-min_value)*0.6+0.2
+    bar_length = int(color*100)
+    current_lu_map = set(lu_map[frame_info["frame"]])
+    lu_elements = []
+    for lu in current_lu_map:
+        lu_elements.append(
+            """<span class="badge badge-secondary">{}</span>""".format(lu)
+        ) 
+    
+    for lu in frame_info["lexical_unit"].split(" / "):
+        if lu not in current_lu_map:
+            lu_elements.append(
+                """<span class="badge my_badge">{}</span>""".format(lu)
+            ) 
+
+    template = """
+        <tr style="color:rgba(0, 0, 0, {});">
+            <td tfidf="{}">
+                {}
+                <div class="bar_container">
+                    <div class="bar" style="width:{}%; background:rgba(0, 0, 0, {});"></div>
+                </div>
+            </td>
+            <td>{}</td>
+        </tr>
+    """.format(
+        color,
+        tfidf, 
+        frame_info["frame"], 
+        bar_length,
+        color,
+        "\n".join(lu_elements)
+    )
+    return template
+
 def generate_sample():
     with open("frame_data.json", 'r', encoding='utf-8') as infile:
         data = json.load(infile)
@@ -244,11 +315,26 @@ def generate_sample():
     for frame_info in data["frame_list"]:
         #template = version_1(frame_info, max_value, min_value)
         #template = version_2(frame_info, max_value, min_value)
-        template = version_3(frame_info, max_value, min_value) 
+        #template = version_3(frame_info, max_value, min_value) 
+        #template = version_4(frame_info, max_value, min_value, data["lu"])
+        template = version_5(frame_info, max_value, min_value, data["lu"])
         result.append(template)
 
     with open("temp_output.html", 'w', encoding='utf-8') as outfile:
         outfile.write("\n".join(result))
+
+    print()
+    print(data["sentence"])
+
+def get_story():
+    with open("frame_data.json", 'r', encoding='utf-8') as infile:
+        data = json.load(infile)
+
+    for i in [5, 22, 76]:
+        print("=================================")
+        print("block id =", i)
+        print(data[i]["sentence"])
+
 
 def test_word_cloud():
     from wordcloud import WordCloud
@@ -262,6 +348,8 @@ def test_word_cloud():
 def main():
     #draw_representation()
     #test_word_cloud()
+    get_story()
+    quit()
 
     generate_sample()
 
