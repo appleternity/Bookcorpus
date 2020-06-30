@@ -8,6 +8,9 @@ from nltk.corpus import framenet as fn
 from wordcloud import WordCloud
 from pprint import pprint
 import pandas as pd
+import re
+from pymongo import MongoClient
+import random
 
 root_dir = "/home/appleternity/workspace/lab/Crowd/bookcorpus"
 
@@ -75,7 +78,6 @@ def draw_representation():
     if content:
         vectors = model.transform(content)
         vectors = vectors.toarray()
-
 
     # save data
     print(vectors)
@@ -302,6 +304,40 @@ def version_5(frame_info, max_value, min_value, lu_map):
     )
     return template
 
+def version_6(frame_info, max_value, min_value):
+    #print(frame_info)
+    tfidf = frame_info["tfidf"]
+    color = (frame_info["tfidf"]-min_value)/(max_value-min_value)*0.6+0.2
+    bar_length = int(color*100)
+
+    lu_elements = []
+    for lu in frame_info["lexical_unit"].split(" / "):
+        word, pos = lu.split(".",)
+        lu = "{} ({})".format(word, pos)
+        lu_elements.append(
+            """<span class="badge my_badge">{}</span>""".format(lu)
+        ) 
+
+    template = """
+        <tr style="color:rgba(0, 0, 0, {});">
+            <td tfidf="{}">
+                {}
+                <div class="bar_container">
+                    <div class="bar" style="width:{}%; background:rgba(0, 0, 0, {});"></div>
+                </div>
+            </td>
+            <td>{}</td>
+        </tr>
+    """.format(
+        color,
+        tfidf, 
+        frame_info["frame"], 
+        bar_length,
+        color,
+        "\n".join(lu_elements)
+    )
+    return template
+
 def generate_sample():
     with open("frame_data.json", 'r', encoding='utf-8') as infile:
         data = json.load(infile)
@@ -317,7 +353,8 @@ def generate_sample():
         #template = version_2(frame_info, max_value, min_value)
         #template = version_3(frame_info, max_value, min_value) 
         #template = version_4(frame_info, max_value, min_value, data["lu"])
-        template = version_5(frame_info, max_value, min_value, data["lu"])
+        #template = version_5(frame_info, max_value, min_value, data["lu"])
+        template = version_6(frame_info, max_value, min_value) 
         result.append(template)
 
     with open("temp_output.html", 'w', encoding='utf-8') as outfile:
@@ -325,6 +362,74 @@ def generate_sample():
 
     print()
     print(data["sentence"])
+
+def generate_frame_representation(sample, frame_dict):
+    frame = sample["y_frame"]
+    sorted_index = np.argsort(frame, axis=1)[0, ::-1]
+    
+    best_ten_index = sorted_index[:30]
+    best_ten_frame_tfidf = [frame[0][b] for b in best_ten_index]
+    best_ten_frame = [frame_dict[int(b)] for b in best_ten_index]
+
+    # build frame info
+    frame_info_list = []
+    for i, f, t in zip(best_ten_index, best_ten_frame, best_ten_frame_tfidf):
+        frame_info_list.append({
+            "frame": f["name"],
+            "tfidf": t,
+            "lexical_unit": " / ".join(f["lexUnit"].keys()),
+            "definition": f["definition"],
+        })
+
+    max_value = max(best_ten_frame_tfidf)
+    min_value = min(best_ten_frame_tfidf)
+
+    result = []
+    for frame_info in frame_info_list:
+        #template = version_1(frame_info, max_value, min_value)
+        #template = version_2(frame_info, max_value, min_value)
+        #template = version_3(frame_info, max_value, min_value) 
+        #template = version_4(frame_info, max_value, min_value, data["lu"])
+        #template = version_5(frame_info, max_value, min_value, data["lu"])
+        template = version_6(frame_info, max_value, min_value) 
+        result.append(template)
+    
+    return "\n".join(result)
+
+def generate_html(block=20):
+    # load template
+    with open("frame_template.html", 'r', encoding='utf-8') as infile:
+        ori_template = infile.read()
+
+    # load data
+    with open("../data/human_evaluation_data_{}.json".format(block), 'r', encoding='utf-8') as infile:
+        data = json.load(infile) 
+
+    model = load_tfidf_model(block=block)
+    frame_info_dict = get_frame_dictionary()
+    frame_dict = {v:frame_info_dict[k] for k, v in model.vocabulary.items()}
+
+    for count, sample in enumerate(data[:10]):
+        frame_rep = generate_frame_representation(sample, frame_dict)
+        template = ori_template.replace("{{frame_representation}}", frame_rep)
+        template = template.replace("{{setting}}", "block_{}".format(20))
+        template = template.replace("{{id}}", str(sample["index"]))
+
+        ans = random.randint(0, 1)
+        if ans == 0:
+            template = template.replace("{{target}}", "0")
+            story_1, story_2 = sample["y_text"], sample["option_text"]
+        else:
+            template = template.replace("{{target}}", "1")
+            story_1, story_2 = sample["option_text"], sample["y_text"] 
+
+        template = template.replace("{{story_1}}", story_1)
+        template = template.replace("{{story_2}}", story_2)
+
+        # save
+        with open(os.path.join("html", str(block), "{:0>4}.html".format(count)), 'w', encoding='utf-8') as outfile:
+            outfile.write(template)
+
 
 def get_story():
     with open("frame_data.json", 'r', encoding='utf-8') as infile:
@@ -334,7 +439,6 @@ def get_story():
         print("=================================")
         print("block id =", i)
         print(data[i]["sentence"])
-
 
 def test_word_cloud():
     from wordcloud import WordCloud
@@ -348,10 +452,11 @@ def test_word_cloud():
 def main():
     #draw_representation()
     #test_word_cloud()
-    get_story()
-    quit()
+    #get_story()
 
-    generate_sample()
+    #generate_sample()
+    generate_html(200)
+    #generate_html(20)
 
 if __name__ == "__main__":
     main()
