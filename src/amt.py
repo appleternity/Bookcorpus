@@ -19,13 +19,12 @@ def create_hit(client, url, reward, worker_id_list=None, num_assignment=5):
     response = client.create_hit(
         MaxAssignments=num_assignment,
         LifetimeInSeconds=60*60*60, # 60 days
-        AssignmentDurationInSeconds=60*60, # 30 min
+        AssignmentDurationInSeconds=60*60, # 60 min
         Reward=str(reward),
-        Title='Useful Example Sentence Annotation.',
-        Keywords='example sentences, language learning, confusing words, synonyms',
+        Title='Human Understanding toward Frame Representation.',
+        Keywords='story, semantic frame, story generation, human evaluation, generation',
         Description="""
-            In this task, you will need to read through 20 sentences and determine which one is good for learners.
-            There are 3 stages to guide you understand and read through all the example sentences.
+            In this task, you will need to first read a frame representation that is abstracted from a story and try to find out its original story.
         """.strip().replace("  ", ""),
         Question=setting,
         QualificationRequirements=[
@@ -77,7 +76,8 @@ def create_hit_batch(client):
     for i in range(0, 10):
         create_hit(
             client,
-            url="",
+            url="https://appleternity.github.io/Bookcorpus/src/html/20/{:0>4}.html".format(i),
+            reward="0.42",
         )
 
 def get_result(client, hit_id):
@@ -114,6 +114,12 @@ def get_hit_and_approve(client):
 
 def frame_prediction_eval():
     client = get_client()
+    
+    create_hit(
+        client,
+        url="https://appleternity.github.io/Bookcorpus/src/html/20/0000.html",
+        reward="0.42",
+    )
 
 
 def lela_annotation():

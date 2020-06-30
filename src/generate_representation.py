@@ -456,7 +456,7 @@ def main():
 
     #generate_sample()
     generate_html(200)
-    #generate_html(20)
+    generate_html(20)
 
 if __name__ == "__main__":
     main()
