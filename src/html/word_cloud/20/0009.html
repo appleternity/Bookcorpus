@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Chemical-sense_description', 'tfidf': 4.4530241951348, 'lexical_unit': 'tasty.a / piquant.a / yummy.a / flavourful.a / scrumptious.a / palatable.a / delectable.a / flavoursome.a / toothsome.a / ambrosial.a / sapid.a / salty.a / sour.a / bitter.a / spicy.a / sweet.a / hot.a / savory.a / delicious.a / pungent.a / tart.a / flavourless.a / bland.a / insipid.a / unpalatable.a / stench.n / odor.n / reek.n / reek.v / stink.n / stink.v / aroma.n / fragrance.n / scent.n / bouquet.n / smelly.a / aromatic.a / fragrant.a / tasteless.a / malodorous.a / smell.v', 'definition': "This  frame covers the descriptions of tastes and smells, and has one main frame element, Source. The frame element Sensory_attribute occurs mainly with the words taste, flavour, and smell.  'The almonds had a bitter taste.' 'The almonds are bitter.'"}, {'frame': 'Tolerating', 'tfidf': 4.104005134809842, 'lexical_unit': 'stand.v / endure.v / tolerant.a / bear.v / toleration.n / tolerate.v', 'definition': "The words in this frame describe an Experiencer's feelings of tolerating with respect to some Content. A Reason for the toleration may also be expressed.  Although the Content may refer to an actual, current state of affairs, quite often it refers to a general situation which causes the emotion.    ' He could not tolerate the smell of coconut . '"}, {'frame': 'Achieving_first', 'tfidf': 3.740202163141988, 'lexical_unit': 'originate.v / pioneer.v / invent.v / discover.v / coin.v / coinage.n / discovery.n / discoverer.n / originator.n / inventor.n / invention.n / pioneer.n / pioneering.a / find.v / invention artifact.n', 'definition': "A Cognizer introduces a New_idea into society.  'It is difficult to imagine how different our lives would be without Edison's invention of the light bulb.'  "}, {'frame': 'Communication_manner', 'tfidf': 3.5349362539522398, 'lexical_unit': 'babble.v / bluster.v / chant.v / chatter.v / drawl.v / gabble.v / gibber.v / jabber.v / lisp.v / mouth.v / mumble.v / mutter.v / natter.v / prattle.v / rant.v / rave.v / shout.v / simper.v / sing.v / slur.v / stammer.v / stutter.v / whisper.v / blabber.v', 'definition': "The words in this frame describe Manners of verbal communication.  All of them can occur with quoted expressions.   'He slurred his confession.'"}, {'frame': 'Traversing', 'tfidf': 3.50145987235099, 'lexical_unit': 'traverse.v / skirt.v / mount.v / descent.n / descend.v / cross.v / crisscross.v / ascent.n / ascend.v / jump.v / pass.v / circle.v / hop.v / leap.v', 'definition': "A Theme changes location with respect to a salient location, which can be expressed by a Source, Path, Goal, Area, Direction, Path_shape, or Distance, as shown in the examples below: ''  'Start your ascent from Achintree Farm in Glen Nevis.'  'We crossed the desert.'  'She jumped across the ditch that marked the entrance to the woods.'  'The children hopped into the neighbor's yard.'  'I leaped twenty feet before slipping and falling.'  'As they did so, the plane circled lower.'  'Boyner has been crisscrossing the country since May.'"}, {'frame': 'Attack', 'tfidf': 3.284130910815617, 'lexical_unit': 'attack.v / assault.v / assault.n / attack.n / fall (upon).v / incursion.n / offensive.n / onset.n / strike.n / onslaught.n / charge.v / charge.n / lay (into).v / set (upon).v / storm.v / strike.v / ambush.v / ambush.n / jump.v / assail.v / raid.v / bomb.v / bombing.n / raid.n / attacker.n / offensive.a / infiltrate.v / infiltration.n / hit.v / fire.n / small arms fire.n / SAF.n / safire.n / drive-by.n / airstrike.n / assailant.n / bombardment.n / bombard.v', 'definition': "An Assailant physically attacks a Victim (which is usually but not always sentient), causing or intending to cause the Victim physical damage.   A Weapon used by the Assailant may also be mentioned, in addition to the usual Place, Time, Purpose, Explanation, etc.  Sometimes a location is used metonymically to stand for the Assailant or the Victim, and in such cases the Place FE will be annotated on a second FE layer.  'As soon as he stepped out of the bar he was set upon by four men in ski-masks.' 'Is he invading Iraq just to cover other shortcomings?' 'Then Jon-O's forces ambushed them on the left flank from a line of low hills.'"}, {'frame': 'Catching_fire', 'tfidf': 3.2162793313950266, 'lexical_unit': 'break out.v / catch.v / catch fire.v / start.v / combust.v', 'definition': 'A Fuel, some flammable object or substance, ends up on fire.  In this frame, the cause of the fire is not the primary concern, but rather the fact that a fire started.  In rare cases, only the Fire is mentioned and the associated Fuel is not.  \'\' This frame does not include phrases like "a fire broke out" or "the conflagration started in the bedroom" as these are deemed to be compositional (see Process_start and Fire_burning).'}, {'frame': 'Temporal_pattern', 'tfidf': 3.0298583638278442, 'lexical_unit': 'rhythm.n / rhythmically.adv / beat.n / rhythmic.a / time.n', 'definition': "A salient Subevent has a Pattern of recurrence within a larger Process.    'Tony's fingers tapped rhythmically on the keyboard'  "}, {'frame': 'Evidence', 'tfidf': 2.8249733626006495, 'lexical_unit': 'argument.n / attest.v / confirm.v / corroborate.v / demonstrate.v / evidence.v / evince.v / prove.v / reveal.v / show.v / substantiate.v / testify.v / verify.v / disprove.v / contradict.v / argue.v / mean.v / evidence.n / from.prep / suggest.v / indicate.v / imply.v / proof.n / illustrate.v / point (to).v / credence [lend].n / support.v / tell.v / rule out.v / demonstration.n / assure.v', 'definition': "The Support, a phenomenon or fact,  lends support to a claim or proposed course of action, the Proposition, where the Domain_of_relevance may also be expressed.  Some of the words in this frame (e.g. argue) are communication words used in a non-communicative, epistemic sense.  'The latest poll results show that support of the president is at an all-time low.' "}, {'frame': 'Process_start', 'tfidf': 2.6639298012331865, 'lexical_unit': 'start.v / begin.v / commence.v / erupt.v / break out.v / commencement.n / incipient.a / onset.n / nascent.a / eruption.n', 'definition': "An Event begins at a certain Time and Place. Reason may also be indicated.  NB:  Refer to Event frame.  'The project began.'"}, {'frame': 'Transition_to_state', 'tfidf': 2.6356980043371983, 'lexical_unit': 'grow.v / get.v / end up.v', 'definition': "An Entity ends up in a Final_category, Final_situation, or Final_quality which it was not in before.  Some members of the frame (e.g. grow.v) tend to emphasize a gradual change, while most members of the frame do not indicate whether a change is gradual or not.    'Why I became an Emacs user'  'I left the ministry and became an atheist.'  'Surprisingly, various veteran organizations also turned vehemently antiwar.'  ' Over the years she grew to hate him.'  This frame should be compared to Undergoing_change.  Undergoing_change is different in that it much more emphasizes the difference between the pre- and post-states of the Entity.  This shows up both in Undergoing_change's increased occurrence with Initial_category and Initial_state (change from red to blue) and in its increased occurrence with Final_category (changed into a toad) rather than Final_situation or Final_quality (?changed to red vs. became/turned red).  In addition, when Undergoing_change occurs with the Final_category frame element, it presents a deep difference between the Initial_category and the Final_category, so that it is humorous to say 'she turned into a Republican', because it presents this as a fundamental change of identity; compare to 'she became a Republican', which is quite normal.  In a less humorous example, someone can 'turn into a Mac user', strongly implying that they no longer use their former operating system, while if they 'become a Mac user', this is either as a replacement of other OS's or potentially as an addition to the use of other OS's."}, {'frame': 'Sensation', 'tfidf': 2.583540302610957, 'lexical_unit': 'aroma.n / bouquet.n / feel.n / feeling.n / flavour.n / fragrance.n / incense.n / noise.n / odor.n / perception.n / perfume.n / reek.n / savour.n / scent.n / sensation.n / sense.n / sight.n / smell.n / sound.n / stink.n / taste.n / whiff.n / scene.n / image.n', 'definition': "This frame contains nouns that refer to sensations in different modalities. The FE Source is used for the phenomenon that gives rise to the sensation in question. The FE Percept is used for the characteristic quality of the sensation. In cases of veridical perception these are not typically distinguished from one another; we use the FE Percept as the default in these cases. With some nouns in this frame it is possible to express the being who experiences the sensation, or the part of the body of such a being. We mark such expressions with the FEs Perceiver_passive and Body_part, respectively. (The -passive part of this label serves to distinguish this FE from the Perceiver-Agentive FE used in other frames.)  '' 'The huge sand dunes, perpetually changing, make for a surreal sight.'  'Endill heard the noise of glass smashing, plaster crumbling and furniture being broken.'  'The feel of his strong fingers enclosing her small palm came as something of a shock to her system.'"}, {'frame': 'Breathing', 'tfidf': 2.4601185728076698, 'lexical_unit': 'breathe.v / inhale.v / breath.n / exhale.v / gasp.v / sigh.n / exhalation.n / exhalation [act].n / inhalation.n / inhalation [breath].n / huff.v / puff.v / sigh.v / blow.v / expire.v / inspire.v / insufflate.v / pant.v / respire.v / suspire.v', 'definition': "An Agent causes Air to move in a direction, usually specifying either in or out of the body.  'Lee breathed the hot desert air.'"}, {'frame': 'Containers', 'tfidf': 2.3860034526400233, 'lexical_unit': 'amphora.n / backpack.n / can.n / cart.n / casket.n / chest.n / envelope.n / flask.n / glass.n / handbag.n / jar.n / knapsack.n / ladle.n / locker.n / mug.n / pot [cooking].n / purse.n / reservoir.n / sack.n / satchel.n / spoon.n / suitcase.n / tin.n / wallet.n / teaspoon.n / ampule.n / ashtray.n / bag.n / barrel.n / basin.n / basket.n / beaker.n / bin.n / bottle.n / bowl.n / box.n / briefcase.n / bucket.n / canister.n / canteen.n / carafe.n / carton.n / cartridge.n / case.n / coffer.n / coffin.n / container.n / cooler.n / crate.n / crock.n / crucible.n / cruet.n / cup.n / cuspidor.n / cylinder.n / cask.n / carryall.n / censer.n / chalice.n / creamer.n / decanter.n / dish.n / dispenser.n / drum.n / duffel bag.n / flagon.n / empty.n / etui.n / goblet.n / grail.n / hamper.n / haversack.n / hopper.n / jeroboam.n / jigger.n / jug.n / keg.n / magnum.n / mailer.n / overnighter.n / pack.n / sarcophagus.n / tun.n / stein.n / spittoon.n / pannier.n / ramekin.n / reticule.n / salver.n / samovar.n / snifter.n / thermos.n / tureen.n / valise.n / cauldron.n / casserole.n / folder.n / rucksack.n / pouch.n / vial.n / vase.n / pail.n / pipette.n / tumbler.n / vat.n / vivarium.n / punch bowl.n / toilet bowl.n / wine bottle.n / chest of drawers.n / hot-water bottle.n / urn.n / tank.n / safe.n / planter.n / pot.n / drawer.n / goldfish bowl.a / tub.n', 'definition': "This frame covers entities which are prototypically conceived of and created to fulfill the function of containing--i.e. Containers  that contain objects or substances, the Contents.  This can be expressed as a complement , and includes potential or intended contents.   A Container may also have an Owner, a current Relative_location, Material from which it is constructed, a method of Construction, and a Type.  Note the connection between words in this frame and those in the Filling, Emptying, and Fullness frames. 'a bag of popcorn' 'underwear drawer' 'Chuck's suitcase' 'the suitcase in Chuck's office' 'straw basket' 'woven basket' 'Erlenmeyer flask'"}, {'frame': 'Assistance', 'tfidf': 2.2947266883128408, 'lexical_unit': 'assist.v / help.v / abet.v / succor.v / helpful.a / assistance.n / aid.v / aid [act].n / help out.v / serve.v / cater.v / help.n / aid [entity].n / aid and abet.v', 'definition': "A Helper benefits a Benefited_party by enabling the culmination of a Goal that the Benefited_party has.  A Focal_entity that is involved in reaching the Goal may stand in for it.  This Frame has unique Frame-to-Frame Relations: it inherits from and uses the Intentionally_act frame. This is atypical of FrameNet's frame relations.  'Will you help the Government find your brother?' 'Maybe Stephen should assist him with the last manuscript.' 'They helped me psychologically to overcome the physical loss I had suffered.' 'You have helped him tremendously by showing him  how to stand up for himself and by being his friend.' 'By bringing assistance to his troops wherever they were in trouble he aided them greatly.'"}, {'frame': 'Path_shape', 'tfidf': 2.2805256275039794, 'lexical_unit': 'angle.v / bear.v / crisscross.v / cross.v / descend.v / dip.v / drop.v / edge.v / emerge.v / exit.v / leave.v / meander.v / reach.v / rise.v / skirt.v / slant.v / snake.v / swerve.v / swing.v / traverse.v / veer.v / weave.v / wind.v / zigzag.v / undulate.v / winding.a / twisting.a / windy.a / twisty.a / ascend.v / ascent.n / bend.v / descent.n / dive.v / emergence.n / crest.v / round.v / enter.v / pass.v / ford.v / twist.v / run.v', 'definition': 'The words in this frame describe the "fictive" motion of a stationary Road.  Some of the targets cast the scene primarily in terms of the Path_shape:  \'The long mountain road meandered through the woods.\'  Some of the words in this frame imply a Source or Goal which is expressed by a direct object:  \'The path entered the garden on the west side.\'  Other members of the frame refer to a Direction: \'Then the path bears a little to the right.\'  Yet others indicate a Path which requires mention of a landmark:  \'The otherwise arrow-straight highway veers north and skirts the lake.\''}, {'frame': 'Thriving', 'tfidf': 1.9208333627443828, 'lexical_unit': 'thrive.v / flourish.v / prosper.v / languish.v / slump.n / do.v / fare.v / prosperity.n / live.v', 'definition': "An Entity is in a state such that it participates in a preponderance of states and events which are desirable for it. For living entities, this may entail a proliferation of instances of the entity, or of desirable properties associated with the (single) entity. For non-living entities (economies, political locales, academic topics, etc.), this entails a proliferation of instances, or of activities that lead to instances, or any attribute that would prevent the entity from disappearing. This state is conceived of as temporary, or at least contingent on a number of changeable factors. Words expressing the opposite state, i.e., a lack of such positive activity, are also in this frame.  'In the 1920s the peach industry flourished in Upson County.'  'Construction companies thrive on public projects.'"}, {'frame': 'Distributed_position', 'tfidf': 1.9010068486738012, 'lexical_unit': 'adorn.v / blanket.v / cloak.v / coat.v / cover.v / deck.v / decorate.v / envelop.v / festoon.v / fill.v / film.v / line.v / pave.v / wreathe.v / dot.v / stud.v / garnish.v / encrust.v / litter.v / all over.prep / across.prep / over.prep / around.prep', 'definition': 'This frame involves a static (primarily spatial) relationship between a Location and a Theme, in which the Theme is located in many or all subregions of the Location, and is thus construable as covering it. The Time when the covering configuration holds, and the Subregion of the Location that is involved may, optionally, be indicated.    \'By Summer, weeds dotted the field .\' \'The papers around my office were too messy .\' Prepositional and verb targets of this frame differ in the ways they can participate in forming sentences; one of the most important differences is that prepositions may modify the entire sentence to describe the event (the Theme) as distributed over the Location. \'Puddles were rippling all over the roof .\'  Some members of this frame specifically indicate that the configuration is attractive or unattractive; this is indicated by the semantic types Positive_judgement and Negative_judgement respectively.  Some of the non-verb LUs of the frame (esp. around.prep) refer to multiple possible positions that might be occupied by a single Theme, often accompanied by "somewhere":  \'I hope my wallet is around here (somewhere) .\'  These same LUs may refer a vague sequence of locations occupied by a single Theme:  \'I kept walking around my apartment .\'  All or virtually all of the verbs used statically in this frame can also occur in the frame Filling, producing pairs such as the following:  \'Filling: Pat covered the table with flowers.\'  \'Distributed_position: Flowers covered the table.\'  \'\' Please note: adorned, covered, etc are in the Abounding_with frame because of the point of view shift. \'\' \'The tree was studded all over with soft dark fruit.\''}, {'frame': 'Facial_expression', 'tfidf': 1.7742530997100456, 'lexical_unit': 'smile.n / grimace.n / grin.n / frown.n / expression.n / smirk.n / rictus.n / look.n / scowl.n / face.n / snarl.n / sneer.n / pout.n', 'definition': "The words in this frame refer to facial Expressions and the Possessors of those Expressions.  'His lackluster smile revealed his disappointment.'"}, {'frame': 'Experiencer_obj', 'tfidf': 1.7646162083512724, 'lexical_unit': 'aggrieve.v / alarm.v / amaze.v / anger.v / annoy.v / antagonize.v / astonish.v / astound.v / baffle.v / bewilder.v / bewitch.v / calm.v / captivate.v / charm.v / cheer.v / comfort.v / conciliate.v / confuse.v / console.v / dazzle.v / delight.v / depress.v / disappoint.v / discomfit.v / disconcert.v / discourage.v / dishearten.v / displease.v / distress.v / disturb.v / embarrass.v / enchant.v / enrage.v / entertain.v / enthrall.v / exasperate.v / excite.v / fascinate.v / frighten.v / frustrate.v / gall.v / gladden.v / gratify.v / hearten.v / humiliate.v / impress.v / infuriate.v / irk.v / irritate.v / mollify.v / pacify.v / perplex.v / placate.v / please.v / puzzle.v / rattle.v / reassure.v / rile.v / sadden.v / satisfy.v / scare.v / shake.v / shame.v / shock.v / soothe.v / spook.v / startle.v / stimulate.v / stun.v / surprise.v / terrify.v / thrill.v / unnerve.v / unsettle.v / upset.v / bore.v / wow.v / vex.v / vexation.n / shocker.n / sicken.v / stupefy.v / tickle.v / trouble.v / sting.v / solace.v / nettle.v / abash.v / aggravate.v / exhilarate.v / faze.v / embitter.v / flabbergast.v / floor.v / rankle.v / nonplus.v / mortify.v / madden.v / incense.v / petrify.v / revolt.v / sober.v / repel.v / torment.v / beguile.v / traumatize.v / interest.v / intrigue.v / offend.v / intimidate.v / mystify.v / perturb.v / stir.v / fluster.v / flummox.v / outrage.v / surprise.n / boggle.v / trouble.n / fulfill.v / crush.v / devastate.v / arouse.v / grate.v / appeal.v / worry.v / harass.v / engage.v / stagger.v / destroy.v / demolish.v / agonize.v / encourage.v / wound.v / kill.v / let down.v', 'definition': "Some phenomenon (the Stimulus) provokes a particular emotion in an Experiencer.  'Nightmare on Elm Street scared me silly.'"}, {'frame': 'Being_in_operation', 'tfidf': 1.7578874109330354, 'lexical_unit': 'on.prep / off.prep / operate.v / operational.a', 'definition': "A Device or machine is in (or out of) service. Note that being broken or functional is a separate issue from being turned on or off. This latter notion is what the present frame is concerned with. <br /> The Time when and the Place where the Device is in use may be specified, as may be the Purpose a backgrounded human User had in turning the Device on or off.    'The TV is on' 'The lights were off when I came by.'  "}, {'frame': 'Measure_duration', 'tfidf': 1.6667798254376436, 'lexical_unit': 'hour.n / minute.n / second.n / day.n / week.n / month.n / year.n / decade.n / century.n / millennium.n / fortnight.n / a while.n / nanosecond.n / time.n', 'definition': 'This frame contains (transparent ) nouns that are Units of measurement for time. The frame elements are Count, Unit and Process.  \'The final total was 606, scored in only 10 hours of excellent batsmanship.\'  In this frame, we will NOT annotate deictic, calendric uses of nouns like week, month, etc. as in "next week, this month, in the 21st century".'}, {'frame': 'Desirability', 'tfidf': 1.6283881722762799, 'lexical_unit': 'pathetic.a / superb.a / superlative.a / excellent.a / fabulous.a / outstanding.a / pitiful.a / appalling.a / execrable.a / fantastic.a / awful.a / splendid.a / sensational.a / wonderful.a / astonishing.a / rotten.a / terrible.a / magnificent.a / horrible.a / dreadful.a / stupendous.a / marvellous.a / super.a / first-rate.a / tremendous.a / good.a / bad.a / fair.a / mediocre.a / decent.a / okay.a / average.a / tolerable.a / second-rate.a / third-rate.a / astounding.a / fine.a / terrific.a / great.a / so-so.a / substandard.a / shitty.a / inferior.a / top-notch.a / tip-top.a / incredible.a / crappy.a / amazing.a / suck.v / rock.v / lamer.n / lame.a / uncool.a / excellence.n / desirable.a / extraordinary.a / sweet.a / cool.a / nasty.a / miserable.a / unfortunate.a / popular.a / idyllic.a / poor.a / atrocious.a / well.adv / standout.n / crap.n / shit.n / garbage.n / gem.n / gold.n / killer.a / awesome.a / best thing since sliced bread.n / junk.n / worthless.a', 'definition': "This frame concerns an Evaluee being judged for its quality, i.e. how much it would probably be liked.  In many cases, the Evaluee is implicitly judged good or bad relative to other instances of its type. The Evaluee's desirability is determined by one or more Parameters, which are scalar properties of the Evaluee. The evaluation may also explicitly be relativized to a set of Circumstances, a Comparison_set of entities that belong to the same class as the Evaluee, or an Affected_party. The Degree of goodness or badness may also be expressed.  Note: With some targets, desirability is conventionally aligned with quantity, i.e., GOOD is MORE.  'The view was  astonishing.' 'On clear days, the view was excellent.' 'The book is astounding in its scope.' 'The games have been awful for the team.' "}, {'frame': 'Popularity', 'tfidf': 1.5850658485219542, 'lexical_unit': 'popular.a / cool.a / in.a / in demand.a / hot.a', 'definition': "An Evaluee, which can be a person or an object, has an amount of acceptability or utilization based on general (often non-aesthetic) desirability. The Judge who determines the Evaluee's desirability may be mentioned.  'Frank Sinatra is cool again.' 'Web 2.0 is so in right now.'"}, {'frame': 'Being_employed', 'tfidf': 1.5678564424601489, 'lexical_unit': 'work.v / work.n / employ.n / wait tables.idio / job.n / clerk.v / temp.v / stint.n / employed.a / subcontract.v / farm (out).v / employment.n / unemployment.n / unemployed.a / jobless.a / position.n / at.prep', 'definition': "An Employee has a Position doing work in a particular Field, or doing work on a particular Task, for which an Employer gives Compensation to the Employee.  ' Undocumented foreigners are working as  building contractors for Laing Builders.'"}, {'frame': 'Opinion', 'tfidf': 1.4329306557388823, 'lexical_unit': 'opinion.n / view.n / take.n / think.v / belief.n / expect.v / feel.v / figure.v / suppose.v / believe.v / hold.v / sense.n / subscribe.v / subscriber.n / believer.n', 'definition': "A Cognizer holds a particular Opinion, which may be portrayed as being about a particular Topic.  'John thinks that it looks better back .' 'Well, my opinion about that is none of your business. '  'What 's your take on the recent oil crisis ?'  'Your view of Smithers as an excellent secretary is not shared by the rest of the UN.'"}, {'frame': 'Intentionally_affect', 'tfidf': 1.3821621436643925, 'lexical_unit': 'do.v / do something (to/with).v / do what (to/with).v', 'definition': "An Agent causes a Patient to be affected, sometimes by a particular Means or by use of an Instrument.  'A professional dishwasher doesn't do dishes with a rag anymore!'"}, {'frame': 'Giving', 'tfidf': 1.3341188048377426, 'lexical_unit': 'give.v / donate.v / donation.n / donor.n / foist.v / endow.v / fob off.v / give out.v / hand over.v / hand out.v / gift.v / gift.n / pass out.v / bequeath.v / treat.v / hand.v / hand in.v / contribute.v / contribution.n / charity.n / volunteer.v / will.v / leave.v / advance.v / confer (upon).v / bequest.n', 'definition': "A Donor transfers a Theme from a Donor to a Recipient.  This frame includes only actions that are initiated by the Donor (the one that starts out owning the Theme).  Sentences (even metaphorical ones) must meet the following entailments: the  Donor first has possession of the Theme.  Following the transfer the Donor no longer has the Theme and the Recipient does. 'Barney gave the beer to Moe.' '$300 was endowed to the university to build a new performing arts building.'"}, {'frame': 'Experiencer_focus', 'tfidf': 1.3313557230153217, 'lexical_unit': 'abhor.v / abominate.v / adore.v / delight.v / despair.v / despise.v / detest.v / dislike.v / dread.v / envy.v / fear.v / grieve.v / hate.v / like.v / loathe.v / love.v / mourn.v / pity.v / regret.v / resent.v / rue.v / rueful.a / hatred.n / empathy.n / compassion.n / dislike.n / desperation.n / envy.n / loathing.n / pity.n / regret.n / resentment.n / adoration.n / abhorrence.n / relish.n / detestation.n / nettled.a / worried.a / nervous.a / apprehensive.a / fond.a / interested.a / agape.a / fulfilled.a / fulfillment.n / satisfaction.n / satisfied.a / worked up.a / dissatisfied.a / fazed.a / unfazed.a / calm.a / comfort.n / solace.n / pleasure.n / irritated.a / upset.a / antipathy.n / taken.a / fed up.a / intimidated.a / happily.adv / feverish.a / feverishly.adv / cool.a / easy.a / discomfort.n', 'definition': "The words in this frame describe an Experiencer's emotions with respect to some Content. A Reason for the emotion may also be expressed.  Although the Content may refer to an actual, current state of affairs, quite often it refers to a general situation which causes the emotion.    ' My enjoyment of the movie was considerably impaired by the seven-foot guy sitting in front of me. ' ' Smithers takes great pleasure in collecting matchboxes.' ' Sergio derives great pleasure  from  smoking.' ' Smoking gives me extreme pleasure.' With certain verbs, the Circumstances can be expressed in a finite clausal or wh- complement which may optionally be preceded by a Null NP Object: 'I hate it when you do that.' Note: This is not how it is currently tagged. "}, {'frame': 'Direction', 'tfidf': 1.1921323751924042, 'lexical_unit': 'east.adv / up.adv / forward.adv / left.adv / right.adv / north.adv / south.n / east.n / south.adv / down.adv / outward.adv / north.n / west.adv / true north.n / way.n', 'definition': 'This frame covers the basic uses of direction words like the adverbs east, up, and forward.  These are used either to talk about a direction of facing (e.g., facing outward, pointing left, looking downward, turn east) or to talk about actual or metaphorical motion (went up, traveling due north).  Lexical units of this frame typically have a semantic type that refers to the means of determining the direction (e.g. forward.adv has the semantic type Landmark_front, meaning that "forward" is defined with respect to the direction from the center of some entity to its front, however defined).  Nevertheless, some words like way.n are used exactly when normal means of specifying direction are not available.  This frame is most frequently used to describe the motion of something along the Path from the Landmark, which is normally implicitly identified as the location of the viewpoint:    \'We went north . DNI\'  In such cases, a Distance from the Landmark can also be given:  \'After she was knocked on the head , it seemed like everything had moved three feet to the left . DNI\'  It can often be used for direction of facing, which is not compatible with the Distance frame element:  \'Look left and you \'ll see it . DNI \'  Although rare for certain lexical units (e.g., upward.adv), most words in this frame are commonly used in a fictive motion pattern to identify locations that can be reached by moving in the indicated way from the Landmark:  \'The book was unreachable, 10 feet up on the shelf. DNI\' \'East of Mt. Diablo the Sierras rise majestically above the Central Valley.\'  \'\'  In this fictive motion case, the Domain and the Independent_variable are both spatial, and should be marked as metaphorical.  Note this differs from members of the Directional_locative_relation frame (e.g., above.prep), which can only be used for relative static positions, and not for facings or for directions of motion:  \'??? The book faced above the door .\' vs. \'The book faced upward .\'  A potential point of confusion is that the Directional_locative_relation frame is also used for cases in which adverbs like east.adv, etc. are followed by "of", since such expressions can only be used of static relative positions and not facings:  \'??? I faced east of the mountains .\'  Another potential point of confusion is that nouns referring to directions can be used for facings if they are preceeded by the word "to".  Since this use of to.prep can be found with a broader class of words like side.n, we interpret this sense of to.prep as mapping relative postitions (belonging to the Directional_locative_relation frame) to true Directions, in the sense of this frame.  This applies to expressions like "to the east", as well as "to both sides" and "to the rear".  In the future, we may add these as multi-word members of the frame.  In the following case, the Domain is "potency" and the Independent_variable is, as usual, time; again, the example should be marked as metaphorical.  \'\' \'They decided to rerate the medication downward in potency .\' \'\'  In mathematical terms, all of these uses can be understood as a Path, made up of a set of positions in some N-space Domain (by default spatial, or metaphorically, other domains), being determined as a function of a Landmark (which may be incorporated and is usually implicit) and some one-dimensional Independent_variable (time, or, metaphorically, other domains).  The Domain and/or the Independent_variable are normally incorporated in the basic definition of the target; thus, for example, up.adv, by default, indicates the Domain is space, and time is the Independent_variable. From a linguistic point of view, we consider these literal spatio-temporal uses to be basic, and other cases, where space is replaced by some other kind of quantity, is to be understood as metaphorical.'}];
+    </script>
+
+    <script type="text/javascript" src="../word_cloud.js"></script>
+    
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+        }
+
+        .my_container {
+            display: inline-block;
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+            cursor:pointer;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            text-decoration: underline;
+        }
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Conceptual Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            The <strong>conceptual representation</strong> is designed to illustrate the high-level concept of a story snippet.
+            A conceptual representation will usually contains important <strong>nouns</strong>, <strong>verbs</strong>, and <strong>adjectives</strong> in the story.
+            <br/><br/>
+            Below, we present a conceptual representation using a word cloud. The size and the color is related to the importance of the words.
+            In the following task, you will need to <span class="highlight">carefully read the conceptual representation</span>.
+            Two stories will be presented, please select the one that is <span class="highlight">represented by the conceptual representation</span>.
+        </div>
+        <br><hr><br>
+
+
+
+        <!-- Story -->
+        <div>
+            <h3>Read Stories!</h3>
+            Given the above conceptual representation, please find out the closest story!
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-6">
+                    <div  class="story_block" value="story_1">
+                        <h4>Story 1</h4>
+                        <pre>
+From the smile I felt like I was the first person to ever tell her.
+She walked slowly over to me, placing her tiny hands on my chest.
+Her scent was starting things off again.
+We didn't have time to deal with my arousal.
+"You look mighty handsome, Ryder" she whispered.
+I swallowed hard, her speaking in that voice didn't exactly help my situation.
+I grabbed hold of her hand and dragged her out of my room, hoping Jo was in the living room.
+It was empty, I looked at Tess shocked.
+"They left when I got here," she was looking down at the floor.
+"I'm getting the feeling you don't want to be alone with me."
+The shock hit me.
+She could read me really well.
+"No!"
+I shook my head and our eyes met, I now felt very embarrassed.
+"It's just," I raised an eyebrow and took in another glance of Tess in that dress.
+"Your dress" I pointed.
+"It's doing things to my body and I haven't got time to deal with the problem."
+She started fluttering her eyelashes and her hands started running up and down my chest.
+The blood started to pump south and the indiscreet thoughts filled my mind.
+I stood up, just to find some air to breathe again.
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div  class="story_block" value="story_2">
+                        <h4>Story 2</h4>
+                        <pre>
+All of these I have experienced at times, but the last one happens to me especially when around books.
+Sometimes I have had books on my shelves for months or even years and never felt that I wanted to read them, not really knowing why I bought them.
+Suddenly one day the title will stand out from all the others and I will pick up the book and sometimes read it in a day and relate to the message it has for me in its pages.
+This never ceases to amaze me.
+It certainly fits the saying 'When the student is ready, then the teacher will appear' and at times these books are my teachers.
+I have found wisdom and depth of understanding through allowing myself to be 'directed' towards the reading of certain books: they have enabled me not only to grow but also to pass knowledge on to others that I have met along the way.
+I have not always felt this way.
+It has taken me a large part of my life to trust what I feel, trust the conversations I have with myself and trust the knowledge I have about a situation before it happens, but trust I do.
+I never get every detail right but I will say that my sense, my intuition has prepared me many times for situations I have found myself in.
+When I didn't listen in the early years and ignored my inner guidance, things became difficult at times.
+It is your intuition that could help you understand the lessons that are being presented to you in your life experiences.
+Since I now acknowledge my inner voice I have to say my life has become more joyous because I have agreed to trust and listen.
+I have developed my intuition, the ability to have a knowing within and I have faith in this and believe that it is spiritual and comes from the universe or from God.
+It depends which one you feel more comfortable in adopting.
+For me, it comes from God and my spirit family but it doesn't matter where you think it comes from, as long as you listen.
+It cannot, however, stand alone: it can guide you and give you support but ultimately it is you who makes the final decision.
+None of us are perfect and we will make mistakes.
+Your intuition can support your life path but it does not control you: it can give you only guidance, if you let it, for the final decisions about who you are, where you will go and who you will become are yours.
+In my understanding and experience, listening to your intuition offers you guidance so that you can experience fully the life you have been given here on Earth.
+When you have awareness of self you can begin to understand your impact on others, both those you know and those you have not met yet.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div>
+            <h3>Conceptual Representation</h3>
+            <div class="my_container" id="noun">
+                <h2>Noun</h2>
+            </div>
+            <div class="my_container" id="verb">
+                <h2>Verb</h2>
+            </div>
+            <div class="my_container" id="adj">
+                <h2>Adj</h2>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+
+            <div class="col-6 options" value="1">
+                <span class="box"></span>
+                This word cloud represents story 1.
+            </div>
+            <div class="col-6 options" value="2">
+                <span class="box"></span>
+                This word cloud represents story 2.
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="9">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="1">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

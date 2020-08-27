@@ -5,7 +5,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 from nltk.corpus import framenet as fn
-from wordcloud import WordCloud
+#from wordcloud import WordCloud
 from pprint import pprint
 import pandas as pd
 import re
@@ -427,7 +427,60 @@ def generate_html(block=20):
         template = template.replace("{{story_2}}", story_2)
 
         # save
-        with open(os.path.join("html", str(block), "{:0>4}.html".format(count)), 'w', encoding='utf-8') as outfile:
+        with open(os.path.join("html", "table", str(block), "{:0>4}.html".format(count)), 'w', encoding='utf-8') as outfile:
+            outfile.write(template)
+
+def generate_frame_representation_for_word_cloud(sample, frame_dict):
+    frame = sample["y_frame"]
+    sorted_index = np.argsort(frame, axis=1)[0, ::-1]
+    
+    best_ten_index = sorted_index[:30]
+    best_ten_frame_tfidf = [frame[0][b] for b in best_ten_index]
+    best_ten_frame = [frame_dict[int(b)] for b in best_ten_index]
+
+    # build frame info
+    frame_info_list = []
+    for i, f, t in zip(best_ten_index, best_ten_frame, best_ten_frame_tfidf):
+        frame_info_list.append({
+            "frame": f["name"],
+            "tfidf": t,
+            "lexical_unit": " / ".join(f["lexUnit"].keys()),
+            "definition": f["definition"],
+        })
+    return frame_info_list
+
+def generate_html_wordcloud(block=20):
+    # load template
+    with open("word_cloud_template.html", 'r', encoding='utf-8') as infile:
+        ori_template = infile.read()
+    
+    # load data
+    with open(f"../data/human_evaluation_data_{block}.json", 'r', encoding='utf-8') as infile:
+        data = json.load(infile)
+
+    model = load_tfidf_model(block=block)
+    frame_info_dict = get_frame_dictionary()
+    frame_dict = {v:frame_info_dict[k] for k, v in model.vocabulary.items()}
+
+    for count, sample in enumerate(data[:10]):
+        frame_list = generate_frame_representation_for_word_cloud(sample, frame_dict)
+        template = ori_template.replace("{{frame_list}}", str(frame_list))
+        template = template.replace("{{setting}}", "block_{}".format(20))
+        template = template.replace("{{id}}", str(sample["index"]))
+
+        ans = random.randint(0, 1)
+        if ans == 0:
+            template = template.replace("{{target}}", "1")
+            story_1, story_2 = sample["y_text"], sample["option_text"]
+        else:
+            template = template.replace("{{target}}", "2")
+            story_1, story_2 = sample["option_text"], sample["y_text"] 
+
+        template = template.replace("{{story_1}}", story_1)
+        template = template.replace("{{story_2}}", story_2)
+
+        # save
+        with open(os.path.join("html", "word_cloud",  str(block), "{:0>4}.html".format(count)), 'w', encoding='utf-8') as outfile:
             outfile.write(template)
 
 
@@ -455,8 +508,9 @@ def main():
     #get_story()
 
     #generate_sample()
-    generate_html(200)
-    generate_html(20)
+    #generate_html(200)
+    #generate_html(20)
+    generate_html_wordcloud(20)
 
 if __name__ == "__main__":
     main()

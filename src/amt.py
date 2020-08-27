@@ -74,6 +74,8 @@ def create_hit(client, url, reward, worker_id_list=None, num_assignment=5):
 
 def create_hit_batch(client):
     for i in range(0, 10):
+        print("https://appleternity.github.io/Bookcorpus/src/html/20/{:0>4}.html".format(i))
+
         create_hit(
             client,
             url="https://appleternity.github.io/Bookcorpus/src/html/20/{:0>4}.html".format(i),
@@ -85,8 +87,8 @@ def get_result(client, hit_id):
     res = get_all_assignment(client, hit_id, status=["Submitted", "Approved"])
     for r in res:
         r["parsed_answer"] = parse_hit(r["Answer"])
-        for key in ["answer", "fib_answer", "reason_answer"]:
-            r["parsed_answer"][key] = json.loads(r["parsed_answer"][key])
+        #for key in ["id", "story", "setting", "target"]:
+        #    r["parsed_answer"][key] = json.loads(r["parsed_answer"][key])
         approve_assignment(client, r["AssignmentId"])
     result.extend(res)
     return result
@@ -113,14 +115,22 @@ def get_hit_and_approve(client):
         json.dump(result, infile, indent=4)
 
 def frame_prediction_eval():
-    client = get_client()
+    #client = get_client()
+    client = get_client(mode="production")
     
-    create_hit(
-        client,
-        url="https://appleternity.github.io/Bookcorpus/src/html/20/0000.html",
-        reward="0.42",
-    )
+    hit_id_list = list_hit_id(client, 10)
+    result = get_result_batch(client, hit_id_list)
 
+    with open("frame_human_eval.json", 'w', encoding='utf-8') as outfile:
+        json.dump(result, outfile, indent=4)
+
+    #create_hit_batch(client)
+
+    #create_hit(
+    #    client,
+    #    url="https://appleternity.github.io/Bookcorpus/src/html/20/0000.html",
+    #    reward="0.42",
+    #)
 
 def lela_annotation():
     client = get_client(mode="production")

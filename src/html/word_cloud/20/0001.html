@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Breathing', 'tfidf': 7.38035571842301, 'lexical_unit': 'breathe.v / inhale.v / breath.n / exhale.v / gasp.v / sigh.n / exhalation.n / exhalation [act].n / inhalation.n / inhalation [breath].n / huff.v / puff.v / sigh.v / blow.v / expire.v / inspire.v / insufflate.v / pant.v / respire.v / suspire.v', 'definition': "An Agent causes Air to move in a direction, usually specifying either in or out of the body.  'Lee breathed the hot desert air.'"}, {'frame': 'Sharpness', 'tfidf': 4.505400075461673, 'lexical_unit': 'sharp.a / dull.a / blunt.a', 'definition': "An Entity has a Sharpness characterized by its capability to cut.  The Sharpness is a value of the Attribute of sharpness.  'That axe seems dangerously sharp.'"}, {'frame': 'Tool_purpose', 'tfidf': 4.444889238705382, 'lexical_unit': 'use.n / function.n', 'definition': "A living entity intends a Tool to be able to fulfill a generic Purpose.  The material from which the tool is created can be something natural or something manmade, including another tool.  'The use of a saw is to cut down trees.'"}, {'frame': 'Religious_belief', 'tfidf': 4.380464515576469, 'lexical_unit': 'believe.v / belief.n / faith.n / faithful.n', 'definition': "A Believer has faith in a piece of Content or an Element  which fits into a religious belief system made up of many articles of faith. The Content is not necessarily tied to direct sensory experience. The system of beliefs may be enshrined by the members of a social group  'Do Muslims believe in the virgin birth of Jesus?' 'Muslims believe in only One God, the same God that Jews and Christians believe in, but some of the ideas about the nature of God are different' 'Muslims believe that the month of Ramadan is the holiest month of the year'"}, {'frame': 'Reshaping', 'tfidf': 4.185786475664877, 'lexical_unit': 'scrunch.v / flatten.v / crumple.v / squish.v / dent.v / squash.v / crush.v / warp.v / roll.v / fold.v / form.v / shape.v / mold.v / deformation.n / bend.v / launch.v / curl.v', 'definition': "In this frame a Deformer deforms a Patient possibly against a Resistant_surface such that it undergoes a shape-change from its canonical or original shape into the Configuration, a new shape. Some of these words indicate that the Configuration is an undesirable alteration of the norm, and in such cases the lexical unit is marked with the semantic type Negative_judgement.   This frame does not include senses that specifically indicate causing harm to a living being.    'Ellen crumpled the paper into a ball.'   'Michael flattened the can against his head.'   'Mix butter and sardines very thoroughly , mashing them with a fork until you have a smooth paste. CNI'   'A killer hurricane nearly flattened Sylvester Stallone's five luxury homes in Hawaii.' "}, {'frame': 'Left_to_do', 'tfidf': 4.153912644671076, 'lexical_unit': 'left.a / remain.v / remainder.n', 'definition': "A Process of using or modifying is scheduled to be applied to a group or mass.  At a certain Time, the Remainder that is still left to be processed can be identified. The Agent who is in line to work on the Remainder is usually deprofiled but may sometimes be expressed.   'Three more cars remain to be fixed.' 'We have done the first twenty so there are only five more letters remaining DNI' "}, {'frame': 'Change_operational_state', 'tfidf': 4.13403663242745, 'lexical_unit': 'activate.v / turn on.v / turn off.v / boot.v / shut off.v / deactivate.v / cut.v / cut off.v / kill.v', 'definition': "A Device or machine is put in (or out of) service either by a volitional Agent or by a Cause event or force acting on the Device. The Time when and the Place where the Device is put in or out of use may be specified, as may be the Purpose of the human Agent in changing the operational state of the Device.  'The laborer realized that he activated the machine but did not know how to stop it.'  "}, {'frame': 'Cause_expansion', 'tfidf': 4.022007275586286, 'lexical_unit': 'aggrandizement.n / augmentation.n / contraction.n / dilate.v / enlarge.v / enlargement.n / expand.v / expansion.n / growth.n / inflate.v / lengthen.v / magnification.n / magnify.v / reduction.n / shrink.v / swell.v / widen.v / narrow.v / grow.v / blow up.v / stretch.v / compress.v / compression.n / condense.v', 'definition': "An  Agent or non-human Cause causes an Item to change its physical size.  The Size_change of an Item may be explicitly indicated or characterized in terms of Initial_size and/or Result_size.  In the default case, expansion is along all dimensions, but sometimes the Dimension of expansion is incorporated or made explicit.  'If the design crashes too often, then try lengthening the wings by a few centimeters, to perhaps 30cm total.  CNI INI '   'As the juice churned with natural process of changing into wine, the gas it created would expand the balloon, and when the balloon eventually deflated, it was ready to drink.'"}, {'frame': 'Catastrophe', 'tfidf': 3.9314089713934433, 'lexical_unit': 'befall.v / disaster.n / betide.v / suffer.v / catastrophe.n / mishap.n / mischance.n / misfortune.n / tragedy.n / calamity.n / cataclysm.n / apocalypse.n / calamitous.a / catastrophic.a / incident.n / casualty.n / crisis.n / debacle.n / disastrous.a / accident.n / victim.n', 'definition': "The words in this frame involve an Undesirable_event which affects the Patient negatively.  No agent need be involved. '' 'The first calamity was a disastrous trade war with Holland.'  'It is sad to have to make a living by grubbing around in the dirt of a national calamity.'  'The result has been catastrophic.'"}, {'frame': 'Cause_to_end', 'tfidf': 3.7099337500103453, 'lexical_unit': 'lift.v / end.v / lifting.n / arrest.v / put an end to.v / abort.v / do away with.v', 'definition': "An Agent or Cause causes a Process or State to end.   'Bush may lift sanctions on his own, despite opposition.'"}, {'frame': 'Being_awake', 'tfidf': 3.6108922669333077, 'lexical_unit': 'awake.a / conscious.a / wakeful.a / watch.v', 'definition': "A Protagonist is awake at some Time and Place.  This entails the Protagonist having a higher general level of awareness of the surroundings than when asleep.  'He's awake!'"}, {'frame': 'Experiencer_obj', 'tfidf': 3.529232416702545, 'lexical_unit': 'aggrieve.v / alarm.v / amaze.v / anger.v / annoy.v / antagonize.v / astonish.v / astound.v / baffle.v / bewilder.v / bewitch.v / calm.v / captivate.v / charm.v / cheer.v / comfort.v / conciliate.v / confuse.v / console.v / dazzle.v / delight.v / depress.v / disappoint.v / discomfit.v / disconcert.v / discourage.v / dishearten.v / displease.v / distress.v / disturb.v / embarrass.v / enchant.v / enrage.v / entertain.v / enthrall.v / exasperate.v / excite.v / fascinate.v / frighten.v / frustrate.v / gall.v / gladden.v / gratify.v / hearten.v / humiliate.v / impress.v / infuriate.v / irk.v / irritate.v / mollify.v / pacify.v / perplex.v / placate.v / please.v / puzzle.v / rattle.v / reassure.v / rile.v / sadden.v / satisfy.v / scare.v / shake.v / shame.v / shock.v / soothe.v / spook.v / startle.v / stimulate.v / stun.v / surprise.v / terrify.v / thrill.v / unnerve.v / unsettle.v / upset.v / bore.v / wow.v / vex.v / vexation.n / shocker.n / sicken.v / stupefy.v / tickle.v / trouble.v / sting.v / solace.v / nettle.v / abash.v / aggravate.v / exhilarate.v / faze.v / embitter.v / flabbergast.v / floor.v / rankle.v / nonplus.v / mortify.v / madden.v / incense.v / petrify.v / revolt.v / sober.v / repel.v / torment.v / beguile.v / traumatize.v / interest.v / intrigue.v / offend.v / intimidate.v / mystify.v / perturb.v / stir.v / fluster.v / flummox.v / outrage.v / surprise.n / boggle.v / trouble.n / fulfill.v / crush.v / devastate.v / arouse.v / grate.v / appeal.v / worry.v / harass.v / engage.v / stagger.v / destroy.v / demolish.v / agonize.v / encourage.v / wound.v / kill.v / let down.v', 'definition': "Some phenomenon (the Stimulus) provokes a particular emotion in an Experiencer.  'Nightmare on Elm Street scared me silly.'"}, {'frame': 'Race_descriptor', 'tfidf': 3.443293941404287, 'lexical_unit': 'white.a / black.a / color.n / yellow.a / asian.a / hispanic.a', 'definition': "This frame covers LUs that describe the race of a Person.  'Carlos is hispanic, or so he says.'"}, {'frame': 'Motion_directional', 'tfidf': 3.384346452320883, 'lexical_unit': 'plummet.v / drop.v / fall.v / topple.v / plunge.v / descend.v / rise.v / dip.v / angle.v / slant.v', 'definition': "In this frame a Theme moves in a certain Direction which is often determined by gravity or other natural, physical forces. The Theme is not necessarily a self-mover.  ' The paper fell to the floor.'  ' The girl dropped 13 stories to her death.'"}, {'frame': 'Attack', 'tfidf': 3.284130910815617, 'lexical_unit': 'attack.v / assault.v / assault.n / attack.n / fall (upon).v / incursion.n / offensive.n / onset.n / strike.n / onslaught.n / charge.v / charge.n / lay (into).v / set (upon).v / storm.v / strike.v / ambush.v / ambush.n / jump.v / assail.v / raid.v / bomb.v / bombing.n / raid.n / attacker.n / offensive.a / infiltrate.v / infiltration.n / hit.v / fire.n / small arms fire.n / SAF.n / safire.n / drive-by.n / airstrike.n / assailant.n / bombardment.n / bombard.v', 'definition': "An Assailant physically attacks a Victim (which is usually but not always sentient), causing or intending to cause the Victim physical damage.   A Weapon used by the Assailant may also be mentioned, in addition to the usual Place, Time, Purpose, Explanation, etc.  Sometimes a location is used metonymically to stand for the Assailant or the Victim, and in such cases the Place FE will be annotated on a second FE layer.  'As soon as he stepped out of the bar he was set upon by four men in ski-masks.' 'Is he invading Iraq just to cover other shortcomings?' 'Then Jon-O's forces ambushed them on the left flank from a line of low hills.'"}, {'frame': 'Degree', 'tfidf': 3.0310068680116564, 'lexical_unit': 'so.adv / a little.adv / a little bit.adv / very.adv / that.adv / totally.adv / fully.adv / heavily.adv / far.adv / somewhat.adv / in part.adv / great.a / way.adv / particular.a / a lot.adv / stone (cold).n / dirt (poor).n / sopping (wet).a / crystal (clear).n / as hell.adv / kind of.adv', 'definition': "LUs in this frame modify a gradable attribute and describe intensities at the extreme positions on a scale.  'She is very brave.'  'It is that simple!'  'The feuds are so vicious because the stakes are so low.'  'The plant is totally red  without the slightest hint of green.' "}, {'frame': 'Experience_bodily_harm', 'tfidf': 2.9461362631181083, 'lexical_unit': 'stub.v / jam.v / hit.v / hurt.v / injure.v / break.v / sprain.v / strain.v / twist.v / pull.v / tear.v / cut.v / burn.v / smack.v / abrade.v / graze.v / bruise.v / scrape.v / sunburn.v / injury.n', 'definition': "An Experiencer is involved in a bodily injury to a Body_part.  (In some cases, no Body_part need be indicated.)  Often an Injuring_entity on which the Experiencer injures themselves is mentioned. 'I think that I hurt myself pretty bad back there.' 'He smacked his head on the mantel getting up from poking at the fire.'"}, {'frame': 'Increment', 'tfidf': 2.935847446193903, 'lexical_unit': 'other.a / another.a / other.n / another.n / further.a / more.a / more.n / additional.a', 'definition': "A member or members of a Class have just been  mentioned or are present in the discourse setting and now a different instance  (or group of instances) of the same class is referred to.  'My husband left me for another woman -- and now wants to get back together again!'  'My husband left me for another woman -- and now wants to get back together again!'"}, {'frame': 'Level_of_force_exertion', 'tfidf': 2.8933157645428618, 'lexical_unit': 'strong.a / weak.a / mighty.a / power.n / might.n / forceful.a / force.n / strength.n / weakness.n / powerful.a / powerless.a', 'definition': 'An Exerter, Action, or Force is capable of exerting or does exert a physical force at a level specified by the target. That physical force may cause deformation or breakage of, or simply motion in the receiving entity. The receiving entity is conceptually present (even if remotely), but is usually not lexically explicit. This frame covers both individual-level/static uses ("a STRONG person") as well as stage-level/dynamic uses ("a STRONG push"). However, the durative, individual-level meaning appears more frequently in the data and seems more basic.   \'Eugenie loved the sea and was a strong swimmer.\'  \'Spartacus dealt the Roman soldier a mighty blow.\'  \'A powerful force tore off the tree\'s branches.\'  Exerter, Action, and Force belong to a Core set. \'\'  There are several productive metaphors covered by this frame. The first and most common is one in which social influence or control is conceptualized as the physical exertion of force. The social influence/control is more specifically a propensity to cause change in social realms such as the economic, political, militaristic, cultural, or intimate: \'There were theoretical limits to the power of the king.\' \'Voters in the South have a strong incentive to keep such Democrats in office.\'  Another similar metaphor is one in which psychological influence or control is understood as the physical exertion of force. The psychological influence/control includes the emotional as well: \'Poetic words in a text can be given more emotive power by using melisma.\' \'He was a forceful speaker.\'  A third metaphor involves the amount of an entity construed as the physical force exertion of said entity. Depending on context, amount could be volume, etc. (“STRONGEST critics”; “MIGHTY uproar”).  \'\'  Two related physical force dynamic frames are Level_of_force_resistance and Dynamism.  This frame is distinguished from the Level_of_force_resistance frame in that it describes the level of force exertion instead of the level of resistance, and also in that there are three categories of Core FE available to the target (i.e Exerter, Action, or Force), whereas in Level_of_force_resistance there are only two Core FEs (i.e. Resisting_entity and Opposing_force). Of the latter frame\'s FEs, Opposing_force specifies the thing that the main entity resists to a level desginated by the target. Its parallel in Level_of_force_exertion is implied but backgrounded to the extent that it rarely appears as explicit lexical material; thus there is no corresponding Core FE.   This frame differs from Dynamism with regard to individual-level cases; targets here express the FE\'s capability. In contrast, Dynamism targets express the FE\'s tendency. For example, "a STRONG person" is generally construed as a person who is capable of strength, while "an ENERGETIC person" (energetic.a from the Dynamism frame) is construed as a person who tends to be energetic.   However, there is overlap between the two frames in stage-level cases - "a STRONG push" and "an ENERGETIC push" seem rather comparable. '}, {'frame': 'Intentionally_affect', 'tfidf': 2.764324287328785, 'lexical_unit': 'do.v / do something (to/with).v / do what (to/with).v', 'definition': "An Agent causes a Patient to be affected, sometimes by a particular Means or by use of an Instrument.  'A professional dishwasher doesn't do dishes with a rag anymore!'"}, {'frame': 'Experiencer_focus', 'tfidf': 2.6627114460306434, 'lexical_unit': 'abhor.v / abominate.v / adore.v / delight.v / despair.v / despise.v / detest.v / dislike.v / dread.v / envy.v / fear.v / grieve.v / hate.v / like.v / loathe.v / love.v / mourn.v / pity.v / regret.v / resent.v / rue.v / rueful.a / hatred.n / empathy.n / compassion.n / dislike.n / desperation.n / envy.n / loathing.n / pity.n / regret.n / resentment.n / adoration.n / abhorrence.n / relish.n / detestation.n / nettled.a / worried.a / nervous.a / apprehensive.a / fond.a / interested.a / agape.a / fulfilled.a / fulfillment.n / satisfaction.n / satisfied.a / worked up.a / dissatisfied.a / fazed.a / unfazed.a / calm.a / comfort.n / solace.n / pleasure.n / irritated.a / upset.a / antipathy.n / taken.a / fed up.a / intimidated.a / happily.adv / feverish.a / feverishly.adv / cool.a / easy.a / discomfort.n', 'definition': "The words in this frame describe an Experiencer's emotions with respect to some Content. A Reason for the emotion may also be expressed.  Although the Content may refer to an actual, current state of affairs, quite often it refers to a general situation which causes the emotion.    ' My enjoyment of the movie was considerably impaired by the seven-foot guy sitting in front of me. ' ' Smithers takes great pleasure in collecting matchboxes.' ' Sergio derives great pleasure  from  smoking.' ' Smoking gives me extreme pleasure.' With certain verbs, the Circumstances can be expressed in a finite clausal or wh- complement which may optionally be preceded by a Null NP Object: 'I hate it when you do that.' Note: This is not how it is currently tagged. "}, {'frame': 'Purpose', 'tfidf': 2.6035090914609906, 'lexical_unit': 'purpose.n / goal.n / aim.n / objective.n / object.n / target.n / aim.v / intend.v / intention.n / use.n / plan.v / in order.adv / plan.n / bent.a / intent.a / determined.a / mean.v', 'definition': "An Agent wants to achieve a Goal,  or an object.  A Means  has been created or is used to allow the creator or a user to achieve a  Goal. The Goal is a state of the world that does not currently hold but which the Agent wants to realize and is planning and/or working towards. In some cases, it is difficult to decide whether a noun phrase metonymically stands for the Agent or the Means (e.g. The goal [of this paper/seminar/project] is to determine ...). We mark these phrases as Agent on the first layer but also annotate them as Means on a second annotation layer.  In some cases a Restrictor on the Goal state of affairs can be given prominence as a separate constituent. Talking about Goals frequently includes the mention of a Domain to which the Agent's Goal is relevant.  'The modest American goal of a threefold increase in capacity recognises this fact .' 'The object of the tutorial is to help a student concentrate on his writing skills ' ' The prime goal of the programme was to help develop processes of scientific thinking in children .' 'My goal in this book is to introduce the reader to Web programming applications.' 'The president's economic goal for the country was to overcome the recession.'"}, {'frame': 'Text', 'tfidf': 2.600524939837167, 'lexical_unit': 'tome.n / fanzine.n / epilogue.n / benediction.n / imprecation.n / eulogy.n / autobiography.n / ballad.n / biography.n / chronicle.n / comedy.n / diary.n / drama.n / elegy.n / epic.n / epigram.n / epistle.n / essay.n / exemplum.n / fable.n / festschrift.n / haiku.n / letter.n / limerick.n / lyric.n / memoir.n / monograph.n / mystery.n / novel.n / novelette.n / novella.n / ode.n / poetry.n / poem.n / rhyme.n / saga.n / song.n / sonnet.n / speech.n / tetralogy.n / thriller.n / tragedy.n / trilogy.n / whodunit.n / manual.n / handbook.n / paperback.n / hardback.n / grimoire.n / spellbook.n / lay.n / book.n / magazine.n / account.n / sermon.n / tract.n / screenplay.n / script.n / article.n / obituary.n / volume.n / mag.n / edition.n / treatise.n / report.n / bulletin.n / tractate.n / hagiography.n / journal.n / periodical.n / editorial.n / meditation.n / booklet.n / fiction.n / writings.n / missive.n / newspaper.n / list.n / manuscript.n / literature.n / history.n / brochure.n / material.n / pamphlet.n / issue.n / paper [newspaper].n / paper [article].n / epic.a / publication.n / life.n / record.n / textbook.n', 'definition': "A Text is an entity that contains linguistic, symbolic information on a Topic, created by an Author at the Time_of_creation.  It may be a physical entity that is made of a certain Material etc.  It may be constructed for an Honoree.  'It was a good book.'"}, {'frame': 'Awareness', 'tfidf': 2.4331304875469306, 'lexical_unit': 'aware.a / awareness.n / believe.v / comprehend.v / comprehension.n / conceive.v / conception.n / conscious.a / hunch.n / imagine.v / know.v / knowledge.n / knowledgeable.a / presume.v / presumption.n / reckon.v / supposition.n / suspect.v / suspicion.n / think.v / thought.n / understand.v / understanding.n / ignorance.n / consciousness.n / cognizant.a / unknown.a / idea.n', 'definition': "A Cognizer has a piece of Content in their model of the world.  The Content is not necessarily present due to immediate perception, but usually, rather, due to deduction from perceivables.  In some cases, the deduction of the Content is implicitly based on confidence in sources of information (believe), in some cases based on logic (think), and in other cases the source of the deduction is deprofiled (know).  'Your boss is aware of your commitment.' '' Note that this frame is undergoing some degree of reconsideration.  Many of the targets will be moved to the Opinion frame.  That frame indicates that the Cognizer considers something as true, but the Opinion (compare to Content) is not presupposed to be true; rather it is something that is considered a potential point of difference, as in the following:    'I think that you are awesome.'  In the uses that will remain in the Awareness frame, however, the Content is presupposed.  '' This frame is also distinct from the Certainty frame, in that it does not profile the relationship of the Cognizer to the Content, but rather presupposes it.  In Certainty, the Degree of confidence or certainty is expressible as a separate frame element, as in the following:  'She absolutely knew that he would be there .'  "}, {'frame': 'Condition_symptom_relation', 'tfidf': 2.3696668719942164, 'lexical_unit': 'manifest.v / manifest.n / present.v / symptom.n / symptomatic.a / asymptomatic.a / cause.v / cause.n / associate.v / mimic.v / show.v / see.v / produce.v / link.v / include.v / relate.v / characterize.v / due to.prep / result.v / consequence.n / contribute.v / induce.v / present.a / provoke.v / result.n / lead.v / indicate.v / uncommon.a / common.a / suggest.v / damage.v / occur.v / observe.v / characteristic.n / frequent.a', 'definition': "A Patient has a Medical_condition that can be understood by its Symptoms. This frame has been constructed to list all the ways to speak of relating a Patient, a Medical_condition, and Symptoms, including LUs that are also related to much more general frames like Causation (e.g. cause.v).  ' Neurally mediated syncope is thethe most common cause of syncope.'  'Tietze Syndrome and Costochondritis Tietze syndrome manifested by painful swelling of one or more costochondral articulations'"}, {'frame': 'Have_as_requirement', 'tfidf': 2.3232356813220014, 'lexical_unit': 'demand.v / require.v / take.v / need.v', 'definition': "The obtaining of a Requirement state of affairs or the presence of a Required_entity is profiled as a prerequisite for the obtaining or occurring of a Dependent state-of-affairs.  'This game demands great skill.'  'The war on terror requires little sacrifice for most Americans.'  'Glass  art demands great patience from the student.'"}, {'frame': 'Have_associated', 'tfidf': 2.1354756613401635, 'lexical_unit': 'have.v / have got.v / with.prep', 'definition': "A Topical_entity has properties which are affected by the existence and association of an Entity.  'By the 1920s a characteristic book had black and white photographic illustrations only .'  'Their schools had an improved and more balanced curriculum .'  'With dual citizenship , Stephen now had two presidents he hated .'"}, {'frame': 'Reason', 'tfidf': 2.108437187260303, 'lexical_unit': 'reason.n / why.n / motive.n / motivation.n / basis.n', 'definition': "A volitional  Agent is responding to a State_of_affairs by performing some Action.  'And was that your reason for becoming an actor ?' 'But Giles is the reason that I am here .' 'Oh my reason for including it was Section fifty four A.'  "}, {'frame': 'Bringing', 'tfidf': 2.0107011018258105, 'lexical_unit': 'lug.v / haul.v / wheel.v / cart.v / carry.v / hump.v / fly.v / transport.v / take.v / drive.v / schlep.v / truck.v / tote.v / trundle.v / ferry.v / jet.v / paddle.v / motor.v / row.v / convey.v / bike.v / bring.v / bear.v / fetch.v / get.v / portable.a / mobile.a / transport.n / bus.v / shuttle.v / airlift.v', 'definition': "This frame concerns the movement of a Theme and an Agent and/or Carrier.   The Agent, a person or other sentient entity, controls the shared Path by moving the Theme during the motion. In other words, the Agent has overall motion in directing the motion of the Theme.  The Carrier may be a separate entity, or it may be the Agent's body. The Constant_location may be a subregion of the Agent's body or (a subregion of) a vehicle that the Agent uses.  'Karl carried the books across campus to the library on his head.' 'Karl carried the books across campus to the library in his truck.' 'Karl carried the books across campus to the library by truck.' 'The truck carried the books across campus to the library in specially designed boxes.' The  FEs include Path, Goal, and Source.  Area is an area that contains the motion when the path is understood as irregular.   This frame emphasizes the path of movement as opposed to the FEs Source or Goal as in Filling or Placing. "}, {'frame': 'Cogitation', 'tfidf': 1.9667647530004448, 'lexical_unit': 'brood.v / consider.v / consideration.n / contemplate.v / contemplation.n / deliberate.v / deliberation.n / dwell.v / meditate.v / meditation.n / mull over.v / muse.v / ponder.v / reflect.v / reflection.n / ruminate.v / wonder.v / think.v / give thought.idio / thought.n', 'definition': "A person, the Cognizer, thinks about a Topic over a period of time. What is thought about may be a course of action that the person might take, or something more general.  'The men were silently mulling over the proposition of committing an assassination'"}];
+    </script>
+
+    <script type="text/javascript" src="../word_cloud.js"></script>
+    
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+        }
+
+        .my_container {
+            display: inline-block;
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+            cursor:pointer;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            text-decoration: underline;
+        }
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Conceptual Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            The <strong>conceptual representation</strong> is designed to illustrate the high-level concept of a story snippet.
+            A conceptual representation will usually contains important <strong>nouns</strong>, <strong>verbs</strong>, and <strong>adjectives</strong> in the story.
+            <br/><br/>
+            Below, we present a conceptual representation using a word cloud. The size and the color is related to the importance of the words.
+            In the following task, you will need to <span class="highlight">carefully read the conceptual representation</span>.
+            Two stories will be presented, please select the one that is <span class="highlight">represented by the conceptual representation</span>.
+        </div>
+        <br><hr><br>
+
+
+
+        <!-- Story -->
+        <div>
+            <h3>Read Stories!</h3>
+            Given the above conceptual representation, please find out the closest story!
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-6">
+                    <div  class="story_block" value="story_1">
+                        <h4>Story 1</h4>
+                        <pre>
+That and the wine had meant that Elizabeth didn't have to worry, and that in turn meant that Harriet didn't have to worry either.
+Harriet drew in a deep breath.
+It was a reflex action that would power the deep sigh that followed.
+It was simply one of the bodies' automatic functions, something that required no conscious effort or thought.
+As soon as she had taken the breath, she thought about it.
+It pulled heavily, stretching the bruised muscle on the left side of her chest.
+It was discomfort rather than pain.
+Like the tenderness on the top of her head.
+Like the dull ache and stiffness of her left elbow, where a large yellow and blue bruise was already forming.
+Her ankle, that was a different matter.
+At this moment in time it was uncomfortable, partly due to the fact that it was almost frozen, but it would be painful soon enough as soon as she got up.
+Yet more symptoms of attacks on her, attacks intended to do her serious harm.
+She had no reason to believe that she was pushed down the stairs deliberately but, then again, she had no idea what had caused that plunge.
+The inescapable truth was that it was a direct result of the abduction by Ivan.
+She didn't list Ivan as an attacker somehow.
+She didn't really think that he could have carried out his duties.
+He was as much a victim as she was.
+In some ways more so.
+At the end of the day it was still another attack.
+Another attempt to kill her.
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div  class="story_block" value="story_2">
+                        <h4>Story 2</h4>
+                        <pre>
+"What?
+What do you mean?"
+Lindsay leaned to whisper in his ear.
+Josh continued to sit in the recliner, staring at the TV as if he were miles away.
+"They have him.
+We'll talk later."
+They had him?
+Oh God, what if something happened?
+Sam's stomach clenched.
+Either they'd free Alex, or things would get nasty very fast.
+He couldn't sit and just wait for more news.
+It was going to kill him.
+He wanted to be with Gerome right now, to make sure Alex was safe.
+But Lindsay wasn't simply going to drive him there, and he doubted he could steal a car from the King's garage.
+Besides, even if he managed to steal a car, he had no idea where to go. Shit. Sam got up and started to pace.
+What if something happened to Alex?
+Would he see his man again?
+Until now, he'd hoped Alex was safe because he was valuable.
+But now, if the kidnappers knew they would soon be discovered, they might kill Alex to prevent Gerome and the others from taking him away.
+Lindsay came up to him.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div>
+            <h3>Conceptual Representation</h3>
+            <div class="my_container" id="noun">
+                <h2>Noun</h2>
+            </div>
+            <div class="my_container" id="verb">
+                <h2>Verb</h2>
+            </div>
+            <div class="my_container" id="adj">
+                <h2>Adj</h2>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+
+            <div class="col-6 options" value="1">
+                <span class="box"></span>
+                This word cloud represents story 1.
+            </div>
+            <div class="col-6 options" value="2">
+                <span class="box"></span>
+                This word cloud represents story 2.
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="1">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="1">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>
