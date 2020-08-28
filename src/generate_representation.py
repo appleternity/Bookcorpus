@@ -408,7 +408,8 @@ def generate_html(block=20):
     model = load_tfidf_model(block=block)
     frame_info_dict = get_frame_dictionary()
     frame_dict = {v:frame_info_dict[k] for k, v in model.vocabulary.items()}
-
+    
+    answer_info = []
     for count, sample in enumerate(data[:10]):
         frame_rep = generate_frame_representation(sample, frame_dict)
         template = ori_template.replace("{{frame_representation}}", frame_rep)
@@ -429,6 +430,14 @@ def generate_html(block=20):
         # save
         with open(os.path.join("html", "table", str(block), "{:0>4}.html".format(count)), 'w', encoding='utf-8') as outfile:
             outfile.write(template)
+
+        answer_info.append({
+            "file": f"{count:0>4}.html",
+            "answer": ans
+        })
+    
+    with open(os.path.join("html", "word_cloud", str(block), "answer_info.json"), 'w', encoding='utf-8') as outfile:
+        json.dump(answer_info, outfile, indent=4)
 
 def generate_frame_representation_for_word_cloud(sample, frame_dict):
     frame = sample["y_frame"]
@@ -451,7 +460,7 @@ def generate_frame_representation_for_word_cloud(sample, frame_dict):
 
 def generate_html_wordcloud(block=20):
     # load template
-    with open("word_cloud_template.html", 'r', encoding='utf-8') as infile:
+    with open("word_cloud_template_ver2.html", 'r', encoding='utf-8') as infile:
         ori_template = infile.read()
     
     # load data
@@ -462,6 +471,7 @@ def generate_html_wordcloud(block=20):
     frame_info_dict = get_frame_dictionary()
     frame_dict = {v:frame_info_dict[k] for k, v in model.vocabulary.items()}
 
+    answer_info = []
     for count, sample in enumerate(data[:10]):
         frame_list = generate_frame_representation_for_word_cloud(sample, frame_dict)
         template = ori_template.replace("{{frame_list}}", str(frame_list))
@@ -483,6 +493,13 @@ def generate_html_wordcloud(block=20):
         with open(os.path.join("html", "word_cloud",  str(block), "{:0>4}.html".format(count)), 'w', encoding='utf-8') as outfile:
             outfile.write(template)
 
+        answer_info.append({
+            "file": f"{count:0>4}.html",
+            "answer": ans
+        })
+    
+    with open(os.path.join("html", "word_cloud", str(block), "answer_info.json"), 'w', encoding='utf-8') as outfile:
+        json.dump(answer_info, outfile, indent=4)
 
 def get_story():
     with open("frame_data.json", 'r', encoding='utf-8') as infile:

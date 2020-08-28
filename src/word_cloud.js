@@ -24,6 +24,10 @@ class TimeLock {
         this.submit_btn.text("Submit ("+this.time+")");
     }
 }
+var testing_words;
+var cloud_nouns;
+var cloud_verbs;
+var cloud_adjs;
 
 $(window).ready(function() {
     /****************************************
@@ -48,6 +52,9 @@ $(window).ready(function() {
         // style
         $(".options .box").removeClass("selected_box");
         target.find(".box").addClass("selected_box");
+
+        $(".story_block").removeClass("selected_story_block");
+        $("#story_block_id_"+value).addClass("selected_story_block");
 
         $("#story_answer").val(value);
     });
@@ -125,6 +132,7 @@ $(window).ready(function() {
         }
     }
     console.log(words);
+    testing_words = words;
 
     var nouns = [];
     var verbs = [];
@@ -144,45 +152,46 @@ $(window).ready(function() {
     console.log("Nouns = ", nouns.length);
     console.log("Verbs = ", verbs.length);
     console.log("Adjs = ", adjs.length)
+    var width = $("#noun").width()-5;
+    var word_cloud_size = [width, width];
 
-    var cloud_nouns = d3.layout.cloud()
+    cloud_nouns = d3.layout.cloud()
         .random(new Math.seedrandom('noun'))
-        .size([500, 500])
+        .size(word_cloud_size)
         .words(nouns)
-        // .words(frame_list.map(function(d) {
-        //   return {text: d.frame, size: d.tfidf*10};
-        // }))
         .padding(5)
         .rotate(0)
-        // .rotate(function() { return ~~(Math.random() * 2) * 90; })
         .font("sans-serif")
         .fontSize(function(d) { return d.size; })
         .container(d3.select("#noun"))
-        .on("end", draw);
+        .on("end", draw)
+        .timeInterval(1000);
     cloud_nouns.start();
 
-    var cloud_verbs = d3.layout.cloud()
+    cloud_verbs = d3.layout.cloud()
         .random(new Math.seedrandom('verb'))
-        .size([500, 500])
+        .size(word_cloud_size)
         .words(verbs)
         .padding(5)
         .rotate(0)
         .font("sans-serif")
         .fontSize(function(d) { return d.size; })
         .container(d3.select("#verb"))
-        .on("end", draw);
+        .on("end", draw)
+        .timeInterval(1000);
     cloud_verbs.start();
 
-    var cloud_adjs = d3.layout.cloud()
+    cloud_adjs = d3.layout.cloud()
         .random(new Math.seedrandom('adj'))
-        .size([500, 500])
+        .size(word_cloud_size)
         .words(adjs)
         .padding(5)
         .rotate(0)
         .font("sans-serif")
         .fontSize(function(d) { return d.size; })
         .container(d3.select("#adj"))
-        .on("end", draw);
+        .on("end", draw)
+        .timeInterval(1000);
     cloud_adjs.start();
 
     /**********************************************/
