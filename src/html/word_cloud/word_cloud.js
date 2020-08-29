@@ -153,13 +153,16 @@ $(window).ready(function() {
     console.log("Verbs = ", verbs.length);
     console.log("Adjs = ", adjs.length)
     var width = $("#noun").width()-5;
-    var word_cloud_size = [500, 500];
+    var word_cloud_size = [650, 650];
+    $("canvas").attr("width", word_cloud_size[0]);
+    $("canvas").attr("height", word_cloud_size[1]);
+    var padding_num = 9;
 
     cloud_nouns = d3.layout.cloud()
         .random(new Math.seedrandom('noun'))
         .size(word_cloud_size)
         .words(nouns)
-        .padding(5)
+        .padding(padding_num)
         .rotate(0)
         .font("sans-serif")
         .fontSize(function(d) { return d.size; })
@@ -172,7 +175,7 @@ $(window).ready(function() {
         .random(new Math.seedrandom('verb'))
         .size(word_cloud_size)
         .words(verbs)
-        .padding(5)
+        .padding(padding_num)
         .rotate(0)
         .font("sans-serif")
         .fontSize(function(d) { return d.size; })
@@ -185,7 +188,7 @@ $(window).ready(function() {
         .random(new Math.seedrandom('adj'))
         .size(word_cloud_size)
         .words(adjs)
-        .padding(5)
+        .padding(padding_num)
         .rotate(0)
         .font("sans-serif")
         .fontSize(function(d) { return d.size; })
