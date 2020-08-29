@@ -153,10 +153,10 @@ $(window).ready(function() {
     console.log("Verbs = ", verbs.length);
     console.log("Adjs = ", adjs.length)
     var width = $("#noun").width()-5;
-    var word_cloud_size = [650, 650];
+    var word_cloud_size = [700, 700];
     $("canvas").attr("width", word_cloud_size[0]);
     $("canvas").attr("height", word_cloud_size[1]);
-    var padding_num = 9;
+    var padding_num = 10;
 
     cloud_nouns = d3.layout.cloud()
         .random(new Math.seedrandom('noun'))
