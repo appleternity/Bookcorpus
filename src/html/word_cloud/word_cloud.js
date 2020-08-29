@@ -36,23 +36,14 @@ $(window).ready(function() {
     console.log("Hello");
     var time_lock = new TimeLock(30, "#submit_button");
 
-    $(document).on("click", ".options", function(evt) {
-        console.log("click");
+    $(document).on("click", ".options input[type='radio']", function(evt) {
         
         // get correct story block
         var target = $(evt.target);
-        if (!target.hasClass("options")) {
-            target = $(evt.target).parents(".options");    
-        }
     
         // get value
-        var value = target.attr("value");
-        console.log(value);
-
-        // style
-        $(".options .box").removeClass("selected_box");
-        target.find(".box").addClass("selected_box");
-
+        var value = target.val();
+        
         $(".story_block").removeClass("selected_story_block");
         $("#story_block_id_"+value).addClass("selected_story_block");
 
