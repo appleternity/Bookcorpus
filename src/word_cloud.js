@@ -153,7 +153,7 @@ $(window).ready(function() {
     console.log("Verbs = ", verbs.length);
     console.log("Adjs = ", adjs.length)
     var width = $("#noun").width()-5;
-    var word_cloud_size = [width, width];
+    var word_cloud_size = [500, 500];
 
     cloud_nouns = d3.layout.cloud()
         .random(new Math.seedrandom('noun'))
@@ -165,7 +165,7 @@ $(window).ready(function() {
         .fontSize(function(d) { return d.size; })
         .container(d3.select("#noun"))
         .on("end", draw)
-        .timeInterval(1000);
+        .note("noun");
     cloud_nouns.start();
 
     cloud_verbs = d3.layout.cloud()
@@ -178,7 +178,7 @@ $(window).ready(function() {
         .fontSize(function(d) { return d.size; })
         .container(d3.select("#verb"))
         .on("end", draw)
-        .timeInterval(1000);
+        .note("verb");
     cloud_verbs.start();
 
     cloud_adjs = d3.layout.cloud()
@@ -191,7 +191,7 @@ $(window).ready(function() {
         .fontSize(function(d) { return d.size; })
         .container(d3.select("#adj"))
         .on("end", draw)
-        .timeInterval(1000);
+        .note("adj");
     cloud_adjs.start();
 
     /**********************************************/
@@ -201,7 +201,7 @@ $(window).ready(function() {
             this.container(d3.select("body"));
             console.log("parent is null", this.container());
         }
-        this.container().append("svg")
+        test = this.container().append("svg")
               .attr("width", this.size()[0])
               .attr("height", this.size()[1])
             .append("g")
@@ -219,5 +219,24 @@ $(window).ready(function() {
                 return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
               })
               .text(function(d) { return d.text; });
+        
+        // generate png figure
+        console.log("note in draw function", this.note()());
+        var note = this.note()();
+        var svgString = new XMLSerializer().serializeToString(document.querySelector('#'+note+' svg'));
+        var canvas = document.querySelector("#"+note+" canvas");
+        var ctx = canvas.getContext("2d");
+        var DOMURL = self.URL || self.webkitURL || self;
+        var img = new Image();
+        var svg = new Blob([svgString], {type: "image/svg+xml;charset=utf-8"});
+        var url = DOMURL.createObjectURL(svg);
+        img.onload = function() {
+            ctx.drawImage(img, 0, 0);
+            var png = canvas.toDataURL("image/png");
+            document.querySelector('#'+note+'-png-container').innerHTML = '<img class="img-fluid wordcloud_img" src="'+png+'"/>';
+            DOMURL.revokeObjectURL(png);
+        };
+        img.src = url;
     }
 });
+var test;

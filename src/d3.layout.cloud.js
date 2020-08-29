@@ -25,7 +25,8 @@ module.exports = function() {
       random = Math.random,
       cloud = {},
       canvas = cloudCanvas,
-      container = null;
+      container = null,
+      note = null;
 
   cloud.canvas = function(_) {
     return arguments.length ? (canvas = functor(_), cloud) : canvas;
@@ -164,6 +165,10 @@ module.exports = function() {
 
   cloud.font = function(_) {
     return arguments.length ? (font = functor(_), cloud) : font;
+  };
+  
+  cloud.note = function(_) {
+    return arguments.length ? (note = functor(_), cloud) : note;
   };
 
   cloud.fontStyle = function(_) {

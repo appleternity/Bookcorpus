@@ -460,7 +460,7 @@ def generate_frame_representation_for_word_cloud(sample, frame_dict):
 
 def generate_html_wordcloud(block=20):
     # load template
-    with open("word_cloud_template_ver2.html", 'r', encoding='utf-8') as infile:
+    with open("word_cloud_template_ver3.html", 'r', encoding='utf-8') as infile:
         ori_template = infile.read()
     
     # load data
