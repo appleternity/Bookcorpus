@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Predicament', 'tfidf': 6.09793814850931, 'lexical_unit': 'pickle.n / scrape.n / pinch.n / predicament.n / bind.n / fix.n / jam.n / mess.n / plight.n / misfortune.n / problem.n / trouble.n', 'definition': "An Experiencer is in an undesirable Situation, whose Explanation may also be expressed.  'The insurers ended up in the bind of having to pay 15 years' taxes.'  'He was in a bit of a pickle and make no mistake!'  'What a mess we 're in now!'"}, {'frame': 'Be_in_agreement_on_action', 'tfidf': 4.808153239982733, 'lexical_unit': 'treaty.n / agreement.n / deal.n / accord.n / convention.n / strike.v', 'definition': "Two (or more) people (the Parties, also encodable as Party_1 and Party_2) have an agreement. Both sides are construed as having a commitment to an Obligation--the relationship is understood to be symmetrical or reciprocal. Instead of a specific mention of the Obligation, a Topic expression may be used to indicate the domain covered.  'The US and Russia have an agreement to share early warning data on missile launches.'"}, {'frame': 'Notability', 'tfidf': 4.635235625834265, 'lexical_unit': 'great.a / notable.a', 'definition': "An entity is considered worthy of mention for their ability or influence among some Type of similar entities. The entity need not be well-known or famous, though if it is, it may be stated by its Name only. Their worth may be restricted to a Time or Place.  'Dali is one of the great artists of the 20th century.'"}, {'frame': 'Measure_by_action', 'tfidf': 4.245493821244451, 'lexical_unit': 'splash.n / bite.n / pinch.n', 'definition': "This frame involves words that provide a measure for some undelimited (mass) Entity by referring to an Event that a prototypical quantity (or duration) of the Entity stereotypically participates in.  The Entity is not necessarily a physical entity, but may instead be an undelimited type of event (such as a noise, or an activity).   'He put two splashes of cologne on his face.' 'Sorry--there's only two bites of cake left.' 'Add a pinch of salt.' "}, {'frame': 'Gesture', 'tfidf': 3.924460352153361, 'lexical_unit': 'beckon.v / gesticulate.v / gesture.v / motion.v / nod.v / signal.v / wave.v / signal.n', 'definition': "The words in this frame have to do with non-verbal communication. Topic is not normally expressed with these words. This seems to be related to the absence of a verbal code in cases of gestural communication. Topic can be viewed as a partial characterization of a Message, but such partial characterization is either difficult or irrelevant in the absence of a verbal code.   'I gestured with my hand for him to come over.'"}, {'frame': 'Reveal_secret', 'tfidf': 3.790584144761941, 'lexical_unit': "reveal.v / disclose.v / revelation.n / expose.v / disclosure.n / divulge.v / divulgence.n / confess.v / confession.n / confide.v / spill beans.v / come clean.v / let slip.v / leak.v / tip (someone's) hand.idio / admit.v / come forward.v / fess up.v / let on.v", 'definition': "A Speaker reveals Information that was previously secret to an Addressee. In some cases, the Addressee is expected to keep the Information from other parties. The Information may be damaging to the reputation of the Speaker. Instead of (or in addition to) a Speaker, a Medium may also be mentioned. Likewise, a Topic may be stated instead of Information. Some lexical units in this frame imply that the Addressee has already been confronted with the Information.    'Could it be true that Martin himself was the one who spilled the beans on Pops and Brad's planned wedding? '  "}, {'frame': 'Desiring', 'tfidf': 3.772992812705968, 'lexical_unit': 'want.v / desire.v / desire.n / desirous.a / lust.n / lust.v / hunger.v / hunger.n / hungry.a / thirst.n / thirst.v / thirsty.a / long.v / longing.n / urge.n / aspire.v / wish.n / wish (that).v / eager.a / hanker.v / hankering.n / aspiration.n / crave.v / craving.n / yearn.v / yen.n / yearning.n / wants.n / hope.v / hope.n / covet.v / covetous.a / will.v / wish.v / yen.v / ambition.n / feel like.v / interested.a / in the hope of.prep / raring.a / spoiling.a / dying.a / fancy.v / pine.v / ache.v / desired.a / will.n / itch.v / loath.a / reluctant.a / care.v / in hopes of.prep / impulse.n', 'definition': "An Experiencer desires that an Event occur.  (Note that commonly a resultant state of the Event will stand in for the Event.)  In some cases, the Experiencer is an active participant in the Event, and in such cases the Event itself is often not mentioned, but rather some Focal_participant which is subordinately involved in the Event. ''Generally, the use of a word in this frame implies that the specific Event has not yet happened, but that the Experiencer believes that they would be happier if it did.  Sometimes the Time_of_event, Purpose_of_event, or the Location_of_event are mentioned without the explicit mention of the Event. 'I only wanted one piece of candy.' 'The company was eager for him to leave as soon as possible.' 'Susan really wishes that you 'd listen to her.'"}, {'frame': 'Subjective_influence', 'tfidf': 3.5648791674793565, 'lexical_unit': 'impact.v / influential.a / inspire.v / influence.v / influence.n / inspiration.n / effect.n / impact.n / drive.v / motivate.v / push.v / galvanize.v / coax.v / entice.v / spur.v / tempt.v / discourage.v / encourage.v / goad.v / stimulate.v', 'definition': "An Agent, Situation or Entity has an influence on a Cognizer. The influence may be general; or it may be manifested in the Cognizer's engaging in an Action as a consequence of the influence; or the Cognizer may be influenced in how they carry out a Behavior that they are engaged in already. Alternatively, a Product may be specified whose production or design was influenced by the Cognizer's experience of the  Situation or Entity. ''  The  mediation of the Cognizer's psyche distinguishes this frame from the Objective_influence frame, where dependent events occur automatically given the appropriate kind of influencing force. In this frame, by contrast, a Cognizer may perceive an influence yet not respond to it in any way.  ' These works had a profound effect and influenced her in the creation of a successful series capturing this sun-drenched region.' 'I'm sure if I asked Mattel what inspired this car I would be told it's an original design, and not supposed to represent any actual car.'     "}, {'frame': 'Attaching', 'tfidf': 3.505401288904795, 'lexical_unit': 'fasten.v / attach.v / tie.v / tack.v / glue.v / staple.v / tape.v / pin.v / nail.v / affix.v / chain.v / paste.v / sew.v / stick.v / lash.v / bond.v / cinch.v / secure.v / fuse.v / shackle.v / bind.v / detach.v / manacle.v / handcuff.v / fetter.v / rivet.v / tether.v / cement.v / gum.v / fix.v / weld.v / solder.v / agglutinate.v / moor.v / anchor.v / attachment [item].n / hitch.v / tying.n / untie.v / hook.v / plaster.v / attachment [act].n / strap.v / adhere.v / append.v / concatenate.v / tack on.v / yoke.v / truss.v / link.v / connect.v / join.v / mount.v / wire.v / bracket.v', 'definition': "The Attaching frame covers two situations: a scene in which somebody causes one thing to be physically connected to something else; or a scene in which somebody causes two things to be connected to each other.  In the first, the frame includes an Agent who attaches an Item to a Goal by manipulating a Connector, creating an asymmetric relationship between the Item and the Goal.  In the second, the Agent attaches two Items to each other, where each serves as a Goal for the other, creating a symmetric relationship between the two Items. In both cases, the  Connector remains to bind the two entities (either Item and Goal, or two Items), without creating a new entity.  'The robber tied Harry to the chair.'  'Make sure you bind his wrists as tightly as possible.'"}, {'frame': 'Hedging', 'tfidf': 2.9637233510583694, 'lexical_unit': 'a bit.n / sort of.adv / like.adv / kind of.adv / on the side.a / something.n / in a way.adv / rather.adv', 'definition': 'When words of this frame are used as hedge markers, they signal that the speaker of the sentence wishes to be careful about asserting some Hedged_content.  Use of a hedge marker may mean that the speaker is uncertain of how factual of the Hedged_content is, or uncertain of whether they\'re expressing the idea behind Hedged_content well, or it may mean that the Hedged_content is socially undesirable or awkward in the conversational context.   \'The president is a bit of an idiot when it comes to foreign policy .\' \'I \'m sorry , but he is on the heavy side , you understand .\' \'I thought, like, maybe you would know .\' \'My father was something of a dilettante .\' \'He rather doubts you\'ll be able to convince your mom. \' \'\' Because these words serve to indicate hesitancy, often for purposes of increased politeness, speakers may use several encodings of hedging simultaneously to iconically indicate the degree of politeness or hesitancy that they wish to express:  \'Your story, is, like, kind of a bit on the short side .\' \'\' There is also an ironic or sarcastic use of LUs in this frame, as in the following:  \'When a standard vaccuum can\'t even pick up the clods, you know you\'ve kinda got a problem.\' \'\' Words expressing small quantities or degrees (e.g., "a tad", "a little", etc.) can be used in a very similar function to words of this frame.  However, these words do not simply signify hesitation, but merely frequently imply it when used to modify a predication.  Such words can only be used on their on or with a noun to signify a small quantity or number ("a little whiskey", see Proportional_quantity), or with an adjective to indicate that the quality described by the adjective is close to average ("a mite stupid", "somewhat confused" see Degree).  Words of those frames may be nested within noun phrases or in other positions where content is not asserted but rather presupposed.  Words that belong to the Hedging frame, by contrast, either take a noun complement and indicate hesitancy or imprecision concerning the category ("something of a klutz"), or modify an entire proposition to indicate imprecision of the proposition ("I, like, waved it around").  In both cases, the Hedged_content must occur in the at-issue focus of a proposition, the part of a statement that the speaker is, so to speak, on record as asserting.'}, {'frame': 'Placing', 'tfidf': 2.9452789090479383, 'lexical_unit': 'deposit.v / embed.v / hang.v / immerse.v / implant.v / inject.v / insert.v / insertion.n / lay.v / lean.v / load.v / lodge.v / pack.v / park.v / pile.v / place.v / placement.n / plant.v / position.v / rest.v / set.v / situate.v / smear.v / stand.v / stash.v / stow.v / stuff.v / tuck.v / wrap.v / bag.v / billet.v / bin.v / bottle.v / archive.v / box.v / cage.v / crate.v / file.v / garage.v / pocket.v / shelve.v / stable.v / perch.v / sit.v / daub.v / drizzle.v / dab.v / drape.v / brush.v / dust.v / heap.v / jam.v / rub.v / cram.v / shower.v / pot.v / sheathe.v / warehouse.v / shoulder.v / stick.v / bestow.v / put.v / package.v / plunge.v / arrange.v / emplace.v / enclose.v / implanted.a / gag.v', 'definition': "Generally without overall (translational) motion,  an Agent places a Theme at a location, the Goal, which is profiled.  In this frame, the Theme is under the control of the Agent/Cause at the time of its arrival at the Goal.  'David placed his briefcase on the floor.'  This frame differs from Filling in that it focuses on the Theme rather than the effect on the Goal entity.  It differs from Removing in focusing on the Goal rather than the Source of motion for the Theme."}, {'frame': 'First_experience', 'tfidf': 2.8583235667039206, 'lexical_unit': 'first.adv', 'definition': "An implicit experiencer has an Experience for the first time. Some LU's may specifically imply an agentive activity.   'In Italy the term was first used by the Venetians in 1546'  'This time, the comet was first seen on the night of 19th October, 1805 by European observers Jean Louis Pons, Johann Sigismund Huth, and Alexis Bouvard'"}, {'frame': 'Contacting', 'tfidf': 2.7940097695090698, 'lexical_unit': 'reach.v / contact.v / contact.n / write in.v / write.v / e-mail.v / call.v / call up.v / phone.v / phone in.v / ring.v / ring up.v / get in touch.v / telephone.v / call.n / mail.v / telex.v / fax.v / cable.v / page.v / radio.v / telegraph.v / call in.v / get through.v', 'definition': "A Communicator (whose Location may be indicated) directs a Communication to an Addressee at a particular Address.  Note that no actual successful communicative act is implied, only the successful completion of acts which would establish the communication.  (In other words, Mari can e-mail Jon without Jon ever reading it.) NB:  The Address or Location_of_communicator may be a virtual address, such as an e-mail or telephone number.'Disgruntled voters phoned Congressman Neil at his Washington residence with complaints about the recent increases in corporate welfare.''She tried to call from the payphone down the street.' "}, {'frame': 'Compliance', 'tfidf': 2.7732653654100963, 'lexical_unit': 'adhere.v / comply.v / observe.v / adherence.n / compliance.n / follow.v / observance.n / break.v / violate.v / contravene.v / breach.v / violation.n / contravention.n / breach.n / flout.v / conform.v / obey.v / compliant.a / transgress.v / transgression.n / lawless.a / contrary.a / conformity.n / keep.v / honor.v / abide (by).v / obedient.a / observant.a / play by the rules.v / circumvent.v / noncompliance.n / (in/out of) line.n / disobey.v / in accordance.a / by-pass.v', 'definition': "This frame concerns Acts and State_of_Affairs for which Protagonists are responsible and which either follow or violate some set of rules  or Norms. '' 'A lot of people suspect that blocking savers' access to their money violates the new constitution's explicit ban on compulsory loans to the government.'  'Not that by adhering to the subject-before-predicate principle, the translator of the above extract has had to ignore the principle of end-weight.'"}, {'frame': 'Importance', 'tfidf': 2.726374465795822, 'lexical_unit': 'crucial.a / critical.a / key.a / decisive.a / pivotal.a / important.a / significant.a / importance.n / significance.n / import.n / major.a / instrumental.a / vital.a / considerable.a / fundamental.a / main.a / serious.a / seriously.adv / acute.a / landmark.n / epic.a / count.v / priority.n', 'definition': "A Factor affects the outcome of an Undertaking, which  can be a goal-oriented activity or the maintenance of a desirable state, the work in a Field, or something portrayed as affecting an Interested_party. A Reason may be given for the importance of the Factor. The Degree of importance may also be specified.  'Temperature is the most critical factor in successful storage.' ' Timing will be critical.' 'Heathcliff is more important to me than myself . ' ' 1992 was of great importance to the business community. ' "}, {'frame': 'Communication_response', 'tfidf': 2.3283979427395565, 'lexical_unit': 'answer.n / answer.v / comeback.n / counter.v / rejoin.v / rejoinder.n / reply.n / reply.v / respond.v / response.n / retort.n / retort.v / riposte.n / come back.v / reaction.n / acknowledge.v', 'definition': 'This frame deals with a Speaker communicating a reply or response, a Message, to some prior communication or action, the Trigger.  \'\' \'The landlord has not yet replied in writing to the tenant objecting the proposed alterations.DNI\'  \'"No, I do not agree with you," responded another officer to the CEO. DNI\''}, {'frame': 'Assistance', 'tfidf': 2.2947266883128408, 'lexical_unit': 'assist.v / help.v / abet.v / succor.v / helpful.a / assistance.n / aid.v / aid [act].n / help out.v / serve.v / cater.v / help.n / aid [entity].n / aid and abet.v', 'definition': "A Helper benefits a Benefited_party by enabling the culmination of a Goal that the Benefited_party has.  A Focal_entity that is involved in reaching the Goal may stand in for it.  This Frame has unique Frame-to-Frame Relations: it inherits from and uses the Intentionally_act frame. This is atypical of FrameNet's frame relations.  'Will you help the Government find your brother?' 'Maybe Stephen should assist him with the last manuscript.' 'They helped me psychologically to overcome the physical loss I had suffered.' 'You have helped him tremendously by showing him  how to stand up for himself and by being his friend.' 'By bringing assistance to his troops wherever they were in trouble he aided them greatly.'"}, {'frame': 'Make_noise', 'tfidf': 2.15739236847637, 'lexical_unit': 'babble.v / bark.v / bellow.v / blare.v / blast.v / bleat.v / bray.v / burble.v / cackle.v / caterwaul.v / caw.v / chatter.v / cheep.v / chirp.v / chuckle.v / clang.v / clash.v / clatter.v / click.v / coo.v / cough.v / creak.v / croak.v / croon.v / crunch.v / drone.v / fizzle.v / gasp.v / giggle.v / gobble.v / growl.v / grunt.v / guffaw.v / gurgle.v / hawk.v / hiss.v / hoot.v / howl.v / hum.v / keen.v / mew.v / mewl.v / moan.v / moo.v / neigh.v / patter.v / peal.v / peep.v / plash.v / plonk.v / plop.v / purr.v / quack.v / rasp.v / rattle.v / roar.v / rustle.v / scrape.v / screech.v / scrunch.v / sizzle.v / snarl.v / snicker.v / snigger.v / snore.v / snort.v / sob.v / sough.v / squawk.v / squeak.v / squeal.v / thump.v / thunder.v / tinkle.v / titter.v / toll.v / trumpet.v / tweet.v / twitter.v / ululate.v / wail.v / whimper.v / whine.v / whinny.v / whisper.v / whistle.v / yammer.v / yap.v / yelp.v / yodel.v / yowl.v / crepitate.v / laugh.v / clack.v / sploosh.v / scream.v / ring.v / beep.v / hem and haw.v / boom.v / cry.v / sound.v / honk.v / play.v / toot.v', 'definition': "A physical entity, construed as a point-Sound_source, emits a Sound.  This includes animals and people making noise with their vocal tracts. Sometimes the sound itself is referred to with a nominal expression, in which case it is called the Sound. Manner expressions may also be relevant in this frame, if they describe properties of the sound as such.  A path-schema can be overlaid on the simple noise-making scene, adding a Location_of_source and/or a Path.   This frame does not cover scenarios where objects create sound by coming into forceful contact with one another or rubbing against each other. Such scenarios are covered by the Impact and Friction frames. The current frame also does not cover cases where an animate Agent or a natural Force or Cause causes a single Source or several Sources (moving or rubbing against each other) to make noise. Such scenarios are  covered by the Cause_to_make_noise, Cause_impact and Cause_friction frames (the latter of which is not yet existent). Cases where the major emphasis of the portrayed scene is on the motion of a Theme, with sound emission only an accompaniment, are covered by the Motion_noise frame. Likewise, cases where the Sound itself is portrayed as moving through space are not covered in this frame but rather in Sound_movement. Finally, all nouns used to evoke Sounds have been placed in the Sounds frame. We have done this because these nouns do  not denote sound emission/production events but only the Sound itself (*The siren's blare occurred right on time)."}, {'frame': 'Expected_location_of_person', 'tfidf': 2.1148264804535857, 'lexical_unit': 'in.prep / out.prep / home.n', 'definition': "A Person usually resides or works in a Location.     'Is Mr. Adams in today? DNI'"}, {'frame': 'Facial_expression', 'tfidf': 1.7742530997100456, 'lexical_unit': 'smile.n / grimace.n / grin.n / frown.n / expression.n / smirk.n / rictus.n / look.n / scowl.n / face.n / snarl.n / sneer.n / pout.n', 'definition': "The words in this frame refer to facial Expressions and the Possessors of those Expressions.  'His lackluster smile revealed his disappointment.'"}, {'frame': 'Experiencer_obj', 'tfidf': 1.7646162083512724, 'lexical_unit': 'aggrieve.v / alarm.v / amaze.v / anger.v / annoy.v / antagonize.v / astonish.v / astound.v / baffle.v / bewilder.v / bewitch.v / calm.v / captivate.v / charm.v / cheer.v / comfort.v / conciliate.v / confuse.v / console.v / dazzle.v / delight.v / depress.v / disappoint.v / discomfit.v / disconcert.v / discourage.v / dishearten.v / displease.v / distress.v / disturb.v / embarrass.v / enchant.v / enrage.v / entertain.v / enthrall.v / exasperate.v / excite.v / fascinate.v / frighten.v / frustrate.v / gall.v / gladden.v / gratify.v / hearten.v / humiliate.v / impress.v / infuriate.v / irk.v / irritate.v / mollify.v / pacify.v / perplex.v / placate.v / please.v / puzzle.v / rattle.v / reassure.v / rile.v / sadden.v / satisfy.v / scare.v / shake.v / shame.v / shock.v / soothe.v / spook.v / startle.v / stimulate.v / stun.v / surprise.v / terrify.v / thrill.v / unnerve.v / unsettle.v / upset.v / bore.v / wow.v / vex.v / vexation.n / shocker.n / sicken.v / stupefy.v / tickle.v / trouble.v / sting.v / solace.v / nettle.v / abash.v / aggravate.v / exhilarate.v / faze.v / embitter.v / flabbergast.v / floor.v / rankle.v / nonplus.v / mortify.v / madden.v / incense.v / petrify.v / revolt.v / sober.v / repel.v / torment.v / beguile.v / traumatize.v / interest.v / intrigue.v / offend.v / intimidate.v / mystify.v / perturb.v / stir.v / fluster.v / flummox.v / outrage.v / surprise.n / boggle.v / trouble.n / fulfill.v / crush.v / devastate.v / arouse.v / grate.v / appeal.v / worry.v / harass.v / engage.v / stagger.v / destroy.v / demolish.v / agonize.v / encourage.v / wound.v / kill.v / let down.v', 'definition': "Some phenomenon (the Stimulus) provokes a particular emotion in an Experiencer.  'Nightmare on Elm Street scared me silly.'"}, {'frame': 'Kinship', 'tfidf': 1.7518564097136549, 'lexical_unit': 'father.n / mother.n / son.n / daughter.n / uncle.n / aunt.n / auntie.n / dad.n / daddy.n / grandson.n / granddaughter.n / niece.n / nephew.n / brother.n / sister.n / grandfather.n / grandmother.n / mother-in-law.n / father-in-law.n / son-in-law.n / daughter-in-law.n / stepson.n / stepdaughter.n / stepmother.n / stepfather.n / stepbrother.n / stepsister.n / brother-in-law.n / sister-in-law.n / cousin.n / mom.n / great-grandson.n / great-granddaughter.n / parent.n / child.n / in-law.n / family.n / sibling.n / ancestor.n / descendant.n / forebear.n / forefather.n / kinsman.n / kinsfolk.n / kinswoman.n / relative.n / kin.n / maternal.a / paternal.a / parental.a / filial.a / ancestral.a / scion.n / kid.n / offspring.n / clan.n / people.n / name.n / kinship.n', 'definition': "This frame contains words that denote Kinship relations. In annotating the directional uses of these words, we use the standard terms from anthropology, Ego and Alter.  'Matilde is Gilberto's cousin once removed' Compare to: Appellations."}, {'frame': 'Request', 'tfidf': 1.7132979549900336, 'lexical_unit': 'appeal.n / ask.v / beg.v / beseech.v / command.n / command.v / demand.n / demand.v / entreat.v / entreaty.n / implore.v / order.n / order.v / petition.n / plea.n / plead.v / request.n / request.v / summon.v / tell.v / urge.v / call.v / invite.v / call.n / instruct.v / invitation.n', 'definition': "In this frame a Speaker asks an Addressee for something, or to carry out some action.  'The customer demanded a refund.' 'I begged my parents to let me stay up late.' "}, {'frame': 'Intentionally_act', 'tfidf': 1.6667911420073651, 'lexical_unit': 'action.n / do.v / step.n / act.v / doing.n / activity.n / perform.v / carry out.v / conduct.v / execute.v / engage.v / measures.n / act.n / move.n / actor.n / agent.n / deed.n', 'definition': "This is an abstract frame for acts performed by sentient beings. It exists mostly for FE inheritance.  'I carried out the deed easily .'"}, {'frame': 'Taking_time', 'tfidf': 1.4730962202577018, 'lexical_unit': 'take.v / in.prep / fast.a / quick.a / rapid.a / swift.a / speedy.a / slowly.adv / slow.a / gradually.adv / quickly.adv', 'definition': "An Activity takes some Time_length to complete.  If an Agent is involved they may stand in metonymically for the Activity. For some LUs (e.g., fast, speedy) the Degree to which the Activity is conceived of as taking less time than usual can be expressed.  'How long will this take?'  'The ride was speedy and often bumpy.'  'Under high-pressure situations, police officers are very fast at reacting to danger.'"}, {'frame': 'Have_associated', 'tfidf': 1.4236504408934425, 'lexical_unit': 'have.v / have got.v / with.prep', 'definition': "A Topical_entity has properties which are affected by the existence and association of an Entity.  'By the 1920s a characteristic book had black and white photographic illustrations only .'  'Their schools had an improved and more balanced curriculum .'  'With dual citizenship , Stephen now had two presidents he hated .'"}, {'frame': 'Statement', 'tfidf': 1.2730258236911969, 'lexical_unit': 'add.v / address.v / admission.n / allegation.n / allege.v / announce.v / announcement.n / assert.v / assertion.n / attest.v / aver.v / avow.v / caution.v / claim.n / claim.v / comment.n / comment.v / concession.n / conjecture.n / conjecture.v / contend.v / contention.n / declaration.n / declare.v / denial.n / exclaim.v / exclamation.n / explain.v / gloat.v / insist.v / maintain.v / mention.n / mention.v / preach.v / proclaim.v / proclamation.n / profess.v / pronouncement.n / proposal.n / propose.v / proposition.n / reaffirm.v / recount.v / reiterate.v / relate.v / remark.n / remark.v / report.n / report.v / say.v / speak.v / state.v / statement.n / suggest.v / talk.v / write.v / insistence.n / explanation.n / venture.v / hazard.v / pout.v / smirk.v / confirm.v / avowal.n / acknowledge.v / acknowledgment.n / note.v / observe.v / refute.v / describe.v / promulgation.n / message.n / detail.v / tell.v / allow.v / caution.n / be like.v / challenge.v / pronounce.v', 'definition': "This frame contains verbs and nouns that communicate the act of a Speaker to address a Message to some Addressee using language. Instead of (or in addition to) a Speaker, a Medium may also be mentioned. Likewise, a Topic may be stated instead of a Message. A number of the words can be used performatively, such as declare and insist.  'I now declare you members of this Society.'   'She said that I would be late .'  'The announcement about raffle winners came across the loudspeaker.' "}, {'frame': 'Causation', 'tfidf': 1.265675933534907, 'lexical_unit': 'cause.v / cause.n / make.v / lead (to).v / reason.n / send.v / bring about.v / precipitate.v / causative.a / render.v / bring.v / bring on.v / induce.v / wreak.v / put.v / since.c / because.c / because of.prep / raise.v / result (in).v / mean.v / result.n / leave.v / for.c / see.v / force.v / give rise.v / so.c / due to.prep / responsible.a / consequence.n / resulting.a / consequent.a / consequential.a / resultant.a / dictate.v / motivate.v / sway.v / legacy.n', 'definition': "A Cause causes an Effect.  Alternatively, an Actor, a participant of a (implicit) Cause, may stand in for the Cause.  The entity Affected by the Causation may stand in for the overall Effect situation or event.   '' Those frames that inherit the Causation frame have as their background the idea that some event is responsible for the occurrence of another event (or state).  In the  inheriting frame, typically an FE like Agent or Causer is proposed in the place of the Actor, but in the daughter frames, as in this frame, the Actor is semantically dependent on the idea of a Cause (an event or state-of-affairs) that the Actor is a participant in.  Similarly, most inheriting frames profile only the Affected entity, not the full Effect situation which is often incorporated into the frame or the particular target.  So, for example, paint.v in the Filling frame entails the final situation of something (the Affected) being covered in paint (the Effect).  'He made me angry.'  'If such a small earthquake causes problems, just imagine a big one!'  'The strange mutations of the rumor mill in the end led to it being said that he was actually a woman.'  'You 've made it impossible to continue!'  'The ending left me feeling kinda empty.'"}, {'frame': 'Concessive', 'tfidf': 1.243420296926704, 'lexical_unit': 'despite.prep / in spite of.prep / though.scon / although.scon / while.scon / if.scon / much as.scon', 'definition': "A speaker marks a Conceded_state_of_affairs as being or implying a contradiction to the Main_assertion.  Some LUs specify the Main_assertion, others the Conceded_state_of_affairs, as referring to the preceding discourse (i.e. DNI), while yet others are conjunctions joining the two.  'Although she had some trouble , she was able to finish about two hours early .' 'Nevertheless , we did win . DNI ' 'I wanted to come , but I did n't remember where the party was . '"}, {'frame': 'Non-gradable_proximity', 'tfidf': 1.2172147303411003, 'lexical_unit': 'by.prep / beside.prep / under.prep / underneath.prep / behind.prep / in front (of).prep / in back (of).prep / ahead.adv / along.prep / neighboring.a / over.prep / opposite.a / left [landmark-based].n / right [landmark-based].n / left [viewpoint-based].n / right [viewpoint-based].n / beneath.prep / opposite.prep / starboard.n / port.n / on.prep', 'definition': 'A Figure is characterized as near the Ground, according to some contextually given scale. Many lexical units of this frame additionally specify in which direction relative to the Ground one can find the Figure (under.prep, north.adv), or directions from the Ground from which the Figure is excluded (e.g. beside.prep excludes the vertical and front/back axes); for specifications of direction, see the semantic types attached to the lexcial units.  Members of this frame that make reference to an absolute, earth-based grid (e.g. north, south, etc.) imply a geographic scale of proximity, and so are frequently not paraphrasable as "near".   \'She put her shoes under the table .\' \'Michael Jackson was right next to me !\' \'Down by his left foot was a little grenade .\' \'\' The subset of LUs that inherently pick out a particular direction (e.g. north, behind) may occur with a specification of a Distance in that direction from a Ground at which the Figure may be found, while LUs that pick out two or more directions of relevance from a Ground (e.g. beside) can only characterize the general accessibility of the Figure relative to the Ground. \'30 miles north\' \'right beside my leg\'  This frame is intended to cover a limited set of productive metaphor cases in which allegiance is expressed as a Devotee standing to one side or behind an Allegiance_holder:  \'I stand beside what I said to him .\' \'They will stand right next to me in the fight against homophobia .\'  This frame is not intended for metaphorical cases of quantity specification:  \'There was above 500 kg of cocaine in the shipment .\'  This frame does not cover the multitude of other metaphorical cases like "next to impossible", "under consideration", "under his rule", "beside himself", "beside the point". '}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"Isle Of The Ape"</span>.</h5>
+                        <br/>
+                        <pre>
+He turned to face Bucky and saw the great ape was slowing down to a walk.
+The ape lifted his left arm and punched the roof of the manor, caving in a section and sharing without words just how unhappy he was.
+Carson reached up and drew his twin swords, both blades long enough a sane warrior would never even consider dual wielding.
+With nothing but animals to fight, Carson found having two blades a benefit, not a curse.
+Against Bucky and his two lady-apes, Carson's swords felt like toothpicks.
+As he turned, he saw the tower set in the middle of the castle's western wall.
+It was square, like the others, and had a door at the base.
+Bucky could break the tower apart, given time, but it might be time that gave Carson another option.
+Or better yet, another way out.
+Without warning, the castaway leapt to the side and ran the five steps he needed to reach the tower door.
+He burst through the aging wood shoulder first and then had to pick himself up from the floor.
+The inside of the tower was simple: a wooden bench and stone steps that went up around the wall.
+There was a landing halfway up next to a narrow window with bars in it.
+The last rays of the setting sun shone through it, adding a reddish tint to the tower.
+Bucky's roar preceded the ape's fists into the ground just outside the tower.
+Large black fingers curled around the door frame and yanked on it, tearing the wood and causing the aged mortar holding the stones together to crack and give way.
+The entrance was being enlarged faster than Carson had imagined.
+He looked at his swords and considered hacking at Bucky's fingers.
+That would buy him a little time and drive the ape into an even greater rage.
+He sheathed his blades and ran up the staircase instead.
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"Life As A New Hire Deadly Secrets Volume 1"</span>.</h5>
+                        <br/>
+                        <pre>
+If I wanted to pin her legs, she liked it if I wrestled with her.
+I keep pushing myself to keep up with her.
+When someone screamed in pain, my gut instinct was to succor them.
+For Rhada, it was a signal for her wanting more.
+I'd really helped her through some serious frustrations, and a great deal of sweat, when the phone rang.
+Rhada was facing me, bouncing in my lap with her ball gag back in (she liked to bite during climax).
+"Hello?"
+I said.
+"Hey Cael Nyilas, it is Odette.
+Whatchya doing tonight?"
+my waitress bed-buddy asked.
+"I'm bored out of my skull, doing something worthless," I answered.
+"Do you want to come over, or do we want to meet at your place tonight?"
+"Ah - um - I live at home with my parents," she confessed.
+"Come on over.
+I need to clean up a mess first," I told her.
+"See you soon."
+With that, I hung up and looked into Rhada's eyes.
+"You really are a worthless mess."
+She sobbed.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="37">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="2">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

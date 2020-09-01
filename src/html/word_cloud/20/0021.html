@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Abandonment', 'tfidf': 10.93915828247798, 'lexical_unit': 'abandon.v / leave.v / abandonment.n / abandoned.a / forget.v', 'definition': "An Agent leaves behind a Theme effectively rendering it no longer within their control or of the normal security as one's property.   'Carolyn abandoned her car and jumped on a red double decker bus.'  'Perhaps he left the key in the ignition'  'Abandonment of a child is considered to be a serious crime in many jurisdictions.'  There are also metaphorically used examples:  'She left her old ways behind .'"}, {'frame': 'Social_interaction_evaluation', 'tfidf': 4.3797249580014865, 'lexical_unit': 'inconsiderate.a / kind.a / considerate.a / mean.a / insensitive.a / thoughtless.a / thoughtful.a / cruel.a / sweet.a / rude.a / impolite.a / ill-mannered.a / churlish.a / discourteous.a / unkind.a / courteous.a / polite.a / impudent.a / respectful.a / disrespectful.a / boorish.a / compassionate.a / nice.a / friendly.a / unfriendly.a / amiable.a / sociable.a / cordial.a / genial.a / gracious.a / ungracious.a / civil.a / uncivil.a / impertinent.a / tactful.a / diplomatic.a / barbaric.a / spiteful.a / pleasant.a / horrible.a / good.a / good-natured.a / good-humored.a / warm.a / smart.a / mature.a / maturity.n / cruelty.n / thoughtfulness.n / rudeness.n / compassion.n / atrocious.a', 'definition': "In this frame an Evaluee is judged by a (usually implicit) Judge to be of a certain character based on her or his Behavior towards other human beings; a specific Affected_party may be overtly mentioned along with the Degree to which the Evaluee behaves appropriately towards others. TheBehavior alone may be mentioned with the understanding that these behaviors characterize a property of the unmentioned Evaluee. The Evaluee's Behavior may be in the context of a Topic.  ' It was nice of you to send a card. '   ' Jim was thoughtful to email the directions.'   ' For Martha to smoke in the car was extremely inconsiderate.'   ' It was cruel that he continued to call her.'   ' Mary was cruel to her friends.'   ' Samson was a thoughtless person.'   'Mrs. Robinson was always considerate of her students.'   ' The press was always kind about Madonna.'   ' Lee was nice about my car accident.'   ' I appreciated his kind offer of the car.'"}, {'frame': 'Warning', 'tfidf': 4.101741885759434, 'lexical_unit': 'warn.v / warning.n / alert.n / forewarn.v', 'definition': "A Speaker warns an Addressee by giving a Message that describes an undesirable situation that may affect the Addressee. The warning may alternatively be described as about Topic pertaining to the undesirable situation, or issued via a specific Medium.  'Jackson warned me that the weather could change quickly, but I guess I didn't really believe him.'  'We alerted officials about the possibility of containment failure as soon as we realized it could happen.'  'They issued the warning to only those with the highest security clearence. DNI'"}, {'frame': 'Linguistic_meaning', 'tfidf': 3.893251087919575, 'lexical_unit': 'denote.v / denotation.n / ambiguous.a / polysemous.a / monosemous.a / vague.a / designate.v / intension.n / extension.n / meaning.n / mean.v / referential.a / non-referential.a / sense.n / reading.n', 'definition': 'A linguistic Form has a particular Meaning, possibly restricted to a particular Context.  Some linguistic Forms, nouns and nominal expressions, also can refer to an object in the real or an imagined world, a Referent.   \'"Unicorn" denotes a mythological horse with a horn on its head.\'  \'In art, the word "oeuvre" means "the collected works of an artist."\''}, {'frame': 'Body_description_holistic', 'tfidf': 3.6484775017002598, 'lexical_unit': 'lanky.a / chubby.a / flabby.a / corpulent.a / obese.a / portly.a / svelte.a / stocky.a / dumpy.a / gaunt.a / skinny.a / beefy.a / short.a / brawny.a / paunchy.a / fat.a / thin.a / spindly.a / slim.a / slender.a / puny.a / scrawny.a / heavy-set.a / stout.a / stubby.a / tall.a / muscular.a / lean.a / angular.a / bony.a / rangy.a / squat.a / thickset.a / lithe.a / plump.a / pudgy.a / wiry.a / hefty.a / medium-build.a / big-boned.a / male.a / female.a', 'definition': "This frame covers descriptions of an entire human body, viewed as a gestalt (as opposed to descriptions based on salient body parts).  The Frame Elements are Individual and Figure.    'Chuck is muscular.'  'Chuck has a muscular body.' "}, {'frame': 'Judgment', 'tfidf': 3.5872155866204607, 'lexical_unit': 'admiration.n / admire.v / admiring.a / applaud.v / appreciate.v / appreciation.n / approbation.n / approving.a / blame.n / blame.v / contempt.n / contemptuous.a / critical.a / damnation.n / deplore.v / derisive.a / disapproval.n / disapprove.v / disapproving.a / disdain.n / disdain.v / disdainful.a / disrespect.n / esteem.n / esteem.v / fault.n / fault.v / mock.v / reproachful.a / scorn.n / scorn.v / scornful.a / stigma.n / stigmatize.v / stricture.n / uncritical.a / exalt.v / prize.v / boo.v / revere.v / reverence.n / mockery.n / exaltation.n / accolade.n / vilification.n / value.v / respect.n / respect.v / deify.v / reproach.n / reprehensible.a / appreciative.a / set store.v / accuse.v / approve.v', 'definition': "A Cognizer makes a judgment about an Evaluee. The judgment may be positive (e.g. respect) or negative (e.g. condemn), and this information is recorded in the semantic types Positive and Negative on the Lexical Units of this frame. There may be a specific Reason for the Cognizer's judgment, or there may be a capacity or Role in which the Evaluee is judged.  '' This frame is distinct from the Judgment_communication frame in that this frame does not involve the Cognizer communicating his or her judgment to an Addressee.   'JUDGMENT:  She admired Einstein for his character.' 'JUDGMENT_COMMUNICATION:  She accused Einstein of collusion.' '' Currently, however, some lexical units and annotation for both remain in this frame."}, {'frame': 'Cause_to_perceive', 'tfidf': 3.2296105375050796, 'lexical_unit': 'show.v / demonstrate.v / present.v / point.v / depict.v / represent.v / exhibit.v / present[medical].v / bring to attention.v', 'definition': 'An Agent, Actor, Entity, or Medium causes a Phenomenon to be perceived by a Perceiver.  With an Actor, Entity, or Medium, the Perceiver is usually unspecified.   \'Aileen showed Rob the book.\' \'He exhibited great interest in the project.\' \'The second scene depicts  Dad  holding the ball for a place kick.\' \'The economy is showing signs of growth.\'  NB: This may change in the future, but as of now this frame subsumes three closely-related cause/perceiver alternations:  a.) perception of a specific Perceiver caused by an Agent, b.) perception of some implicit audience caused, possibly unintentionally, by an Actor, and c.) perception of some implicit audience caused by a Medium or Entity. Perhaps this frame is too broad - the different subject FEs seem to all indicate different ways of "showing."'}, {'frame': 'People', 'tfidf': 2.6164879906743215, 'lexical_unit': 'people.n / person.n / un.n / guy.n / dude.n / lady.n / man.n / woman.n / fellow.n / gentleman.n / girl.n / individual.n / chap.n / human.n / human being.n / folks.n / life.n / pax.n / folk.n / who.pron / someone.n / somebody.n / personage.n / gent.n / character.n', 'definition': "This frame contains general words for Individuals, i.e. humans. The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have an Age, Descriptor, Origin, Persistent_characteristic, or Ethnicity.  ' A man from Phoenix was shot yesterday.'  ' She gave birth to a screaming babyyesterday.'  ' I study 16-year-old female adolescents.'  ' I am dating an African-American man.'  ' She comforted the terrified child.'  ' I always thought of him as a stupid man.'"}, {'frame': 'Desirable_event', 'tfidf': 2.4141690196865944, 'lexical_unit': 'should.v / ought to.v / bad idea.n / good idea.n / have to.v / be supposed to.v', 'definition': "A particular State_of_affairs is desirable.  The State_of_affairs may be required to achieve a Purpose.  A set of Circumstances may be specified under which the assessment of desirability holds.   'You should take the doses about 12 hours apart and at the same time each day.' ' If the metal is seriously rusted or warped, it should be repaired or replaced with a chimney top damper.' 'To ensure that, you should have no CLASSPATH set.'"}, {'frame': 'Touring', 'tfidf': 2.046166733366146, 'lexical_unit': 'tour.v / tour.n / tourist.n / see.v / sights.n / do.v / sight seer.n / sight-see.v / tourism.n', 'definition': "A Tourist experiences an Attraction, a location with a unique history or other societally recognized individual character, with the goal of seeing and learning about it. Typically, the Attraction has a source of information about the Attraction--a guide, pamphlets, or displays.  'We toured the Grand Canyon.' "}, {'frame': 'Process_continue', 'tfidf': 1.9828175743019574, 'lexical_unit': 'continue.v / ongoing.a / persist.v / drag on.v / go on.v / persistence.n / proceed.v / underway.a / on.adv', 'definition': "An Event continues at a certain Place through Time.  (Note that often when 'continue.v' occurs with definite time points, it denotes Resumption, which is out of frame here.) NB:  Refer to Process frame. '' 'Pyongyang agreed to suspend its withdrawal while talks continued with Washington.'  'Missions and different plans proceed according to Islamic law provision.'"}, {'frame': 'Accuracy', 'tfidf': 1.9572780110804104, 'lexical_unit': 'accurate.a / on.prep / off.prep / inaccurate.a / accuracy.n / inaccuracy.n / exact.a / precise.a / precision.n / accurately.adv / inaccurately.adv / true.a', 'definition': "An Agent is involved in an activity whose degree of success is dependent on a parameter of the action matching a particular set of values of a continuous variable or variables (e.g. quantity, location, time).    The Agent, or metonymically the Instrument or Means action, is described in terms of the actual or expected Deviation between the location, time, or quantity in the activity and the location, time, or quantity which is necessary for the intended event.  'The Longview Rangefinder is accurate to within one foot per hundred yards .' 'His estimate was off by an order of magnitude .'  'The fork truck operator must be fairly accurate in his aim.'  'The precision of the daily measurements is dependent on a number of factors.'"}, {'frame': 'Attempt', 'tfidf': 1.8786942024678503, 'lexical_unit': 'attempt.n / attempt.v / endeavor.v / endeavor.n / try.v / try.n / effort.n / go.n / undertake.v / stab.n / shot.n / quest.n / push.n', 'definition': "An Agent attempts to achieve a Goal. The Outcome may also be mentioned explicitly.  'John attempted to climb Mt. Everest.'  'It was another failed attempt to climb Mt. Everest.'"}, {'frame': 'Preventing_or_letting', 'tfidf': 1.792930254894732, 'lexical_unit': 'prevent.v / avert.v / frustrate.v / nip in the bud.v / obviate.v / stave off.v / check.v / avoid.v / prevention.n / stopping.n / prohibit.v / stop.v / upset.v / keep (from).v / preempt.v / preemption.n / preemptive.a / allow.v / let.v / permit.v / enable.v / enablement.n / forestall.v / preclude.v', 'definition': 'A Potential_hindrance or an Agent (via their actions) keeps an Event from taking place, or despite the possibility of prevent the Event, do not do so. Lexical units which indicate that the event is not prevented, e.g. allow.v, are marked with the semantic type "Negative".  Some lexical units, like avert and avoid indicate that the Potential_hindrance or Agent would have been affected if the Event occurred.   \' Rain prevented the ball game from taking place.\'   \' He could have stopped the riot .\'  \' The government narrowly averted a coup . \' \'She allowed more than a few mistakes to happen .\' \'Technology has permitted firms to link together more closely.\' \'Unlike DOS , Windows lets you get on with something else when sending a fax.\' \'Liberalization allows easier entry into particular markets .\' \'Mesh allows the water to circulate normally through the aquarium.\'  \'\'  Unlike in the Thwarting frame, the Potential_hindrance or Agent does not directly prevent the actions of an individual, but rather affects the world in such a way that an Event cannot occur.'}, {'frame': 'Experiencer_obj', 'tfidf': 1.7646162083512724, 'lexical_unit': 'aggrieve.v / alarm.v / amaze.v / anger.v / annoy.v / antagonize.v / astonish.v / astound.v / baffle.v / bewilder.v / bewitch.v / calm.v / captivate.v / charm.v / cheer.v / comfort.v / conciliate.v / confuse.v / console.v / dazzle.v / delight.v / depress.v / disappoint.v / discomfit.v / disconcert.v / discourage.v / dishearten.v / displease.v / distress.v / disturb.v / embarrass.v / enchant.v / enrage.v / entertain.v / enthrall.v / exasperate.v / excite.v / fascinate.v / frighten.v / frustrate.v / gall.v / gladden.v / gratify.v / hearten.v / humiliate.v / impress.v / infuriate.v / irk.v / irritate.v / mollify.v / pacify.v / perplex.v / placate.v / please.v / puzzle.v / rattle.v / reassure.v / rile.v / sadden.v / satisfy.v / scare.v / shake.v / shame.v / shock.v / soothe.v / spook.v / startle.v / stimulate.v / stun.v / surprise.v / terrify.v / thrill.v / unnerve.v / unsettle.v / upset.v / bore.v / wow.v / vex.v / vexation.n / shocker.n / sicken.v / stupefy.v / tickle.v / trouble.v / sting.v / solace.v / nettle.v / abash.v / aggravate.v / exhilarate.v / faze.v / embitter.v / flabbergast.v / floor.v / rankle.v / nonplus.v / mortify.v / madden.v / incense.v / petrify.v / revolt.v / sober.v / repel.v / torment.v / beguile.v / traumatize.v / interest.v / intrigue.v / offend.v / intimidate.v / mystify.v / perturb.v / stir.v / fluster.v / flummox.v / outrage.v / surprise.n / boggle.v / trouble.n / fulfill.v / crush.v / devastate.v / arouse.v / grate.v / appeal.v / worry.v / harass.v / engage.v / stagger.v / destroy.v / demolish.v / agonize.v / encourage.v / wound.v / kill.v / let down.v', 'definition': "Some phenomenon (the Stimulus) provokes a particular emotion in an Experiencer.  'Nightmare on Elm Street scared me silly.'"}, {'frame': 'Body_movement', 'tfidf': 1.663903914139826, 'lexical_unit': 'arch.v / bat.v / bend.v / blink.v / bob.v / clap.v / cock.v / crane.v / cross.v / drop.v / flap.v / flex.v / fling.v / flutter.v / gnash.v / grind.v / hang.v / jerk.v / lift.v / nod.v / pout.v / pucker.v / purse.v / roll.v / shake.v / shrug.v / shuffle.v / stretch.v / swing.v / throw.v / toss.v / twitch.v / wag.v / waggle.v / wave.v / wiggle.v / wink.v / wrinkle.v / curtsy.n / kneel.v / writhe.v / wriggle.v / shudder.v / fidget.v / yawn.v / jiggle.v / shiver.v / curtsy.v / duck.v / crease.v / smack.v / open.v / close.v / shut.v / twiddle.v / stamp.v / crinkle.v / crumple.v / scrunch.v / move.v / twist.v / wink.n / reach.v', 'definition': "This frame contains words for motions or actions an Agent performs using some part of his/her body.   A number of words in this frame occur as blends with Communication, in which the action has an Addressee.  For example,   'Pat nodded at Kim.'  These examples differ from Communication.Gesture in that no specific message need be expressed, as in  'She nodded to him to sit down.'  Since this frame involves a particular type of motion, it contains the frame elements Source, Path, Goal and Area, which originate in the motion frame.  All of these frame elements are generally expressed in PP Complements.  'The boy swung his legs from under the table.'"}, {'frame': 'Intentionally_affect', 'tfidf': 1.3821621436643925, 'lexical_unit': 'do.v / do something (to/with).v / do what (to/with).v', 'definition': "An Agent causes a Patient to be affected, sometimes by a particular Means or by use of an Instrument.  'A professional dishwasher doesn't do dishes with a rag anymore!'"}, {'frame': 'Causation', 'tfidf': 1.265675933534907, 'lexical_unit': 'cause.v / cause.n / make.v / lead (to).v / reason.n / send.v / bring about.v / precipitate.v / causative.a / render.v / bring.v / bring on.v / induce.v / wreak.v / put.v / since.c / because.c / because of.prep / raise.v / result (in).v / mean.v / result.n / leave.v / for.c / see.v / force.v / give rise.v / so.c / due to.prep / responsible.a / consequence.n / resulting.a / consequent.a / consequential.a / resultant.a / dictate.v / motivate.v / sway.v / legacy.n', 'definition': "A Cause causes an Effect.  Alternatively, an Actor, a participant of a (implicit) Cause, may stand in for the Cause.  The entity Affected by the Causation may stand in for the overall Effect situation or event.   '' Those frames that inherit the Causation frame have as their background the idea that some event is responsible for the occurrence of another event (or state).  In the  inheriting frame, typically an FE like Agent or Causer is proposed in the place of the Actor, but in the daughter frames, as in this frame, the Actor is semantically dependent on the idea of a Cause (an event or state-of-affairs) that the Actor is a participant in.  Similarly, most inheriting frames profile only the Affected entity, not the full Effect situation which is often incorporated into the frame or the particular target.  So, for example, paint.v in the Filling frame entails the final situation of something (the Affected) being covered in paint (the Effect).  'He made me angry.'  'If such a small earthquake causes problems, just imagine a big one!'  'The strange mutations of the rumor mill in the end led to it being said that he was actually a woman.'  'You 've made it impossible to continue!'  'The ending left me feeling kinda empty.'"}, {'frame': 'Desiring', 'tfidf': 1.2576642709019894, 'lexical_unit': 'want.v / desire.v / desire.n / desirous.a / lust.n / lust.v / hunger.v / hunger.n / hungry.a / thirst.n / thirst.v / thirsty.a / long.v / longing.n / urge.n / aspire.v / wish.n / wish (that).v / eager.a / hanker.v / hankering.n / aspiration.n / crave.v / craving.n / yearn.v / yen.n / yearning.n / wants.n / hope.v / hope.n / covet.v / covetous.a / will.v / wish.v / yen.v / ambition.n / feel like.v / interested.a / in the hope of.prep / raring.a / spoiling.a / dying.a / fancy.v / pine.v / ache.v / desired.a / will.n / itch.v / loath.a / reluctant.a / care.v / in hopes of.prep / impulse.n', 'definition': "An Experiencer desires that an Event occur.  (Note that commonly a resultant state of the Event will stand in for the Event.)  In some cases, the Experiencer is an active participant in the Event, and in such cases the Event itself is often not mentioned, but rather some Focal_participant which is subordinately involved in the Event. ''Generally, the use of a word in this frame implies that the specific Event has not yet happened, but that the Experiencer believes that they would be happier if it did.  Sometimes the Time_of_event, Purpose_of_event, or the Location_of_event are mentioned without the explicit mention of the Event. 'I only wanted one piece of candy.' 'The company was eager for him to leave as soon as possible.' 'Susan really wishes that you 'd listen to her.'"}, {'frame': 'Perception_active', 'tfidf': 1.2083246330173831, 'lexical_unit': 'attend.v / eavesdrop.v / feel.v / gaze.n / gaze.v / glance.n / glance.v / listen.v / look.n / look.v / observation.n / palpate.v / peek.n / peek.v / peep.v / peer.v / savour.v / smell.v / sniff.n / sniff.v / spy.v / stare.n / stare.v / taste.n / taste.v / view.v / watch.v / squint.v / admire.v / eye.v / gape.v / gawk.v / goggle.v', 'definition': "This frame contains perception words whose perceivers intentionally direct their attention to some entity or phenomenon in order to have a perceptual experience.  For this reason we call the perceiver role in this frame Perceiver_agentive.    'She gazed upon him fondly.'  Comparing the Perception_active frame to the Perception_experience frame, we note that for some modalities there are different lexical items in each frame.  For instance, whereas Perception_active contains the verb phrase look at, Perception_experience contains see.   For other sense modalities, we find the same lexical item in both frames.  To illustrate, consider the verb smell.  This first sentence exemplifies the Perception_active use of the verb smell:'Smell this to see if it's fresh.CNI' This second sentence exemplifies its Perception_experience sense: 'I smell something rotten.'  "}, {'frame': 'Age', 'tfidf': 1.1871487631356004, 'lexical_unit': 'old.a / ancient.a / young.a / youngish.a / oldish.a / age.n / new.a / fresh.a / of.prep / maturity.n / mature.a / elderly.a', 'definition': "An Entity has existed for a length of time, the Age. The Age can be characterized as a value of the age Attribute, or a Degree modifier may express the deviation of the Age from the norm. The Expressor exhibits qualities of the age of the Entity.  'This building is twenty thousand years old.'  'My grandpa is really old'  'Junior is only five weeks old.'  'A cunning oldish voice called out from the crowd.'  'His age was 23 at the time.'  ' People of  age 55 or older should consult their physician. '  'I have a 13-year-old cousin'  'My grandma is old'  There are additional patterns that the LUs in this frame occur in which are not licensed by a particular lexical head but by a construction.  Additionally, there are patterns that evoke this frame without any overt lexical head that are part of this frame.   'She is 45 years of age.' 'Billy  is 13.'     "}, {'frame': 'Ingestion', 'tfidf': 1.163519539599859, 'lexical_unit': 'lap.v / slurp.v / swig.v / guzzle.v / gulp.v / down.v / sip.v / sup.v / munch.v / nosh.v / feast.v / feed.v / snack.v / breakfast.v / lunch.v / dine.v / ingest.v / nurse.v / nibble.v / eat.v / drink.v / gobble.v / devour.v / consume.v / sip.n / gulp.n / swig.n / slurp.n / have.v / imbibe.v / quaff.v / swill.v / put away.v / put back.v / tuck.v / ingestion.n', 'definition': "An Ingestor consumes food or drink (Ingestibles), which entails putting the Ingestibles in the mouth for delivery to the digestive system.  This may include the use of an Instrument.  Sentences that describe the provision of food to others are NOT included in this frame.  'The wolves devoured the carcass completely.'"}, {'frame': 'Taking_sides', 'tfidf': 0.8966016115077456, 'lexical_unit': 'oppose.v / for.prep / against.prep / pro.adv / support.v / side.v / side.n / opposition [act].n / in favor.prep / supportive.a / opponent.n / supporter.n / opposition [entity].n / endorse.v / back.v / backing.n / believe (in).v / part.n', 'definition': "A Cognizer has a relatively fixed positive or negative point of view towards an Issue.  A Side in a debate concerning an Issue or an Action of a Side may stand in for the Issue.  The Cognizer's Degree of alignment may also be specified.  'In interviews , it seems like everyone is completely against this expenditure .' "}, {'frame': 'Likelihood', 'tfidf': 0.7777533475395987, 'lexical_unit': 'certain.a / likely.a / likelihood.n / certainty.n / possible.a / possibility.n / chance.n / probable.a / unlikely.a / impossible.a / improbability.n / prone.a / sure.a / probability.n / possibly.adv / tend.v / bound.a / may.v / might.v / probably.adv / likely.adv / certainly.adv / guaranteed.a / can.v / long.a / assured.a / liable.a / surely.adv / undoubtedly.adv / must.v / would.v', 'definition': "This frame is concerned with the likelihood of a Hypothetical_event occurring. The Hypothetical_event is its only core frame element.  'It is likely that he'll arrive late.'  Notice that in the case where a noun phrase is the subject of the Support Verb, that NP is also tagged as Hypothetical_event.  'He is likely to arrive late.' "}, {'frame': 'Body_parts', 'tfidf': 0.7773045578109784, 'lexical_unit': 'arm.n / ankle.n / anus.n / back.n / beard.n / belly.n / body.n / breast.n / buttocks.n / cheek.n / chest.n / chin.n / ear.n / earlobe.n / elbow.n / eyelid.n / face.n / finger.n / flesh.n / foot.n / forearm.n / forehead.n / groin.n / hair.n / hand.n / head.n / heel.n / incisor.n / jaw.n / toe.n / hoof.n / claw.n / paw.n / talon.n / wing.n / pelt.n / snout.n / maw.n / fang.n / mane.n / whisker.n / feeler.n / antler.n / muzzle.n / beak.n / trunk.n / tail.n / eye.n / foreleg.n / forefoot.n / forepaw.n / limb.n / fin.n / flipper.n / horn.n / nape.n / nose.n / antenna.n / fluke.n / skin.n / forelimb.n / hindlimb.n / hindleg.n / fingertip.n / brow.n / lip.n / temple.n / fingernail.n / tongue.n / toenail.n / thumb.n / nostril.n / sole.n / midriff.n / navel.n / neck.n / hindquarters.n / forefinger.n / thigh.n / mouth.n / tentacle.n / bill.n / appendage.n / thorax.n / rump.n / crown.n / member.n / leg.n / shoulder.n / tooth.n / mustache.n / knee.n / pupil.n / throat.n / lung.n', 'definition': "This frame covers words for Body_part(s) (BP) belonging to a Possessor (Poss), which may be characterized by a Descriptor (Desc). The location of the BP may be identified in terms of  its Attachment or its Orientational_location.  A Subregion of a BP may also be indicated.   '' 'He had to brace his right arm against his leg in order to fight the roll.'  'The dog measured its blond belly in the mud.'  ''"}, {'frame': 'Have_associated', 'tfidf': 0.7118252204467213, 'lexical_unit': 'have.v / have got.v / with.prep', 'definition': "A Topical_entity has properties which are affected by the existence and association of an Entity.  'By the 1920s a characteristic book had black and white photographic illustrations only .'  'Their schools had an improved and more balanced curriculum .'  'With dual citizenship , Stephen now had two presidents he hated .'"}, {'frame': 'Origin', 'tfidf': 0.6571844594157136, 'lexical_unit': 'chinese.a / american.a / vietnamese.a / origin.n / originate.v / of.prep / from.prep / iranian.a / canadian.a / dutch.a / iraqi.a / french.a / finnish.a / indian.a / russian.a / national.a / italian.a / syrian.a / irish.a / japanese.a / european.a / greek.a / jordanian.a / swiss.a / colombian.a / cuban.a / egyptian.a / roman.a / saudi.a / turkish.a / assyrian.a / ottoman.a / portuguese.a / jamaican.a / byzantine.a / come from.v / spanish.a / date.v', 'definition': "An Entity began its existence in the context of a Origin, which can be a place,  culture, time period, text, etc.  'The Christian origin of this quote is from Isaiah 22.'  'Dinosaurs originated from Antarctica?'  ''"}, {'frame': 'Quantified_mass', 'tfidf': 0.49710902312372657, 'lexical_unit': 'oodles.n / pile.n / ton.n / heap.n / load.n / modicum.n / mite.n / mass.n / scads.n / hundreds.n / thousands.n / millions.n / billions.n / dozens.n / shitload.n / abundance.n / myriad.n / plethora.n / quantity.n / number.n / pinch.n / ounce.n / touch.n / measure.n / amount.n / scores.n / degree.n / avalanche.n / deluge.n / torrent.n / flood.n / trickle.n / stream.n / wave.n / raft.n / mountain.n / handful.n / a lot.n / few.n / many.n / several.n / several.a / few.a / a few.art / any.a / many.a / all.a / numerous.a / a bit.n / no.a / multiple.a / dose.n / a little.n / both.a / smattering.n / fair.a / trace.n / deal.n', 'definition': "This frame contains transparent nouns (and some adjectives) denoting quantities of a Mass or of Individuals. As opposed to aggregate words such as group, set, these Quantity do not have a status as Wholes on their own.   'He found them in the deluge of papers on his desk.'  Initially, at least, we have annotated both Quantity of Masses and of Individuals in this frame, though we may split the frame along these lines later on. "}, {'frame': 'Goal', 'tfidf': 0.3704866406654184, 'lexical_unit': 'to.prep / into.prep', 'definition': "A Landmark (in combination with the image schema evoked by particular targets) serves to pick out the final location of a Trajector in a construed or actual motion event.  'Flights into Denver are not permitted at this time.'"}, {'frame': 'Degree', 'tfidf': 0.30310068680116564, 'lexical_unit': 'so.adv / a little.adv / a little bit.adv / very.adv / that.adv / totally.adv / fully.adv / heavily.adv / far.adv / somewhat.adv / in part.adv / great.a / way.adv / particular.a / a lot.adv / stone (cold).n / dirt (poor).n / sopping (wet).a / crystal (clear).n / as hell.adv / kind of.adv', 'definition': "LUs in this frame modify a gradable attribute and describe intensities at the extreme positions on a scale.  'She is very brave.'  'It is that simple!'  'The feuds are so vicious because the stakes are so low.'  'The plant is totally red  without the slightest hint of green.' "}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"Marking Time"</span>.</h5>
+                        <br/>
+                        <pre>
+"You have no idea.
+And then Kowalski made some comments to Big Mac, and they got into it, and Sarge ended up making us all do extra laps."
+Big Mac was one of the African-American guys in the company and I could just imagine what Kowalski might say to him.
+I shook my head in disbelief.
+"That son of a bitch."
+"Well, beware, Kowalski is going to be a real bitch when he gets back here.
+Not only did Mac flatten him in their little tussle, but Sarge made K stay behind and do push-ups."
+I laughed.
+Mac was called Big Mac for a reason and Kowalski should have known better than to pick on him.
+Served him right whatever punishment he got.
+"How many push-ups?"
+Meyer looked over at me with a grin.
+"Sarge just told him to go and he'd tell him when to stop."
+I chuckled.
+Sarge push-ups were brutal.
+He'd once assigned a private push-ups "until he said to stop," and then sat down and ate his dinner and read the newspaper for two hours all while the soldier did his push-ups.
+When Sarge finally released him, he couldn't even move, his buddies had to come and drag him back to the barracks.
+Kowalski came in just a few minutes later though, looking thoroughly pissed off and covered in mud.
+One of the other guys, Henderson, was the first to say something to him.
+"Whoa, Kowalski, you look like Sarge made you eat dirt ... literally."
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"Bound"</span>.</h5>
+                        <br/>
+                        <pre>
+"Me?
+Abandon my pack?
+I'm not the one who abandoned anything."
+"So someone abandoned you?"
+he surmised.
+"A lovers tiff?"
+"Oh yeah, you got me," she drawled, waving her hands in surrender.
+"I'm that kind of female; the dramatic kind who turns rogue because someone was mean to her."
+"I don't want that kind of trouble on my territory," Dean warned.
+"No, you don't," she agreed.
+"So, you should let me go."
+"If your mate is about to turn up on my doorstep, he'll be sent packing."
+"I don't have a mate."
+Dean paused.
+"So who abandoned you?"
+Her mouth slammed shut again.
+"For the love of ... this is ridiculous," he said, his patience unravelling.
+"You need to start answering my questions."
+This time she challenged his stare.
+He wasn't her Alpha, so she didn't have to bow and show respect, but nonetheless, there must have been a pretty monumental struggle going on inside.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="21">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="2">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

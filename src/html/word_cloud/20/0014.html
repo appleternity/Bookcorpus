@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Usefulness', 'tfidf': 4.772750434263005, 'lexical_unit': 'good.a / effective.a / excellent.a / outstanding.a / superb.a / wonderful.a / fantastic.a / fine.a / tremendous.a / terrific.a / marvellous.a / great.a / super.a / splendid.a / useful.a / utility.n / value.n / valuable.a / perfect.a / ideal.a / ineffective.a / work.v / strong.a', 'definition': "An Entity aids in the successful completion of a Purpose.  Its Degree of utility may also be expressed. Some of the lexical units  in this frame (e.g. great, good) can only express permanent, generic states of the Entity.  'A box is an ideal storage device.'"}, {'frame': 'Change_operational_state', 'tfidf': 4.13403663242745, 'lexical_unit': 'activate.v / turn on.v / turn off.v / boot.v / shut off.v / deactivate.v / cut.v / cut off.v / kill.v', 'definition': "A Device or machine is put in (or out of) service either by a volitional Agent or by a Cause event or force acting on the Device. The Time when and the Place where the Device is put in or out of use may be specified, as may be the Purpose of the human Agent in changing the operational state of the Device.  'The laborer realized that he activated the machine but did not know how to stop it.'  "}, {'frame': 'Temporary_leave', 'tfidf': 4.03045220943306, 'lexical_unit': 'absence.n / leave.n / sabbatical.n / leave of absence.n / vacation.n / holiday.n / furlough.n / time off.n / PTO.n / absent.v', 'definition': "A Person takes leave from his or her routine Activity (such as work or school) for a Duration of time.  The Duration can be any length of time, as long as the absence is temporary.     '' 'The claimant should then submit medical certificates for the duration of their absence from work.INI' '' 'He took three month's leave and went to our world assembly at Caux. DNI' '' 'Negroponte, who is on a two-year leave of absence from MIT, decided to stay on to the end of the present academic year.'"}, {'frame': 'Legality', 'tfidf': 3.974259951787729, 'lexical_unit': 'illegal.a / legal.a / lawful.a / unlawful.a / wrongful.a / illicit.a / licit.a / permissible.a / wrongly.adv / wrong.a / prohibited.a / legitimate.a / fair.a / criminal.a', 'definition': "Words in this frame describe the status of an Action with respect to a Code of laws or rules. An Object may also be in violation or compliance of the Code by virtue of its existence, location or possession.    ' Illegal drug use is on the rise. '   ' Scores of illegal immigrants cross the border every year.'   ' Feeding the buffalo is prohibited according to Code 138 . '"}, {'frame': 'Mass_motion', 'tfidf': 3.5292359425401036, 'lexical_unit': 'swarm.v / teem.v / throng.v / stream.v / crowd.v / flood.v / pour.v / flock.v / roll.v / troop.v / parade.v / rain.v / hail.v / shower.v / pelt.v', 'definition': "A Mass_theme, generally made up of many individuals, moves from a Source to a Goal with some Path.   'Emails from so-called Nigerian princes flooded inboxes all over the US.'"}, {'frame': 'Risky_situation', 'tfidf': 3.38305488982346, 'lexical_unit': 'safe.a / unsafe.a / dangerous.a / risky.a / risk.n / threat.n / danger.n / riskily.adv / safely.adv / warm.a', 'definition': "A particular Situation is likely (or unlikely) to result in a harmful event befalling an Asset. The Situation may be a state, an activity, or some focal entity that must be inferred to be part of some larger Situation involving both it and the Asset. Although the idea of a harmful event is crucial to the understanding of this frame, it is not expressible as an argument of the LUs in this frame.  'Is climate change dangerous for mankind?' 'Customers can make complaints about unsafe products.' 'The primary risk is to our infrastructure.'   See the Run_risk frame for discussion on differentiation regarding the noun risk."}, {'frame': 'Infecting', 'tfidf': 2.9166386730151475, 'lexical_unit': 'give.v / infect.v', 'definition': "The action of spreading some Infection to an Infected_entity, intentionally or otherwise. Pathology indicates that the Infection_cause can be airborne, carried on the skin/hair, or transmitted via various other forms of contact.  'Her daughter infected her with chicken pox .'"}, {'frame': 'Needing', 'tfidf': 2.821924654809816, 'lexical_unit': 'need.v / require.v / need.n', 'definition': "The speaker believes that some state of affairs or entity (the Requirement) must be present in order to cause some other dependent state of affairs to occur (the Dependent).  In the typical case, the Cognizer desires the occurrence of the Dependent and so also desires the obtainment or occurrence of the Requirement.  'I need one more bolt. DNI' 'I need one more nail to finish building the cabinet.' 'In order to complete the treaty, the United States will require several more diplomats.' 'He needs everyone to leave his office to finish his work.'"}, {'frame': 'Education_teaching', 'tfidf': 2.772547048293525, 'lexical_unit': 'student.n / pupil.n / teacher.n / professor.n / tutor.n / lecturer.n / tutee.n / schoolmaster.n / schoolmistress.n / schoolteacher.n / study.v / tutor.v / coach.v / educate.v / learn.v / school.v / train.v / training.n / instruct.v / teach.v / instruction.n / education.n / master.v / educational.a / graduate.n / protege.n / cram.v', 'definition': 'This frame contains words referring to teaching and the participants in teaching.  A Student comes to learn either about a Subject; a Skill; a Precept; or a Fact as a result of instruction by a Teacher.  Some of the nouns (schoolmaster, -mistress) in this frame refer to administrative positions and do not take relevant frame elements; these will be moved.    \'Dad taught <fex name="">me that if you work hard, you will be OK - no matter what happens. \'  \'What Our Cat  taught Me  About Marketing!\'  \'For two years she taught me French\'  \'Mom and Dad taught me not to bullshit, because it always came back to bite me in the ass, without fail. \'  \'A young swiss girl up in a swiss chalet taught me how to yodel.\'  \'Young Murdock later met a blind martial arts master known as Stick, who taught him how to use his augmented senses and trained him as a fighter.\'  \' Maria, a woman studying to be a nun is sent from her convent to be the governess of the seven children of a widowed naval captain \'  Frame-Element relations:  Several Frame element relations hold in this frame. There is a core-set {Material, Teacher} (possibly also including Institution); these FE\'s can fill the subject slot of the teach-type verbs. There is another core-set  {Precept, Subject, Skill, Fact, Role} to do with what is learnt. In addition, the FE Qualification may occur with Subject and Role  \'My sister is studying for a maths degree    to be a teacher \' \'She\'s studying maths to be a teacher .\'  Phrases expressing Qualification also very often include information about the Subject (see below), which is to be annotated on the second layer.  \'Bill is studying for a BS in physics/a maths degree.\' \'Bill is studying for a BS in physics/a maths degree.\'  '}, {'frame': 'Cause_to_move_in_place', 'tfidf': 2.6693276136979307, 'lexical_unit': 'twirl.v / spin.v / vibrate.v / shake.v / swing.v / seesaw.v / turn.v / rotate.v / squeeze.v / swirl.v / rock.v / roll.v / wave.v / juggle.v / jiggle.v / wiggle.v', 'definition': "An Agent causes a Theme to move with respect to a certain Fixed_location, generally with a certain Periodicity, without undergoing unbounded translational motion or significant alteration of configuration/shape. 'Paul shook the remote control frantically.'"}, {'frame': 'Alternatives', 'tfidf': 2.621574061260394, 'lexical_unit': 'possibility.n / way.n / choice.n / use.n / alternative.n / option.n / future.n / chance.n', 'definition': "There exist a number of different possible Situations that may happen in the future.  (In some cases, the Situation is concurrent or past, and only the knowledge of which has happened is in the future.)  In most cases, there is an Agent involved who has to consider which of the possible Situations will or should occur.  A Salient_entity which is deeply involved in the Situation may also be mentioned.  'You have but two choices for your daughter .'  While all the members of this frame denote possible situations, in principle, this frame could be split into a number of subtypes on the following basis:  ''1. Future.n, and most uses of alternative.n and possibility.n all evoke nothing more than a simple possible situation (not necessarily an Situation) with no Agent; the remaining frames would inherit from this. ''2. Use.n evokes different possible things that can be done with a Salient_entity (i.e., Purposes) and thus uses the Using frame; in this frame, the target denotes the Purpose that can be achieved. ''3. way.n evokes different events that can lead to an Outcome (not necessarily a Purpose); this frame should use the Means frame.  In this frame, the target denotes the possible Means actions. ''4. option.n, choice.n, and many instances of alternative.n and possibility.n, evoke possible Situations that an implicit or explicit Agent can bring about at will.  A Purpose that would be served by bringing these Situations about may be mentioned. A Salient_entity related to the Purpose may occur in place of the Purpose.  "}, {'frame': 'Clothing', 'tfidf': 2.534359342357988, 'lexical_unit': 'dress.n / frock.n / petticoat.n / ballgown.n / culottes.n / chemise.n / jodhpurs.n / sock.n / stocking.n / leggings.n / tunic.n / slip.n / gown.n / skirt.n / shorts.n / pants.n / trousers.n / wrap.n / shirt.n / blouse.n / cloak.n / cape.n / coat.n / greatcoat.n / overcoat.n / jacket.n / vest.n / tie.n / hose.n / hosiery.n / clothing.n / clothes.n / finery.n / suit.n / necktie.n / neckwear.n / cummerbund.n / scarf.n / shawl.n / bow-tie.n / pantyhose.n / garter.n / panties.n / knickers.n / sweater.n / jumper.n / cardigan.n / pullover.n / blazer.n / kilt.n / swimsuit.n / bikini.n / robe.n / bathrobe.n / apron.n / miniskirt.n / fishnet.n / legwarmers.n / regalia.n / raiment.n / apparel.n / attire.n / vestment.n / livery.n / outfit.n / garment.n / undergarment.n / underclothing.n / underclothes.n / underwear.n / togs.n / undies.n / shift.n / pinafore.n / mitten.n / mitt.n / glove.n / bodice.n / corset.n / parka.n / windbreaker.n / windcheater.n / raincoat.n / pyjama.n / nightie.n / nightdress.n / nightgown.n / nightwear.n / lingerie.n / camisole.n / waistcoat.n / jeans.n / overall.n / coverall.n / garb.n / smock.n / sundress.n / bra.n / brassiere.n / teddy.n / tights.n / jumpsuit.n / kimono.n / kaftan.n / uniform.n / costume.n / motley.n / get-up.n / ensemble.n / surplice.n / galosh.n / welly.n / wellington.n / slipper.n / sandal.n / sneaker.n / stiletto.n / boot.n / shoe.n / gumboot.n / clog.n / footwear.n / sari.n / sarong.n / poncho.n / abaya.n / jerkin.n / crinoline.n / muff.n / cowl.n / tutu.n / t-shirt.n / polo-neck.n / g-string.n / flip-flops.n / one-piece.n / two-piece.n / flannels.n / rags.n / silks.n / satins.n / cottons.n / tweeds.n / ermines.n / muslins.n / tippet.n / doublet.n / tatters.n / neckerchief.n / breeches.n / sweatshirt.n / sweatpants.n / tracksuit.n / alb.n / stole.n / chasuble.n / cope.n / buskin.n / pallium.n / gauntlet.n / cravat.n / briefs.n / cossie.n', 'definition': "This frame refers to clothing and its characteristics,  including anything that people conventionally wear.  The Wearer wears a Garment that has a certain Style, is made of a certain Material, and can be otherwise characterized by a Descriptor.  In some cases, the Body_location (where the garment is worn) and Subregion of the clothing may also be specified.  'Claudia dressed in a dark green cotton DRESS clasped round her slender waist with a broad yellow belt , drank a cup of coffee and opened her neglected post .'"}, {'frame': 'Cause_harm', 'tfidf': 2.471174941529442, 'lexical_unit': 'bayonet.v / beat.v / boil.v / burn.v / bludgeon.v / club.v / crush.v / cut.v / slice.v / hammer.v / hit.v / kick.v / knife.v / punch.v / smash.v / stab.v / spear.v / stone.v / hurt.v / whip.v / batter.v / break.v / butt.v / chop.v / claw.v / clout.v / crack.v / cudgel.v / cuff.v / fracture.v / gash.v / injure.v / jab.v / bruise.v / knock.v / lash.v / maul.v / pelt.v / strike.v / thwack.v / bash.v / belt.v / buffet.v / horsewhip.v / smack.v / squash.v / slap.v / knee.v / wound.v / pummel.v / electrocute.v / electrocution.n / poisoning.n / beat up.v / torture.v / maim.v / flog.v / impale.v / biff.v / cane.v / flagellate.v / poison.v / transfix.v / welt.v / mutilate.v / elbow.v / sting.v / swipe.v / strike.n / drug.v / twist.v / run through.v', 'definition': "The words in this frame describe situations in which an Agent or a Cause injures a Victim. The Body_part of the Victim which is most directly affected may also be mentioned in the place of the Victim.  In such cases, the Victim is often indicated as a genitive modifier of the Body_part, in which case the Victim FE is indicated on a second FE layer. '' 'Rod saw his father beating his mother.'  'In the end Wormtongue is fed up with being beaten so he cuts Saruman's throat to free himself.'  'A mother stabbed to death by her husband made a secret will stating that he must never be allowed to care for their son.'"}, {'frame': 'Sufficiency', 'tfidf': 2.35734953071875, 'lexical_unit': 'enough.n / enough.adv / enough.a / suffice.v / sufficient.a / sufficiently.adv / insufficient.a / insufficiently.adv / adequate.a / adequately.adv / insufficiency.n / adequacy.n / inadequacy.n / inadequate.a / inadequately.adv / plenty.n / plenty.adv / plenty.a / ample.a / too.adv / so.adv / serve.v', 'definition': "An Item is located on a Scale relative to a critical value which is determined by some Enabled_situation. Generally, when the Enabled_situation is left unexpressed the Enabled_situation is interpreted to be the desirability of the Item being located within a particular range on the Scale. With many of the adjectives of this frame, the Scale is not explicitly mentioned; in such cases, the Scale is usually the quantity, incorporated in the meaning of the targets themselves, though in the case of adequacy, etc. the Scale referred to is quality.  'I probably have enough. DNI DNI'  'I was mad enough to scream.'  'I was too mad to keep myself from screaming.'  'I was way too hot. DNI'  'The particles are sufficiently small in diameter that they may be considered points.'"}, {'frame': 'Capability', 'tfidf': 2.2612599215580325, 'lexical_unit': 'able.a / unable.a / can.v / capable.a / ability.n / potential.n / capability.n / capacity.n / potential.a / power.n / power [statistical].n / powerless.a / powerlessness.n / inability.n / incapable.a / incapacity.n / powerful.a', 'definition': "An Entity meets the pre-conditions for participating in an Event.  A Degree modifier may be included to indicate by how much the Entity exceeds or falls short of the minimum requirements.  'Conductor software gives us the hands-on capability to provide updates immediately'  'The GOP is afraid that it might not be capable of keeping the seat vacated by Dunn.'  'NASA is unable to communicate with Mars rover.'  'He can fly a kite.'"}, {'frame': 'Social_interaction_evaluation', 'tfidf': 2.1898624790007433, 'lexical_unit': 'inconsiderate.a / kind.a / considerate.a / mean.a / insensitive.a / thoughtless.a / thoughtful.a / cruel.a / sweet.a / rude.a / impolite.a / ill-mannered.a / churlish.a / discourteous.a / unkind.a / courteous.a / polite.a / impudent.a / respectful.a / disrespectful.a / boorish.a / compassionate.a / nice.a / friendly.a / unfriendly.a / amiable.a / sociable.a / cordial.a / genial.a / gracious.a / ungracious.a / civil.a / uncivil.a / impertinent.a / tactful.a / diplomatic.a / barbaric.a / spiteful.a / pleasant.a / horrible.a / good.a / good-natured.a / good-humored.a / warm.a / smart.a / mature.a / maturity.n / cruelty.n / thoughtfulness.n / rudeness.n / compassion.n / atrocious.a', 'definition': "In this frame an Evaluee is judged by a (usually implicit) Judge to be of a certain character based on her or his Behavior towards other human beings; a specific Affected_party may be overtly mentioned along with the Degree to which the Evaluee behaves appropriately towards others. TheBehavior alone may be mentioned with the understanding that these behaviors characterize a property of the unmentioned Evaluee. The Evaluee's Behavior may be in the context of a Topic.  ' It was nice of you to send a card. '   ' Jim was thoughtful to email the directions.'   ' For Martha to smoke in the car was extremely inconsiderate.'   ' It was cruel that he continued to call her.'   ' Mary was cruel to her friends.'   ' Samson was a thoughtless person.'   'Mrs. Robinson was always considerate of her students.'   ' The press was always kind about Madonna.'   ' Lee was nice about my car accident.'   ' I appreciated his kind offer of the car.'"}, {'frame': 'Required_event', 'tfidf': 1.9794084096537619, 'lexical_unit': 'must.v / need.v / had better.v / better.v / got to.v / gotta.v / hafta.v / oughta.v / have to.v / ought to.v / be supposed (to).v / best.v / shall.v', 'definition': "Unless a particular Required_situation obtains, Negative_consequences will follow.  Alternatively, the Required_situation is required to achieve a Purpose (which avoids Negative_consequences). A set of Circumstances may be specified under which the requirement holds.  'You must turn in your test by 5 p.m.' 'You better have that fixed by tomorrow or else we'll fire you.' 'The book needs to be shorter to sell to such a young audience.'  Most, but not all, LUs of this frame are usable in a context that implies a duty or responsibility, concepts related to the Being_obligated frame. However, our analysis is that such interpretations are due to contextual pragmatic strengthening--in other words, a duty is a frequently salient type of purpose that has negative consequences if not achieved."}, {'frame': 'Intentionally_act', 'tfidf': 1.6667911420073651, 'lexical_unit': 'action.n / do.v / step.n / act.v / doing.n / activity.n / perform.v / carry out.v / conduct.v / execute.v / engage.v / measures.n / act.n / move.n / actor.n / agent.n / deed.n', 'definition': "This is an abstract frame for acts performed by sentient beings. It exists mostly for FE inheritance.  'I carried out the deed easily .'"}, {'frame': 'Desirability', 'tfidf': 1.6283881722762799, 'lexical_unit': 'pathetic.a / superb.a / superlative.a / excellent.a / fabulous.a / outstanding.a / pitiful.a / appalling.a / execrable.a / fantastic.a / awful.a / splendid.a / sensational.a / wonderful.a / astonishing.a / rotten.a / terrible.a / magnificent.a / horrible.a / dreadful.a / stupendous.a / marvellous.a / super.a / first-rate.a / tremendous.a / good.a / bad.a / fair.a / mediocre.a / decent.a / okay.a / average.a / tolerable.a / second-rate.a / third-rate.a / astounding.a / fine.a / terrific.a / great.a / so-so.a / substandard.a / shitty.a / inferior.a / top-notch.a / tip-top.a / incredible.a / crappy.a / amazing.a / suck.v / rock.v / lamer.n / lame.a / uncool.a / excellence.n / desirable.a / extraordinary.a / sweet.a / cool.a / nasty.a / miserable.a / unfortunate.a / popular.a / idyllic.a / poor.a / atrocious.a / well.adv / standout.n / crap.n / shit.n / garbage.n / gem.n / gold.n / killer.a / awesome.a / best thing since sliced bread.n / junk.n / worthless.a', 'definition': "This frame concerns an Evaluee being judged for its quality, i.e. how much it would probably be liked.  In many cases, the Evaluee is implicitly judged good or bad relative to other instances of its type. The Evaluee's desirability is determined by one or more Parameters, which are scalar properties of the Evaluee. The evaluation may also explicitly be relativized to a set of Circumstances, a Comparison_set of entities that belong to the same class as the Evaluee, or an Affected_party. The Degree of goodness or badness may also be expressed.  Note: With some targets, desirability is conventionally aligned with quantity, i.e., GOOD is MORE.  'The view was  astonishing.' 'On clear days, the view was excellent.' 'The book is astounding in its scope.' 'The games have been awful for the team.' "}, {'frame': 'Intentionally_affect', 'tfidf': 1.3821621436643925, 'lexical_unit': 'do.v / do something (to/with).v / do what (to/with).v', 'definition': "An Agent causes a Patient to be affected, sometimes by a particular Means or by use of an Instrument.  'A professional dishwasher doesn't do dishes with a rag anymore!'"}, {'frame': 'Quantified_mass', 'tfidf': 0.9942180462474531, 'lexical_unit': 'oodles.n / pile.n / ton.n / heap.n / load.n / modicum.n / mite.n / mass.n / scads.n / hundreds.n / thousands.n / millions.n / billions.n / dozens.n / shitload.n / abundance.n / myriad.n / plethora.n / quantity.n / number.n / pinch.n / ounce.n / touch.n / measure.n / amount.n / scores.n / degree.n / avalanche.n / deluge.n / torrent.n / flood.n / trickle.n / stream.n / wave.n / raft.n / mountain.n / handful.n / a lot.n / few.n / many.n / several.n / several.a / few.a / a few.art / any.a / many.a / all.a / numerous.a / a bit.n / no.a / multiple.a / dose.n / a little.n / both.a / smattering.n / fair.a / trace.n / deal.n', 'definition': "This frame contains transparent nouns (and some adjectives) denoting quantities of a Mass or of Individuals. As opposed to aggregate words such as group, set, these Quantity do not have a status as Wholes on their own.   'He found them in the deluge of papers on his desk.'  Initially, at least, we have annotated both Quantity of Masses and of Individuals in this frame, though we may split the frame along these lines later on. "}, {'frame': 'Possession', 'tfidf': 0.9629785294271461, 'lexical_unit': 'own.v / have.v / lack.v / possess.v / possession.n / ownership.n / owner.n / possessor.n / lacking.a / lack.n / wanting.a / want.n / want.v / belong.v / belongings.n / assets.n / property.n / possession [definite noun].n / possession [of goods].n / effects.n / have got.v / custody.n / got.v', 'definition': "An Owner has (or lacks) a Possession. '' 'The river's part of my  manor, but of course it also belongs to the River Police.'  'It's a nuisance having to abandon my belongings, though.'"}, {'frame': 'Taking_sides', 'tfidf': 0.8966016115077456, 'lexical_unit': 'oppose.v / for.prep / against.prep / pro.adv / support.v / side.v / side.n / opposition [act].n / in favor.prep / supportive.a / opponent.n / supporter.n / opposition [entity].n / endorse.v / back.v / backing.n / believe (in).v / part.n', 'definition': "A Cognizer has a relatively fixed positive or negative point of view towards an Issue.  A Side in a debate concerning an Issue or an Action of a Side may stand in for the Issue.  The Cognizer's Degree of alignment may also be specified.  'In interviews , it seems like everyone is completely against this expenditure .' "}, {'frame': 'Likelihood', 'tfidf': 0.7777533475395987, 'lexical_unit': 'certain.a / likely.a / likelihood.n / certainty.n / possible.a / possibility.n / chance.n / probable.a / unlikely.a / impossible.a / improbability.n / prone.a / sure.a / probability.n / possibly.adv / tend.v / bound.a / may.v / might.v / probably.adv / likely.adv / certainly.adv / guaranteed.a / can.v / long.a / assured.a / liable.a / surely.adv / undoubtedly.adv / must.v / would.v', 'definition': "This frame is concerned with the likelihood of a Hypothetical_event occurring. The Hypothetical_event is its only core frame element.  'It is likely that he'll arrive late.'  Notice that in the case where a noun phrase is the subject of the Support Verb, that NP is also tagged as Hypothetical_event.  'He is likely to arrive late.' "}, {'frame': 'Entity', 'tfidf': 0.7628561076421213, 'lexical_unit': 'item.n / entity.n / object.n / thing.n / individual.n / what.n', 'definition': "This frame is for words that denote highly schematic entities.  'We found an unusual wooden object in the desert.'"}, {'frame': 'Goal', 'tfidf': 0.6174777344423641, 'lexical_unit': 'to.prep / into.prep', 'definition': "A Landmark (in combination with the image schema evoked by particular targets) serves to pick out the final location of a Trajector in a construed or actual motion event.  'Flights into Denver are not permitted at this time.'"}, {'frame': 'Degree', 'tfidf': 0.6062013736023313, 'lexical_unit': 'so.adv / a little.adv / a little bit.adv / very.adv / that.adv / totally.adv / fully.adv / heavily.adv / far.adv / somewhat.adv / in part.adv / great.a / way.adv / particular.a / a lot.adv / stone (cold).n / dirt (poor).n / sopping (wet).a / crystal (clear).n / as hell.adv / kind of.adv', 'definition': "LUs in this frame modify a gradable attribute and describe intensities at the extreme positions on a scale.  'She is very brave.'  'It is that simple!'  'The feuds are so vicious because the stakes are so low.'  'The plant is totally red  without the slightest hint of green.' "}, {'frame': 'Performers_and_roles', 'tfidf': 0.22592613254667382, 'lexical_unit': 'star.v / act.v / play.v / be.v / star.n / co-star.n / co-star (in).v / lead.n / star (in).v / as.prep / co-star.v / feature.v / character.n / role.n / part.n / appear.v', 'definition': 'A Performer has a certain Role in a Performance and plays their part by following the directions in the Script for that particular Role.   \'Margaret Thatcher played Juliet in a school play.\' \'"Pulp Fiction" starred John Travolta and a lot of other big names.\' \'Mel Gibson starred in "Braveheart" as the leader of a Scottish rebellion.\' \'I play the character of Yusuf in this film.\''}, {'frame': 'Locative_relation', 'tfidf': 0.12471258655981486, 'lexical_unit': 'at.prep / athwart.prep / over.prep / beyond.prep / along.prep / up.prep / down.prep / astride.prep / all over.prep / border.v / where.adv / near.prep / underground.a / above-ground.a / underground.adv / everywhere.adv / elsewhere.adv / here.adv / surrounding.a / distant.a / outlying.a / north.prep / south.prep / out.prep / west.prep / ubiquitous.a / there.adv / offshore.a / inland.a / past.prep / to.prep / southeast.prep / mainland.n / throughout.prep / meet.v / bracket.v / southwest.prep / northeast.prep / northwest.prep', 'definition': "A Figure is located relative to a Ground location.    'The cat is on the mat.' 'The kitchen, with its breakfast / snack bar, adjoins on one side while the dining area adjoins on the other side. DNI' 'The president's plane landed in Washington.'  This frame is used for LUs that do not belong in daughter frames, either because they are too general to have any particular image schema associated with them (e.g., here.adv), or because we do not (yet) have a specific frame with the correct image schema (e.g., inland.a).  Prepositions, adverbs, and spatial adjectives that act as targets in this frame and its descendants cooccur with a number of constructions that may supply extra information and should be annotated as extrathematic frame elements.  The location of the Figure may be further specified by its Distance from the Ground along a vector implied by the targets image schema, or the Direction in which the Figure lies from a reference location (generally, the deictic center).  In cases where both seem to cooccur, the Distance actually modifies the Direction, as seen in the following example:  'This pup was lying abandoned, 350 feet down at the bottom of an Arizona canyon.'  There is no sense in which the Distance is measured using the schema for at.prep ('350 feet at the bottom of the canyon' doesn't mean the right thing at all); rather the distance is measured using the schema for down.adv, and is thus considered a modifier of the Direction FE.  In some very specific situations, prepositions, adjectives, and nouns can be used with a copula to describe the whole Profiled_region where a Figure is or could be, as in the following:  'Inside my wallet is where I put it .' 'Outside your blind date's door seems like the worst place in the world .'   "}, {'frame': 'Emitting', 'tfidf': 0.0, 'lexical_unit': 'exude.v / emit.v / discharge.v / radiate.v / secrete.v / exhale.v / give off.v / excrete.v / void.v / emanate.v', 'definition': "In this frame a Source_emitter discharges its Emission along a Path or to a Goal.  ' (1) The factory exudes toxic fumes from three large chimneys.'  The Sub-source is only present when the actual Source_emitter is also given or is present in a possessive.  ' (2) Light is emitted  from the tower . '  ' (3) Noxious odors are emitted from his feet . '  In (3) we would tag 'his' as Source_emitter on a second layer because the inalienable possession on the Sub-source indicates the Source_emitter"}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"Birthday Dinner"</span>.</h5>
+                        <br/>
+                        <pre>
+Or they could try to string together several weeklong summer camps--all of them expensive, with few need-based scholarships, and ill-suited to Jonah's interests and background.
+Or she could tap all her available church resources in an attempt to put together an ad hoc program of individual tutoring and care that would probably end up being little more than glorified (and volunteer-intensive) babysitting.
+Beyond the Summer Learning Program, there were no opportunities suited to Jonah's skills and needs.
+The taste of disappointment and frustration lingered in her mouth along with the dust from the road and the stale humid air as she knocked at Mrs. Brackett's door.
+That all disappeared the moment Jonah opened the door and without a word or even glance up pushed his face into her turquoise polo shirt and wrapped his arms around her waist.
+Becca wanted to both laugh and cry but did neither as she gazed down at the dark curly hair on his perfectly round skull.
+She whispered, "My dear Jonah," and patted his head lightly.
+Jonah finally pushed away and looked up at her with bright eyes and a big smile.
+"Me-me-maw say she has a paper for you."
+He turned and loped into the dim house.
+Becca followed slowly.
+"Mrs.
+Brackett?"
+"Come in, dear," Mrs. Brackett said from her seat in the chair in front of the dark T.V. Becca shut the door behind her and walked toward the woman.
+The kitchen chair she'd pulled over two days earlier was still there beside the upholstered chair.
+She walked to it and asked, "May I?"
+"Please, dear."
+Becca sat down.
+Jonah had disappeared, so she focused her attention on Mrs. Brackett.
+"He's back," she said in a sudden swell of emotion that made her voice crack.
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"The Crossover"</span>.</h5>
+                        <br/>
+                        <pre>
+"What is your name?"
+"Freddy.
+Freddy Wilder."
+"Very well, Freddy.
+Follow me."
+Lodran turned and left the alley, hearing his new student scramble to follow.
+"Where are we goin'?"
+"Back to the shop.
+Don't worry, I'll make sure you can explain yourself to Chelinn.
+Worst that happens, he'll tell you to leave town on your own.
+He's not bloodthirsty, he won't kill you if he doesn't think you're a threat.
+"Now, here's your first lesson in the Silent Art: your clothes are all wrong.
+Your pants are too tight, they won't let you move freely.
+Your shoes would be good for indoor work; but for the street, you need a good pair of boots that can conceal a knife.
+Your jacket has too many insignia--" "Too many what?"
+"Those things."
+Lodran tapped several patches.
+"They give enemies a way to recognize you.
+You need to be plain, to blend into a crowd.
+Blue is not a good color, either.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="14">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="2">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

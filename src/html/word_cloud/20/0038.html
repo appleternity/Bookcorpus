@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Activity_start', 'tfidf': 7.767737291424791, 'lexical_unit': 'start.v / begin.v / take up.v / beginner.n / neophyte.n / enter.v / swing (into).v / initiate.v / commence.v / launch (into).v / strike up.v / open.v / set about.v / get started.v', 'definition': "An Agent initiates the beginning of an ongoing Activity in which he will be continuously involved. '' 'At the same time, city-states began to grow in influence on the southern Greek mainland.'  'Naturally, I started crying to get out of work.'  "}, {'frame': 'Obviousness', 'tfidf': 6.174629411020625, 'lexical_unit': 'obvious.a / evident.a / manifest.a / visible.a / audible.a / unclear.a / clear.a / clearly.adv / obviously.adv / clarity.n / show.v / show up.v / stand out.v / noticeable.a', 'definition': "A Phenomenon is portrayed with respect to the Degree of likelihood that it will  be perceived and known, given the (usually implicit) Evidence, Perceiver, and the Circumstances in which it is considered.  For several of the LUs, such as visible, audible, etc., the type of the Evidence is fixed by the targets themselves being a perceptual experience.  'It's abundantly obvious that we'll need to spend more time on public perception.' 'Are you certain that the shovel was visible from the door of the apartment?' ' I think they miss some of the important impacts of the work that are not visible just from looking at the vote tally.' 'That the defense will declare a mistrial regardless is quite evident from their consistent obstructionist tactics.' 'In late July 2000 it was barely visible to the unaided eye.'"}, {'frame': 'Reading_activity', 'tfidf': 5.089441345325746, 'lexical_unit': 'read.v', 'definition': "A Reader visually examines a Text, typically in a linear order, to understand its content.  In place of the Text, a Topic may be mentioned.  'She ca n't read . INI' 'They read the bible nightly .' 'I 've read about you !'  '' This frame differs from the Reading_perception frame, which obligatorily focuses on the perceptual and cognitive interpretive aspects of reading; unlike Reading_activity, targets in Reading_perception require explicit mention of the Text being examined.  While Reading_activity is broad enough to cover the same circumstances as Reading_perception, it also covers situations where reading is contrasted merely with another task or leisure activity, when reading is considered generically, and when the Topic unifying the reading activity replaces mention of a Text. '' Additionally, this frame differs from Hearsay in that Reading_activity is focused on what the Reader is agentively doing, whereas in Hearsay, the focus is on what the Hearer knows and how they know it.  As a result, most valences are unambiguous: full clause complements for the Message point to the Hearsay frame, while Text or lack of any complement indicates the Reading_activity frame.  The only overlap is in the case of Topic, where the frames can be still distinguished by factivity of the Topic.  In other words, read.v used in the Hearsay frame, just like hear.v in the Hearsay frame, when used with a Topic, indicates clearly that there is some specific fact related to the Topic that the reader or hearer now knows and understands. Thus the first and second of the following sentences belong to Hearsay, the last to Reading_activity: 'Yes, I read about how you won teacher of the year .' 'I just read about the accident .' '' 'I was reading about dinosaurs all day.'   "}, {'frame': 'Cause_harm', 'tfidf': 4.942349883058884, 'lexical_unit': 'bayonet.v / beat.v / boil.v / burn.v / bludgeon.v / club.v / crush.v / cut.v / slice.v / hammer.v / hit.v / kick.v / knife.v / punch.v / smash.v / stab.v / spear.v / stone.v / hurt.v / whip.v / batter.v / break.v / butt.v / chop.v / claw.v / clout.v / crack.v / cudgel.v / cuff.v / fracture.v / gash.v / injure.v / jab.v / bruise.v / knock.v / lash.v / maul.v / pelt.v / strike.v / thwack.v / bash.v / belt.v / buffet.v / horsewhip.v / smack.v / squash.v / slap.v / knee.v / wound.v / pummel.v / electrocute.v / electrocution.n / poisoning.n / beat up.v / torture.v / maim.v / flog.v / impale.v / biff.v / cane.v / flagellate.v / poison.v / transfix.v / welt.v / mutilate.v / elbow.v / sting.v / swipe.v / strike.n / drug.v / twist.v / run through.v', 'definition': "The words in this frame describe situations in which an Agent or a Cause injures a Victim. The Body_part of the Victim which is most directly affected may also be mentioned in the place of the Victim.  In such cases, the Victim is often indicated as a genitive modifier of the Body_part, in which case the Victim FE is indicated on a second FE layer. '' 'Rod saw his father beating his mother.'  'In the end Wormtongue is fed up with being beaten so he cuts Saruman's throat to free himself.'  'A mother stabbed to death by her husband made a secret will stating that he must never be allowed to care for their son.'"}, {'frame': 'Architectural_part', 'tfidf': 4.8326197486683675, 'lexical_unit': 'fireplace.n / floor.n / ceiling.n / mantel.n / roof.n / rail.n / wall.n / counter.n / facade.n / foundation.n / flight.n / landing.n / window.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  'We need new counters for the kitchen'  'The storm ripped off the bathroom's roof'  "}, {'frame': 'Law', 'tfidf': 4.160877982856348, 'lexical_unit': 'law.n / code.n / protocol.n / act.n / statute.n / regulation.n / regime.n / policy.n / order.n', 'definition': "A Law regulates activities or states of affairs within a Jurisdiction, dictating what Required states should be the case and what Forbidden states should not.  Often it also indicates negative consequences for individuals that violate it, and these negative consequences are generally enforced by some official authority.  They may or may not be created by some official legislative body.  'The new act banning smoking in public will pass soon.'"}, {'frame': 'Cause_expansion', 'tfidf': 4.022007275586286, 'lexical_unit': 'aggrandizement.n / augmentation.n / contraction.n / dilate.v / enlarge.v / enlargement.n / expand.v / expansion.n / growth.n / inflate.v / lengthen.v / magnification.n / magnify.v / reduction.n / shrink.v / swell.v / widen.v / narrow.v / grow.v / blow up.v / stretch.v / compress.v / compression.n / condense.v', 'definition': "An  Agent or non-human Cause causes an Item to change its physical size.  The Size_change of an Item may be explicitly indicated or characterized in terms of Initial_size and/or Result_size.  In the default case, expansion is along all dimensions, but sometimes the Dimension of expansion is incorporated or made explicit.  'If the design crashes too often, then try lengthening the wings by a few centimeters, to perhaps 30cm total.  CNI INI '   'As the juice churned with natural process of changing into wine, the gas it created would expand the balloon, and when the balloon eventually deflated, it was ready to drink.'"}, {'frame': 'Legality', 'tfidf': 3.974259951787729, 'lexical_unit': 'illegal.a / legal.a / lawful.a / unlawful.a / wrongful.a / illicit.a / licit.a / permissible.a / wrongly.adv / wrong.a / prohibited.a / legitimate.a / fair.a / criminal.a', 'definition': "Words in this frame describe the status of an Action with respect to a Code of laws or rules. An Object may also be in violation or compliance of the Code by virtue of its existence, location or possession.    ' Illegal drug use is on the rise. '   ' Scores of illegal immigrants cross the border every year.'   ' Feeding the buffalo is prohibited according to Code 138 . '"}, {'frame': 'Part_orientational', 'tfidf': 3.6611882535608005, 'lexical_unit': 'top.n / bottom.n / front.n / back.n / side.n / underside.n / underbelly.n / peak.n / back.a / top.a / bottom.a / apex.n / base.n / tip.n / rear.n / foot.n / face.n / hind.a / rear.a / heart.n / left.n / left.a / right.a / right.n / crest.n / summit.n / east.a / west.a / north.a / south.a / southern.a / northern.a / northernmost.a / southernmost.a / eastern.a / easternmost.a / western.a / westernmost.a / north.n / south.n / west.n / east.n / northwest.n / north-south.n / front.a', 'definition': "In this frame, there is a Part of a Whole in which the Part is defined with respect to the canonical or inherent orientation of the Whole. In cases where the Target is an adjective, it has a special relationship with the noun that it modifies such that a phrase which is a syntactic argument of the noun is semantically available to fill the argument structure of the adjective, as in   'the front  row of the class '  'The top  shelf of the bookcase was lying on the floor.'  'The bottom was missing.'  'My left  hand was numb.'  'He rested on the clifftop'   "}, {'frame': 'Taking', 'tfidf': 3.6483133115677178, 'lexical_unit': 'take.v / seize.v / seizure.n / grab.v / commandeer.v', 'definition': "An Agent removes a Theme from a Source so that the it is in the Agent's possession.  'Milton took the can of beer out of the refrigerator.'"}, {'frame': 'Spatial_co-location', 'tfidf': 3.2157364598058567, 'lexical_unit': 'at.prep / where [relativizer].adv / here.adv / there.adv / where [interrog].adv / home.adv', 'definition': 'A Figure is located essentially at the same location as a Ground, which is viewed as point-like, or having no important internal or external structure.  Typically, the Ground is viewed as point-like due to its small size with respect to a conversationally relevant spatial scale; this scale may be provided by reference to other, distant entities or full paths of travel that make the size of the Ground seem relatively small.  Another use of this frame is to specify a location via a Ground that is primarily considered for its function, rather than its shape; this second use explains why "at the store" is typically used even when a Figure is inside the Ground, but only in cases where the store is considered, according to its prototype, as a place to buy and sell, rather than an architectural entity (in which case "in the store" would be more usual).  \'We are now at the cathedral .\' \'They claim that many Christians were martyred at the Collosseum .\' \'I \'m at my mother \'s .\'  This frame has a very large family of productive metaphors associated with it, the foremost of which maps from the target meaning of values on a quantitive scale (e.g. price, temperature, speed) onto the source domain of vertically-arranged positions in space.  Because this metaphor does not normally serve to locate a cognitive agent, it is only rarely and exceptionally usable with the LU here.adv, which implies being at the same location as the speaker. A separate metaphor maps the target meaning of quantified progress (measured by a quantity associated with a processed entity vs. a quantity associated with what is left to be done) onto the source domain of forward-backward-arranged positions in space.  \' Tesla stock is at a three-month low today .\' \'She put the biscuits in the oven at only 400 degrees .\' \'At fifty dollars , everyone \'s gonna buy one !\' \'If you \'re only at page 20 , just start over .\' '}, {'frame': 'Range', 'tfidf': 3.203912735300499, 'lexical_unit': 'range.n / earshot.n / reach.n / view.n / distance.n / strike.n / intercontinental.a / sight.n', 'definition': 'There is a certain physical Distance within which some other entity can participate in an Event (typically perception or manipulation) with the Participant.  Alternatively, the Event may be indicated metonymically by a Instrument .  [Note the connection with *Distance, Sufficiency, and Capability.  Words in this frame can generally be paraphrased "close enough to be able to".]  \'I\'m sorry, but he was well within the blast range.\' \'They are now within our missile range.\' \'They are now within our missile \'s range.\' \'They are now within missile range.\' \'But then they passed out of my earshot. INC\' \'I would consider striking distance to be about two meters for this weapon.\' \'Jordanian troops came within easy strike of Israel.\''}, {'frame': 'Ingest_substance', 'tfidf': 3.104340253338142, 'lexical_unit': 'smoke.v / snort.v / drag.v / drag.n / toke.n / pull.v / pop.v / inject.v / shoot.v / sniff.v / do.v / use.v / take.v / puff.v / have.v', 'definition': "In this frame an Ingestor takes a Substance into his or her body. The Delivery_device can appear as a direct object.    'You should refrain from taking vodka up the nose.'  'Smoking a cigarette only takes a couple of minutes . CNI '"}, {'frame': 'Process_completed_state', 'tfidf': 2.9437393008296864, 'lexical_unit': 'done.a / finished.a / complete.a / over.a', 'definition': "A Process is finished and can no longer proceed.  'The project is complete.'"}, {'frame': 'Activity_ongoing', 'tfidf': 2.878722836385855, 'lexical_unit': 'keep.v / continue.v / carry on.v / maintenance.n / keep on.v / keep up.v', 'definition': "An Agent is performing the portion of an Activity in which there is dynamic stability. '' 'Not noticing the hoards of people rushing by the window, Manny continued eating his lunch.'  'Keep living the dream!'  "}, {'frame': 'Measure_linear_extent', 'tfidf': 2.8439901821719413, 'lexical_unit': 'inch.n / mile.n / yard.n / foot.n / meter.n / kilometer.n / centimeter.n / millimeter.n / furlong.n / light-year.n / block.n', 'definition': "This frame is concerned with nouns that denote Units of measurement for linear extent. The Frame Elements are Unit, Count,  and Stuff.'The shirt is made from 12 miles of pure cotton.''81 miles of dyke are still visible from this point.'"}, {'frame': 'Grasp', 'tfidf': 2.6309084666970435, 'lexical_unit': 'grasp.v / comprehend.v / understand.v / grasp.n / get.v / see.v / unintelligible.a / intelligible.a / comprehensible.a / incomprehensible.a / graspable.a / apprehend.v / fathom.v / follow.v', 'definition': "A Cognizer possesses knowledge about the workings, significance, or meaning of an idea or object, which we call Phenomenon, and is able to make predictions about the behavior or  occurrence of the Phenomenon. The Phenomenon may be incorporated into the wider knowledge structure via categorization, which can be indicated by the mention of a Category. The Cognizer may possess knowledge only in part and this may be expressed in a Completeness expression. The Cognizer may also be realized as a cognitive-emotional Faculty that is conceived of as having understanding. Note that the knowledge may have been acquired either from instruction or from the Cognizer's own experimentation, observation, or mental operations.  Words in this frame are frequently used metonymically to denote the transition into the state described above.  'I figured this out last week and now I really understand it.'  'My father failed to comprehend that his explanations were based as much upon faith as mine'  'The draughtsman must fully comprehend what he is drawing'  'Nobody seems to have explained this to her, but finally she understands DNI'  'I realized I had not properly understood my own needs'  'The mind is often unable to comprehend the significance of what it perceives.'  'Our sensations are in some sense to be understood in terms of a set of stimulation levels (spiking frequencies) in the appropriate sensory pathways. CNI'"}, {'frame': 'Type', 'tfidf': 2.4141570724693997, 'lexical_unit': 'type.n / class.n / kind.n / sort.n / variety.n / strain.n / breed.n / ilk.n / make.n / race.n / brand.n / form.n / shade.n / version.n', 'definition': "This frame has to do with nouns denoting types of entities. The Subtype refers to a collection of members of a more general Category which have certain defining characteristics; alternatively, the Subtype refers only to the type itself, i.e. a more restrictive set of characteristics than those of the more general Category.  The properties of the items that are included in the collection may be specified by the Item_Property.  Sometimes the Subtypes themselves are described by some Type_Property.  'I don't like this newfangled kind of  fish.' 'Kleo isn't our sort of people.' 'He argued against the formalist type of analysis of art.' 'I think that she was referring to the other type. DNI'"}, {'frame': 'Social_interaction_evaluation', 'tfidf': 2.1898624790007433, 'lexical_unit': 'inconsiderate.a / kind.a / considerate.a / mean.a / insensitive.a / thoughtless.a / thoughtful.a / cruel.a / sweet.a / rude.a / impolite.a / ill-mannered.a / churlish.a / discourteous.a / unkind.a / courteous.a / polite.a / impudent.a / respectful.a / disrespectful.a / boorish.a / compassionate.a / nice.a / friendly.a / unfriendly.a / amiable.a / sociable.a / cordial.a / genial.a / gracious.a / ungracious.a / civil.a / uncivil.a / impertinent.a / tactful.a / diplomatic.a / barbaric.a / spiteful.a / pleasant.a / horrible.a / good.a / good-natured.a / good-humored.a / warm.a / smart.a / mature.a / maturity.n / cruelty.n / thoughtfulness.n / rudeness.n / compassion.n / atrocious.a', 'definition': "In this frame an Evaluee is judged by a (usually implicit) Judge to be of a certain character based on her or his Behavior towards other human beings; a specific Affected_party may be overtly mentioned along with the Degree to which the Evaluee behaves appropriately towards others. TheBehavior alone may be mentioned with the understanding that these behaviors characterize a property of the unmentioned Evaluee. The Evaluee's Behavior may be in the context of a Topic.  ' It was nice of you to send a card. '   ' Jim was thoughtful to email the directions.'   ' For Martha to smoke in the car was extremely inconsiderate.'   ' It was cruel that he continued to call her.'   ' Mary was cruel to her friends.'   ' Samson was a thoughtless person.'   'Mrs. Robinson was always considerate of her students.'   ' The press was always kind about Madonna.'   ' Lee was nice about my car accident.'   ' I appreciated his kind offer of the car.'"}, {'frame': 'Compatibility', 'tfidf': 2.171942514158698, 'lexical_unit': 'compatible.a / incompatible.a / incompatibility.n / compatibility.n / harmonize.v / congruent.a / congruous.a / consonant.a / dovetail.v / jibe.v / square.v / comport.v / rhyme.v / accord.v / agree.v / cohere.v / consistent.a / harmony.n / go.v / clash.v / match.v / biocompatible.a / conflict.v / conflicting.a / at variance.a / fly in the face of.v', 'definition': "Item-1 and Item-2 are compatible with each other if they can exist or function together in some context without problems, conflict, or other undesirable situation.  The set of Item-1 and Item-2 may be expressed jointly as Items. The Degree to which the Items are compatible may also be indicated, as may be a Parameter along whose lines the Items are compatible. ' Make sure your site is compatible with any browser.' 'Our software applications  are compatible. ' "}, {'frame': 'Make_noise', 'tfidf': 2.15739236847637, 'lexical_unit': 'babble.v / bark.v / bellow.v / blare.v / blast.v / bleat.v / bray.v / burble.v / cackle.v / caterwaul.v / caw.v / chatter.v / cheep.v / chirp.v / chuckle.v / clang.v / clash.v / clatter.v / click.v / coo.v / cough.v / creak.v / croak.v / croon.v / crunch.v / drone.v / fizzle.v / gasp.v / giggle.v / gobble.v / growl.v / grunt.v / guffaw.v / gurgle.v / hawk.v / hiss.v / hoot.v / howl.v / hum.v / keen.v / mew.v / mewl.v / moan.v / moo.v / neigh.v / patter.v / peal.v / peep.v / plash.v / plonk.v / plop.v / purr.v / quack.v / rasp.v / rattle.v / roar.v / rustle.v / scrape.v / screech.v / scrunch.v / sizzle.v / snarl.v / snicker.v / snigger.v / snore.v / snort.v / sob.v / sough.v / squawk.v / squeak.v / squeal.v / thump.v / thunder.v / tinkle.v / titter.v / toll.v / trumpet.v / tweet.v / twitter.v / ululate.v / wail.v / whimper.v / whine.v / whinny.v / whisper.v / whistle.v / yammer.v / yap.v / yelp.v / yodel.v / yowl.v / crepitate.v / laugh.v / clack.v / sploosh.v / scream.v / ring.v / beep.v / hem and haw.v / boom.v / cry.v / sound.v / honk.v / play.v / toot.v', 'definition': "A physical entity, construed as a point-Sound_source, emits a Sound.  This includes animals and people making noise with their vocal tracts. Sometimes the sound itself is referred to with a nominal expression, in which case it is called the Sound. Manner expressions may also be relevant in this frame, if they describe properties of the sound as such.  A path-schema can be overlaid on the simple noise-making scene, adding a Location_of_source and/or a Path.   This frame does not cover scenarios where objects create sound by coming into forceful contact with one another or rubbing against each other. Such scenarios are covered by the Impact and Friction frames. The current frame also does not cover cases where an animate Agent or a natural Force or Cause causes a single Source or several Sources (moving or rubbing against each other) to make noise. Such scenarios are  covered by the Cause_to_make_noise, Cause_impact and Cause_friction frames (the latter of which is not yet existent). Cases where the major emphasis of the portrayed scene is on the motion of a Theme, with sound emission only an accompaniment, are covered by the Motion_noise frame. Likewise, cases where the Sound itself is portrayed as moving through space are not covered in this frame but rather in Sound_movement. Finally, all nouns used to evoke Sounds have been placed in the Sounds frame. We have done this because these nouns do  not denote sound emission/production events but only the Sound itself (*The siren's blare occurred right on time)."}, {'frame': 'Roadways', 'tfidf': 2.045728577416956, 'lexical_unit': 'road.n / path.n / way.n / street.n / avenue.n / artery.n / highway.n / expressway.n / motorway.n / sidewalk.n / pavement.n / underpass.n / overpass.n / railway.n / railroad.n / route.n / line.n / crosswalk.n / bridge.n / tunnel.n / autobahn.n / lane.n / track.n / trail.n / boulevard.n / course.n / freeway.n / pathway.n / roadway.n / thoroughfare.n / byway.n / cul-de-sac.n / driveway.n / parkway.n / runway.n / bypass.n / flyover.n / rail.n', 'definition': "This frame involves stable Roadways which connect two stable Endpoints, the Source and the Goal.  Being physical objects, these Roadways may have Names and Characteristics; they are also made of a Material.  They also cover ground, so they may have a Path or a Relative_location that the travel occurs in.  ' We crossed the brick road.' ' I prefer to travel on highway I-80.'  'This is the only highway between Lodi and Sonoma.' ' She dreaded turning onto the busy street.'"}, {'frame': 'Required_event', 'tfidf': 1.9794084096537619, 'lexical_unit': 'must.v / need.v / had better.v / better.v / got to.v / gotta.v / hafta.v / oughta.v / have to.v / ought to.v / be supposed (to).v / best.v / shall.v', 'definition': "Unless a particular Required_situation obtains, Negative_consequences will follow.  Alternatively, the Required_situation is required to achieve a Purpose (which avoids Negative_consequences). A set of Circumstances may be specified under which the requirement holds.  'You must turn in your test by 5 p.m.' 'You better have that fixed by tomorrow or else we'll fire you.' 'The book needs to be shorter to sell to such a young audience.'  Most, but not all, LUs of this frame are usable in a context that implies a duty or responsibility, concepts related to the Being_obligated frame. However, our analysis is that such interpretations are due to contextual pragmatic strengthening--in other words, a duty is a frequently salient type of purpose that has negative consequences if not achieved."}, {'frame': 'Cogitation', 'tfidf': 1.9667647530004448, 'lexical_unit': 'brood.v / consider.v / consideration.n / contemplate.v / contemplation.n / deliberate.v / deliberation.n / dwell.v / meditate.v / meditation.n / mull over.v / muse.v / ponder.v / reflect.v / reflection.n / ruminate.v / wonder.v / think.v / give thought.idio / thought.n', 'definition': "A person, the Cognizer, thinks about a Topic over a period of time. What is thought about may be a course of action that the person might take, or something more general.  'The men were silently mulling over the proposition of committing an assassination'"}, {'frame': 'Dimension', 'tfidf': 1.766740001242799, 'lexical_unit': 'tall.a / high.a / wide.a / broad.a / thick.a / deep.a / long.a / breadth.n / depth.n / length.n / width.n / height.n / weigh.v / measure.v / weight.n / area.n / circumference.n / around.adv / work.n / across.adv / level.n', 'definition': "This frame concerns  words that express an Object's position on a scale, its Measurement, with respect to some attribute, its Dimension.  Location,  identifying the sub-region of the Object where the Dimension is measured, may also be expressed.  'The tower is 10 feet tall.'   'The  new vase is 5 cm in circumference at the top.'  Adjectives in this frame must appear with a measurement expression like 5 cm.  Note the tagging of  six feet on the GF and PT layers in the following sentence.  'The woman was six feet tall.'  The GF of six feet is Dep and the PT is NP."}, {'frame': 'Entity', 'tfidf': 1.5257122152842426, 'lexical_unit': 'item.n / entity.n / object.n / thing.n / individual.n / what.n', 'definition': "This frame is for words that denote highly schematic entities.  'We found an unusual wooden object in the desert.'"}, {'frame': 'Taking_time', 'tfidf': 1.4730962202577018, 'lexical_unit': 'take.v / in.prep / fast.a / quick.a / rapid.a / swift.a / speedy.a / slowly.adv / slow.a / gradually.adv / quickly.adv', 'definition': "An Activity takes some Time_length to complete.  If an Agent is involved they may stand in metonymically for the Activity. For some LUs (e.g., fast, speedy) the Degree to which the Activity is conceived of as taking less time than usual can be expressed.  'How long will this take?'  'The ride was speedy and often bumpy.'  'Under high-pressure situations, police officers are very fast at reacting to danger.'"}, {'frame': 'Partitive', 'tfidf': 1.4103772178341138, 'lexical_unit': 'of.prep / out of.prep', 'definition': "A Subset is profiled against the Group it belongs to. The Subset may consist of a single member. Frequently, the Group is actually a generic sample of a full population, and the Subset is  representative of the relative proportion.  'Of all scenes that evoke rural England, this is one of the loveliest.'  ' As of 5:30 p.m. Moscow time, 23 out of 46 miners stranded in the Zapadnaya-Kapitalnaya mine have been rescued'  '1.5 out of  10 respondents preferred Shrub over Ferry'  "}, {'frame': 'Time_vector', 'tfidf': 1.0911790535388468, 'lexical_unit': 'from.prep / hence.prep / after.prep / before.prep / ago.idio / since.adv / down the road.adv / previously.adv / prior.adv / beforehand.adv / afterward.adv / afterwards.adv / right away.adv / sooner rather than later.adv / later.adv / thereafter.adv / through.prep / former.a / formerly.adv / eventually.adv / previous.a / pre.prep / post.prep / ante.prep / finally.adv / then.a / already.adv / until.prep / following.prep / since.prep / in time.adv / yet.adv', 'definition': "An Event is identified as occurring at a particular Distance and in a particular Direction from a Landmark_event.   The lexical units incorporate the Direction and, in some cases, the Landmark_event.   This frame builds on the Direction frame, further specifying the Domain as Time.  This frame will receive some of the lexical units currently found in Relative_time.  ' Tell me that a week from now. ' ' Some twelve months after I had graduated, I had my first job interview'"}, {'frame': 'Possibility', 'tfidf': 0.990197830226167, 'lexical_unit': 'can.v / might.v / may.v / could.v', 'definition': "A Possible_event is deemed to have all pre-conditions satisfied; in other words, it has some probability of occurrence, if some (generally implicit) further Condition pertains.  The Condition, whether overt or implicit, often concerns the decision of an agent to attempt to bring the Possible_event about. The primary implication is that certain other aspects of the situation that might have been expected to prevent the Possible_event, usually lack of capability or permission, do not pertain.  'You ca n't burn glass . INI' 'You can have two more if you want .' 'This sense of lack can never be satisfied .' 'We just ca n't stand it anymore . INI'  This frame is confusable with the Capability frame, which specifically involves an Agent who is presented as needing only the decision to perform an Action in order to successfully perform the Action."}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"Cowboys For Christmas"</span>.</h5>
+                        <br/>
+                        <pre>
+He wanted her to kiss Rafe.
+She could tell by that same intense look of interest he'd displayed when he'd caught her kissing Dan.
+Dan watched her keenly.
+She gazed at Rafe.
+His expectant smile created some wonderful trembles inside her lower belly.
+Suddenly, the idea of kissing Rafe in front of the other two men was a real turn-on.
+She stood and Brady and Dan cheered.
+"Oh, Rafe!
+Looks as if you are gonna get your kiss," Dan said with a grin.
+Arousal flared in his green eyes.
+Brady settled back in his chair and folded his arms casually across his chest.
+His blue eyes were dark and intense as he studied her.
+Heat swirled low in her belly.
+"It's because she's saved the best for last," Rafe replied with a wink.
+JJ's heart hammered crazily as she walked around her chair and stood in front of Rafe.
+His brown eyes dilated with sexual hunger.
+Something lusty whipped through her.
+Her breathing quickened and hot blood coursed through her veins.
+Suddenly, he reached out and grabbed her around the waist.
+She let out a yelp as he pulled her onto his lap.
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"Book Of The Underground"</span>.</h5>
+                        <br/>
+                        <pre>
+Charlie laughed a bit to himself in his head at that last bit of thought as he continued on his way past the staircases, eying staircase 3 on his left.
+Indeed, all of the staircases were in numerical order.
+He made his way over to staircase 3 and stopped at the bottom stair.
+He took a deep breath then began to climb.
+Up the stairs Charlie climbed.
+He eventually could see staircases 4, 5, 6 and 7 in the distance.
+Staircase 7, he thought.
+If anything goes wrong here I'll make my way over there as quickly as possible.
+Hopefully it will bring the best of luck.
+He eventually reached the top of staircase 3.
+Before the cloud of smoke was what appeared to be the top stair stretching toward the wall at the other end.
+As he inched closer to the wall he began to see a little beyond the smoke what was a strange text on the wall.
+The smoke began to clear.
+As soon as it was gone Charlie could clearly make out the bloody writing.
+It was some sort of chant.
+He read it aloud:                                                                                                       "SPIRITS OF THE AIR              YOUR TIME HAS ARRIVED                WITH A POISON SO RARE       YOU WILL RETURN TO YOUR LIVES"
+With a poison so rare?
+He thought.
+What does that mean?
+Without warning a heavy breeze then knocked Charlie out of balance.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="38">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="2">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Perception_active', 'tfidf': 7.249947798104299, 'lexical_unit': 'attend.v / eavesdrop.v / feel.v / gaze.n / gaze.v / glance.n / glance.v / listen.v / look.n / look.v / observation.n / palpate.v / peek.n / peek.v / peep.v / peer.v / savour.v / smell.v / sniff.n / sniff.v / spy.v / stare.n / stare.v / taste.n / taste.v / view.v / watch.v / squint.v / admire.v / eye.v / gape.v / gawk.v / goggle.v', 'definition': "This frame contains perception words whose perceivers intentionally direct their attention to some entity or phenomenon in order to have a perceptual experience.  For this reason we call the perceiver role in this frame Perceiver_agentive.    'She gazed upon him fondly.'  Comparing the Perception_active frame to the Perception_experience frame, we note that for some modalities there are different lexical items in each frame.  For instance, whereas Perception_active contains the verb phrase look at, Perception_experience contains see.   For other sense modalities, we find the same lexical item in both frames.  To illustrate, consider the verb smell.  This first sentence exemplifies the Perception_active use of the verb smell:'Smell this to see if it's fresh.CNI' This second sentence exemplifies its Perception_experience sense: 'I smell something rotten.'  "}, {'frame': 'Posture', 'tfidf': 6.29794373110199, 'lexical_unit': 'bend.v / crouch.v / hunch.v / huddle.v / kneel.v / lean.v / lie.v / sit.v / slouch.v / sprawl.v / squat.v / stand.v / stoop.v / bent.a / crouched.a / huddled.a / hunched.a / sprawled.a / slouched.a / seated.a / posture.n / stance.n / position.n / cower.v / shrink.v', 'definition': "An Agent supports their body in a particular Location.  The LUs of the frame convey which body part is the Point_of_contact where the Agent is supported, what orientation the body is in, and some overall arrangement of the limbs (especially the legs) and the torso.  'He knelt down, hand on heart .'"}, {'frame': 'Capacity', 'tfidf': 5.527968401445539, 'lexical_unit': 'seat.v / fit.v / take.v / sleep.v / feed.v / serve.v', 'definition': "An Entity has the ability to contain a Theme.  'Our facility seats up to 500 people.'"}, {'frame': 'Fleeing', 'tfidf': 5.323001430495024, 'lexical_unit': 'bolt.v / flee.v / run away.v / flight.n', 'definition': "A Self_mover responds to a (real or imagined) danger by moving away from it.  'She had fled from DCS facilities several times before..' 'Pakistanis in US trying to flee to Canada hit roadblocks.' 'Anderson's division suddenly bolted north from Devil's Den, flanked out III Corps almost entirely, and shattered the entire Corps.' 'We fled for several miles before reaching our safe-house.'"}, {'frame': 'Measure_duration', 'tfidf': 5.000339476312931, 'lexical_unit': 'hour.n / minute.n / second.n / day.n / week.n / month.n / year.n / decade.n / century.n / millennium.n / fortnight.n / a while.n / nanosecond.n / time.n', 'definition': 'This frame contains (transparent ) nouns that are Units of measurement for time. The frame elements are Count, Unit and Process.  \'The final total was 606, scored in only 10 hours of excellent batsmanship.\'  In this frame, we will NOT annotate deictic, calendric uses of nouns like week, month, etc. as in "next week, this month, in the 21st century".'}, {'frame': 'Wagering', 'tfidf': 4.917171292267822, 'lexical_unit': 'wager.v / wager.n / bet.v', 'definition': "A Gambler commits an Asset to a prediction that an Uncertain_situation will have a particular Outcome (or class of outcomes). He or she loses the Asset if the prediction ends up being incorrect, and gains it back plus additional winnings if the prediction ends up correct.  'He bet $30 on the horse race.'"}, {'frame': 'Product_line', 'tfidf': 4.698651553001795, 'lexical_unit': 'line.n / collection.n', 'definition': "A specified Designer or a Brand creates and distributes a Collection of related Products. The individual Products may all be part of a set or may just be related by season or other arbitrary reason.  'The new Gucci line is due out in early Spring.'  'He gave her the entire Oscar de la Renta springcollection for her birthday.'  'Clorox now produces a line of eco-friendly cleaning products.'  'Her new product line turned out to be a wild success.'"}, {'frame': 'Claim_ownership', 'tfidf': 4.640867577113062, 'lexical_unit': 'claim.n / claim.v / call.v / dibs.n', 'definition': "A Claimant asserts his or her right to possession of a piece of Property (either real, such as land, or private).  The Claimant may be acting on the behalf of a Beneficiary. 'The King claims this land and surrounding waters.' 'Hoping to strike it rich, Thaddeus Gulch staked his claim by the river bed.' 'I <supp>have</supp> dibs on the last piece of cake.'"}, {'frame': 'Categorization', 'tfidf': 4.530348124264533, 'lexical_unit': 'categorization.n / categorize.v / class.v / classification.n / classify.v / construe.v / interpret.v / interpretation.n / perceive.v / regard.v / translate.v / count.v / peg.v / pigeonhole.v / stereotype.v / typecast.v / understand.v / conceive.v / consider.v / define.v / view.v / render.v / see.v / identify.v / deem.v / bracket.v / read.v / category.n', 'definition': "A Cognizer construes an Item as belonging to a certain Category.  In this process, the Cognizer may either passively perceive the Item and note that it fits the Criteria for a Category, or, alternatively, actively examine the Item for certain Criteria that define a Category (or set of Categorys).    Most members of the frame can also describe a resulting cognitive state of the Cognizer with respect to the Item and Category which no longer requires the current perception or consideration of the Item.  A few LUs (e.g. peg.v, pigeonhole.v) do not readily allow stative interpretation, and a few LUs (e.g. deem.v, regard.v) only allow stative interpretation.  'You 've already stereotyped me as a bimbo, have n't you?'"}, {'frame': 'Quarreling', 'tfidf': 4.034913004098714, 'lexical_unit': 'argue.v / quarrel.v / bicker.v / altercation.n / argument.n / bickering.n / disagreement.n / dispute.n / disputation.n / fight.v / fight.n / quarrel.n / quibble.v / row.n / row.v / spat.n / squabble.v / squabble.n / tiff.n / wrangle.v / wrangling.n / wrangle.n', 'definition': "A group of Arguers (also expressible as Arguer1 and Arguer2) express incompatible opinions or beliefs about an Issue.  'We bickered about semantics for an hour.'"}, {'frame': 'Operating_a_system', 'tfidf': 4.016535305708292, 'lexical_unit': 'operate.v / run.v / manage.v', 'definition': "An Operator manipulates the substructure of a System such that the System performs the function it was created for.  This frame differs from the Using frame in that this frame does not profile the purpose of an agent but rather their manipulation of an entity (System/Instrument). In the case of using, the Agent need not manipulate the Instrument at all, as in: Mrs. Adams used the room as a place to hang the family laundry to dry.   'This true story of domestic bliss was related to me by a friend of mine who for a time operated a bar in San Francisco.'  'A California man has plead guilty to federal charges that he ran a pyramid scam which defrauded nearly 7000 investors.' "}, {'frame': 'Cogitation', 'tfidf': 3.9335295060008897, 'lexical_unit': 'brood.v / consider.v / consideration.n / contemplate.v / contemplation.n / deliberate.v / deliberation.n / dwell.v / meditate.v / meditation.n / mull over.v / muse.v / ponder.v / reflect.v / reflection.n / ruminate.v / wonder.v / think.v / give thought.idio / thought.n', 'definition': "A person, the Cognizer, thinks about a Topic over a period of time. What is thought about may be a course of action that the person might take, or something more general.  'The men were silently mulling over the proposition of committing an assassination'"}, {'frame': 'Conditional_occurrence', 'tfidf': 3.780177788689683, 'lexical_unit': 'if.scon / in the event.prep / assuming.scon / supposing.scon / provided.scon / in case.scon / as long as.scon / what if.scon', 'definition': "A Consequence is presented as occurring if the Profiled_possibility occurs.  See Conditional_scenario for further information.    'If you take too long , the train will leave without you .'"}, {'frame': 'Communication', 'tfidf': 3.771692880418739, 'lexical_unit': 'communicate.v / speech.n / indicate.v / signal.v / communication [act].n / communication [entity].n / contact.n / codeword.n / password.n / convey.v / say.v / share.v', 'definition': "A Communicator conveys a Message to an Addressee; the Topic and Medium of the communication also may be expressed.  This frame includes no specification of the method of communication (speech, writing, gesture, etc.).  This frame and the frames that inherit the general Communication frame can add elaboration to the Medium in a variety of ways (in French, on the radio program, in a letter) or to the Manner of communication (babble, rant, shout, whisper). There are also frames related to Communication that either do not inherit all of the FEs of this frame or do not inherit them in a straightforward manner (such as Conversation, in which Communicator and Addressee alternate roles, and are often expressed by a single, plural NP).  'Let's hope it did n't have time to communicate any of its findings to its overlords.'  NB:  For many words in this domain (those which do not inherently ascribe cognitive/social processes to a Communicator, position a statement within a conversation, or specify Medium in detail), there is a metaphorical usage which maps Communication onto an alternate POV of Becoming_aware, with corresponding maps for frames related to Communication.  This metaphor is most felicitous with Means or Medium subjects, which are mapped onto the Evidence FE of Becoming_aware.  In many cases this metaphor maps Communication onto the Evidence frame, but not always.  Some words from the Communication domain are listed in the Evidence frame since they are deemed to be lexicalized.  'A flick of his gaze toward the doorway told me what he really wanted. (METAPHOR)' 'This painting really speaks to me. INI (MET) ' 'Putting his arm around her protectively achieved nothing but announcing to their captors their vulnerability. (MET)' 'It says a lot that he did n't come back. INI (MET) '"}, {'frame': 'Tasting', 'tfidf': 3.7285715243192854, 'lexical_unit': 'try.v / taste.v', 'definition': "An Agent ingests or begins to ingest a Food item that they have not had before with the intention of determining its quality on some scale. A Purpose for trying the Food may be explicitly mentioned.  'Most people will never try dog.' 'I tasted the soup to see if it had enough salt.'"}, {'frame': 'Coincidence', 'tfidf': 3.6648672403202776, 'lexical_unit': 'coincidence.n / happenstance.n / accident.n / happen.v / chance.n / chance.a / random.a / chance.v / randomly.adv', 'definition': "A State_of_affairs (a state or event) either holds or occurs, and is presented as being causally independent of other (implicit) states or events that might otherwise have been expected to be causally related to the State_of_affairs. The Time or Place may also be mentioned.  'That they got the same answers is just a coincidence.'"}, {'frame': 'Reasoning', 'tfidf': 3.6541999190777665, 'lexical_unit': 'argue.v / prove.v / reason.v / demonstrate.v / show.v / disprove.v / argument.n / polemic.n / case.n / demonstration.n / reasoning.n', 'definition': 'An Arguer presents a Content, along with Support, to an Addressee.  The Content may refer elliptically to a course of action or it may refer to a proposition that the Addressee is to believe.  Some lexical units (e.g. "prove") indicate the speaker\'s belief about the Content.\'Jan argued that the evidence was inadmissable.\'\'Jan argued against the admissability of the evidence.\'\'Jan proved  that the evidence was inadmissable.\''}, {'frame': 'Cooking_creation', 'tfidf': 3.634414292244243, 'lexical_unit': 'concoct.v / cook up.v / whip up.v / cook.v / prepare.v / make.v / bake.v / put together.v / cook.n / preparation.n / baking.n / cooking.n / grill.v / grilling.n / roast.v / roasting.n / fry.v / frying.n / fix.v', 'definition': "This frame describes food and meal preparation.  A Cook creates a Produced_food from (raw) Ingredients.  The Heating_Instrument and/or the Container may also be specified.  'Caitlin baked some cookies from the pre-packaged dough.' "}, {'frame': 'Closure', 'tfidf': 3.441056243628378, 'lexical_unit': 'button.v / open.v / close.v / buckle.v / cap.v / zip.v / lace.v / unzip.v / unbuckle.v / uncork.v / unscrew.v / seal.v / fasten.v / unfasten.v / tie.v', 'definition': "An Agent manipulates a Fastener to open or close a Containing_object (e.g. coat, jar).  Sometimes an Enclosed_region or a Container_portal may be expressed. Since the Manipulator is syntactically omissible, many verbs in this frame incorporate the Fastener.  'Mary closed her coat with a belt.' 'Mary closed her coat with one hand.' 'Mary buttoned her coat .'"}, {'frame': 'Occupy_rank', 'tfidf': 3.4312297860447556, 'lexical_unit': 'rank.v / stand.v / top.a', 'definition': "This frame is about Items in the state of occupying a certain Rank within a hierarchy.  'He ranks second in his class in mathematics.'"}, {'frame': 'Impact', 'tfidf': 3.4098226904887174, 'lexical_unit': 'graze.v / glancing.a / impact.v / hit.v / run.v / smack.v / crash.v / bump.v / clang.v / plow.v / bang.v / collide.v / collision.n / smash.v / strike.v / impact.n / hit.n / thud.v / crash.n / clunk.v / crunch.v / slam.v / plop.v / plunk.v / slap.v / thump.v / chatter.v / clash.v / click.v / patter.v / plash.v / rap.v / tinkle.v / clatter.v / clink.v / hiss.v / rattle.v / touch.v / brush.v / knock.v / impinge.v', 'definition': "While in motion, an Impactor makes sudden, forcible contact with the Impactee, or two Impactors both move, mutually making forcible contact.   'The massive metal foot hit the ground with a huge thud.' "}, {'frame': 'Causation', 'tfidf': 3.1641898338372676, 'lexical_unit': 'cause.v / cause.n / make.v / lead (to).v / reason.n / send.v / bring about.v / precipitate.v / causative.a / render.v / bring.v / bring on.v / induce.v / wreak.v / put.v / since.c / because.c / because of.prep / raise.v / result (in).v / mean.v / result.n / leave.v / for.c / see.v / force.v / give rise.v / so.c / due to.prep / responsible.a / consequence.n / resulting.a / consequent.a / consequential.a / resultant.a / dictate.v / motivate.v / sway.v / legacy.n', 'definition': "A Cause causes an Effect.  Alternatively, an Actor, a participant of a (implicit) Cause, may stand in for the Cause.  The entity Affected by the Causation may stand in for the overall Effect situation or event.   '' Those frames that inherit the Causation frame have as their background the idea that some event is responsible for the occurrence of another event (or state).  In the  inheriting frame, typically an FE like Agent or Causer is proposed in the place of the Actor, but in the daughter frames, as in this frame, the Actor is semantically dependent on the idea of a Cause (an event or state-of-affairs) that the Actor is a participant in.  Similarly, most inheriting frames profile only the Affected entity, not the full Effect situation which is often incorporated into the frame or the particular target.  So, for example, paint.v in the Filling frame entails the final situation of something (the Affected) being covered in paint (the Effect).  'He made me angry.'  'If such a small earthquake causes problems, just imagine a big one!'  'The strange mutations of the rumor mill in the end led to it being said that he was actually a woman.'  'You 've made it impossible to continue!'  'The ending left me feeling kinda empty.'"}, {'frame': 'Frequency', 'tfidf': 3.004977210217329, 'lexical_unit': 'annual.a / bi-annual.a / bi-monthly.a / biennial.a / daily.a / fortnightly.a / frequent.a / infrequent.a / intermittent.a / monthly.a / nightly.a / occasional.a / periodic.a / recurrent.a / recurring.a / sporadic.a / weekly.a / yearly.a / interval.n / period.n / sometime.a / on and off.adv / off and on.adv / frequency.n / always.adv / time to time.adv / never.adv / often.adv / frequently.adv / infrequently.adv / occasionally.adv / sometimes.adv / every.prep / all the time.adv / once in a while.adv / every once in a while.adv / at times.adv / constantly.adv / rare.a / regularly.adv / daily.adv / seldom.adv / usually.adv / normally.adv / in general.adv / generally.adv / ordinarily.adv / every so often.adv / now and then.adv / common.a / recurrence.n', 'definition': "This frame has to do with the repetition (and especially the frequency of repetition) of an event. Many of the adjectives and adverbs in this frame are based on nouns in the Calendric_unit frame.   'China will have to face a high frequency of sand storms in the years to come.' "}, {'frame': 'First_experience', 'tfidf': 2.8583235667039206, 'lexical_unit': 'first.adv', 'definition': "An implicit experiencer has an Experience for the first time. Some LU's may specifically imply an agentive activity.   'In Italy the term was first used by the Venetians in 1546'  'This time, the comet was first seen on the night of 19th October, 1805 by European observers Jean Louis Pons, Johann Sigismund Huth, and Alexis Bouvard'"}, {'frame': 'Working_a_post', 'tfidf': 2.638116349099742, 'lexical_unit': 'man.v / staff.v / work.v', 'definition': "The Agent is assigned to a Post where he or she performs a task associated with that Post. Alternatively, the Agent is expressed as acting with respect to a Salient_entity associated with the task. In most cases the Salient_entity is located at the Post.  'Volunteers were staffing the telephones.'  'Man your stations! CNI'"}, {'frame': 'Purpose', 'tfidf': 2.6035090914609906, 'lexical_unit': 'purpose.n / goal.n / aim.n / objective.n / object.n / target.n / aim.v / intend.v / intention.n / use.n / plan.v / in order.adv / plan.n / bent.a / intent.a / determined.a / mean.v', 'definition': "An Agent wants to achieve a Goal,  or an object.  A Means  has been created or is used to allow the creator or a user to achieve a  Goal. The Goal is a state of the world that does not currently hold but which the Agent wants to realize and is planning and/or working towards. In some cases, it is difficult to decide whether a noun phrase metonymically stands for the Agent or the Means (e.g. The goal [of this paper/seminar/project] is to determine ...). We mark these phrases as Agent on the first layer but also annotate them as Means on a second annotation layer.  In some cases a Restrictor on the Goal state of affairs can be given prominence as a separate constituent. Talking about Goals frequently includes the mention of a Domain to which the Agent's Goal is relevant.  'The modest American goal of a threefold increase in capacity recognises this fact .' 'The object of the tutorial is to help a student concentrate on his writing skills ' ' The prime goal of the programme was to help develop processes of scientific thinking in children .' 'My goal in this book is to introduce the reader to Web programming applications.' 'The president's economic goal for the country was to overcome the recession.'"}, {'frame': 'Removing', 'tfidf': 2.5982962462945083, 'lexical_unit': 'clear.v / confiscate.v / discard.v / dislodge.v / drain.v / eject.v / ejection.n / eliminate.v / elimination.n / empty.v / evacuate.v / evacuation.n / evict.v / eviction.n / excise.v / expel.v / expulsion.n / expunge.v / extract.v / oust.v / pluck.v / prise.v / purge.n / purge.v / removal.n / remove.v / skim.v / snatch.v / strip.v / swipe.v / take.v / withdraw.v / withdrawal.n / unload.v / expurgate.v / wash.v / shave.v / rinse.v / roust.v / dust.v / extraction.n / scrape.v / rip.v / tear.v / cut.v / file.v / disgorge.v / flush.v / weed.v / amputate.v', 'definition': "An Agent causes a Theme to move away from a location, the Source.  The Sourceis profiled by the words in this frame, just as the Goal is profiled in the Placing frame.  'I saw that several men in dark suits had removed all of the evidence from the scene.' 'With your index finger prise the meat out of the shell' 'The torrential winds dislodged most of the roof tiles.'"}, {'frame': 'Negation', 'tfidf': 2.515471833883091, 'lexical_unit': 'not.adv / never.adv / without.prep / no.art / no longer.adv / far.a', 'definition': 'This frame models the semantic contribution of negation, in which the profiled content of the Negated_proposition is asserted to contrast incompatibly with a corresponding Factual_situation, which is normally implicit.  The Negated_proposition and the Factual_situation share non-focal content, on the basis of which they correspond, and contrast in a subset of their content, the focal content, established with reference to a set of focus constructions not described here.  (The focus of negation is often conveyed intonationally in spoken English; in text, however, negative focus must be derived inferentially from contextual reference. A subset of focus constructions will be annotated in the constructicon.)  \'\' While the semantics of negation are quite different from the semantics belonging to most frames, at a minimum, our modeling of the concept using frame semantic tools can be viewed as a practical attempt to label a problem and annotate examples that may inform further research. \'\' Negation can be evoked verbally (analytic or synthetic) or nominally. Negators include "not", "no", "never", and negational affixes, such as those used on inflected verbs in synthetic verbal negation (wasn\'t, isn\'t, haven\'t).  \'It \'s not far from here . INI\' \'She \'s not smart , she \'s sly .\'    '}, {'frame': 'Vehicle_subpart', 'tfidf': 2.4342373899869565, 'lexical_unit': 'door.n / window.n / seat.n / seatbelt.n / tire.n / wheel.n / brake.n / engine.n / hood.n / trunk.n / part.n / windshield.n', 'definition': "An entity is integrated into a vehicle as a Part of a (possibly unexpressed) Whole which may refer to the whole vehicle or merely to a sub-part of the vehicle.  '' 'The car's engine started smoking so we pulled over.' 'Put the bags in the trunk.' 'One should always wear a seatbelt while driving.' "}, {'frame': 'Direction', 'tfidf': 2.3842647503848085, 'lexical_unit': 'east.adv / up.adv / forward.adv / left.adv / right.adv / north.adv / south.n / east.n / south.adv / down.adv / outward.adv / north.n / west.adv / true north.n / way.n', 'definition': 'This frame covers the basic uses of direction words like the adverbs east, up, and forward.  These are used either to talk about a direction of facing (e.g., facing outward, pointing left, looking downward, turn east) or to talk about actual or metaphorical motion (went up, traveling due north).  Lexical units of this frame typically have a semantic type that refers to the means of determining the direction (e.g. forward.adv has the semantic type Landmark_front, meaning that "forward" is defined with respect to the direction from the center of some entity to its front, however defined).  Nevertheless, some words like way.n are used exactly when normal means of specifying direction are not available.  This frame is most frequently used to describe the motion of something along the Path from the Landmark, which is normally implicitly identified as the location of the viewpoint:    \'We went north . DNI\'  In such cases, a Distance from the Landmark can also be given:  \'After she was knocked on the head , it seemed like everything had moved three feet to the left . DNI\'  It can often be used for direction of facing, which is not compatible with the Distance frame element:  \'Look left and you \'ll see it . DNI \'  Although rare for certain lexical units (e.g., upward.adv), most words in this frame are commonly used in a fictive motion pattern to identify locations that can be reached by moving in the indicated way from the Landmark:  \'The book was unreachable, 10 feet up on the shelf. DNI\' \'East of Mt. Diablo the Sierras rise majestically above the Central Valley.\'  \'\'  In this fictive motion case, the Domain and the Independent_variable are both spatial, and should be marked as metaphorical.  Note this differs from members of the Directional_locative_relation frame (e.g., above.prep), which can only be used for relative static positions, and not for facings or for directions of motion:  \'??? The book faced above the door .\' vs. \'The book faced upward .\'  A potential point of confusion is that the Directional_locative_relation frame is also used for cases in which adverbs like east.adv, etc. are followed by "of", since such expressions can only be used of static relative positions and not facings:  \'??? I faced east of the mountains .\'  Another potential point of confusion is that nouns referring to directions can be used for facings if they are preceeded by the word "to".  Since this use of to.prep can be found with a broader class of words like side.n, we interpret this sense of to.prep as mapping relative postitions (belonging to the Directional_locative_relation frame) to true Directions, in the sense of this frame.  This applies to expressions like "to the east", as well as "to both sides" and "to the rear".  In the future, we may add these as multi-word members of the frame.  In the following case, the Domain is "potency" and the Independent_variable is, as usual, time; again, the example should be marked as metaphorical.  \'\' \'They decided to rerate the medication downward in potency .\' \'\'  In mathematical terms, all of these uses can be understood as a Path, made up of a set of positions in some N-space Domain (by default spatial, or metaphorically, other domains), being determined as a function of a Landmark (which may be incorporated and is usually implicit) and some one-dimensional Independent_variable (time, or, metaphorically, other domains).  The Domain and/or the Independent_variable are normally incorporated in the basic definition of the target; thus, for example, up.adv, by default, indicates the Domain is space, and time is the Independent_variable. From a linguistic point of view, we consider these literal spatio-temporal uses to be basic, and other cases, where space is replaced by some other kind of quantity, is to be understood as metaphorical.'}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"Lgem"</span>.</h5>
+                        <br/>
+                        <pre>
+You can usually find a carpool from where you are to where you're going, but you come home.
+I might move up here, Talon Peak or one of the other smaller towns, but not 'away.'
+The people on the other side of the mountains feel the same way about that area.
+More move to the other side than out."
+"The mountains are 'narrow' through here.
+The geology of this southeast spur is interesting, which is why the mountains are somewhat hollow."
+"Yes, Knight, but they're still there.
+If that ore hadn't been so rich they went after it first, they wouldn't be.
+The colonial charter 'expired' a half-century ago."
+"You've heard it too.
+The government is not of the people."
+"It committed great offense against the life of this world.
+I looked.
+It's true."
+"I was a little nervous about looking."
+"Around here, lots do, then go out in the forest and look for scrumptious.
+That mountainside will be a picnic just waiting for a cloth in thirty days.
+No one farms it because it's parkland.
+What did I say?"
+"Nev said... insurance rates wouldn't be high for year-round use and a ski lift could go right beside the clubhouse."
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"The Missing Link"</span>.</h5>
+                        <br/>
+                        <pre>
+I don't know if I will see my adoptive parents again, or if I will take any of their calls, reply to any of their emails.
+I need time to understand, and I left behind a note saying so.
+It's time for me to understand what you never told me - Iris I told Joshua I'll be fine, but now that I am alone on this plane I know the lie is bigger than I thought it would be when I said it.
+I'm leaving all I have behind to look for a sister who might be dead.
+Who might be somewhere where I'll never find her.
+I have objective reasons to feel lonely, and being as physically drained as I am just makes the emotional chaos worse.
+Sleep, Iris, sleep.
+My eyes closed, I try to sleep.
+But I can't, because I have the feeling that a guy is observing me.
+I noticed him when I was lining up at the gate, his eyes somehow constantly brushing on me.
+His gaze was not blunt enough for me to stand up and say, "hey stop it", it was rather the more subtle sideways type of gaze you can't argue against.
+This man is the type you hope won't be sitting close to you, because if he does you'll never be able to push him away.
+At first it seems like our seats are not close, but then he somehow manages to find his way to a spot not too far from where I'm sitting.
+I wonder what he told the hostess to convince her to let him take a seat so bloody close to me.
+As I sit with my eyes closed, I can't see the guy's eyes but I bet they're still slyly landscaping me.
+Perhaps I'm being paranoid.
+I sense that exhaustion is taking over...
+"I thought you wouldn't come anymore", says Stephanie "How late am I?"
+"About a month, but don't worry, we all know that last minutes accidents happen", she says and laughs "I can't believe the flight took so long.
+I'm sorry..."
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="27">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="2">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

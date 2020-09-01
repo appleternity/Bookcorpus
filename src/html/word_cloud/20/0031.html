@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Reference_text', 'tfidf': 7.82194627537319, 'lexical_unit': 'see.v / cf.v / qv.v / refer.v', 'definition': "In a text, a Source_of_information is given that provides a reader of the text with further Information relevant to the text. In this frame the author and reader are completely deprofiled, with the Source_of_information made salient.  'In Densmore's days it was sometimes made of an old-fashioned man's celluloid collar (cf. Densmore 1943: 116).'  'The 'foaming regions' play the role of 'internal shocks' (cf. Piran's recent publication for a review) of GRB theory.'  'Use my() for local variables whenever you can get away with it (but see perlform for where you can't).'"}, {'frame': 'Physical_artworks', 'tfidf': 7.572763130181115, 'lexical_unit': 'photo.n / photograph.n / painting.n / picture.n / drawing.n / statue.n / statuette.n / bronze.n / diagram.n / sculpture.n / image.n / poster.n / trace.n / tracing.n', 'definition': "A physical object, the Artifact, is produced by a Creator to stimulate the perceptions, emotions, or cognition of an audience. Though it need not, in many cases, the created Artifact is intended to represent an actual or imagined entity or event, the Represented. The Represented may be specifically shown in a particular state (State_of_represented).    'Sir Denis Mahon is the owner of the most important private collection of Italian Baroque paintings.'  'He presented Eddie with a watercolour painting and a bouquet of flowers to his wife Frances'  'I just took a picture of the screen and plan to share it with 6.4 billion of my closest friends on the Internet tonight.'"}, {'frame': 'Attention_getting', 'tfidf': 5.756913414090851, 'lexical_unit': "pal.n / sir.n / ma'am.n / buddy.n / kid.n / dude.n / boy.n / guy.n / miss.n / bro.n / homes.n / yoohoo.intj / hello there.intj / excuse me.intj / hey.intj / officer.n", 'definition': "This frame covers terms used to get someone's attention, including Interjections (e.g. hey, yo) and certain terms of address (Address_term), the latter of which may serve the function of attention getting.    'Hey.' 'Hey, boy.' 'Hey, boy, come over here now!'  "}, {'frame': 'Apply_heat', 'tfidf': 4.720476639437108, 'lexical_unit': 'braise.v / blanch.v / brown.v / broil.v / parboil.v / coddle.v / scald.v / stew.v / char.v / poach.v / toast.v / saute.v / microwave.v / steam.v / fry.v / grill.v / roast.v / boil.v / simmer.v / cook.v / bake.v / barbecue.v / deep fry.v / singe.v / sear.v / plank.v / scorch.v / frying.n / grilling.n / boiling.n / roasting.n / melting.n / melt.v / broiling.n / toasting.n / simmering.n / steaming.n / stewing.n / baking.n / cooking.n', 'definition': "A Cook applies heat to Food, where the Temperature_setting of the heat and Duration of application may be specified.  A Heating_instrument, generally indicated by a locative phrase, may also be expressed. Some cooking methods involve the use of a Medium (e.g. milk or water) by which heat is transferred to the Food.  A less semantically prominent Food or Cook is marked Co-participant.   'Sally fried an egg in butter.' 'Sally fried an egg in a teflon pan.' 'Ellen fried the eggs with chopped tomatoes and garlic.'  This frame differs from Cooking_creation in focusing on the process of handling the ingredients, rather than the edible entity that results from the process."}, {'frame': 'Seeking', 'tfidf': 4.651758209782518, 'lexical_unit': 'sniff.v / listen.v / watch.v / grope.v / fumble.v / feel.v / forage.v / hunt.v / nose.v / pan.v / pat down.v / seek.v / palpate.v / manhunt.n / dig.v', 'definition': "A Cognizer_agent attempts to find some Sought_entity by examining some Ground.  The success or failure of this activity (the Outcome) may be indicated.  NB:  This frame should be compared to the Scrutiny frame, in which the primary focus is on the Ground.  'John looked for his pencil.'"}, {'frame': 'Food', 'tfidf': 4.5340984602147865, 'lexical_unit': 'fruit.n / apple.n / banana.n / vegetable.n / carrot.n / potato.n / pea.n / meat.n / beef.n / lamb.n / veal.n / poultry.n / chicken.n / turkey.n / fish.n / salmon.n / tuna.n / shellfish.n / shrimp.n / lobster.n / milk.n / cheese.n / egg.n / butter.n / nut.n / almond.n / peanut.n / pasta.n / noodle.n / herb.n / spice.n / pepper.n / basil.n / cereal.n / lettuce.n / berry.n / bread.n / roll.n / cracker.n / cake.n / pancake.n / cheesecake.n / pastry.n / croissant.n / cookie.n / biscuit.n / sweet.n / chocolate.n / sweetener.n / sugar.n / honey.n / fat.n / oil.n / vinegar.n / coffee.n / juice.n / soup.n / stew.n / sauce.n / dressing.n / vinaigrette.n / ketchup.n / mayonnaise.n / lasagne.n / food.n / tea.n / water.n / date.n / cabbage.n / MRE.n / beer.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Change_of_temperature', 'tfidf': 4.480565943423935, 'lexical_unit': 'chill.v / cool.v / heat.v / refrigerate.v / reheat.v / warm.v / cool off.v', 'definition': "In this frame, the temperature of an Item changes.  An Initial_temperature, Final_temperature, or Temperature_change can also be indicated.    'The house had cooled off by a few more degrees by midnight, and we finally managed to eat a bite.' "}, {'frame': 'People', 'tfidf': 4.3608133177905355, 'lexical_unit': 'people.n / person.n / un.n / guy.n / dude.n / lady.n / man.n / woman.n / fellow.n / gentleman.n / girl.n / individual.n / chap.n / human.n / human being.n / folks.n / life.n / pax.n / folk.n / who.pron / someone.n / somebody.n / personage.n / gent.n / character.n', 'definition': "This frame contains general words for Individuals, i.e. humans. The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have an Age, Descriptor, Origin, Persistent_characteristic, or Ethnicity.  ' A man from Phoenix was shot yesterday.'  ' She gave birth to a screaming babyyesterday.'  ' I study 16-year-old female adolescents.'  ' I am dating an African-American man.'  ' She comforted the terrified child.'  ' I always thought of him as a stupid man.'"}, {'frame': 'Name_conferral', 'tfidf': 4.034369410934603, 'lexical_unit': 'nickname.v / dub.v / christen.v / name.v / baptize.v / rename.v / entitle.v / call.v', 'definition': "This  frame contains words that talk about how Speakers name Entities.  'They drove through an area nicknamed Sniper's Alley' 'His parents named him Winston after the British prime minister.'   In this frame we will ignore uses of words like baptize and christen that don't clearly bring out the name conferral but talk about the meaning of baptism etc. as a sacrament:  'They christened  the child on December 4th.' 'Method was baptized into the church soon thereafter.' 'Cyril was baptized as  a Methodist.'  "}, {'frame': 'Subjective_temperature', 'tfidf': 3.9329354395522453, 'lexical_unit': 'hot.a / warm.a / cool.a / cold.a / burn up.v / freezing.a', 'definition': "An Experiencer senses different degrees of warmth that may or may not be related to the ambient temperature. The level of warmth is usually compared against the Experiencer's subjective standard of comfort.  'My feet are cold.' 'The fire will keep you warm.' 'I'm too hot with this sweater on.'"}, {'frame': 'Statement', 'tfidf': 3.819077471073591, 'lexical_unit': 'add.v / address.v / admission.n / allegation.n / allege.v / announce.v / announcement.n / assert.v / assertion.n / attest.v / aver.v / avow.v / caution.v / claim.n / claim.v / comment.n / comment.v / concession.n / conjecture.n / conjecture.v / contend.v / contention.n / declaration.n / declare.v / denial.n / exclaim.v / exclamation.n / explain.v / gloat.v / insist.v / maintain.v / mention.n / mention.v / preach.v / proclaim.v / proclamation.n / profess.v / pronouncement.n / proposal.n / propose.v / proposition.n / reaffirm.v / recount.v / reiterate.v / relate.v / remark.n / remark.v / report.n / report.v / say.v / speak.v / state.v / statement.n / suggest.v / talk.v / write.v / insistence.n / explanation.n / venture.v / hazard.v / pout.v / smirk.v / confirm.v / avowal.n / acknowledge.v / acknowledgment.n / note.v / observe.v / refute.v / describe.v / promulgation.n / message.n / detail.v / tell.v / allow.v / caution.n / be like.v / challenge.v / pronounce.v', 'definition': "This frame contains verbs and nouns that communicate the act of a Speaker to address a Message to some Addressee using language. Instead of (or in addition to) a Speaker, a Medium may also be mentioned. Likewise, a Topic may be stated instead of a Message. A number of the words can be used performatively, such as declare and insist.  'I now declare you members of this Society.'   'She said that I would be late .'  'The announcement about raffle winners came across the loudspeaker.' "}, {'frame': 'Path_traveled', 'tfidf': 3.813026888748417, 'lexical_unit': 'orbit.n / course.n / circuit.n / path.n', 'definition': "A Path, a series of connected locations, is traversed by a Theme, moving under its own power or under the influence of a physical force. The Path may be described in various terms depending on whether it is bounded or not. If it is bounded, the Path may be identified by its Endpoints, which may be presented separately as Source and Goal.  'For Earth, these perturbations slowly change the eccentricity of the planet's orbit around the Sun.'  'From the eyewitness accounts, as well as satellite data, videos and photos, Brown and his team have worked out the meteor's path through space.'  'Its period around Saturn is just under one Earth day, meaning that it really barrels along, to cover its 700,000 mile orbit in such a short time.'"}, {'frame': 'Sole_instance', 'tfidf': 3.5606520752825133, 'lexical_unit': 'sole.a / only.a / one and only.a / lone.a / single.a', 'definition': "An Item is the only instance of its Type. 'Steven is the sole survivor in his family.'"}, {'frame': 'Partitive', 'tfidf': 3.5259430445852846, 'lexical_unit': 'of.prep / out of.prep', 'definition': "A Subset is profiled against the Group it belongs to. The Subset may consist of a single member. Frequently, the Group is actually a generic sample of a full population, and the Subset is  representative of the relative proportion.  'Of all scenes that evoke rural England, this is one of the loveliest.'  ' As of 5:30 p.m. Moscow time, 23 out of 46 miners stranded in the Zapadnaya-Kapitalnaya mine have been rescued'  '1.5 out of  10 respondents preferred Shrub over Ferry'  "}, {'frame': 'Collaboration', 'tfidf': 3.4603232345868036, 'lexical_unit': 'collaborate.v / partner.v / collaborator.n / partner.n / in cahoots.a / conspire.v / collaboration.n / associate.n / confederate.n / conspiracy.n / collude.v / collusion.n / team up.v / cooperate.v / cooperation.n / affiliated.a / in league.a / jointly.adv / work together.v / together.adv', 'definition': "Partner_1 and Partner_2 or a group of Partners  work together in some Undertaking. The Partners are taken to be of equal status even when expressed disjointly.   ' CSTR actively collaborates with the Departments of Artificial Intelligence  and Physics. ' ' Tom and  the American composer Steve Riche have recently collaborated on a piece of elevator music.'"}, {'frame': 'Inclusion', 'tfidf': 3.3040165184412187, 'lexical_unit': 'include.v / contain.v / have.v / integrated.a / exclude.v / excluding.prep / inclusive.a / including.prep / incorporate.v', 'definition': "A Total has a Part, either  as a member of an aggregate or as  a constituent part of a simple entity.  'His collection included two El Grecos.'"}, {'frame': 'Spatial_co-location', 'tfidf': 3.2157364598058567, 'lexical_unit': 'at.prep / where [relativizer].adv / here.adv / there.adv / where [interrog].adv / home.adv', 'definition': 'A Figure is located essentially at the same location as a Ground, which is viewed as point-like, or having no important internal or external structure.  Typically, the Ground is viewed as point-like due to its small size with respect to a conversationally relevant spatial scale; this scale may be provided by reference to other, distant entities or full paths of travel that make the size of the Ground seem relatively small.  Another use of this frame is to specify a location via a Ground that is primarily considered for its function, rather than its shape; this second use explains why "at the store" is typically used even when a Figure is inside the Ground, but only in cases where the store is considered, according to its prototype, as a place to buy and sell, rather than an architectural entity (in which case "in the store" would be more usual).  \'We are now at the cathedral .\' \'They claim that many Christians were martyred at the Collosseum .\' \'I \'m at my mother \'s .\'  This frame has a very large family of productive metaphors associated with it, the foremost of which maps from the target meaning of values on a quantitive scale (e.g. price, temperature, speed) onto the source domain of vertically-arranged positions in space.  Because this metaphor does not normally serve to locate a cognitive agent, it is only rarely and exceptionally usable with the LU here.adv, which implies being at the same location as the speaker. A separate metaphor maps the target meaning of quantified progress (measured by a quantity associated with a processed entity vs. a quantity associated with what is left to be done) onto the source domain of forward-backward-arranged positions in space.  \' Tesla stock is at a three-month low today .\' \'She put the biscuits in the oven at only 400 degrees .\' \'At fifty dollars , everyone \'s gonna buy one !\' \'If you \'re only at page 20 , just start over .\' '}, {'frame': 'Gradable_proximity', 'tfidf': 3.1703481090779846, 'lexical_unit': 'near.a / close.a / proximity.n / far.a / distant.a', 'definition': 'A Figure is (stably) located with respect to a Ground in terms of how the distance between them compares to some general or contextually relevant scale.  The Degree of divergence from the expected distance may also be expressed.  In addition to the asymmetrical consideration of Figure and Ground, these may be construed collectively as Figures, in which case each entity is assessed for how expected its distance is from others in the group of Figures. \'\' Productive metaphors include cases where the degree of closeness or intimacy between people/entities is conceptualized as gradable proximity ("their close / distant relationship..."). The directness of familial relations is also construed this way ("a close / distant cousin"). Other metaphors involve possibility - usually of more extreme events - as proximity ("it was near collapse / extinction / disaster") and of category fit as proximity ("that was far from perfection / the truth / a miracle").  '}, {'frame': 'Being_employed', 'tfidf': 3.1357128849202978, 'lexical_unit': 'work.v / work.n / employ.n / wait tables.idio / job.n / clerk.v / temp.v / stint.n / employed.a / subcontract.v / farm (out).v / employment.n / unemployment.n / unemployed.a / jobless.a / position.n / at.prep', 'definition': "An Employee has a Position doing work in a particular Field, or doing work on a particular Task, for which an Employer gives Compensation to the Employee.  ' Undocumented foreigners are working as  building contractors for Laing Builders.'"}, {'frame': 'Used_up', 'tfidf': 2.990485418495533, 'lexical_unit': 'spent.a / worn out.a / depleted.a / used up.a / exhausted.a / through.a', 'definition': "Through use, a Resource is diminished in quality or quantity (up to complete attrition) such that it becomes less capable of sustaining future use.   'My entire life savings is depleted due to university and medical bills.'  'All significant oil and gas reserves are exhausted or have dwindled to an uneconomical level except for those of the Middle East.'  'Use shampoo and conditioner every day until the shampoo and conditioner are completely used up.'"}, {'frame': 'Education_teaching', 'tfidf': 2.772547048293525, 'lexical_unit': 'student.n / pupil.n / teacher.n / professor.n / tutor.n / lecturer.n / tutee.n / schoolmaster.n / schoolmistress.n / schoolteacher.n / study.v / tutor.v / coach.v / educate.v / learn.v / school.v / train.v / training.n / instruct.v / teach.v / instruction.n / education.n / master.v / educational.a / graduate.n / protege.n / cram.v', 'definition': 'This frame contains words referring to teaching and the participants in teaching.  A Student comes to learn either about a Subject; a Skill; a Precept; or a Fact as a result of instruction by a Teacher.  Some of the nouns (schoolmaster, -mistress) in this frame refer to administrative positions and do not take relevant frame elements; these will be moved.    \'Dad taught <fex name="">me that if you work hard, you will be OK - no matter what happens. \'  \'What Our Cat  taught Me  About Marketing!\'  \'For two years she taught me French\'  \'Mom and Dad taught me not to bullshit, because it always came back to bite me in the ass, without fail. \'  \'A young swiss girl up in a swiss chalet taught me how to yodel.\'  \'Young Murdock later met a blind martial arts master known as Stick, who taught him how to use his augmented senses and trained him as a fighter.\'  \' Maria, a woman studying to be a nun is sent from her convent to be the governess of the seven children of a widowed naval captain \'  Frame-Element relations:  Several Frame element relations hold in this frame. There is a core-set {Material, Teacher} (possibly also including Institution); these FE\'s can fill the subject slot of the teach-type verbs. There is another core-set  {Precept, Subject, Skill, Fact, Role} to do with what is learnt. In addition, the FE Qualification may occur with Subject and Role  \'My sister is studying for a maths degree    to be a teacher \' \'She\'s studying maths to be a teacher .\'  Phrases expressing Qualification also very often include information about the Subject (see below), which is to be annotated on the second layer.  \'Bill is studying for a BS in physics/a maths degree.\' \'Bill is studying for a BS in physics/a maths degree.\'  '}, {'frame': 'Grasp', 'tfidf': 2.6309084666970435, 'lexical_unit': 'grasp.v / comprehend.v / understand.v / grasp.n / get.v / see.v / unintelligible.a / intelligible.a / comprehensible.a / incomprehensible.a / graspable.a / apprehend.v / fathom.v / follow.v', 'definition': "A Cognizer possesses knowledge about the workings, significance, or meaning of an idea or object, which we call Phenomenon, and is able to make predictions about the behavior or  occurrence of the Phenomenon. The Phenomenon may be incorporated into the wider knowledge structure via categorization, which can be indicated by the mention of a Category. The Cognizer may possess knowledge only in part and this may be expressed in a Completeness expression. The Cognizer may also be realized as a cognitive-emotional Faculty that is conceived of as having understanding. Note that the knowledge may have been acquired either from instruction or from the Cognizer's own experimentation, observation, or mental operations.  Words in this frame are frequently used metonymically to denote the transition into the state described above.  'I figured this out last week and now I really understand it.'  'My father failed to comprehend that his explanations were based as much upon faith as mine'  'The draughtsman must fully comprehend what he is drawing'  'Nobody seems to have explained this to her, but finally she understands DNI'  'I realized I had not properly understood my own needs'  'The mind is often unable to comprehend the significance of what it perceives.'  'Our sensations are in some sense to be understood in terms of a set of stimulation levels (spiking frequencies) in the appropriate sensory pathways. CNI'"}, {'frame': 'Residence', 'tfidf': 2.6163541845968457, 'lexical_unit': 'reside.v / resident.n / dwell.v / stay.v / lodge.v / inhabit.v / inhabitant.n / live.v / camp.v / squat.v / camp.n / camped.a / room-mate.n / squatter.n / occupy.v / dweller.n / camper.n / occupant.n / room.v / shack up.v / bivouac.v / bivouac.n / tenant.n', 'definition': "This frame has to do with people (the Residents) residing in Locations, sometimes with a Co-resident.  'Peter lives in New York.' 'Sue is an inhabitant of Los Angeles.'"}, {'frame': 'Proportional_quantity', 'tfidf': 2.6116049349854613, 'lexical_unit': 'about.prep / a good.a / over.prep / almost.prep / approximately.adv / around.prep / circa.prep / or so.adv / in neighborhood (of).prep / nearly.adv / under.prep / close (to).a / roughly.adv / precisely.adv / exactly.adv / some.art / at least.adv / tops.n / minimum.n / at most.adv / thereabouts.adv / barely.adv / odd.a / much.art / little.art / most.art', 'definition': "The Denoted_quantity is (generally) an imprecise characterization of the quantity of Individuals or a Mass, made with reference to a relatively easily and precisely imaginable Reference_quantity.  'It took about three hours, but we 're done now.' 'But there were barely 300 in the whole district. DNI' 'Put in right around a pinch and a half. DNI ' 'She waited a good second before knocking.' 'She waited a good second before knocking.'"}, {'frame': 'Measure_volume', 'tfidf': 2.5424896334179157, 'lexical_unit': 'pint.n / cup.n / bottle.n / bushel.n / box.n / glass.n / gallon.n / barrel.n / pack.n / bowl.n / teaspoon.n / jug.n / spoon.n / tablespoon.n / bag.n / quart.n / spoonful.n / teaspoonful.n / bagful.n / boxful.n / bucketful.n / tankful.n / sackful.n / packet.n / mug.n / scoop.n / scoopful.n / platter.n / tray.n / busload.n / planeload.n / truckload.n / carload.n / roomful.n / trainload.n / boatload.n / litre.n / can.n / case.n', 'definition': 'This frame is concerned with nouns that denote Units of measurement for volumes. The Frame Elements are Unit, Count,  Stuff, and Size. The frame will be split soon into container-derived volumes (box, bottle etc.) and pure volumes (gallon, quart). For the moment we tag things as follows: \'Greg drank two 2 liter bottles of lemonade.\' \'Sue drank two liters of beer.\' This frame necessitated the introduction of  the GF: Quant and the PT: Num used for expressions such as  the following: \'two cups of coffee\' FE: Count, GF: Quant, PT: Num\'\' Note that we treat cardinal numbers and "a" (= 1) in the same way.  \'a cup of coffee\' FE: Count, GF: Quant, PT: Num\'\' For the present, we prefer not to annotate "many cups of coffee" \'many cups of coffee\' FE: Count, GF: Quant, PT: Adj\'\''}, {'frame': 'Awareness', 'tfidf': 2.4331304875469306, 'lexical_unit': 'aware.a / awareness.n / believe.v / comprehend.v / comprehension.n / conceive.v / conception.n / conscious.a / hunch.n / imagine.v / know.v / knowledge.n / knowledgeable.a / presume.v / presumption.n / reckon.v / supposition.n / suspect.v / suspicion.n / think.v / thought.n / understand.v / understanding.n / ignorance.n / consciousness.n / cognizant.a / unknown.a / idea.n', 'definition': "A Cognizer has a piece of Content in their model of the world.  The Content is not necessarily present due to immediate perception, but usually, rather, due to deduction from perceivables.  In some cases, the deduction of the Content is implicitly based on confidence in sources of information (believe), in some cases based on logic (think), and in other cases the source of the deduction is deprofiled (know).  'Your boss is aware of your commitment.' '' Note that this frame is undergoing some degree of reconsideration.  Many of the targets will be moved to the Opinion frame.  That frame indicates that the Cognizer considers something as true, but the Opinion (compare to Content) is not presupposed to be true; rather it is something that is considered a potential point of difference, as in the following:    'I think that you are awesome.'  In the uses that will remain in the Awareness frame, however, the Content is presupposed.  '' This frame is also distinct from the Certainty frame, in that it does not profile the relationship of the Cognizer to the Content, but rather presupposes it.  In Certainty, the Degree of confidence or certainty is expressible as a separate frame element, as in the following:  'She absolutely knew that he would be there .'  "}, {'frame': 'Containers', 'tfidf': 2.3860034526400233, 'lexical_unit': 'amphora.n / backpack.n / can.n / cart.n / casket.n / chest.n / envelope.n / flask.n / glass.n / handbag.n / jar.n / knapsack.n / ladle.n / locker.n / mug.n / pot [cooking].n / purse.n / reservoir.n / sack.n / satchel.n / spoon.n / suitcase.n / tin.n / wallet.n / teaspoon.n / ampule.n / ashtray.n / bag.n / barrel.n / basin.n / basket.n / beaker.n / bin.n / bottle.n / bowl.n / box.n / briefcase.n / bucket.n / canister.n / canteen.n / carafe.n / carton.n / cartridge.n / case.n / coffer.n / coffin.n / container.n / cooler.n / crate.n / crock.n / crucible.n / cruet.n / cup.n / cuspidor.n / cylinder.n / cask.n / carryall.n / censer.n / chalice.n / creamer.n / decanter.n / dish.n / dispenser.n / drum.n / duffel bag.n / flagon.n / empty.n / etui.n / goblet.n / grail.n / hamper.n / haversack.n / hopper.n / jeroboam.n / jigger.n / jug.n / keg.n / magnum.n / mailer.n / overnighter.n / pack.n / sarcophagus.n / tun.n / stein.n / spittoon.n / pannier.n / ramekin.n / reticule.n / salver.n / samovar.n / snifter.n / thermos.n / tureen.n / valise.n / cauldron.n / casserole.n / folder.n / rucksack.n / pouch.n / vial.n / vase.n / pail.n / pipette.n / tumbler.n / vat.n / vivarium.n / punch bowl.n / toilet bowl.n / wine bottle.n / chest of drawers.n / hot-water bottle.n / urn.n / tank.n / safe.n / planter.n / pot.n / drawer.n / goldfish bowl.a / tub.n', 'definition': "This frame covers entities which are prototypically conceived of and created to fulfill the function of containing--i.e. Containers  that contain objects or substances, the Contents.  This can be expressed as a complement , and includes potential or intended contents.   A Container may also have an Owner, a current Relative_location, Material from which it is constructed, a method of Construction, and a Type.  Note the connection between words in this frame and those in the Filling, Emptying, and Fullness frames. 'a bag of popcorn' 'underwear drawer' 'Chuck's suitcase' 'the suitcase in Chuck's office' 'straw basket' 'woven basket' 'Erlenmeyer flask'"}, {'frame': 'Age', 'tfidf': 2.3742975262712007, 'lexical_unit': 'old.a / ancient.a / young.a / youngish.a / oldish.a / age.n / new.a / fresh.a / of.prep / maturity.n / mature.a / elderly.a', 'definition': "An Entity has existed for a length of time, the Age. The Age can be characterized as a value of the age Attribute, or a Degree modifier may express the deviation of the Age from the norm. The Expressor exhibits qualities of the age of the Entity.  'This building is twenty thousand years old.'  'My grandpa is really old'  'Junior is only five weeks old.'  'A cunning oldish voice called out from the crowd.'  'His age was 23 at the time.'  ' People of  age 55 or older should consult their physician. '  'I have a 13-year-old cousin'  'My grandma is old'  There are additional patterns that the LUs in this frame occur in which are not licensed by a particular lexical head but by a construction.  Additionally, there are patterns that evoke this frame without any overt lexical head that are part of this frame.   'She is 45 years of age.' 'Billy  is 13.'     "}, {'frame': 'Being_located', 'tfidf': 2.3131632008228373, 'lexical_unit': 'located.a / situated.a / lie.v / stand.v / sit.v / whereabouts.n / twenty.n / find.v', 'definition': "A Theme is in a stable position with respect to a Location.  'Our offices are located about two miles south of I-85 .' "}, {'frame': 'Assistance', 'tfidf': 2.2947266883128408, 'lexical_unit': 'assist.v / help.v / abet.v / succor.v / helpful.a / assistance.n / aid.v / aid [act].n / help out.v / serve.v / cater.v / help.n / aid [entity].n / aid and abet.v', 'definition': "A Helper benefits a Benefited_party by enabling the culmination of a Goal that the Benefited_party has.  A Focal_entity that is involved in reaching the Goal may stand in for it.  This Frame has unique Frame-to-Frame Relations: it inherits from and uses the Intentionally_act frame. This is atypical of FrameNet's frame relations.  'Will you help the Government find your brother?' 'Maybe Stephen should assist him with the last manuscript.' 'They helped me psychologically to overcome the physical loss I had suffered.' 'You have helped him tremendously by showing him  how to stand up for himself and by being his friend.' 'By bringing assistance to his troops wherever they were in trouble he aided them greatly.'"}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"An Accidental Pirate The Adventures Of Captain Pigtail Mcque"</span>.</h5>
+                        <br/>
+                        <pre>
+The horny toads had gotten up when the girls did and they went outside to settle themselves down in a spot where the rising sun was hitting and warming the rocks.
+The girls decided to try and use the power they had with the orbs to make breakfast.
+It took a few tries and a number of broken eggs before they got the hang of it and that was only after Pill got an idea as to what to do..
+"Maybe we're thinking too fast.
+I mean, I don't know about you.
+But I think I want an egg in the skillet and then 'zoom' the egg goes crashing into the skillet and the wall.
+Maybe if I think of moving the egg slowly then that would make the egg move slower," Pill suggested.
+She gave it a try and sure enough it worked.
+They started to think in slow motion terms after that.
+"You know, I really wished that these orbs were more like Tally had said, about being pocket sized.
+They would be a heck of a lot easier to manage," Pill told Lark.
+And as if the orb was listening to Pill it began to shrink down until it fit snuggly into the palm of her hand.
+Lark, impressed with what Pill had done immediately thought the same thing and her orb also shrank down to palm size.
+"Neato!"
+Pill exclaimed, "I wonder what else we can do?"
+They spent the rest of time they had while the others slept trying out different things.
+By the time the  adults had gotten up the breakfast was ready, the ship had been loaded with all the gold it could hold and the rest of the gold had been buried in a very neat and deep hole dug out by the orbs power.
+No one had noticed that the gold was gone or that the ship's wheels were sagging a little.
+They all just sat there quietly eating and enjoying their breakfast.
+Tally was having his breakfast in the hide out's entrance.
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"The Mystery Of The Cornerstone"</span>.</h5>
+                        <br/>
+                        <pre>
+After squirting a good amount of sauce on the bacon and replacing the buttered bread, Bess took a bite.
+It was delicious, the combination of the flavours of hot bacon, brown sauce, melted butter and bread, danced on her tongue and she enjoyed every warm mouthful.
+There was nothing better in the world, especially when the weather was as nasty as it was this morning.
+"Mum," Bess said after she had poured herself a cup of tea.
+"I was wondering if you would like to have a look at some of the photos we got from Nan's yesterday.
+There are so many pictures and I don't really know many of the people in them.
+It would be nice to find out who they all are."
+"Of course.
+I'm not sure I'll be any help though, but I can have a look with you later.
+I have some ironing to do, so after I've cleared this lot away and the roast beef is in the oven we can sit down together for a while."
+Bess finished her cup of tea and went back upstairs to her room.
+She picked up the photo again and took another look at it.
+There was no doubt in her mind, she had definitely seen him or someone who looked exactly like him near the old school.
+Carefully she went through all of the photos to see if she could spot the same boy in any more of them, but there was only the one picture.
+After dressing, Bess picked out a few snaps of random family members she didn't know.
+She checked the backs of the photos to see if names were written on them, but there was nothing to indicate who they were.
+A few had dates on, but apart from that, the only picture which had a name on the back was the picture of the boy called Philip.
+Shivering at the thought of seeing someone who could only be described as a ghost, Bess wondered if she should tell Tom about seeing the boy.
+Would he think she was nuts?
+Or, would the thought of seeing a boy from a different time scare him.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="31">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="2">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

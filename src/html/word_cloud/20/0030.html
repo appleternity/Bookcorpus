@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Instance', 'tfidf': 4.724080679859112, 'lexical_unit': 'specimen.n / example.n / case.n / instance.n', 'definition': "This frame concerns transparent nouns that denote Instances of Types of entities or events.  'The survey confirmed that management interference in team operations had increased , and instances of management decisions being taken without team consultation had also increased .'"}, {'frame': 'Labor_product', 'tfidf': 4.643862089415617, 'lexical_unit': 'oeuvre.n / work.n / output.n', 'definition': 'An Agent or a Cause mentally or physically expends energy rendering an Input, whether implicit or explicit, into a Output.  \'Erosion is the work of wind and water on rock.\'  NB:  The Input in the case of artistic Output, or an " artistic work" as more commonly referred to, is usually INI, because the material at hand being rendered is usually an idea or artistic material that is taken as common foreground knowledge by the semantics of the Agent\'s professional role.  \'One of Chinua Achebe\'s greatest works was Things Fall Apart. INI\'   '}, {'frame': 'Growing_food', 'tfidf': 4.399942852681292, 'lexical_unit': 'grow.v / raise.v', 'definition': "A Grower endeavors to tend to and influence the environment of Food so as to foster its growth.  'I grow my own vegetables.'  "}, {'frame': 'Rest', 'tfidf': 4.355513794420872, 'lexical_unit': 'rest.n / complement.n / complement.v', 'definition': "One Part of a larger Whole has been mentioned, is inferrable, or is available in the discourse setting and the previously unmentioned part, the Rest, is now mentioned.  'The lenses , like the rest of the exoskeleton, are made of calcite.' 'They see social policy work as a natural complement to bureau work.'"}, {'frame': 'Successful_action', 'tfidf': 4.302972527825926, 'lexical_unit': 'succeed.v / do the trick.v / do it.v / successful.a / come off.v / fail.v / unsuccessful.a / manage.v / failed.a / go wrong.v / success.n / serve.v', 'definition': "The Means action by which a deprofiled agent (the Protagonist) has attempted to achieve a Goal, is finished and the actual outcome of the Means action has been resolved, so that it either specifically matches the Protagonist's intent (e.g. success) or does not match it (e.g. failure). In an alternative construal, an Instrument stands for the Means action that the deprofiled agent undertakes in order to achieve the Goal.   'Why our bid was successful. DNI' 'Your attempt to unsubscribe was unsuccessful, please try again later. DNI' ' Well I did end up replacing the old co axial cables with new monster ones and it did the trick. DNI' 'The hammer did it, not a scratch or dent in the parts as they came apart DNI.' 'What has failed in Palestine, will fail in Iraq. DNI'"}, {'frame': 'Inspecting', 'tfidf': 4.0598714809307035, 'lexical_unit': 'inspect.v / proof-read.v / frisk.v / inspection.n / check.v / double-check.v / examine.v / pat down.v / examination.n', 'definition': "An Inspector directs his/her perceptual attention to a Ground to ascertain whether the Ground is intact or  whether an Unwanted_entity is present. Alternatively, the desired outcome of the inspection may be presented as a Purpose.   'The police removed Flonnory and Barbour from the automobile and frisked them for weapons.' 'Double-check the form to make sure all of the information has been entered correctly.' "}, {'frame': 'Come_together', 'tfidf': 3.9768219390127664, 'lexical_unit': 'gang together.v / band together.v / come together.v / gather.v / throng.v / meet.v / amass.v / congregate.v / band.v / assemble.v / convene.v', 'definition': "In this frame a group of Individuals meet to form a Configuration. The Individuals or the Configuration may be expressed as the external argument of the predicates in this frame. In this frame, it is ambiguous whether or not the Individuals intentionally come together.  In an alternative construal, a grammatically more prominent Party_1 congregates with a Party_2, expressed as an oblique phrase. If this asymmetric construal is chosen, Purpose relates only to Party_1. '' The congregating happens in a certain Place and at a certain Time. '' 'The crowd came together in the courtyard.' 'The architects amassed in the lobby.' "}, {'frame': 'Cause_motion', 'tfidf': 3.9144803674639794, 'lexical_unit': 'cast.v / catapult.v / chuck.v / drag.v / fling.v / hurl.v / nudge.v / pitch.v / press.v / push.v / shove.v / throw.v / thrust.v / toss.v / tug.v / yank.v / scoot.v / draw.v / run.v / slide.v / pull.v / drive.v / move.v / force.v / haul.v / attract.v / knock.v / punt.v / roll.v / jerk.v / propel.v / launch.v / stick.v / transfer.v / hit.v / slam.v / drop.v / rake.v / impel.v / wrench.v / wrest.v / lift.v', 'definition': 'An Agent causes a Theme to move from a Source, along a Path, to a Goal.  Different members of the frame emphasize the trajectory to different degrees, and a given instance of the frame will usually leave some of the Source, Path and/or Goal implicit. The completion of motion is not required (unlike the Placing frame, see below), although individual sentences annotated with this frame may emphasize the Goal.   \'\' This frame is very broad and contains several different kinds of words that refer to causing motion.  Some words in this frame do not emphasize the Manner/Means of causing the motion (transfer.v, move.v).  For many of the others (cast.v, throw.v, chuck.v, etc.), the Agent has control of the Theme only at the Source of motion, and does not experience overall motion.  For others (e.g. drag.v, push.v, shove.v, etc.) the Agent has control of the Theme throughout the motion; for these words, the Theme is resistant to motion due to some friction with the surface along which they move.    \'She threw her shoes into the dryer .\' \'The mechanic dragged the jack out from under the car .\' \'We will move the sofa out of the room through the french doors, down the stairs, and onto the sidewalk .\' \'\' \'\'  This frame is used in a very large number of productive metaphors, not all of which can be outlined here.  The most salient types include causing an entity, construed as a Theme, to change state from an initial state (Source) via an intermediate state (Path) to a final state (Goal): \'Hillary was catapulted to stardom and his life has never been the same since . CNI\' \'She felt as though flung from health to illness and back by the day , by the hour .\' \'Once our parents are dead , we are catapulted into becoming the older generation ourselves . CNI\' \'Croquet was pushed out by tennis .\' \'\'  A particularly divergent subtype casts changing someone\'s intentions as changing their location: \'Democratsforced the Senate into a rare closed door session .\' \'He nudged Mrs Thatcher towards acceptance of a unified Germany .\' \'\'  Another subtype is specifically about causing a change in quantity (the Theme) through some sequence of values (Source, Path, and Goal): \'Bonus payments would be handed out for pushing up voting levels CNI .\' \'\'  Another type, with many subtypes, involves causing an action or state (construed as a Theme) to have an effect on another person or location or conceptual domain. In such cases, theGoal is used for the final affected domain, and Source for initial affected domain, Path for an intermediate affected domain, and Distance for degree of difference between original application of the action and final: \'Jake had been hurling these same insults at her now for years\' \'One can not press this argument too far .\' \'She shoved the thought to the very back of her mind .\' \'She flung him a savage little smile .\' All of the foregoing metaphorical uses are annotated in this frame and marked "Metaphor", since they seem to be semantically motivated and not lexically idiosyncratic. \'\' \'\'  This frame contrasts with the following frames which talk about an Agent changing a Theme\'s position with respect to a landmark (either Source or Goal): \'\'  In Placing, the figure (Theme) is profiled as the object, and ends up on the ground (Goal).  The focus is on the final stage of motion, in which the Theme ends up at the Goal, and usually stably remains there. \'Joyce placed the flowers onto the bed.\' \'\'  In Filling, the ground (Goal) is profiled as the object, and the figure (Theme) ends up on the ground (Goal). \'John filled the box with old toys.\' \'\'  In Removing, the figure (Theme) is profiled, and is removed from the ground (Source). \'Jennifer removed the flowers from the bed.\' \'\'  In Emptying, the ground (Source) is profiled and the figure (Theme) is removed from it. \'Jason emptied the box of the old toys .\' \'\'  Words of this frame also differ from the words of the Bringing frame in that they are more general:  either the Agent has a momentary interaction with the Theme that causes its motion, unlike the continuous causation of Bringing, or the Agent continuously acts on the Theme, but there is no supporting object that helps with the motion like the Carrier of the Bringing frame.  '}, {'frame': 'Success_or_failure', 'tfidf': 3.882196065804488, 'lexical_unit': 'succeed.v / fail.v / successful.a / pull off.v / unsuccessful.a / success.n / manage.v / miss.v / failure.n / failing.n / ace.v / get there.v', 'definition': "An Agent has attempted to achieve a Goal, and the actual outcome of the Agent's action has been resolved, so that it either specifically matches the Agent's intent (e.g. success) or does not match it (e.g. failure).  'He pulled off his April Fool's Day prank by the barest of margins .' 'Unfortunately, we were n't successful. DNI' 'We failed miserably at getting the gay rights bill passed .'"}, {'frame': 'Desiring', 'tfidf': 3.772992812705968, 'lexical_unit': 'want.v / desire.v / desire.n / desirous.a / lust.n / lust.v / hunger.v / hunger.n / hungry.a / thirst.n / thirst.v / thirsty.a / long.v / longing.n / urge.n / aspire.v / wish.n / wish (that).v / eager.a / hanker.v / hankering.n / aspiration.n / crave.v / craving.n / yearn.v / yen.n / yearning.n / wants.n / hope.v / hope.n / covet.v / covetous.a / will.v / wish.v / yen.v / ambition.n / feel like.v / interested.a / in the hope of.prep / raring.a / spoiling.a / dying.a / fancy.v / pine.v / ache.v / desired.a / will.n / itch.v / loath.a / reluctant.a / care.v / in hopes of.prep / impulse.n', 'definition': "An Experiencer desires that an Event occur.  (Note that commonly a resultant state of the Event will stand in for the Event.)  In some cases, the Experiencer is an active participant in the Event, and in such cases the Event itself is often not mentioned, but rather some Focal_participant which is subordinately involved in the Event. ''Generally, the use of a word in this frame implies that the specific Event has not yet happened, but that the Experiencer believes that they would be happier if it did.  Sometimes the Time_of_event, Purpose_of_event, or the Location_of_event are mentioned without the explicit mention of the Event. 'I only wanted one piece of candy.' 'The company was eager for him to leave as soon as possible.' 'Susan really wishes that you 'd listen to her.'"}, {'frame': 'Appointing', 'tfidf': 3.7044485592952405, 'lexical_unit': 'accredit.v / appoint.v / accredited.a / designate.v / finger.v / tap.v / name.v', 'definition': "A Selector, often an individual in a leadership role, appoints a Official to assume an official Role in an organization (which can be expressed as the Body).  'Press secretaries accredit journalists to the sessions.'"}, {'frame': 'Conduct', 'tfidf': 3.5981637509483773, 'lexical_unit': 'conduct.n / deportment.n / behavior.n / comportment.n / misbehave.v / misbehavior.n / behave.v / act.v / act up.v / bearing.n / conduct.v / carry oneself.v / demeanor.n / manner.n / way.n', 'definition': "An Agent acts in a certain Manner either generally or under some particular Circumstances. The conduct may also be directed specifically towards an Affected_party.  ' He pledges to  conduct himself  with honesty and humility.' ' This year they have behaved themselves particularly impudently.' ' His appearance was as   immaculate as ever and his bearing  composed and dignified. '"}, {'frame': 'Hiding_objects', 'tfidf': 3.5944232439571007, 'lexical_unit': 'hide.v / conceal.v / mask.v / shroud.v / camouflage.v / block.v / cover.v', 'definition': "An Agent causes a Hidden_object to become perceptually inaccessible to potential perceivers by placing it in a Hiding_place or putting in place an Obstruction that screens the object.  'Therefore, as I passed the school, I hid the gun and holster in the mailbox'  'Gruenwald hid the money at a local garbage dump then retrieved it the following morning.'  'In later books Harry often tries to hide his scar with his hair. '"}, {'frame': 'Traversing', 'tfidf': 3.50145987235099, 'lexical_unit': 'traverse.v / skirt.v / mount.v / descent.n / descend.v / cross.v / crisscross.v / ascent.n / ascend.v / jump.v / pass.v / circle.v / hop.v / leap.v', 'definition': "A Theme changes location with respect to a salient location, which can be expressed by a Source, Path, Goal, Area, Direction, Path_shape, or Distance, as shown in the examples below: ''  'Start your ascent from Achintree Farm in Glen Nevis.'  'We crossed the desert.'  'She jumped across the ditch that marked the entrance to the woods.'  'The children hopped into the neighbor's yard.'  'I leaped twenty feet before slipping and falling.'  'As they did so, the plane circled lower.'  'Boyner has been crisscrossing the country since May.'"}, {'frame': 'Remembering_experience', 'tfidf': 3.4603572453001816, 'lexical_unit': 'remember.v / forget.v / memory.n / recall.v / look back.v / reminisce.v', 'definition': 'A Cognizer calls up an episodic memory of past Experience or an Impression of a Salient_entity formed  on the basis of past experience. The Cognizer may also remember  the Salient_entity in a particular State, which serves as a frame of reference in the Cognizer\'s mind.   When attention is focused on a Salient_entity, then mention of a global Experience is excluded and typically, but not always, either a State or Impression of the Salient_entity is presented.  \'\' Episodic memory is the  explicit memory of events. It includes time, place, and associated emotions (which affect the quality of the memorization). Episodic memory contrasts and interacts with semantic memory, the memory of facts and concepts. The Remembering_information frame is concerned with this latter type of memory.   \'Kozmo could remember when his modem was the fastest he could buy.\'  \'That\'s probably before my time, which was long time ago, Fish may remember that time.\'  \'Who remembers me being a total dork and going up to everyone saying "Hey, I\'m Ashley Hunt from Chicago"!?!\'   \' I wanted to remember how good that felt.\'  \'Hummel says staff, both students and professional, remember  her as a "very good friend, available for new staff and well-respected by everyone."\'   \'Somehow I remember him as older, with long eyelashes, and doe eyes.\'  \'When he died he was just a kid himself but for some reason at the age of 44 I still remember him as older than me. \'  \'Retro games are great, but a lot of the time people get clouded by nostalgia and remember them to be better than they really were\'  \'He remembered him as a kindly man but not a very lively one. \'  \'The part I vividly remember was about a South Seas tramp steamer captain . \''}, {'frame': 'Process_stop', 'tfidf': 3.4468444391886877, 'lexical_unit': 'stop.v / discontinue.v / desist.v / quit.v / cease.v / cessation.n / discontinuation.n / halt.n / shutdown.n / kill.v / shut down.v', 'definition': "A Process stops at a certain Time and Place.  Reason may also be specified.  A Duration may be included in order to indicate the length of the persistence of the Paused-state before action resumes.  NB:  Refer to Process frame. '' 'The strident, static-like hiss ceased abruptly.'  'The use of railway-owned vehicles on aggregates traffic ceased altogether in 1989.'"}, {'frame': 'Offering', 'tfidf': 3.4379917197284415, 'lexical_unit': 'offer.v / proffer.v / extend.v / serve.v', 'definition': "An Offerer indicates that he or she is able and willing to give a Theme to a Potential_recipient. In the absence of further qualifications, it is often understood that the Potential_recipient accepts the Theme.  'The host graciously offered us food and drink.'"}, {'frame': 'Shapes', 'tfidf': 3.2629135479093905, 'lexical_unit': 'square.n / sheet.n / coil.n / cube.n / stick.n / strip.n / stretch.n / ribbon.n / expanse.n / circle.n / ball.n / length.n / shape.n / curve.n / circular.a / line.n / row.n / triangle.n / wedge.n / v.n / oval.n / round.a / ellipse.n', 'definition': "This frame contains words which describe the dimensional extent and Shape of a Substance.  These words do not make reference to a Part-whole relationship. There can also be a descriptor of the Shape, Shape_prop.  'She held a square of cloth .'"}, {'frame': 'Cause_change', 'tfidf': 3.111254603522477, 'lexical_unit': 'make.v / turn.v / change.v / convert.v / transform.v / modify.v / alter.v / modification.n / alteration.n / conversion.n / transformation.n / vary.v / variation.n / reshape.v / shift.v / deform.v', 'definition': "An Agent or Cause causes an Entity to change, either in its category membership or in terms of the value of an Attribute. In the former case, an Initial_category and a Final_category may be expressed, in the latter case an Initial_value and a Final_value can be specified.  'Our storylines follows the saga outlined by the Ultima Series, but we have modified it in order to make our writing more cohesive.'   'I don't think you can turn that rabbit into a hat.'  'How can a guy that changed his name from Bob Craft to Jack Ass declare anyone defamed his character?'  ' At this juncture, a new development changed the political situation on the island.'  'She had at some time earlier completely changed her clothing and appearance and now stood in front of me dressed like a garden gnome.'  'Hence, when (Hg 0 ) is converted to Hg 2+ , it can be rapidly taken up in rain water, snow, or adsorbed onto small particles' 'Hence, when (Hg 0 ) is converted to Hg 2+ , it can be rapidly taken up in rain water, snow, or adsorbed onto small particles'"}, {'frame': 'Age', 'tfidf': 2.967871907839001, 'lexical_unit': 'old.a / ancient.a / young.a / youngish.a / oldish.a / age.n / new.a / fresh.a / of.prep / maturity.n / mature.a / elderly.a', 'definition': "An Entity has existed for a length of time, the Age. The Age can be characterized as a value of the age Attribute, or a Degree modifier may express the deviation of the Age from the norm. The Expressor exhibits qualities of the age of the Entity.  'This building is twenty thousand years old.'  'My grandpa is really old'  'Junior is only five weeks old.'  'A cunning oldish voice called out from the crowd.'  'His age was 23 at the time.'  ' People of  age 55 or older should consult their physician. '  'I have a 13-year-old cousin'  'My grandma is old'  There are additional patterns that the LUs in this frame occur in which are not licensed by a particular lexical head but by a construction.  Additionally, there are patterns that evoke this frame without any overt lexical head that are part of this frame.   'She is 45 years of age.' 'Billy  is 13.'     "}, {'frame': 'Being_named', 'tfidf': 2.929556951915176, 'lexical_unit': 'pseudonym.n / name.n / nickname.n / surname.n / forename.n / maiden name.n / Christian name.n / family name.n / nom de plume.n / nom de guerre.n / moniker.n / pen name.n / first name.n / last name.n / middle name.n / stage name.n / alias.n / given name.n / entitled.a / named.a / codename.n / codenamed.a / pet name.n / cognomen.n / agnomen.n / by-name.n / caconym.n / praenomen.n / misnomer.n / married name.n / allonym.n / soubriquet.n / nee.a / brand name.n / patronymic.n / metronymic.n / trivial name.n / eponym.n / also known as.a / aka.a / go.v / nameless.a / known.a / so-called.a / designated.a / full name.n', 'definition': "This frame concerns entities conventionally being referred to by particular names.  'Her name was Lola.' "}, {'frame': 'Destiny', 'tfidf': 2.895498054108351, 'lexical_unit': 'destiny.n / fate.n / lot.n / fortune.n / kismet.n / stars.n / doom.n / the breaks.n / in the cards.adv / predestined.a / destined.a / fated.a / doomed.a', 'definition': "An State_of_affairs will come to hold with respect to a Protagonist at some future time. The Protagonist is not conceived of as having control over whether the State_of_affairs will hold: obscurely related previous actions or circumstances, or some hidden power may have already determined that it will occur.  'Exile was his fate and he triumphantly turned it into the fruit of his life.'  'One could say that it was Indonesia's destiny to initiate the decolonization process.'  'The sun's ultimate fate is as a white dwarf, a dense, cold core the size of the earth.'  'At the time it did not appear that greatness was in her stars.'  'Nine for mortal men , doomed to die .'  'This seemingly predestined meeting between a creator and the model he has pursued all his life suggests a kind of miracle . ' "}, {'frame': 'Activity_done_state', 'tfidf': 2.832833000139537, 'lexical_unit': 'done.a / finished.a / through.a', 'definition': "An Agent has completed an Activity. '' 'Finally I am done cleaning the apartment.'  'Construction on the new Safeway was done by October.'"}, {'frame': 'Education_teaching', 'tfidf': 2.772547048293525, 'lexical_unit': 'student.n / pupil.n / teacher.n / professor.n / tutor.n / lecturer.n / tutee.n / schoolmaster.n / schoolmistress.n / schoolteacher.n / study.v / tutor.v / coach.v / educate.v / learn.v / school.v / train.v / training.n / instruct.v / teach.v / instruction.n / education.n / master.v / educational.a / graduate.n / protege.n / cram.v', 'definition': 'This frame contains words referring to teaching and the participants in teaching.  A Student comes to learn either about a Subject; a Skill; a Precept; or a Fact as a result of instruction by a Teacher.  Some of the nouns (schoolmaster, -mistress) in this frame refer to administrative positions and do not take relevant frame elements; these will be moved.    \'Dad taught <fex name="">me that if you work hard, you will be OK - no matter what happens. \'  \'What Our Cat  taught Me  About Marketing!\'  \'For two years she taught me French\'  \'Mom and Dad taught me not to bullshit, because it always came back to bite me in the ass, without fail. \'  \'A young swiss girl up in a swiss chalet taught me how to yodel.\'  \'Young Murdock later met a blind martial arts master known as Stick, who taught him how to use his augmented senses and trained him as a fighter.\'  \' Maria, a woman studying to be a nun is sent from her convent to be the governess of the seven children of a widowed naval captain \'  Frame-Element relations:  Several Frame element relations hold in this frame. There is a core-set {Material, Teacher} (possibly also including Institution); these FE\'s can fill the subject slot of the teach-type verbs. There is another core-set  {Precept, Subject, Skill, Fact, Role} to do with what is learnt. In addition, the FE Qualification may occur with Subject and Role  \'My sister is studying for a maths degree    to be a teacher \' \'She\'s studying maths to be a teacher .\'  Phrases expressing Qualification also very often include information about the Subject (see below), which is to be annotated on the second layer.  \'Bill is studying for a BS in physics/a maths degree.\' \'Bill is studying for a BS in physics/a maths degree.\'  '}, {'frame': 'Businesses', 'tfidf': 2.6688497090693475, 'lexical_unit': 'business.n / shop.n / establishment.n / mill.n / practice.n / firm.n / operation.n / company.n / chain.n / corporation.n / paper.n / store.n / bank.n / boutique.n', 'definition': "A Proprietor owns or runs a Business which provides a Product (which may be goods or services).  'The consumer electronics company Apple has exploded with popularity in recent years.'"}, {'frame': 'Topic', 'tfidf': 2.658467811403671, 'lexical_unit': 'about.prep / concern.v / discuss.v / topic.n / subject.n / cover.v / regarding.prep / treat.v / address.v / concerning.prep / theme.n / dwell (on).v / on.prep / regard.v / regard.n / refer.v', 'definition': "A stretch of linguistic discourse or a Text that a Communicator produces has a Topic that it is about.  'Chapter 5 discusses the issue of transubstantiation.' 'Smither's essay is about plane spotting.' ' Ostrovsky addresses monetary policy in Chapter 5.' 'This book is mostly about particle physics.'"}, {'frame': 'Transition_to_state', 'tfidf': 2.6356980043371983, 'lexical_unit': 'grow.v / get.v / end up.v', 'definition': "An Entity ends up in a Final_category, Final_situation, or Final_quality which it was not in before.  Some members of the frame (e.g. grow.v) tend to emphasize a gradual change, while most members of the frame do not indicate whether a change is gradual or not.    'Why I became an Emacs user'  'I left the ministry and became an atheist.'  'Surprisingly, various veteran organizations also turned vehemently antiwar.'  ' Over the years she grew to hate him.'  This frame should be compared to Undergoing_change.  Undergoing_change is different in that it much more emphasizes the difference between the pre- and post-states of the Entity.  This shows up both in Undergoing_change's increased occurrence with Initial_category and Initial_state (change from red to blue) and in its increased occurrence with Final_category (changed into a toad) rather than Final_situation or Final_quality (?changed to red vs. became/turned red).  In addition, when Undergoing_change occurs with the Final_category frame element, it presents a deep difference between the Initial_category and the Final_category, so that it is humorous to say 'she turned into a Republican', because it presents this as a fundamental change of identity; compare to 'she became a Republican', which is quite normal.  In a less humorous example, someone can 'turn into a Mac user', strongly implying that they no longer use their former operating system, while if they 'become a Mac user', this is either as a replacement of other OS's or potentially as an addition to the use of other OS's."}, {'frame': 'Architectural_part', 'tfidf': 2.4163098743341838, 'lexical_unit': 'fireplace.n / floor.n / ceiling.n / mantel.n / roof.n / rail.n / wall.n / counter.n / facade.n / foundation.n / flight.n / landing.n / window.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  'We need new counters for the kitchen'  'The storm ripped off the bathroom's roof'  "}, {'frame': 'Usefulness', 'tfidf': 2.3863752171315027, 'lexical_unit': 'good.a / effective.a / excellent.a / outstanding.a / superb.a / wonderful.a / fantastic.a / fine.a / tremendous.a / terrific.a / marvellous.a / great.a / super.a / splendid.a / useful.a / utility.n / value.n / valuable.a / perfect.a / ideal.a / ineffective.a / work.v / strong.a', 'definition': "An Entity aids in the successful completion of a Purpose.  Its Degree of utility may also be expressed. Some of the lexical units  in this frame (e.g. great, good) can only express permanent, generic states of the Entity.  'A box is an ideal storage device.'"}, {'frame': 'Have_as_requirement', 'tfidf': 2.3232356813220014, 'lexical_unit': 'demand.v / require.v / take.v / need.v', 'definition': "The obtaining of a Requirement state of affairs or the presence of a Required_entity is profiled as a prerequisite for the obtaining or occurring of a Dependent state-of-affairs.  'This game demands great skill.'  'The war on terror requires little sacrifice for most Americans.'  'Glass  art demands great patience from the student.'"}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"Reunion At University Avenue"</span>.</h5>
+                        <br/>
+                        <pre>
+Several fraternity presidents have tried and failed to gain entry into The Circle.
+So, a lot of his frat's ambition rest on his shoulders, and he has only a decent shot of getting in now, on his first try.
+Even more than that, Rick was being pressured by SOAR to turnout the votes of his fraternity and the non-Greeks he can persuade for the upcoming election.
+Smartly, however, Rick did his best to hide his troubles, even if the effort failed to work on some of his friends.
+Rick grew elated when he saw Mike heading his way.
+Mike was an example of one of those persuadable he needed to swing over to his side.
+The idealist would not stop complaining about the election, suggesting that he was torn between two good friends - Richard Lowell on the Alliance ticket, and SOAR's nominee opposite Aimee Jackson, Kit Moody.
+He was disgusted with the Alliance campaign tactics and even some of Alliance's unsavory elements, but struggled with the possibility of splitting his beloved Academic Council in two.
+Rick crumbled the paper, and tossed it into a nearby trashcan.
+After they met up, Mike offered his opinion: "Relax, being ridiculed by the Times is a ritual we all go through, and the sad thing is it might actually help you get tapped.
+The Circle, as much anyone else, likes to spite the paper as much as the paper bashed them."
+"That still guarantees nothing," Rick said obviously as they moved their way out of the plaza.
+"Of course, but if anyone deserves to be recognized for their work in SG this year, it's you.
+The Circle should recognize that."
+"Too bad you don't have a vote in there," Rick pointed out as Mike turned in the direction of the student union, glancing toward the third floor of that infamous building.
+"You know, Rick, there are days...
+But I almost don't want to know what goes on in there more than you want to be there."
+Mike pulled out his phone and checked the time.
+"I gotta jet; got class in five minutes."
+As he walked away, Mike remembered something.
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"The Expats"</span>.</h5>
+                        <br/>
+                        <pre>
+Muslims and Hindus butchered each other and, according to the elders, rivers of blood flowed.
+Any friendship between Aamir and Neelum was unthinkable, and when Neelum reached eighteen, her parents wasted no time in arranging a marriage to Vikram in Bahrain, severing contact with Aamir forever.
+Tears welled as the familiar longing for her lost love threatened to overwhelm.
+Unaware of her daughter-in-law's sadness Kamala untied a knot at the end of her sari and carefully counted out some money.
+'Take this and buy the basmati rice and red lentils,' she said.
+'Also some condensed milk and tea.
+And see if that Indian mackerel fish is available.'
+Without allowing Neelum time to clear away the vegetables Kamala pressed the money into her hand.
+'And don't loiter, comeback quick-quick.
+It's late already.'
+Neelum swallowed hard.
+She felt like back-answering her mother-in-law, but knew it would only make life worse.
+Kamala carried tales to Vikram, and being an only son, he believed his mother rather than his wife.
+If I get a job, we can find a flat of our own, she thought.
+Her mother-in-law would resort to tears and drama, beg Vikram not to desert his parents in their old age but good sense would prevail, Neelum reasoned.
+They would find a flat close by.
+Neelum left for the cold store.
+She could have passed for a Bahraini girl with her long dark plait trailing down to her waist but her distinctive shalwar kameez gave her away.
+She was fair complexioned and had large brown kohl rimmed eyes.
+Her tall slender frame attracted stares and sniggers from the Bahraini youths who loitered in doorways and passed their time smoking cigarettes or sometimes dope.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="30">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="1">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

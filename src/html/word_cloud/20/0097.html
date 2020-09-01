@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Commitment', 'tfidf': 6.901488780678766, 'lexical_unit': 'consent.v / covenant.n / covenant.v / oath.n / pledge.n / pledge.v / promise.n / promise.v / swear.v / threat.n / threaten.v / undertake.v / undertaking.n / volunteer.v / vow.n / commit.v / commitment.n / vow.v', 'definition': "A Speaker makes a commitment to an Addressee to carry out some future action.  This may be an action desirable (as with promise) or not desirable (as with threaten) to the Addressee. Some of the words in this frame allow an Addressee to be expressed. 'You promised me you'd come to my graduation.' Other words cannot normally occur with an Addressee. 'Kim undertook to finish the project by June.'"}, {'frame': 'Hostile_encounter', 'tfidf': 5.760756459268552, 'lexical_unit': 'battle.n / fight.n / scuffle.n / spat.n / altercation.n / duel.n / clash.n / confrontation.n / row.n / fighting.n / bout.n / struggle.n / hostility.n / skirmish.n / combat.n / squabble.n / stalemate.n / brawl.n / strife.n / fight.v / battle.v / duel.v / clash.v / brawl.v / skirmish.v / scuffle.v / confront.v / war.n / war.v / gunfight.n / shootout.n / standoff.n / showdown.n / wrangling.n / tiff.n / fistfight.n / firefight.n / conflict.n / dust-up.n / warfare.n / cw.n / bw.n / tussle.n / struggle.v / infighting.n / engage.v / engagement.n', 'definition': "This frame consists of words that describe a hostile encounter between opposing forces (Side_1 and Side_2, collectively conceptualizable as Sides) over a disputed Issue and/or in order to reach a specific  Purpose. '' 'He still wants to fight Mike Tyson in about 8 months.'  'Dennis Andries's European cruiserweight title clash against Akim Tafer of France in Beausoleil last February has been voted as the EBU's fight of the year.'"}, {'frame': 'Imposing_obligation', 'tfidf': 5.058364915944048, 'lexical_unit': 'bind.v / obligate.v / commit.v / pledge.v / require.v / charge.v / charge.n / oblige.v', 'definition': "A Duty is imposed on a Responsible_party according to a Principle which regulates how the Responsible_party should respond to a Situation.  The Situation may be expressed metonymically by reference to an Obligator, whose action invokes the Principle.  It is only rarely the case that the Principle and the Situation/Obligator are both expressed overtly.  'They escaped total Soviet invasion and occupation only by entering into a separate agreement that obligated them to military action against the retreating German armies.'  'The lease agreements bound them to make rent payments to Homeowners Rescue.'  'It was also discovered that with out her knowledge, he had committed her to a new TV series and he had already taken an advance on the money.'   'The Generality's invitation to give a conference on the theme obligated me to study Gaudí's work even more.'"}, {'frame': 'Change_of_leadership', 'tfidf': 4.606150558832778, 'lexical_unit': 'coup.n / elect.v / insurrection.n / mutiny.n / mutiny.v / overthrow.v / rebellion.n / revolt.v / revolution.n / uprising.n / oust.v / depose.v / dethrone.v / overthrow.n / revolt.n / take over.v / topple.v / election.n / throne.v / enthrone.v / coronate.v / crown.v / vest.v / install.v / revolutionary.n / independence.n / rising.n / freedom.n / ouster.n', 'definition': "This frame concerns the appointment of a New_leader or removal from office of an Old_leader.  The Selector brings about the change in leadership, for example, by electing or overthrowing a leader. Some words in the frame describe the successful removal from office of a leader (e.g. depose, oust), others simply the attempt (e.g. uprising, rebellion).   'On March 17 , Mamedov appointed Rakhim Gasiyev as Defence Minister .'    "}, {'frame': 'Locale_by_event', 'tfidf': 4.3101069219398, 'lexical_unit': 'site.n / scene.n / venue.n / theater [of war].n / field.n / battlefield.n', 'definition': "A place defined in terms of an event which occurred (or will occur) there. 'Woodstock, NY was the site of the most important rock concert of 1969.' 'Our meeting site was chosen for its solitude.'  In the second example, the event FE is labeled with two labels, because the two words do not form a syntactic constituent; the first would be GF Genitive PT Possessive, and the second, GF Dependent and PT NP."}, {'frame': 'Manner', 'tfidf': 4.224024111707877, 'lexical_unit': 'manner.n / way.n', 'definition': 'A Manner describes general or specific characteristics of an event in one of three ways:  First, it can refer to how a Comparison_event transpires, absent the influence of an entity (e.g. "the way you talk"). Second, it can refer to how a Salient_entity conducts, performs, or otherwise participates in a Comparison_activity (e.g. "her manner of speaking"). Thirdly, the Manner can describe a Foreground_event by relating the Foreground_event to a Manner_descriptor (e.g. "written (in) a silly way", "written the way I do").  \'\' \'He completed the task in a fervent manner. \' \'I love the smooth way that you talk.\' \'Paul played soccer in a way that reminded me of my brother\'s playing.\' \'Much about a person can be determined from the manner one eats their meals.\' \' His way of addressing people is quite rude.\'  This frame is unusual in requiring a modifying relative clause for the FE Comparison_event, and also allowing a relative clause to serve as a Manner_descriptor.  The LU way.n, when definite, may be modified by a relative clause meaning "in the same manner that..."; the relative clause in such cases is annotated as Comparison_event:  \'I did it the way she did.\'   '}, {'frame': 'Defending', 'tfidf': 3.902522607740504, 'lexical_unit': 'defend.v / defense.n / defensive.a / hold.v / defender.n / defenses.n / biodefense.n', 'definition': "A Defender responds to an Assailant's attack on a Victim by directly, and usually violently, countering it.  'Samantha stalwartly defended the gateway from the wraiths, crouching low over Stephen's prone form.'"}, {'frame': 'Hiding_objects', 'tfidf': 3.5944232439571007, 'lexical_unit': 'hide.v / conceal.v / mask.v / shroud.v / camouflage.v / block.v / cover.v', 'definition': "An Agent causes a Hidden_object to become perceptually inaccessible to potential perceivers by placing it in a Hiding_place or putting in place an Obstruction that screens the object.  'Therefore, as I passed the school, I hid the gun and holster in the mailbox'  'Gruenwald hid the money at a local garbage dump then retrieved it the following morning.'  'In later books Harry often tries to hide his scar with his hair. '"}, {'frame': 'Firefighting', 'tfidf': 3.5469543887241692, 'lexical_unit': 'fight.v / gain ground.idio / battle.n / control.v / tackle.v / attack.v / battle.v / fire fighting.n', 'definition': 'This frame characterizes the situation or state of affairs in which someone acts to prevent a Fire_disaster from occurring, accelerating, or affecting any area not identified as a Controlled_area. The named Burn_area, targeted by the Fire_disaster, is more salient than "fire" itself and is often used for reference instead. The organizational methods for Firefighting are of utmost importance in this frame.'}, {'frame': 'Duration_description', 'tfidf': 3.4854640311254896, 'lexical_unit': 'abiding.a / brief.a / chronic.a / enduring.a / ephemeral.a / eternal.a / extended.a / interim.a / lasting.a / lengthy.a / momentary.a / perpetual.a / short.a / long.a / persistent.a / rapid.a / sustained.a', 'definition': "An event or state (here termed an Eventuality) or time-Period is described in terms of the Degree to which its duration diverges from a standard.  As is usual for gradable attributes, the standard of comparison is normally based on the expected duration for the type of Eventuality or Period.  (In conjunction with the comparative construction, the standard may also be based upon an explicit value.) '' 'After a lengthy discussion with the Foreign Minister, Mr. Qian Qichen, they met the Prime Minister.' '' 'The lengthy period which most party leaders have already spent in Parliament before gaining office certainly gives them time to acquire suitable skills.'"}, {'frame': 'Collaboration', 'tfidf': 3.4603232345868036, 'lexical_unit': 'collaborate.v / partner.v / collaborator.n / partner.n / in cahoots.a / conspire.v / collaboration.n / associate.n / confederate.n / conspiracy.n / collude.v / collusion.n / team up.v / cooperate.v / cooperation.n / affiliated.a / in league.a / jointly.adv / work together.v / together.adv', 'definition': "Partner_1 and Partner_2 or a group of Partners  work together in some Undertaking. The Partners are taken to be of equal status even when expressed disjointly.   ' CSTR actively collaborates with the Departments of Artificial Intelligence  and Physics. ' ' Tom and  the American composer Steve Riche have recently collaborated on a piece of elevator music.'"}, {'frame': 'Motion', 'tfidf': 3.4039504442019437, 'lexical_unit': 'move.v / go.v / drift.v / glide.v / blow.v / float.v / coast.v / roll.v / soar.v / fly.v / slide.v / swerve.v / snake.v / meander.v / undulate.v / weave.v / wind.v / zigzag.v / circle.v / spiral.v / swing.v / travel.v / come.v', 'definition': "Some entity (Theme) starts out in one place (Source) and ends up in some other place (Goal), having covered some space between the two (Path). Alternatively, the Area or Directionin which the Theme moves or the Distance of the movement may be mentioned.  'That kite you see just to the right of his head was moving around pretty fast but the camera seemed to catch it ok.'  'There are several accounts of the stench drifting to shore from the ships in the middle of the river'  'Dust particles floating about made him sneeze uncontrollably.'  'The grill, unsecured, rolled a few feet across the yard.'  'The swarm went away to the end of the hall.'  The frames that inherit the general Motion frame add some elaboration to this simple idea.  Inheriting frames can add Goal-profiling (arrive, reach), Source-profiling (leave, depart), or Path-profiling (traverse, cross), or aspects of the manner of motion (run, jog) or assumptions about the shape-properties, etc., of any of the places involved (insert, extract). A particularly complex area in the vocabulary of Motion is the depiction of the relation of Vehicles to the Theme.  In some cases, no separate Theme is expressed:  'The plane flew over the city.'   In this case, the sentence is annotated in Self_motion.  When the Vehicle is profiled as being operated by a Driver, the sentence is annotated in the Operate_vehicles frame:  'Don't try to fly an F-16 without training!'  This is very similar to the Bringing frame which covers cases where the Vehicle is necessarily involved, but the movement of the Theme (something carried by the Vehicle) is profiled:  'It's scary flying hundreds of people over thousands of miles of ocean every day.'  Some of the same vocabulary is also used to describe the situation where Passengers Ride_vehicle or Operate_vehicle (each of these a perspective on Use_vehicles):  'I flew to Chicago on the red-eye.' 'I flew my plane across the Canadian border'   Finally, there are cases where, despite the use of similar vocabulary, there is no self-propelled Vehicle involved at all:  'The ball flew over the fence.'  This last type is annotated in the simple Motion frame."}, {'frame': 'Being_at_risk', 'tfidf': 3.3314279504876922, 'lexical_unit': 'secure.a / security.n / safe.a / insecure.a / unsafe.a / safety.n / risk.n / vulnerable.a / vulnerability.n / danger.n / threatened.a / susceptibility.n / susceptible.a', 'definition': 'An Asset is in a state where it is exposed to or otherwise liable to be affected by a Harmful_event, which may be metonymically evoked by reference to a Dangerous_entity. Words expressing relative safety (i.e., lack of risk) are also in this frame.  \'If you are a farmer, you are at risk for hearing loss caused by noise exposure in your work.\'  \'No child is secure from the temptation to do what "my friends" are doing.\'  \'Our nation is making a disastrous mistake thinking that we can have security from people: There is only security with people. \'  \'You don\'t have security against impersonation unless you have security against eavesdropping.\''}, {'frame': 'Simple_name', 'tfidf': 3.3168846139913217, 'lexical_unit': 'term.n / word.n', 'definition': "A Term is the linguistic sign conventionally used by a Speaker to refer to a type of Entity.  ' Perianth is a collective term for the outer whorls of the flower, which protect the reproductive parts during development.'  'The Polish word for it is czarnuszka'"}, {'frame': 'Accoutrements', 'tfidf': 3.069878140093434, 'lexical_unit': 'regalia.n / anklet.n / ring.n / earring.n / jewellery.n / necklace.n / bangle.n / bracelet.n / coronet.n / crown.n / brooch.n / tiara.n / circlet.n / diadem.n / chain.n / locket.n / pendant.n / wig.n / toupee.n / cufflink.n / glasses.n / spectacles.n / hat.n / hat-pin.n / cap.n / bonnet.n / mask.n / bandanna.n / headband.n / hairpiece.n / fez.n / skullcap.n / top-hat.n / accoutrement.n / yarmulkah.n / balaclava.n / beret.n / biretta.n / boater.n / bowler.n / nightcap.n / panama.n / sombrero.n / trilby.n / turban.n / shako.n / veil.n / headdress.n / headpiece.n / belt.n / trinket.n / choker.n / sporran.n / snood.n / hairnet.n / hairslide.n / hairpin.n / hairband.n / hairgrip.n / sash.n / watch.n / medal.n / medallion.n / ribbon.n / badge.n / armband.n / armlet.n / goggles.n / mitre.n / helm.n / helmet.n / gorget.n / greaves.n / coif.n / hauberk.n / mantle.n / gas mask.n', 'definition': "A Wearer wears accessories, which are made of  some Material and may have a Style.  Most of the accessories are non-essential (clothing) items. 'She wore a black velvet hat on her head.'"}, {'frame': 'Frequency', 'tfidf': 3.004977210217329, 'lexical_unit': 'annual.a / bi-annual.a / bi-monthly.a / biennial.a / daily.a / fortnightly.a / frequent.a / infrequent.a / intermittent.a / monthly.a / nightly.a / occasional.a / periodic.a / recurrent.a / recurring.a / sporadic.a / weekly.a / yearly.a / interval.n / period.n / sometime.a / on and off.adv / off and on.adv / frequency.n / always.adv / time to time.adv / never.adv / often.adv / frequently.adv / infrequently.adv / occasionally.adv / sometimes.adv / every.prep / all the time.adv / once in a while.adv / every once in a while.adv / at times.adv / constantly.adv / rare.a / regularly.adv / daily.adv / seldom.adv / usually.adv / normally.adv / in general.adv / generally.adv / ordinarily.adv / every so often.adv / now and then.adv / common.a / recurrence.n', 'definition': "This frame has to do with the repetition (and especially the frequency of repetition) of an event. Many of the adjectives and adverbs in this frame are based on nouns in the Calendric_unit frame.   'China will have to face a high frequency of sand storms in the years to come.' "}, {'frame': 'Moving_in_place', 'tfidf': 2.961672227665599, 'lexical_unit': 'judder.v / rotate.v / shake.v / twirl.v / vibrate.v / swing.v / flop.v / quiver.v / quiver.n / wave.v / rock.v / roll.v / swing.n / spin.v / turn.v / earthquake.n / temblor.n / quake.n', 'definition': "A Theme moves with respect to a Fixed_location, generally with a certain Periodicity, without undergoing unbounded translational motion or significant alteration of configuration/shape.  'It vibrated from the wind.'"}, {'frame': 'Taking_time', 'tfidf': 2.9461924405154036, 'lexical_unit': 'take.v / in.prep / fast.a / quick.a / rapid.a / swift.a / speedy.a / slowly.adv / slow.a / gradually.adv / quickly.adv', 'definition': "An Activity takes some Time_length to complete.  If an Agent is involved they may stand in metonymically for the Activity. For some LUs (e.g., fast, speedy) the Degree to which the Activity is conceived of as taking less time than usual can be expressed.  'How long will this take?'  'The ride was speedy and often bumpy.'  'Under high-pressure situations, police officers are very fast at reacting to danger.'"}, {'frame': 'Activity_done_state', 'tfidf': 2.832833000139537, 'lexical_unit': 'done.a / finished.a / through.a', 'definition': "An Agent has completed an Activity. '' 'Finally I am done cleaning the apartment.'  'Construction on the new Safeway was done by October.'"}, {'frame': 'Intentionally_affect', 'tfidf': 2.764324287328785, 'lexical_unit': 'do.v / do something (to/with).v / do what (to/with).v', 'definition': "An Agent causes a Patient to be affected, sometimes by a particular Means or by use of an Instrument.  'A professional dishwasher doesn't do dishes with a rag anymore!'"}, {'frame': 'Taking_sides', 'tfidf': 2.689804834523237, 'lexical_unit': 'oppose.v / for.prep / against.prep / pro.adv / support.v / side.v / side.n / opposition [act].n / in favor.prep / supportive.a / opponent.n / supporter.n / opposition [entity].n / endorse.v / back.v / backing.n / believe (in).v / part.n', 'definition': "A Cognizer has a relatively fixed positive or negative point of view towards an Issue.  A Side in a debate concerning an Issue or an Action of a Side may stand in for the Issue.  The Cognizer's Degree of alignment may also be specified.  'In interviews , it seems like everyone is completely against this expenditure .' "}, {'frame': 'Concessive', 'tfidf': 2.486840593853408, 'lexical_unit': 'despite.prep / in spite of.prep / though.scon / although.scon / while.scon / if.scon / much as.scon', 'definition': "A speaker marks a Conceded_state_of_affairs as being or implying a contradiction to the Main_assertion.  Some LUs specify the Main_assertion, others the Conceded_state_of_affairs, as referring to the preceding discourse (i.e. DNI), while yet others are conjunctions joining the two.  'Although she had some trouble , she was able to finish about two hours early .' 'Nevertheless , we did win . DNI ' 'I wanted to come , but I did n't remember where the party was . '"}, {'frame': 'Measurable_attributes', 'tfidf': 2.4275192287892415, 'lexical_unit': 'long.a / deep.a / high.a / tall.a / thick.a / heavy.a / big around.a / low.a / broad.a / thin.a / light [weight].a / narrow.a / short.a', 'definition': "An Entity has a particular scalar Attribute with a value exceeding a contextually-specified or generally-understood standard. Except where there is a difference in FEs, we place all adjectives related to measurable quantities in this frame. Note that when an adjective appears with a quantity expression (e.g., 6 feet long), it belongs to the Dimension frame.  'That ladder is really tall.'  'After his back injury, he won't lift heavy boxes.'"}, {'frame': 'Categorization', 'tfidf': 2.2651740621322665, 'lexical_unit': 'categorization.n / categorize.v / class.v / classification.n / classify.v / construe.v / interpret.v / interpretation.n / perceive.v / regard.v / translate.v / count.v / peg.v / pigeonhole.v / stereotype.v / typecast.v / understand.v / conceive.v / consider.v / define.v / view.v / render.v / see.v / identify.v / deem.v / bracket.v / read.v / category.n', 'definition': "A Cognizer construes an Item as belonging to a certain Category.  In this process, the Cognizer may either passively perceive the Item and note that it fits the Criteria for a Category, or, alternatively, actively examine the Item for certain Criteria that define a Category (or set of Categorys).    Most members of the frame can also describe a resulting cognitive state of the Cognizer with respect to the Item and Category which no longer requires the current perception or consideration of the Item.  A few LUs (e.g. peg.v, pigeonhole.v) do not readily allow stative interpretation, and a few LUs (e.g. deem.v, regard.v) only allow stative interpretation.  'You 've already stereotyped me as a bimbo, have n't you?'"}, {'frame': 'Capability', 'tfidf': 2.2612599215580325, 'lexical_unit': 'able.a / unable.a / can.v / capable.a / ability.n / potential.n / capability.n / capacity.n / potential.a / power.n / power [statistical].n / powerless.a / powerlessness.n / inability.n / incapable.a / incapacity.n / powerful.a', 'definition': "An Entity meets the pre-conditions for participating in an Event.  A Degree modifier may be included to indicate by how much the Entity exceeds or falls short of the minimum requirements.  'Conductor software gives us the hands-on capability to provide updates immediately'  'The GOP is afraid that it might not be capable of keeping the seat vacated by Dunn.'  'NASA is unable to communicate with Mars rover.'  'He can fly a kite.'"}, {'frame': 'Change_position_on_a_scale', 'tfidf': 2.1895952065148543, 'lexical_unit': 'increase.v / increase.n / fall.v / fall.n / rise.v / rise.n / decrease.n / decrease.v / soar.v / diminish.v / plummet.v / grow.v / move.v / decline.v / decline.n / tumble.v / tumble.n / rocket.v / slide.v / gain.v / advance.v / jump.v / drop.v / dwindle.v / double.v / triple.v / fluctuate.v / fluctuation.n / hike.n / explode.v / explosion.n / mushroom.v / growth.n / swell.v / skyrocket.v / reach.v / dip.v / edge.v / climb.v / swing.v / escalation.n / shift.n / shift.v / gain.n / increasingly.adv / balloon.v / growing.a / contract.v / contraction.n / depressed.a / elevated.a / accelerated.a / depression.n / elevation.n / lower.v / down.prep', 'definition': 'This frame consists of words that indicate the change of an Item\'s position on a scale (the Attribute) from a starting point (Initial_value) to an end point (Final_value). The direction (Path) of the movement can be indicated as well as the magnitude of the change (Difference).  The rate of change of the value (Speed) is optionally indicated.  Another scale (Correlate), which the values are correlated with, is indicated if it is not the default correlate (namely, absolute time).  \'\' The distinction between Attributes and Items is not always an easy one. The clear cases involve the expression of the Attribute in an in-PP.  \'Hawke\'s Bay winery doubled in size last year.\'  \'The amount you can deduct, then, depends on whether or not the stock has increased in value during the period you have owned it.\'  Other clear cases of Attributes involve NP\'s like size, quality, number, value that denote abstract attributes rather than events or classes of things.   \'\' The analysis is more complicated when an event-denoting noun phrase occurs as the subject and the sentence has no in-PP. In the simplest cases, where the Attribute is the number of occurrences of the event, the Attribute is usually left implicit, as in exx. 1 and 2, the Attribute below.  \'(1)Accidents increased 20% to 345.\' \'(1--second FE layer)Accidents increased 20% to 345.\' \'(2) Attacks on civilians decreased over the last 4 months  DNI.\'  In cases  like (1), we will tag the Attribute on the second layer below the Final_value label, as that FE makes it clear that the Attribute is simply cardinality. In cases like (2), we tag it as DNI because in context the hearer has to understand a particular Attribute rather than just some or any appropriate Attribute of the Item.  Note that the above pattern can be compared to cases involving tangible Items, where the Attribute may similarly be missing when the incidence or frequency of the Item is specified.  \'(3) Woodland birds increasedto their highest level since 1990 DNI.\'   A more complicated case involving event-denoting subjects is when the Attribute measured is not the incidence of the type of event specified but rather an Attribute of an event-participant. In (4), it is not the number of times that turbot was caught that has changed but the amount of fish caught.  \'(4) Turbot catches increased from around 100 tonnes in the 1960s to around 1,200 tonnes in the mid 1990s.\' \'(4-second FE layer) Turbot catches increased from around 100 tonnes in the 1960s to around 1,200 tonnes in the mid 1990s.\'  (Note the 2nd layer annotation of the Attribute below the Initial_value and Final_value FEs, since they indicate that the Attribute is implicitly weight.)  Similarly, in (5), the report is (in context) about the total monetary value of the gifts, not about the number of donations made.  \'(5)Overall Giving by Church Members increased  from 2000 to 2001\'  As can be seen from the above examples, we consider the event nouns in uses such as (4) and (5) to also specify Items. Note that in cases like (4), we do not want to treat the subject NP "turbot catches" as an Attribute that includes information about the Item, since it would not make sense to restate (4) as follows:  \'*Turbot increased in catches.\'  Two more complications arise. First, certain nouns that do not, by their etymology, denote abstract attributes have a second sense in which they do denote an Attribute.  \'(6) The population of Smallville increased fourfold to 807.\'   Under one reading, (6a), the population could be understood as referring to "the people", in which case the Attribute cardinality is understood as unexpressed, as in (1),  (2), and (3).  The Attribute could be overtly specified:  \'(6a) The population of Smallville increased fourfold in size to 807.\'  Under another reading, (6b), population is an Attribute that habitats or locations possess. In this case, the whole NP "the population of Smallville" is treated as the Attribute and on the second layer "of Smallville" is tagged as Item.   \'(6b) The population of Smallville increased fourfold to 807.\' \'(6b-second FE layer) The population of Smallville increased fourfold to 807.\' Support for the possibility of this second reading comes from the fact that you can also state the facts as in (6c).  \'(6c) Smallville increased fourfold in population to 807.\'   The last complication is that Initial_value expressions can also function as the subject, which superficially look like expressions of Attribute.  \'(7) The 1999 price had increased to $3400 by 2001.\' \'(7--second layer) The 1999 price had increased to $3400 by 2001.\'  There is no Attribute "1999 price" here (though the concept is plausible in certain special statistical contexts where prices are indexed to prices of a particular year). (7) simply reports that the value of the price-Attribute changed from whatever it was in 1999 to the new value of $3400 by 2001. For sentence (7), Attribute would only be indicated as "price" on the 2nd layer. '}, {'frame': 'Reason', 'tfidf': 2.108437187260303, 'lexical_unit': 'reason.n / why.n / motive.n / motivation.n / basis.n', 'definition': "A volitional  Agent is responding to a State_of_affairs by performing some Action.  'And was that your reason for becoming an actor ?' 'But Giles is the reason that I am here .' 'Oh my reason for including it was Section fifty four A.'  "}, {'frame': 'Distributed_position', 'tfidf': 1.9010068486738012, 'lexical_unit': 'adorn.v / blanket.v / cloak.v / coat.v / cover.v / deck.v / decorate.v / envelop.v / festoon.v / fill.v / film.v / line.v / pave.v / wreathe.v / dot.v / stud.v / garnish.v / encrust.v / litter.v / all over.prep / across.prep / over.prep / around.prep', 'definition': 'This frame involves a static (primarily spatial) relationship between a Location and a Theme, in which the Theme is located in many or all subregions of the Location, and is thus construable as covering it. The Time when the covering configuration holds, and the Subregion of the Location that is involved may, optionally, be indicated.    \'By Summer, weeds dotted the field .\' \'The papers around my office were too messy .\' Prepositional and verb targets of this frame differ in the ways they can participate in forming sentences; one of the most important differences is that prepositions may modify the entire sentence to describe the event (the Theme) as distributed over the Location. \'Puddles were rippling all over the roof .\'  Some members of this frame specifically indicate that the configuration is attractive or unattractive; this is indicated by the semantic types Positive_judgement and Negative_judgement respectively.  Some of the non-verb LUs of the frame (esp. around.prep) refer to multiple possible positions that might be occupied by a single Theme, often accompanied by "somewhere":  \'I hope my wallet is around here (somewhere) .\'  These same LUs may refer a vague sequence of locations occupied by a single Theme:  \'I kept walking around my apartment .\'  All or virtually all of the verbs used statically in this frame can also occur in the frame Filling, producing pairs such as the following:  \'Filling: Pat covered the table with flowers.\'  \'Distributed_position: Flowers covered the table.\'  \'\' Please note: adorned, covered, etc are in the Abounding_with frame because of the point of view shift. \'\' \'The tree was studded all over with soft dark fruit.\''}, {'frame': 'Natural_features', 'tfidf': 1.8529143833529882, 'lexical_unit': 'rill.n / hill.n / mountain.n / knoll.n / cordillera.n / lake.n / pond.n / tarn.n / creek.n / vale.n / crevasse.n / sound.n / strait.n / valley.n / river.n / sea.n / ocean.n / pool.n / peninsula.n / fjord.n / outcrop.n / island.n / archipelago.n / crag.n / glacier.n / canyon.n / mount.n / cove.n / bay.n / inlet.n / cliff.n / channel.n / headland.n / isthmus.n / cave.n / cavern.n / iceberg.n / berg.n / waterfall.n / falls.n / spring.n / cataract.n / stream.n / brook.n / atoll.n / floe.n / dune.n / massif.n / loch.n / butte.n / fell.n / hillock.n / mesa.n / isle.n / islet.n / cay.n / sandbar.n / coombe.n / key.n / crater.n / bar.n / sandbank.n / sandspit.n / reef.n / clough.n / dale.n / defile.n / dell.n / depression.n / range.n / dingle.n / gap.n / pass.n / glen.n / graben.n / gulch.n / gully.n / hollow.n / ravine.n / beck.n / hummock.n / moraine.n / burn.n / shelf.n / shoal.n / lagoon.n / slough.n / bayou.n / tor.n / eyot.n / plateau.n / seamount.n / guyot.n / volcano.n / declivity.n / corrie.n / ridge.n / skerry.n / rapids.n / watershed.n / height.n / cirque.n / beach.n / continent.n / continental.a / peak.n / coastal.a / wash.n / strand.n / rugged.a / gulf.n / cascade.n / land.n / water.n / range [grazing].n', 'definition': "The Locale is a geographical location as defined by shape.  This frame includes natural geographic features, including land/ice forms and bodies of water.  ' We climbed up the rock cliff.' "}, {'frame': 'Preventing_or_letting', 'tfidf': 1.792930254894732, 'lexical_unit': 'prevent.v / avert.v / frustrate.v / nip in the bud.v / obviate.v / stave off.v / check.v / avoid.v / prevention.n / stopping.n / prohibit.v / stop.v / upset.v / keep (from).v / preempt.v / preemption.n / preemptive.a / allow.v / let.v / permit.v / enable.v / enablement.n / forestall.v / preclude.v', 'definition': 'A Potential_hindrance or an Agent (via their actions) keeps an Event from taking place, or despite the possibility of prevent the Event, do not do so. Lexical units which indicate that the event is not prevented, e.g. allow.v, are marked with the semantic type "Negative".  Some lexical units, like avert and avoid indicate that the Potential_hindrance or Agent would have been affected if the Event occurred.   \' Rain prevented the ball game from taking place.\'   \' He could have stopped the riot .\'  \' The government narrowly averted a coup . \' \'She allowed more than a few mistakes to happen .\' \'Technology has permitted firms to link together more closely.\' \'Unlike DOS , Windows lets you get on with something else when sending a fax.\' \'Liberalization allows easier entry into particular markets .\' \'Mesh allows the water to circulate normally through the aquarium.\'  \'\'  Unlike in the Thwarting frame, the Potential_hindrance or Agent does not directly prevent the actions of an individual, but rather affects the world in such a way that an Event cannot occur.'}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"Gamers Gate"</span>.</h5>
+                        <br/>
+                        <pre>
+Azor stands, feet apart, Klage held low and forward.
+Moonlight glints across the sapphire laced through his granite hide.
+"You do not know what a link crew, do you?"
+Derek relaxes and turns to fully face Azor.
+"No.
+Azor re-sheaths Klage, "Well, Golons are granite and gem from crown to toe.
+Long swords, spears, arrows are all useless against us.
+Generally, even war hammers and maces are a small danger to us.
+On the battlefields against humans, dwarves and elves we are a tremendous threat, unstoppable if fought conventionally.
+Link crews are how we are brought down.
+A group of men, usually eight to a dozen, swarm around a Golon and throw hooked chains at leg, arm and neck.
+I have seen my stone brothers fell in this manner.
+It will never happen to me."
+Raising empty hands and stepping away from the chain at his feet, Derek speaks evenly, "I didn't know, Azor.
+I can understand why the sound freaked you out.
+I am glad you told me though.
+Now I can listen for the sound as we travel and when we are in battle.
+I promise you I will not let a chain game anywhere near you."
+"Thank you for that pledge, Derek.
+Kinewyn swore the same words and kept his promise to this day in our travels together."
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"Designed For Perfection"</span>.</h5>
+                        <br/>
+                        <pre>
+I picture the look on everyone's face, especially Ms. Fuentes, if I were to talk about my altered genetic makeup.
+Burke must have been thinking the same thing, because I hear him chuckle.
+I keep my introduction short, describing only the basics in fluent Spanish, of course.
+Ms.
+Fuentes already knows me from last year's class, and asks very little of me.
+I sense that I am one of the few people that she finds mildly intimidating.
+The rest of the day goes by with relative ease.
+For some reason, my mind is preoccupied with thoughts of Cat McCullough and as luck would have it, she is in my PE class as well.
+I learn that she likes running too, and while most of the other junior girls walk and gossip during the required two mile run, likely worried about ruining their hair and make-up, Cat keeps a respectable pace with most of the guys in class.
+As for me, I always have to remind myself to tone it down and not reveal my true athletic abilities.
+If anyone saw me run full speed, which is close to 50 miles per hour, throw a ball, or tackle a senior football player, I would be hounded with unwanted questions and attention.
+I chuckle to myself, thinking about the wasted money my parents spent to give me these traits, and how disappointed they must be at my lack of interest in organized sports.
+I pace myself just behind Cat and Tucker, unsuspectingly eavesdropping in on their conversation for the second time today.
+Unfortunately, I learn more about Tucker than I do Cat.
+I am getting the impression that she is better at listening than talking, as she quickly changes the subject whenever he questions her about her family.
+*** By Friday, the mundane routine of school is interrupted only by the interesting observations of Cat McCullough.
+She is completely oblivious to the curious and maybe even envious stares of even some of the more popular girls at school, and spends most of her free time, including lunch, working on homework.
+Her attractiveness, confidence, and warm friendly character, makes her a natural magnet for all students within the high school social hierarchy.
+She is already being offered inclusion to some of the most preferred cliques.
+But it seems to be the outcasts of the school that Cat migrates towards.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="97">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="1">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

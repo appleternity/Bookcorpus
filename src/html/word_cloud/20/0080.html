@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Sending', 'tfidf': 5.611422715609625, 'lexical_unit': 'send.v / mail.v / ship.v / post.v / export.v / forward.v / route.v / dispatch.v / fax.v / telex.v / shipment [items].n / shipment [act].n / express.v / barge.v / wire.v / refer.v / shipping.n', 'definition': "A Sender plans the Path (along with Source and Goal) of a Theme and places it in circumstances such that it travels along this Path under the power of some entity other than the Sender.  This frame also has a Recipient distinct from the Goal, as both can be present: 'I sent the manuscript to England to Bill.' 'I forwarded the grain to a dealer in Frankfurt.'  This frame contains verbs that participate in the ditransitive construction, with a recipient as the direct object, as in the following: 'I sent Bill the manuscript.' Certain Verbs in this Frame focus on the initial sending act, while others do not.  For example, I sent it rapidly can either mean the act of sending was initiated quickly or that it moved quickly. However, the in following sentence: I exported/dispatched it rapidly, meaning that the act was begun quickly, both types of verbs are included."}, {'frame': 'System', 'tfidf': 5.082183667019462, 'lexical_unit': 'system.n / complex.n / cascade.n', 'definition': "A Complex with a particular Function is formed out of Component_entities. The function may be expressed by reference to a Salient_entity involved in the working of the Complex.  'The body's immune system can be mobilized against cancer. '  'The sewer system carries wastewater from homes and businesses to the Water Pollution Control Plant for treatment. '  "}, {'frame': 'Having_or_lacking_access', 'tfidf': 5.05333388068021, 'lexical_unit': 'access.n / blocked.a / accessible.a / inaccessible.a / access.v', 'definition': "A Theme has access to a Useful_location or is blocked from it by a Barrier. '' 'Making services accessible to those with special needs is expensive.' 'I don't have access to the safe.' 'The regime has now restricted access to the internet. '"}, {'frame': 'Legal_rulings', 'tfidf': 4.963329885562881, 'lexical_unit': 'rule.v / judge.v / decree.v / adjudicate.v / judgment.n / deem.v', 'definition': "An Authority with the power to make decisions hands down a Finding over a question presented in a formal or informal Case.   'The judge ruled yesterday that the revisions were not adequate. DNI'  'A high court in London ruled on the case that a vulture fund can extract more than $20 million from Zambia for a debt.'  'In the California case, a judge ruled Oct. 12 that Tendler must pay the bloggers' legal fees.'  "}, {'frame': 'Fullness', 'tfidf': 4.533051606792183, 'lexical_unit': 'full.a / empty.a / emptiness.n / fullness.n', 'definition': "A Container  is in a state of fullness/emptiness with respect to some Contents.  Note the connection between words in this frame and those in the Containers, Emptying, and Filling frames. 'John carried a bucket full of water.'"}, {'frame': 'Breaking_off', 'tfidf': 4.381147575712316, 'lexical_unit': 'chip.v / break.v / snap.v', 'definition': "An single Subpart breaks off from a Whole.  'The original sword may have chipped off of the statue long ago.'"}, {'frame': 'Adopt_selection', 'tfidf': 4.311300951932408, 'lexical_unit': 'adopt.v / assume.v / embrace.v', 'definition': 'An Agent has an Attribute which can take different Values, and the Agent selects and then begins to use some Value for that Attribute.  The Attribute includes both physical (shape, color) and abstract (belief, practice) types.  For some LUs in this frame, it is common for only the Value to be expressed, with the Attribute implicit. (Often this implicit attribute can be given second-layer expression on the Value. Note that such second-layer annotation should be assumed in the first two examples below.)  \'They scoff at their opponents and assume an air of superior knowledge\' \'There are times when teachers should adopt a neutral stance in discussion of morally controversial issues.\' \'A person does not have to make the statement "I adopt this as my position" to do so.\' '}, {'frame': 'Stinginess', 'tfidf': 4.255236104533766, 'lexical_unit': 'generous.a / stingy.a / mean.a / lavish.a / lavish.v / miserliness.n / miser.n / hoard.v / miserly.a / niggardliness.n / niggardly.a / ungenerous.a', 'definition': "In this frame, a Resource_controller is judged by a Judge (who is usually implicit)  according to how freely they allow the Recipient access to their Resource. The Resource_controller may exhibit this attitude with an Expressor.  'John is mean with money.' 'Sally has always been generous to her children.' "}, {'frame': 'Erasing', 'tfidf': 4.218129112648948, 'lexical_unit': 'strike.v / delete.v / erase.v / expunge.v / kill.v', 'definition': "An Agent or Cause removes a piece of Information from a Document such that it cannot be retrieved.  'I deleted the last line from my essay.'"}, {'frame': 'Cause_to_end', 'tfidf': 3.7099337500103453, 'lexical_unit': 'lift.v / end.v / lifting.n / arrest.v / put an end to.v / abort.v / do away with.v', 'definition': "An Agent or Cause causes a Process or State to end.   'Bush may lift sanctions on his own, despite opposition.'"}, {'frame': 'Biological_entity', 'tfidf': 3.6561836367179925, 'lexical_unit': 'life.n / lifeform.n / organism.n / human.a', 'definition': "The LUs in this frame refer to biological entities labeled by the FE Organism. An Organism is described as something that can be alive, or have naturally occuring biological processes and functions; however the concept of life is often used metaphorically for non-organic entities which resemble or act as if they have organic life.  'NASA may someday discover a new lifeform from another planet.'"}, {'frame': 'Memory', 'tfidf': 3.5417386260723123, 'lexical_unit': 'remember.v / memory.n / recall.v / recollect.v / recollection.n / retain.v / bethink oneself.v', 'definition': "This frame is concerned with Cognizers remembering and forgetting mental Content.  'John forgot everything about his uncle.'  "}, {'frame': 'Thwarting', 'tfidf': 3.44459879128078, 'lexical_unit': 'thwart.v / foil.v / stymie.v / hamstring.v / prevent.v / stop.v / forestall.v / derail.v / frustrate.v / preclude.v / counter.v', 'definition': "In this frame a Preventing_cause interferes with the ability of a Protagonist to complete an intended Action. The Protagonist may not be mentioned in the sentence, in which case the Action is an endeavor that an individual or group of individuals hopes to accomplish. In this frame it is necessary that the Protagonist is unable to successfully complete the Action.   ' Noriega's troops foiled a coup attempt. '  ' He prevented her from running away. '  ' He was foiled in his attempt to overthrow the government. '"}, {'frame': 'Killing', 'tfidf': 3.2273179173858435, 'lexical_unit': "kill.v / annihilate.v / assassinate.v / behead.v / eliminate.v / exterminate.v / drown.v / liquidate.v / murder.v / slay.v / terminate.v / suffocate.v / smother.v / starve.v / asphyxiate.v / suicide.v / homicide.n / suicide.n / euthanize.v / euthanasia.n / dispatch.v / lethal.a / annihilation.n / liquidation.n / crucify.v / crucifixion.n / decapitate.v / massacre.v / slaughter.v / lynch.v / liquidator.n / killing.n / murder.n / slaughter.n / killer.n / massacre.n / infanticide.n / smothering.n / slaying.n / regicide.n / pogrom.n / shooting.n / holocaust.n / matricide.n / genocide.n / butcher.v / beheading.n / assassination.n / butchery.n / carnage.n / suffocation.n / assassin.n / blood-bath.n / decapitation.n / extermination.n / fratricide.n / garrotte.v / murderer.n / slaughterer.n / slayer.n / immolation.n / patricide.n / silence.v / deadly.a / fatal.a / fatality.n / destroy.v / take out.v / bloodshed.n / do in.v / take (someone's) life.idio", 'definition': "A Killer or Cause causes the death of the Victim. 'John drowned Martha.'"}, {'frame': 'Choosing', 'tfidf': 2.968220930971392, 'lexical_unit': 'select.v / choose.v / pick.v / settle on.v / elect.v / choice.n / selection.n / opt.v / pick.n', 'definition': "A Cognizer decides upon the Chosen (either an item or a course of action) out of a set of  Possibilities .  The Cognizer may have an Inherent_purpose or a Larger_purpose for the Chosen.  Often an Explanation, which serves as the basis of the choice, is given.  'The council picked you out of all the pilots available to head this mission.' 'No one would choose to live in such squalor.' 'If no judge was unanimously selected in the previous round, play rock-paper-scissors pairwise. CNI' "}, {'frame': 'Placing', 'tfidf': 2.9452789090479383, 'lexical_unit': 'deposit.v / embed.v / hang.v / immerse.v / implant.v / inject.v / insert.v / insertion.n / lay.v / lean.v / load.v / lodge.v / pack.v / park.v / pile.v / place.v / placement.n / plant.v / position.v / rest.v / set.v / situate.v / smear.v / stand.v / stash.v / stow.v / stuff.v / tuck.v / wrap.v / bag.v / billet.v / bin.v / bottle.v / archive.v / box.v / cage.v / crate.v / file.v / garage.v / pocket.v / shelve.v / stable.v / perch.v / sit.v / daub.v / drizzle.v / dab.v / drape.v / brush.v / dust.v / heap.v / jam.v / rub.v / cram.v / shower.v / pot.v / sheathe.v / warehouse.v / shoulder.v / stick.v / bestow.v / put.v / package.v / plunge.v / arrange.v / emplace.v / enclose.v / implanted.a / gag.v', 'definition': "Generally without overall (translational) motion,  an Agent places a Theme at a location, the Goal, which is profiled.  In this frame, the Theme is under the control of the Agent/Cause at the time of its arrival at the Goal.  'David placed his briefcase on the floor.'  This frame differs from Filling in that it focuses on the Theme rather than the effect on the Goal entity.  It differs from Removing in focusing on the Goal rather than the Source of motion for the Theme."}, {'frame': 'Containing', 'tfidf': 2.9327425293649068, 'lexical_unit': 'contain.v / hold.v / house.v / store.v', 'definition': "In this frame a Container holds within its physical boundaries the Contents.  'The box holds three hundred pictures.'"}, {'frame': 'Contacting', 'tfidf': 2.7940097695090698, 'lexical_unit': 'reach.v / contact.v / contact.n / write in.v / write.v / e-mail.v / call.v / call up.v / phone.v / phone in.v / ring.v / ring up.v / get in touch.v / telephone.v / call.n / mail.v / telex.v / fax.v / cable.v / page.v / radio.v / telegraph.v / call in.v / get through.v', 'definition': "A Communicator (whose Location may be indicated) directs a Communication to an Addressee at a particular Address.  Note that no actual successful communicative act is implied, only the successful completion of acts which would establish the communication.  (In other words, Mari can e-mail Jon without Jon ever reading it.) NB:  The Address or Location_of_communicator may be a virtual address, such as an e-mail or telephone number.'Disgruntled voters phoned Congressman Neil at his Washington residence with complaints about the recent increases in corporate welfare.''She tried to call from the payphone down the street.' "}, {'frame': 'Businesses', 'tfidf': 2.6688497090693475, 'lexical_unit': 'business.n / shop.n / establishment.n / mill.n / practice.n / firm.n / operation.n / company.n / chain.n / corporation.n / paper.n / store.n / bank.n / boutique.n', 'definition': "A Proprietor owns or runs a Business which provides a Product (which may be goods or services).  'The consumer electronics company Apple has exploded with popularity in recent years.'"}, {'frame': 'Topic', 'tfidf': 2.658467811403671, 'lexical_unit': 'about.prep / concern.v / discuss.v / topic.n / subject.n / cover.v / regarding.prep / treat.v / address.v / concerning.prep / theme.n / dwell (on).v / on.prep / regard.v / regard.n / refer.v', 'definition': "A stretch of linguistic discourse or a Text that a Communicator produces has a Topic that it is about.  'Chapter 5 discusses the issue of transubstantiation.' 'Smither's essay is about plane spotting.' ' Ostrovsky addresses monetary policy in Chapter 5.' 'This book is mostly about particle physics.'"}, {'frame': 'Clothing', 'tfidf': 2.534359342357988, 'lexical_unit': 'dress.n / frock.n / petticoat.n / ballgown.n / culottes.n / chemise.n / jodhpurs.n / sock.n / stocking.n / leggings.n / tunic.n / slip.n / gown.n / skirt.n / shorts.n / pants.n / trousers.n / wrap.n / shirt.n / blouse.n / cloak.n / cape.n / coat.n / greatcoat.n / overcoat.n / jacket.n / vest.n / tie.n / hose.n / hosiery.n / clothing.n / clothes.n / finery.n / suit.n / necktie.n / neckwear.n / cummerbund.n / scarf.n / shawl.n / bow-tie.n / pantyhose.n / garter.n / panties.n / knickers.n / sweater.n / jumper.n / cardigan.n / pullover.n / blazer.n / kilt.n / swimsuit.n / bikini.n / robe.n / bathrobe.n / apron.n / miniskirt.n / fishnet.n / legwarmers.n / regalia.n / raiment.n / apparel.n / attire.n / vestment.n / livery.n / outfit.n / garment.n / undergarment.n / underclothing.n / underclothes.n / underwear.n / togs.n / undies.n / shift.n / pinafore.n / mitten.n / mitt.n / glove.n / bodice.n / corset.n / parka.n / windbreaker.n / windcheater.n / raincoat.n / pyjama.n / nightie.n / nightdress.n / nightgown.n / nightwear.n / lingerie.n / camisole.n / waistcoat.n / jeans.n / overall.n / coverall.n / garb.n / smock.n / sundress.n / bra.n / brassiere.n / teddy.n / tights.n / jumpsuit.n / kimono.n / kaftan.n / uniform.n / costume.n / motley.n / get-up.n / ensemble.n / surplice.n / galosh.n / welly.n / wellington.n / slipper.n / sandal.n / sneaker.n / stiletto.n / boot.n / shoe.n / gumboot.n / clog.n / footwear.n / sari.n / sarong.n / poncho.n / abaya.n / jerkin.n / crinoline.n / muff.n / cowl.n / tutu.n / t-shirt.n / polo-neck.n / g-string.n / flip-flops.n / one-piece.n / two-piece.n / flannels.n / rags.n / silks.n / satins.n / cottons.n / tweeds.n / ermines.n / muslins.n / tippet.n / doublet.n / tatters.n / neckerchief.n / breeches.n / sweatshirt.n / sweatpants.n / tracksuit.n / alb.n / stole.n / chasuble.n / cope.n / buskin.n / pallium.n / gauntlet.n / cravat.n / briefs.n / cossie.n', 'definition': "This frame refers to clothing and its characteristics,  including anything that people conventionally wear.  The Wearer wears a Garment that has a certain Style, is made of a certain Material, and can be otherwise characterized by a Descriptor.  In some cases, the Body_location (where the garment is worn) and Subregion of the clothing may also be specified.  'Claudia dressed in a dark green cotton DRESS clasped round her slender waist with a broad yellow belt , drank a cup of coffee and opened her neglected post .'"}, {'frame': 'Part_inner_outer', 'tfidf': 2.4496162613541568, 'lexical_unit': 'outside.a / outer.a / inside.a / exterior.a / inner.a / outside.n / skin.n / lining.n / perimeter.n / center.n / exterior.n / inside.n / interior.n / interior.a / middle.n / shell.n / surface.n / central.a', 'definition': 'This frame concerns Parts of objects that are defined relative to the center or edge of the object.  The Part is a part of the Whole and the Part_prop describes a property of the Part.  \'She discarded the exterior of the walnut.\' \' She preferred a sparse church interior . \'  In cases where the Target is an adjective, it has a special relationship with the noun that it modifies such that a phrase which is a syntactic argument of the noun is semantically available to fill the argument structure of the adjective, as in "the outside row of the class"\'The inner shelf of the bookcase was lying on the floor.\'  '}, {'frame': 'Expertise', 'tfidf': 2.432666182940418, 'lexical_unit': 'buff.n / maven.n / expert.n / expertise.n / expert.a / experience.n / experienced.a / master.a / mastery.n / connoisseur.n / familiar.a / pro.n / ace.n / versed.a / well-versed.a / conversant.a / conversance.n / crack.a / skilled.a / skilful.a / ace.a / wizard.n / whiz.n / novice.n / inexperienced.a / inexpert.a / guru.n / proficient.a / proficiency.n / prowess.n / virtuoso.n / virtuosity.n / adept.a / adeptness.n / adept.n / skill.n / amateur.n / amateur.a / master.n / incompetent.a / incompetence.n / competent.a / competence.n / inept.a / ineptitude.n / ineptness.n / knowledgeable.a / awful.a / bad.a / wonderful.a / tremendous.a / superb.a / stupendous.a / so-so.a / mediocre.a / incredible.a / great.a / good.a / fantastic.a / excellent.a / dreadful.a / terrible.a / terrific.a / superlative.a / outstanding.a / splendid.a / know-how.n / specialist.n / new (to).a / excel.v / strong.a / layman.n / lay.a', 'definition': "This frame concerns people's knowledge or skill in certain domains.  It does not concern acquaintance or familiarity with people. With adjectives as targets in this frame, we annotate on two FE layers. 'FE Layer-1: He is an experienced programmer.' 'FE Layer-2: He is an experienced programmer.'"}, {'frame': 'Entity', 'tfidf': 2.288568322926364, 'lexical_unit': 'item.n / entity.n / object.n / thing.n / individual.n / what.n', 'definition': "This frame is for words that denote highly schematic entities.  'We found an unusual wooden object in the desert.'"}, {'frame': 'Undergo_change', 'tfidf': 2.219343478487506, 'lexical_unit': 'change.v / turn.v / change.n / veer.v / swing.v / plummet.v / changeable.a / shift.n / shift.v / transition.n / go.v', 'definition': "An Entity changes, either in its category membership, its situation, or in terms of the quality of an Attribute. In the first case, where category membership is changing, an Initial_category and a  Final_category may be expressed. In the second case, where a situation as a whole is changing, an Initial_situation and a Final_situation can be present. And in the last case, where some characterization of the Entity is changing, an Initial_quality and a Final_quality can be specified.    'As soon as Tiffany kissed the frog, Tiffany turned into a frog. '  'He chanted and the rock changed shape, becoming a great double bitted axe.'  'The College has changed markedly over the century since it first opened its doors.'  'If I'm understanding you correctly, you want the switchbar color to change whenever the bot says something?'  'My life instantly changed from an empty life, to a life full of joy and purpose.'  'As you can see, the word WALK changed from red to green rather than have a separate lens for each colour.'  'My feet turned to stone.'  'The promise will turn to ashes if progress is not made.'  'The price  changed from $1.26 to $1.27 per pint. DNI'  'At least one relative instruction has changed in size from short to long.'  In some cases, the types of perspective are mixed, so that, e.g., an Initial_quality is mixed with a Final_situation; this is usually considered poor style.  'She went from confused to acting completely confident .'  This frame is often the target domain of motion metaphors, in which the moving Theme corresponds to the  changing Entity, the Source of motion corresponds to the Initial_category, Initial_quality, or Initial_situation and the Goal of motion corresponds to the Final_category, Final_quality, or Final_situation of the Entity.  By correspondence with the complex domain of motion, this metaphor introduces several FEs to the target domain of change, such as an Intermediate_state (etc.) from Path, and Tendency_of_change from Direction.  'The nation was crawling towards oblivion.' 'We were walking past almost reasonable and heading right for what-the-bleep.' "}, {'frame': 'Familiarity', 'tfidf': 2.0788785558961136, 'lexical_unit': 'familiar.a / unfamiliar.a / new.a / know.v / acquainted.a / ken.n / intimate.a', 'definition': "An Entity is presented as having been seen or experienced by a (typically generic and backgrounded) Cognizer on a certain number of occasions, causing the Entity to have a certain degree of recognizability for the Cognizer.  'Susanna Fulton's work is new to me.'  'Two of these frames were new to me as a beginning professor.'  'This was as new to him as the rest of the outcity.'  'JSON is fairly new to me as a data format.'  'Moreover, this way of describing and categorizing architecture is familiar to most people.'  'Coronaviruses are not unfamiliar to the epidemiological world.'  'Abbey Stadium will bring us into contact with one familiar face at least.'"}, {'frame': 'Roadways', 'tfidf': 2.045728577416956, 'lexical_unit': 'road.n / path.n / way.n / street.n / avenue.n / artery.n / highway.n / expressway.n / motorway.n / sidewalk.n / pavement.n / underpass.n / overpass.n / railway.n / railroad.n / route.n / line.n / crosswalk.n / bridge.n / tunnel.n / autobahn.n / lane.n / track.n / trail.n / boulevard.n / course.n / freeway.n / pathway.n / roadway.n / thoroughfare.n / byway.n / cul-de-sac.n / driveway.n / parkway.n / runway.n / bypass.n / flyover.n / rail.n', 'definition': "This frame involves stable Roadways which connect two stable Endpoints, the Source and the Goal.  Being physical objects, these Roadways may have Names and Characteristics; they are also made of a Material.  They also cover ground, so they may have a Path or a Relative_location that the travel occurs in.  ' We crossed the brick road.' ' I prefer to travel on highway I-80.'  'This is the only highway between Lodi and Sonoma.' ' She dreaded turning onto the busy street.'"}, {'frame': 'Cogitation', 'tfidf': 1.9667647530004448, 'lexical_unit': 'brood.v / consider.v / consideration.n / contemplate.v / contemplation.n / deliberate.v / deliberation.n / dwell.v / meditate.v / meditation.n / mull over.v / muse.v / ponder.v / reflect.v / reflection.n / ruminate.v / wonder.v / think.v / give thought.idio / thought.n', 'definition': "A person, the Cognizer, thinks about a Topic over a period of time. What is thought about may be a course of action that the person might take, or something more general.  'The men were silently mulling over the proposition of committing an assassination'"}, {'frame': 'Leadership', 'tfidf': 1.7511297102519487, 'lexical_unit': 'bishop.n / boss.n / captain.n / chairman.n / chairperson.n / chief.n / chieftain.n / command.v / commandant.n / commander.n / director.n / emperor.n / general.n / govern.v / governor.n / head.n / head.v / imam.n / king.n / lead.v / leader.n / mayor.n / minister.n / monarch.n / premier.n / preside.v / president [political].n / principal.n / queen.n / reign.v / rule.v / ruler.n / run.v / shah.n / sovereign.n / sultan.n / vice-captain.n / vice-chairman.n / vice-president [political].n / vice-principal.n / viceroy.n / caliph.n / suzerain.n / satrap.n / rector.n / headmaster.n / doyen.n / doyenne.n / empress.n / maharaja.n / tsar.n / tsarina.n / sheik.n / vizier.n / duchess.n / khan.n / khedive.n / kaiser.n / pasha.n / overlord.n / baron.n / dictator.n / official.n / prime minister.n / authority.n / drug lord.n / government.n / power [govt].n / presidential.a / regime.n / director general.n / command.n / charge.n / power [rule].n / rule.n / high-priest.n / diplomat.n / legislature.n / congressman.n / leadership.n / senate.n / mogul.n / prince.n / administration.n / major general.a / representative.n / executive.n / crown prince.n / legislator.n / administer.v / secretary.n / lawmaker.n / spearhead.v / CEO.n / chief executive officer.n / officer.n / state.n / despot.n / tyrant.n / chair.v / superintendent.n / commissioner.n / supervisor.n / congresswoman.n / president [non-political].n / vice-president [non-political].n', 'definition': "These are words referring to control by a Leader over a particular entity  or group (the Governed) or an Activity. The frame contains both nouns referring to a title or position (e.g. director, king, president), and verbs describing the action of leadership (e.g. rule, reign). With verbs, it is possible to mention the Role played by the Leader (often a name of a leading position, e.g., king)  'Sebek em hat was a Leader of Priests. ca. 1780 BC' 'In 1789 Fletcher Christian led the mutiny on HMS Bounty' 'Louis XIV ruled over his people as king for the longest period of any European monarch.' Compare to: Appellations. "}, {'frame': 'Measure_duration', 'tfidf': 1.6667798254376436, 'lexical_unit': 'hour.n / minute.n / second.n / day.n / week.n / month.n / year.n / decade.n / century.n / millennium.n / fortnight.n / a while.n / nanosecond.n / time.n', 'definition': 'This frame contains (transparent ) nouns that are Units of measurement for time. The frame elements are Count, Unit and Process.  \'The final total was 606, scored in only 10 hours of excellent batsmanship.\'  In this frame, we will NOT annotate deictic, calendric uses of nouns like week, month, etc. as in "next week, this month, in the 21st century".'}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"Gunner The Hackers Code"</span>.</h5>
+                        <br/>
+                        <pre>
+There was no way any of them would be able to access it.
+In fact, if it wasn't back in Gunner's possession within twenty-four hours, a signal would be sent to the complex.
+Gunner imagined Auden, Nico, Marcus, and the rest of the Anathergian warriors picking these men apart, and sucked in his lips to stop his grin.
+Juan slipped the phone into the inside pocket of his jacket and then pushed Gunner forward with the business end of his Uzi.
+Gunner ambled toward the door, wondering why they hadn't checked him for weapons.
+And then he remembered where he was.
+A geek house.
+Of course, he was one of those geeks, but it didn't mean he didn't know how to handle a weapon or even have one for that matter.
+Well, you know what they say about people who assume.
+Dumb asses.
+Juan and Marcel closed in behind him.
+At the doorway, he glanced over his shoulder at Nay and gave her a reassuring smile.
+Then he scowled at the leader.
+If the bastard lays a hand on her, I'm going full out.
+Fuck not letting anyone know what I am.
+That'd mean he'd have to kill all of them.
+Except Nay, of course.
+Protecting humans is what the Anathergians do, and they try their damndest to follow that motto.
+But there were exceptions to every rule.
+However, he wouldn't break that rule and kill any humans until he had to.
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"A Lonely Man In Africa"</span>.</h5>
+                        <br/>
+                        <pre>
+The rain starts to fall, that's good timing.
+I get under the cover of the porch, greeting the two girls.
+The sky is getting darker and the temperature is dropping.
+This could be an interesting night.
+Two men join us under the porch, they're white Zimbabweans.
+Now we are five.
+The rain is getting heavier.
+There are some big bolts of lighting flashing above; they make a sizzling sound around us.
+They're followed by some mighty cracks of thunder which makes the porch floor vibrate.
+We're joined by another couple, a man and woman, they're drenched.
+Now we are seven.
+Everyone starts to bed down on the porch.
+I'm tucked into my sleeping bag, head inside I zip myself up.
+The storm is becoming very violent; the claps of thunder seem a little too close for comfort.
+I hear a noise on my sleeping bag, unzipping I put my head out.
+The wind is blowing the rain in under the porch.
+Now we have a big problem, no cover.
+Getting wet up here in the cold could give you hypothermia.
+My sleeping bag is only thin and I only have a lightweight top.
+After some discussion, we all agree that we need to be inside the hut.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="80">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="1">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Regard', 'tfidf': 8.84690158023206, 'lexical_unit': 'regard.n / esteem.n / regard.v / impression.n / opinion.n / think.v / appreciate.v / appreciative.a / find.v', 'definition': "A Cognizer has a Judgment of an Evaluee, expressing how high or low their regard for the Evaluee is.  'What do you think of him as a linguist?' 'She secretly thought well of him for his role in defrocking Mr. Matthews.' 'Please understand, I hold you in the highest regard.' 'My low opinion of him was of long standing.'"}, {'frame': 'Path_shape', 'tfidf': 6.841576882511938, 'lexical_unit': 'angle.v / bear.v / crisscross.v / cross.v / descend.v / dip.v / drop.v / edge.v / emerge.v / exit.v / leave.v / meander.v / reach.v / rise.v / skirt.v / slant.v / snake.v / swerve.v / swing.v / traverse.v / veer.v / weave.v / wind.v / zigzag.v / undulate.v / winding.a / twisting.a / windy.a / twisty.a / ascend.v / ascent.n / bend.v / descent.n / dive.v / emergence.n / crest.v / round.v / enter.v / pass.v / ford.v / twist.v / run.v', 'definition': 'The words in this frame describe the "fictive" motion of a stationary Road.  Some of the targets cast the scene primarily in terms of the Path_shape:  \'The long mountain road meandered through the woods.\'  Some of the words in this frame imply a Source or Goal which is expressed by a direct object:  \'The path entered the garden on the west side.\'  Other members of the frame refer to a Direction: \'Then the path bears a little to the right.\'  Yet others indicate a Path which requires mention of a landmark:  \'The otherwise arrow-straight highway veers north and skirts the lake.\''}, {'frame': 'Locale', 'tfidf': 4.664838615020212, 'lexical_unit': 'area.n / zone.n / region.n / place.n / spot.n / location.n / locale.n / pocket.n / regional.a / site.n / point.n / grounds.n / earth.n', 'definition': "This frame contains general locale words, and is mostly a place-holder in the hierarchy. Words in this frame designate relatively stable bounded ares of the world which have permanent Relative_locations with respect to other locales, and thus are useful as permanent landmarks.  It is inherited by Locale_by_use, which has to do with places that are named according to their intended use, or some habitual use, such as factory.n, dance floor.n, village.n, field.n.  It is also inherited by Locale_by_event, which covers places that are names according to some event which took place there, such as concerts, battles, and meteor impacts.  'This is a pleasant area.'"}, {'frame': 'Perception_experience', 'tfidf': 4.290589004447508, 'lexical_unit': 'detect.v / feel.v / hear.v / perceive.v / perception.n / see.v / sense.v / smell.v / taste.v / overhear.v / experience.n / witness.v / experience.v', 'definition': "This frame contains perception words whose Perceivers have perceptual experiences that they do not necessarily intend to. For this reason we call the Perceiver role Perceiver_passive. Comparing the Perception_experience frame to the Perception_active frame, we note that for some modalities there are different lexical items in each frame.  For instance, whereas Perception_experience has see, Perception_active has look at. For other sense modalities, we find the same lexical items in both frames.  To illustrate, consider the verb smell where I smell something rotten exemplifies its Perception_experience use and Smell this to see if it's fresh exemplifies its Perception_active sense. This frame also includes words which are not specific to any sense modality, including detect, perceive, perception, sense.  '' 'Abashed, realising that he had overheard her conversation with Victoria, Sheeley didn't try to make excuses.'  'She smelled the wine on Paul's breath, and bade him to sit down.'"}, {'frame': 'Travel', 'tfidf': 4.077115441889872, 'lexical_unit': 'travel.v / travel.n / voyage.n / voyage.v / journey.v / journey.n / excursion.n / odyssey.n / expedition.n / commute.v / peregrination.n / pilgrimage.n / tour.v / tour.n / safari.n / trip.n / junket.n / traveler.n / getaway.n / jaunt.n', 'definition': "In this frame a Traveler goes on a journey, an activity, generally planned in advance, in which the Traveler moves from a Source location to a Goal along a Path or within an Area.  The journey can be accompanied by Co-participants and Baggage.  The Duration or Distance of the journey, both generally long, may also be described as may be the Mode_of_transportation.  Words in this frame emphasize the whole process of getting from one place to another, rather than profiling merely the beginning or the end of the journey. 'Ellen journeyed to Europe with five suitcases.' 'Samantha journeyed 2500 miles with her family by sea to China.''The Osbournes took a trip from Beverly Hills to London on the Concorde.'"}, {'frame': 'Abandonment', 'tfidf': 3.6463860941593262, 'lexical_unit': 'abandon.v / leave.v / abandonment.n / abandoned.a / forget.v', 'definition': "An Agent leaves behind a Theme effectively rendering it no longer within their control or of the normal security as one's property.   'Carolyn abandoned her car and jumped on a red double decker bus.'  'Perhaps he left the key in the ignition'  'Abandonment of a child is considered to be a serious crime in many jurisdictions.'  There are also metaphorically used examples:  'She left her old ways behind .'"}, {'frame': 'Attaching', 'tfidf': 3.505401288904795, 'lexical_unit': 'fasten.v / attach.v / tie.v / tack.v / glue.v / staple.v / tape.v / pin.v / nail.v / affix.v / chain.v / paste.v / sew.v / stick.v / lash.v / bond.v / cinch.v / secure.v / fuse.v / shackle.v / bind.v / detach.v / manacle.v / handcuff.v / fetter.v / rivet.v / tether.v / cement.v / gum.v / fix.v / weld.v / solder.v / agglutinate.v / moor.v / anchor.v / attachment [item].n / hitch.v / tying.n / untie.v / hook.v / plaster.v / attachment [act].n / strap.v / adhere.v / append.v / concatenate.v / tack on.v / yoke.v / truss.v / link.v / connect.v / join.v / mount.v / wire.v / bracket.v', 'definition': "The Attaching frame covers two situations: a scene in which somebody causes one thing to be physically connected to something else; or a scene in which somebody causes two things to be connected to each other.  In the first, the frame includes an Agent who attaches an Item to a Goal by manipulating a Connector, creating an asymmetric relationship between the Item and the Goal.  In the second, the Agent attaches two Items to each other, where each serves as a Goal for the other, creating a symmetric relationship between the two Items. In both cases, the  Connector remains to bind the two entities (either Item and Goal, or two Items), without creating a new entity.  'The robber tied Harry to the chair.'  'Make sure you bind his wrists as tightly as possible.'"}, {'frame': 'Existence', 'tfidf': 3.2663813068517795, 'lexical_unit': 'exist.v / existence.n / real.a / there be.v / remain.v', 'definition': "An Entity is declared to exist, generally irrespective of its position or even the possibility of its position being specified. Time, Duration, Inherent_purpose, and State may also be mentioned.  This frame is to be contrasted with Presence, which describes the existence of an Entity in a particular (and salient) spacio-temporal context, and which also entails the presence of an observer who can detect the existence of the Entity in that context.  'Finally, Poland ceased to exist as a state for hundreds of years.' 'Such laws exist to prevent exactly this kind of fraud.' 'There IS a Santa Claus!'"}, {'frame': 'Event', 'tfidf': 2.9434350134177376, 'lexical_unit': 'happen.v / occur.v / take place.v / transpire.v / development.n / event.n / episode.n / incident.n / go on.v', 'definition': "An Event takes place at a Place and Time.  'Big earthquakes only happen along plate boundaries. INI '  'The party will take place on Sunday in the all-you-can-eat buffet.'"}, {'frame': 'First_experience', 'tfidf': 2.8583235667039206, 'lexical_unit': 'first.adv', 'definition': "An implicit experiencer has an Experience for the first time. Some LU's may specifically imply an agentive activity.   'In Italy the term was first used by the Venetians in 1546'  'This time, the comet was first seen on the night of 19th October, 1805 by European observers Jean Louis Pons, Johann Sigismund Huth, and Alexis Bouvard'"}, {'frame': 'Expectation', 'tfidf': 2.7902612797694557, 'lexical_unit': 'anticipate.v / await.v / expect.v / foresee.v / predict.v / predictable.a / unpredictable.a / unforeseeable.a / foreseeable.a / expectation.n / prediction.n / premonition.n / unexpected.a / wait.v', 'definition': "Words in this frame have to do with a Cognizer believing that some Phenomenon will take place in the future.  Some words in the frame (e.g. foresee.v) indicate that the Phenomenon is asserted also to be true, while others do not.  'Michael expected Abby to demand examples.' 'From the look on her face Michael expected that she would say she got the job.'  "}, {'frame': 'Education_teaching', 'tfidf': 2.772547048293525, 'lexical_unit': 'student.n / pupil.n / teacher.n / professor.n / tutor.n / lecturer.n / tutee.n / schoolmaster.n / schoolmistress.n / schoolteacher.n / study.v / tutor.v / coach.v / educate.v / learn.v / school.v / train.v / training.n / instruct.v / teach.v / instruction.n / education.n / master.v / educational.a / graduate.n / protege.n / cram.v', 'definition': 'This frame contains words referring to teaching and the participants in teaching.  A Student comes to learn either about a Subject; a Skill; a Precept; or a Fact as a result of instruction by a Teacher.  Some of the nouns (schoolmaster, -mistress) in this frame refer to administrative positions and do not take relevant frame elements; these will be moved.    \'Dad taught <fex name="">me that if you work hard, you will be OK - no matter what happens. \'  \'What Our Cat  taught Me  About Marketing!\'  \'For two years she taught me French\'  \'Mom and Dad taught me not to bullshit, because it always came back to bite me in the ass, without fail. \'  \'A young swiss girl up in a swiss chalet taught me how to yodel.\'  \'Young Murdock later met a blind martial arts master known as Stick, who taught him how to use his augmented senses and trained him as a fighter.\'  \' Maria, a woman studying to be a nun is sent from her convent to be the governess of the seven children of a widowed naval captain \'  Frame-Element relations:  Several Frame element relations hold in this frame. There is a core-set {Material, Teacher} (possibly also including Institution); these FE\'s can fill the subject slot of the teach-type verbs. There is another core-set  {Precept, Subject, Skill, Fact, Role} to do with what is learnt. In addition, the FE Qualification may occur with Subject and Role  \'My sister is studying for a maths degree    to be a teacher \' \'She\'s studying maths to be a teacher .\'  Phrases expressing Qualification also very often include information about the Subject (see below), which is to be annotated on the second layer.  \'Bill is studying for a BS in physics/a maths degree.\' \'Bill is studying for a BS in physics/a maths degree.\'  '}, {'frame': 'Transition_to_a_situation', 'tfidf': 2.4332627072908215, 'lexical_unit': 'come.v', 'definition': "An Entity ends up in a Final_situation.   'I have come to appreciate good coffee .' 'We have come to expect three meals a day .' 'When the history of our times comes to be written , They Organized Themselves to Death will be the only possible epitaph . ' '' This frame should be compared to the more general Transition_to_a_state, which also includes changes to a Final_category and a Final_quality. '' This frame should be compared to Process_start and Activity_start.  Unlike Process_start's Process FE and Activity_start's Activity FE, the Final_situation need not be conceived of as an ongoing event.  Also, there is no emphasis on the temporal profiling in Transition_to_a_situation other than the before (where the Final_situation is not true) to the after (where the Final_situation is true)."}, {'frame': 'Architectural_part', 'tfidf': 2.4163098743341838, 'lexical_unit': 'fireplace.n / floor.n / ceiling.n / mantel.n / roof.n / rail.n / wall.n / counter.n / facade.n / foundation.n / flight.n / landing.n / window.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  'We need new counters for the kitchen'  'The storm ripped off the bathroom's roof'  "}, {'frame': 'Usefulness', 'tfidf': 2.3863752171315027, 'lexical_unit': 'good.a / effective.a / excellent.a / outstanding.a / superb.a / wonderful.a / fantastic.a / fine.a / tremendous.a / terrific.a / marvellous.a / great.a / super.a / splendid.a / useful.a / utility.n / value.n / valuable.a / perfect.a / ideal.a / ineffective.a / work.v / strong.a', 'definition': "An Entity aids in the successful completion of a Purpose.  Its Degree of utility may also be expressed. Some of the lexical units  in this frame (e.g. great, good) can only express permanent, generic states of the Entity.  'A box is an ideal storage device.'"}, {'frame': 'Questioning', 'tfidf': 2.2935611252669785, 'lexical_unit': 'grill.v / inquire.v / inquiry.n / interrogate.v / interrogation.n / query.n / query.v / question.n / question.v / questioning.n / quiz.v / ask.v', 'definition': "The words in this frame have to do with a Speaker asking an Addressee a question which calls for a reply (as opposed to making a request which calls for an action on the part of the Addressee).  '' 'We asked Ruby what kind of food they ate.'  'Yeats was able to interrogate the spirit world about his relationship with Maude.'"}, {'frame': 'Scrutiny', 'tfidf': 2.2443020917446934, 'lexical_unit': 'analyse.v / analysis.n / investigate.v / investigation.n / look.v / perusal.n / peruse.v / scan.v / scrutinize.v / scrutiny.n / search.n / search.v / study.n / study.v / survey.n / survey.v / analyst.n / probe.v / reconnoitre.v / inspector.n / assay.v / skim.v / sift.v / rummage.v / surveyor.n / scout.v / eyeball.v / check.v / sweep.v / sweep.n / double-check.v / spy out the land.v / once-over.n / comb.v / frisk.v / ransack.v / scour.v / monitor.v / analytic.a / go [through].v / monitoring.n / unmonitored.a / surveillance.n / surveillance [entity].n / explore.v / rifle.v / pry.v / examination.n / reconnaissance.n', 'definition': "This frame concerns a Cognizer (a person or other intelligent being) paying close attention to something, the Ground, in order to discover and note its salient characteristics.  The Cognizer may be interested in a particular characteristic or entity, the Phenomenon, that belongs to the Ground or is contained in the Ground (or to ensure that such a property of entity is not present).  Some words in this frame allow alternate expressions of the Groundand the Phenomenon: 'We searched the yard  for my contact lens.'"}, {'frame': 'Temporal_subregion', 'tfidf': 2.138787350999583, 'lexical_unit': 'late.a / later.a / middle.n / middle.a / early.a / earlier.a / mid.a / end.n / beginning.n / outset.n / start.n / dawning.n / turn.n', 'definition': "A Subpart of a Time_period is picked out.  In some cases, the part (as opposed to the entire Time_period) may be described by a Subpart_property.  The Time_period may be indicated by an event which takes place during the Time_period.  'I nearly kicked my TV this afternoon after watching the shambolic end of the Austrian Grand-Prix .' 'Jack Yan looks at how the branding profession will be affected in the early 2000s by globalization .' 'The late part of the afternoon is the worst time to get things done .' "}, {'frame': 'Political_locales', 'tfidf': 2.1297389047886948, 'lexical_unit': 'barony.n / territory.n / country.n / province.n / duchy.n / viscountcy.n / county.n / state [sovereign].n / principality.n / borough.n / town.n / realm.n / kingdom.n / municipality.n / metropolis.n / megalopolis.n / city.n / world.n / federal.a / global.a / parish.n / diocese.n / international.a / local.a / locality.n / municipal.a / national.a / empire.n / village.n / nation.n / commonwealth.n / internationally.adv / multinational.a / city-state.n / district.n / fiefdom.n / jurisdiction.n / land.n / state [internal].n / provincial.a / territorial.a / township.n', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'Continued_state_of_affairs', 'tfidf': 1.9657189314199803, 'lexical_unit': 'so far.adv / to date.adv / up to.prep / as yet.adv / as of yet.adv / still.adv', 'definition': "A State_of_affairs has held and continues to hold up to the Reference_occasion.   'To date, the Department already has numerous requests for new systems to be developed.'  'SAGE has no activities planned as of yet.'  'PBGC guarantees the benefit that you had earned up to the date of plan termination'  'I think that she 's still in her office .'"}, {'frame': 'Buildings', 'tfidf': 1.9326402045527105, 'lexical_unit': 'house.n / houseboat.n / church.n / tower.n / bungalow.n / cabin.n / castle.n / condominium.n / cottage.n / dacha.n / dormitory.n / dwelling.n / farmhouse.n / home.n / hospital.n / hostel.n / hotel.n / igloo.n / lodge.n / mansion.n / monastery.n / motel.n / palace.n / pension.n / pueblo.n / residence.n / shack.n / shanty.n / shelter.n / tenement.n / tent.n / villa.n / acropolis.n / arena.n / auditorium.n / barn.n / barracks.n / basilica.n / blockhouse.n / campanile.n / caravan.n / caravanserai.n / chalet.n / chateau.n / conservatory.n / garage.n / gazebo.n / greenhouse.n / hall.n / hangar.n / hippodrome.n / hovel.n / inn.n / kennel.n / kiosk.n / lighthouse.n / maisonette.n / mall.n / manor.n / manse.n / mosque.n / outbuilding.n / outhouse.n / pagoda.n / palazzo.n / pavilion.n / penthouse.n / pyramid.n / rotunda.n / shebang.n / shed.n / skyscraper.n / stable.n / stadium.n / supermarket.n / synagogue.n / tabernacle.n / tavern.n / tepee.n / terminal.n / triplex.n / warehouse.n / wigwam.n / hacienda.n / homestead.n / bunker.n / theater.n / bar.n / city hall.n / disco.n / discotheque.n / library.n / temple.n / building.n / structure.n / housing.n / fortress.n / fortification.n / citadel.n / fort.n / airport.n / pub.n / high-rise.n / quarters.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Communication', 'tfidf': 1.8858464402093695, 'lexical_unit': 'communicate.v / speech.n / indicate.v / signal.v / communication [act].n / communication [entity].n / contact.n / codeword.n / password.n / convey.v / say.v / share.v', 'definition': "A Communicator conveys a Message to an Addressee; the Topic and Medium of the communication also may be expressed.  This frame includes no specification of the method of communication (speech, writing, gesture, etc.).  This frame and the frames that inherit the general Communication frame can add elaboration to the Medium in a variety of ways (in French, on the radio program, in a letter) or to the Manner of communication (babble, rant, shout, whisper). There are also frames related to Communication that either do not inherit all of the FEs of this frame or do not inherit them in a straightforward manner (such as Conversation, in which Communicator and Addressee alternate roles, and are often expressed by a single, plural NP).  'Let's hope it did n't have time to communicate any of its findings to its overlords.'  NB:  For many words in this domain (those which do not inherently ascribe cognitive/social processes to a Communicator, position a statement within a conversation, or specify Medium in detail), there is a metaphorical usage which maps Communication onto an alternate POV of Becoming_aware, with corresponding maps for frames related to Communication.  This metaphor is most felicitous with Means or Medium subjects, which are mapped onto the Evidence FE of Becoming_aware.  In many cases this metaphor maps Communication onto the Evidence frame, but not always.  Some words from the Communication domain are listed in the Evidence frame since they are deemed to be lexicalized.  'A flick of his gaze toward the doorway told me what he really wanted. (METAPHOR)' 'This painting really speaks to me. INI (MET) ' 'Putting his arm around her protectively achieved nothing but announcing to their captors their vulnerability. (MET)' 'It says a lot that he did n't come back. INI (MET) '"}, {'frame': 'Preventing_or_letting', 'tfidf': 1.792930254894732, 'lexical_unit': 'prevent.v / avert.v / frustrate.v / nip in the bud.v / obviate.v / stave off.v / check.v / avoid.v / prevention.n / stopping.n / prohibit.v / stop.v / upset.v / keep (from).v / preempt.v / preemption.n / preemptive.a / allow.v / let.v / permit.v / enable.v / enablement.n / forestall.v / preclude.v', 'definition': 'A Potential_hindrance or an Agent (via their actions) keeps an Event from taking place, or despite the possibility of prevent the Event, do not do so. Lexical units which indicate that the event is not prevented, e.g. allow.v, are marked with the semantic type "Negative".  Some lexical units, like avert and avoid indicate that the Potential_hindrance or Agent would have been affected if the Event occurred.   \' Rain prevented the ball game from taking place.\'   \' He could have stopped the riot .\'  \' The government narrowly averted a coup . \' \'She allowed more than a few mistakes to happen .\' \'Technology has permitted firms to link together more closely.\' \'Unlike DOS , Windows lets you get on with something else when sending a fax.\' \'Liberalization allows easier entry into particular markets .\' \'Mesh allows the water to circulate normally through the aquarium.\'  \'\'  Unlike in the Thwarting frame, the Potential_hindrance or Agent does not directly prevent the actions of an individual, but rather affects the world in such a way that an Event cannot occur.'}, {'frame': 'Dimension', 'tfidf': 1.766740001242799, 'lexical_unit': 'tall.a / high.a / wide.a / broad.a / thick.a / deep.a / long.a / breadth.n / depth.n / length.n / width.n / height.n / weigh.v / measure.v / weight.n / area.n / circumference.n / around.adv / work.n / across.adv / level.n', 'definition': "This frame concerns  words that express an Object's position on a scale, its Measurement, with respect to some attribute, its Dimension.  Location,  identifying the sub-region of the Object where the Dimension is measured, may also be expressed.  'The tower is 10 feet tall.'   'The  new vase is 5 cm in circumference at the top.'  Adjectives in this frame must appear with a measurement expression like 5 cm.  Note the tagging of  six feet on the GF and PT layers in the following sentence.  'The woman was six feet tall.'  The GF of six feet is Dep and the PT is NP."}, {'frame': 'Body_movement', 'tfidf': 1.663903914139826, 'lexical_unit': 'arch.v / bat.v / bend.v / blink.v / bob.v / clap.v / cock.v / crane.v / cross.v / drop.v / flap.v / flex.v / fling.v / flutter.v / gnash.v / grind.v / hang.v / jerk.v / lift.v / nod.v / pout.v / pucker.v / purse.v / roll.v / shake.v / shrug.v / shuffle.v / stretch.v / swing.v / throw.v / toss.v / twitch.v / wag.v / waggle.v / wave.v / wiggle.v / wink.v / wrinkle.v / curtsy.n / kneel.v / writhe.v / wriggle.v / shudder.v / fidget.v / yawn.v / jiggle.v / shiver.v / curtsy.v / duck.v / crease.v / smack.v / open.v / close.v / shut.v / twiddle.v / stamp.v / crinkle.v / crumple.v / scrunch.v / move.v / twist.v / wink.n / reach.v', 'definition': "This frame contains words for motions or actions an Agent performs using some part of his/her body.   A number of words in this frame occur as blends with Communication, in which the action has an Addressee.  For example,   'Pat nodded at Kim.'  These examples differ from Communication.Gesture in that no specific message need be expressed, as in  'She nodded to him to sit down.'  Since this frame involves a particular type of motion, it contains the frame elements Source, Path, Goal and Area, which originate in the motion frame.  All of these frame elements are generally expressed in PP Complements.  'The boy swung his legs from under the table.'"}, {'frame': 'Popularity', 'tfidf': 1.5850658485219542, 'lexical_unit': 'popular.a / cool.a / in.a / in demand.a / hot.a', 'definition': "An Evaluee, which can be a person or an object, has an amount of acceptability or utilization based on general (often non-aesthetic) desirability. The Judge who determines the Evaluee's desirability may be mentioned.  'Frank Sinatra is cool again.' 'Web 2.0 is so in right now.'"}, {'frame': 'Being_employed', 'tfidf': 1.5678564424601489, 'lexical_unit': 'work.v / work.n / employ.n / wait tables.idio / job.n / clerk.v / temp.v / stint.n / employed.a / subcontract.v / farm (out).v / employment.n / unemployment.n / unemployed.a / jobless.a / position.n / at.prep', 'definition': "An Employee has a Position doing work in a particular Field, or doing work on a particular Task, for which an Employer gives Compensation to the Employee.  ' Undocumented foreigners are working as  building contractors for Laing Builders.'"}, {'frame': 'Body_parts', 'tfidf': 1.5546091156219568, 'lexical_unit': 'arm.n / ankle.n / anus.n / back.n / beard.n / belly.n / body.n / breast.n / buttocks.n / cheek.n / chest.n / chin.n / ear.n / earlobe.n / elbow.n / eyelid.n / face.n / finger.n / flesh.n / foot.n / forearm.n / forehead.n / groin.n / hair.n / hand.n / head.n / heel.n / incisor.n / jaw.n / toe.n / hoof.n / claw.n / paw.n / talon.n / wing.n / pelt.n / snout.n / maw.n / fang.n / mane.n / whisker.n / feeler.n / antler.n / muzzle.n / beak.n / trunk.n / tail.n / eye.n / foreleg.n / forefoot.n / forepaw.n / limb.n / fin.n / flipper.n / horn.n / nape.n / nose.n / antenna.n / fluke.n / skin.n / forelimb.n / hindlimb.n / hindleg.n / fingertip.n / brow.n / lip.n / temple.n / fingernail.n / tongue.n / toenail.n / thumb.n / nostril.n / sole.n / midriff.n / navel.n / neck.n / hindquarters.n / forefinger.n / thigh.n / mouth.n / tentacle.n / bill.n / appendage.n / thorax.n / rump.n / crown.n / member.n / leg.n / shoulder.n / tooth.n / mustache.n / knee.n / pupil.n / throat.n / lung.n', 'definition': "This frame covers words for Body_part(s) (BP) belonging to a Possessor (Poss), which may be characterized by a Descriptor (Desc). The location of the BP may be identified in terms of  its Attachment or its Orientational_location.  A Subregion of a BP may also be indicated.   '' 'He had to brace his right arm against his leg in order to fight the roll.'  'The dog measured its blond belly in the mud.'  ''"}, {'frame': 'Text_creation', 'tfidf': 1.5539360487003144, 'lexical_unit': 'pen.v / author.v / write.v / compose.v / draft.v / jot down.v / jot.v / speak.v / say.v / utter.v / write up.v / write down.v / write in.v / write out.v / print.v / type.v / type out.v / type up.v / type in.v / print out.v / print up.v / get down.v / chronicle.v / sign.v / dash off.v / list.v', 'definition': "An Author creates a Text, either written, such as a letter, or spoken, such as a speech,  that contains meaningful linguistic tokens, and may have a particular Addressee in mind.  The Text may include information about its topic, although the latter is not an FE in this frame.  'I penned a letter concerning racism  to Congress.' 'The brothers said not two words to each other.' 'Jot any notes you need below the line in red pen only.'"}, {'frame': 'Entity', 'tfidf': 1.5257122152842426, 'lexical_unit': 'item.n / entity.n / object.n / thing.n / individual.n / what.n', 'definition': "This frame is for words that denote highly schematic entities.  'We found an unusual wooden object in the desert.'"}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"The Emerald Orbs"</span>.</h5>
+                        <br/>
+                        <pre>
+Daylight from the Starsun now showed its healthy pale gleam through the windows.
+The three travelers on the floor moaned in their misery as they worked their way to their feet.
+Zain stood still in his shocked vigilance, war-hammer still in his hands.
+The head of the hammer rested gently on an Emerald Orb, which sat high on a polished silver pedestal.
+Dagen was the first to regain his feet.
+The barbarian came to Zain's side and looked at the orb in confusion.
+Sarik and Jase soon joined the others as they looked at the treasure, which they had come for.
+"What happened?"
+Jase asked.
+His voice was almost a whimper.
+Neither Sarik nor Dagen said anything.
+They were waiting for Zain to answer.
+The dwarf pursed his lips, not sure exactly what he should say.
+Gathering his thoughts he finally said, "I think this tower was a weak point in the fabric of existence.
+It was a portal perhaps, one that you could enter, but not exit.
+I do not think we witnessed the Void, but I think we witnessed the Abyss and one of its overlords.
+When studying at the monastery we were told how the minions of Devindal on many worlds could reach the Abyssal Plain.
+It must be places like this where they cross over, save this point was not fully connected yet."
+"Whatever it was," Sarik started, "the connection has been severed.
+Let's take what we came for and leave this place.
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"The Iron Bells"</span>.</h5>
+                        <br/>
+                        <pre>
+"What do you think I should be doing, Amaranth?"
+I flap my hands.
+"I don't know--anything?
+Don't you think it's kind of important to find out why?"
+"Of course I do," he says mildly, unperturbed by my outburst.
+"Then why are you acting like this is some kind of vacation?"
+He looks at me, an unreadable expression on his face.
+"Because I don't know what's going to happen when I get to the Gate--if I get to it."
+He runs a hand through his hair.
+"I don't even know what's going to happen tomorrow."
+He looks around the garden.
+"So I might as well enjoy today."
+I stand there, gaping at him.
+He tugs at my hand and pulls me back down on the bench.
+He says, "How about you enjoy it with me?
+Stop stressing before you tear yourself apart."
+We sit in silence for a few minutes.
+As time passes, I can feel the urge to move, to fidget rising inside me.
+I try to keep from bouncing my knee or jiggling my leg, but can't stop myself.
+Dham puts his hand on my leg to still it.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="42">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="1">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

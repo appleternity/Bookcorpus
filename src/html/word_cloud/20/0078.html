@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Gusto', 'tfidf': 8.371151469820695, 'lexical_unit': 'life.n / vim.n / spirit.n', 'definition': 'A Person has a particular mental state and the ability to engage in an activity with enthusiasm, energy, and positivity.'}, {'frame': 'Similarity', 'tfidf': 5.957500533883718, 'lexical_unit': 'similar.a / dissimilar.a / similarity [mass].n / dissimilarity.n / alike.a / resemble.v / different.a / unlike.prep / resemblance.n / unlike.a / ringer.n / spitting image.n / like.n / similarity [count].n / like.prep / like.a / differ.v / distinct.a / difference [count].n / parallel.n / difference.n / vary.v / discrepancy.n / discrepant.a / disparity.n / disparate.a / distinction.n / variant.n / dissimilarity [mass].n / image.n / very image.n / take after.v / mimic.v', 'definition': "Two or more distinct entities, which may be concrete or abstract objects or types, are characterized as being similar to each other.  Depending on figure/ground relations, the entities may be expressed in two distinct frame elements and constituents , Entity_1 and Entity_2, or jointly as a single frame element and constituent, Entities.  The similarity may be based on appearance, physical properties, or other characteristics of the two entities. However, no such Dimension has to  be specified explicitly.  The Entities may be like each other to a greater or lesser Degree. Rather than specifying the Dimension of difference, a Differentiating_fact may be mentioned.   '' Notice that, although similarity presupposes the notion of a judge who assesses similarity, that judge is not part of the frame of similarity.  'A mulberry is very similar in shape  to a loganberry' 'Recovering it afterwards can also be similar to collecting an unsecured loan ' 'Great Britain and Germany were only alike in one respect.' 'Lothlorien is quite like most of their other war games really.'"}, {'frame': 'Make_agreement_on_action', 'tfidf': 4.027569324553535, 'lexical_unit': 'agree.v / agreement.n / deal.n / treaty.n / settle.v', 'definition': "Two (or more) people (the Parties, also encodable as Party_1 and Party_2) negotiate an agreement. Both sides are construed as making a commitment to assume an Obligation--the process is understood to be symmetrical or reciprocal. Instead of a specific mention of the Obligation, a Topic expression may be used to indicate the domain covered.  'So far , we have agreedto cede 100km of coastline to Kiribati . DNI '  'At common law, the parties could make an oral agreement to submit a dispute to arbitration and such oral agreement would be valid.'      "}, {'frame': 'Reveal_secret', 'tfidf': 3.790584144761941, 'lexical_unit': "reveal.v / disclose.v / revelation.n / expose.v / disclosure.n / divulge.v / divulgence.n / confess.v / confession.n / confide.v / spill beans.v / come clean.v / let slip.v / leak.v / tip (someone's) hand.idio / admit.v / come forward.v / fess up.v / let on.v", 'definition': "A Speaker reveals Information that was previously secret to an Addressee. In some cases, the Addressee is expected to keep the Information from other parties. The Information may be damaging to the reputation of the Speaker. Instead of (or in addition to) a Speaker, a Medium may also be mentioned. Likewise, a Topic may be stated instead of Information. Some lexical units in this frame imply that the Addressee has already been confronted with the Information.    'Could it be true that Martin himself was the one who spilled the beans on Pops and Brad's planned wedding? '  "}, {'frame': 'Body_description_holistic', 'tfidf': 3.6484775017002598, 'lexical_unit': 'lanky.a / chubby.a / flabby.a / corpulent.a / obese.a / portly.a / svelte.a / stocky.a / dumpy.a / gaunt.a / skinny.a / beefy.a / short.a / brawny.a / paunchy.a / fat.a / thin.a / spindly.a / slim.a / slender.a / puny.a / scrawny.a / heavy-set.a / stout.a / stubby.a / tall.a / muscular.a / lean.a / angular.a / bony.a / rangy.a / squat.a / thickset.a / lithe.a / plump.a / pudgy.a / wiry.a / hefty.a / medium-build.a / big-boned.a / male.a / female.a', 'definition': "This frame covers descriptions of an entire human body, viewed as a gestalt (as opposed to descriptions based on salient body parts).  The Frame Elements are Individual and Figure.    'Chuck is muscular.'  'Chuck has a muscular body.' "}, {'frame': 'Sex', 'tfidf': 3.6004289530576754, 'lexical_unit': "do.v / shag.v / mate.v / bang.v / lay.v / bump uglies.v / knock boots.v / bone.v / slam.v / intercourse.n / copulate.v / make love.v / make whoopee.a / pork.v / fuck.v / do it.v / take.v / sex.n / bed.v / have.v / give.v / quickie.n / jump (someone's) bones.idio / jump.v / go at it.v", 'definition': 'Participants in a Sex act engage in or are subjected to sexual contact. Often the LUs in this frame are suggestive euphemisms which refer to non-sexual physical contact, Giving/Receiving scenarios, frames related to travel, physical orientation, body metonymy, biological necessity, or a simple completion of Activity.  '}, {'frame': 'Attaching', 'tfidf': 3.505401288904795, 'lexical_unit': 'fasten.v / attach.v / tie.v / tack.v / glue.v / staple.v / tape.v / pin.v / nail.v / affix.v / chain.v / paste.v / sew.v / stick.v / lash.v / bond.v / cinch.v / secure.v / fuse.v / shackle.v / bind.v / detach.v / manacle.v / handcuff.v / fetter.v / rivet.v / tether.v / cement.v / gum.v / fix.v / weld.v / solder.v / agglutinate.v / moor.v / anchor.v / attachment [item].n / hitch.v / tying.n / untie.v / hook.v / plaster.v / attachment [act].n / strap.v / adhere.v / append.v / concatenate.v / tack on.v / yoke.v / truss.v / link.v / connect.v / join.v / mount.v / wire.v / bracket.v', 'definition': "The Attaching frame covers two situations: a scene in which somebody causes one thing to be physically connected to something else; or a scene in which somebody causes two things to be connected to each other.  In the first, the frame includes an Agent who attaches an Item to a Goal by manipulating a Connector, creating an asymmetric relationship between the Item and the Goal.  In the second, the Agent attaches two Items to each other, where each serves as a Goal for the other, creating a symmetric relationship between the two Items. In both cases, the  Connector remains to bind the two entities (either Item and Goal, or two Items), without creating a new entity.  'The robber tied Harry to the chair.'  'Make sure you bind his wrists as tightly as possible.'"}, {'frame': 'Traversing', 'tfidf': 3.50145987235099, 'lexical_unit': 'traverse.v / skirt.v / mount.v / descent.n / descend.v / cross.v / crisscross.v / ascent.n / ascend.v / jump.v / pass.v / circle.v / hop.v / leap.v', 'definition': "A Theme changes location with respect to a salient location, which can be expressed by a Source, Path, Goal, Area, Direction, Path_shape, or Distance, as shown in the examples below: ''  'Start your ascent from Achintree Farm in Glen Nevis.'  'We crossed the desert.'  'She jumped across the ditch that marked the entrance to the woods.'  'The children hopped into the neighbor's yard.'  'I leaped twenty feet before slipping and falling.'  'As they did so, the plane circled lower.'  'Boyner has been crisscrossing the country since May.'"}, {'frame': 'Request', 'tfidf': 3.426595909980067, 'lexical_unit': 'appeal.n / ask.v / beg.v / beseech.v / command.n / command.v / demand.n / demand.v / entreat.v / entreaty.n / implore.v / order.n / order.v / petition.n / plea.n / plead.v / request.n / request.v / summon.v / tell.v / urge.v / call.v / invite.v / call.n / instruct.v / invitation.n', 'definition': "In this frame a Speaker asks an Addressee for something, or to carry out some action.  'The customer demanded a refund.' 'I begged my parents to let me stay up late.' "}, {'frame': 'Organization', 'tfidf': 3.3026078516926423, 'lexical_unit': 'cartel.n / club.n / government.n / organization.n / association.n / league.n / intelligence.n / agency.n / union.n / brotherhood.n / delegation.n / committee.n / group.n / board.n / order.n / society.n / parliament.n / news outlet.n', 'definition': "This frame describes intentionally formed human social groups (here termed Organizations) with some definite structure and Members.  They may be relatively informal, consisting only of a group of individuals who are aware of who is and who is not a fellow member, or they may be complex and long-lasting, such as the Roman Catholic Church or the Conservative Party.   'Lucien is in the brotherhood.'"}, {'frame': 'Temporal_pattern', 'tfidf': 3.0298583638278442, 'lexical_unit': 'rhythm.n / rhythmically.adv / beat.n / rhythmic.a / time.n', 'definition': "A salient Subevent has a Pattern of recurrence within a larger Process.    'Tony's fingers tapped rhythmically on the keyboard'  "}, {'frame': 'Identicality', 'tfidf': 2.556248432482189, 'lexical_unit': 'same.a / different.a / identical.a / distinct.a / identity.n', 'definition': "A Current_instance of a certain Type is under discussion. This instance  is evaluated as being the same instance or a different instance from a Previous_instance encountered in a Previous_context.  'Kim has a different hair color every week' 'Kim has a different hair color every week'  'Is this the same sofa as the one that used to be in the lobby?' 'Is this the same sofa as the one that used to be in the lobby?'   'Dracula and your neighbor are different people' 'Dracula and your neighbor are different people'"}, {'frame': 'Clothing', 'tfidf': 2.534359342357988, 'lexical_unit': 'dress.n / frock.n / petticoat.n / ballgown.n / culottes.n / chemise.n / jodhpurs.n / sock.n / stocking.n / leggings.n / tunic.n / slip.n / gown.n / skirt.n / shorts.n / pants.n / trousers.n / wrap.n / shirt.n / blouse.n / cloak.n / cape.n / coat.n / greatcoat.n / overcoat.n / jacket.n / vest.n / tie.n / hose.n / hosiery.n / clothing.n / clothes.n / finery.n / suit.n / necktie.n / neckwear.n / cummerbund.n / scarf.n / shawl.n / bow-tie.n / pantyhose.n / garter.n / panties.n / knickers.n / sweater.n / jumper.n / cardigan.n / pullover.n / blazer.n / kilt.n / swimsuit.n / bikini.n / robe.n / bathrobe.n / apron.n / miniskirt.n / fishnet.n / legwarmers.n / regalia.n / raiment.n / apparel.n / attire.n / vestment.n / livery.n / outfit.n / garment.n / undergarment.n / underclothing.n / underclothes.n / underwear.n / togs.n / undies.n / shift.n / pinafore.n / mitten.n / mitt.n / glove.n / bodice.n / corset.n / parka.n / windbreaker.n / windcheater.n / raincoat.n / pyjama.n / nightie.n / nightdress.n / nightgown.n / nightwear.n / lingerie.n / camisole.n / waistcoat.n / jeans.n / overall.n / coverall.n / garb.n / smock.n / sundress.n / bra.n / brassiere.n / teddy.n / tights.n / jumpsuit.n / kimono.n / kaftan.n / uniform.n / costume.n / motley.n / get-up.n / ensemble.n / surplice.n / galosh.n / welly.n / wellington.n / slipper.n / sandal.n / sneaker.n / stiletto.n / boot.n / shoe.n / gumboot.n / clog.n / footwear.n / sari.n / sarong.n / poncho.n / abaya.n / jerkin.n / crinoline.n / muff.n / cowl.n / tutu.n / t-shirt.n / polo-neck.n / g-string.n / flip-flops.n / one-piece.n / two-piece.n / flannels.n / rags.n / silks.n / satins.n / cottons.n / tweeds.n / ermines.n / muslins.n / tippet.n / doublet.n / tatters.n / neckerchief.n / breeches.n / sweatshirt.n / sweatpants.n / tracksuit.n / alb.n / stole.n / chasuble.n / cope.n / buskin.n / pallium.n / gauntlet.n / cravat.n / briefs.n / cossie.n', 'definition': "This frame refers to clothing and its characteristics,  including anything that people conventionally wear.  The Wearer wears a Garment that has a certain Style, is made of a certain Material, and can be otherwise characterized by a Descriptor.  In some cases, the Body_location (where the garment is worn) and Subregion of the clothing may also be specified.  'Claudia dressed in a dark green cotton DRESS clasped round her slender waist with a broad yellow belt , drank a cup of coffee and opened her neglected post .'"}, {'frame': 'Documents', 'tfidf': 2.4911032992544357, 'lexical_unit': 'visa.n / passport.n / subpoena.n / warrant.n / certificate.n / papers.n / license.n / summons.n / diploma.n / deed.n / lease.n / agreement.n / treaty.n / charter.n / authorization.n / deposition.n / brief.n / writ.n / affidavit.n / will.n / testimony.n / testament.n / ruling.n / finding.n / opinion.n / title.n / orders.n / contract.n / permit.n / document.n / contractual.a / accord.n / confirmation.n / identification.n / business card.n', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Desirable_event', 'tfidf': 2.4141690196865944, 'lexical_unit': 'should.v / ought to.v / bad idea.n / good idea.n / have to.v / be supposed to.v', 'definition': "A particular State_of_affairs is desirable.  The State_of_affairs may be required to achieve a Purpose.  A set of Circumstances may be specified under which the assessment of desirability holds.   'You should take the doses about 12 hours apart and at the same time each day.' ' If the metal is seriously rusted or warped, it should be repaired or replaced with a chimney top damper.' 'To ensure that, you should have no CLASSPATH set.'"}, {'frame': 'Type', 'tfidf': 2.4141570724693997, 'lexical_unit': 'type.n / class.n / kind.n / sort.n / variety.n / strain.n / breed.n / ilk.n / make.n / race.n / brand.n / form.n / shade.n / version.n', 'definition': "This frame has to do with nouns denoting types of entities. The Subtype refers to a collection of members of a more general Category which have certain defining characteristics; alternatively, the Subtype refers only to the type itself, i.e. a more restrictive set of characteristics than those of the more general Category.  The properties of the items that are included in the collection may be specified by the Item_Property.  Sometimes the Subtypes themselves are described by some Type_Property.  'I don't like this newfangled kind of  fish.' 'Kleo isn't our sort of people.' 'He argued against the formalist type of analysis of art.' 'I think that she was referring to the other type. DNI'"}, {'frame': 'Sufficiency', 'tfidf': 2.35734953071875, 'lexical_unit': 'enough.n / enough.adv / enough.a / suffice.v / sufficient.a / sufficiently.adv / insufficient.a / insufficiently.adv / adequate.a / adequately.adv / insufficiency.n / adequacy.n / inadequacy.n / inadequate.a / inadequately.adv / plenty.n / plenty.adv / plenty.a / ample.a / too.adv / so.adv / serve.v', 'definition': "An Item is located on a Scale relative to a critical value which is determined by some Enabled_situation. Generally, when the Enabled_situation is left unexpressed the Enabled_situation is interpreted to be the desirability of the Item being located within a particular range on the Scale. With many of the adjectives of this frame, the Scale is not explicitly mentioned; in such cases, the Scale is usually the quantity, incorporated in the meaning of the targets themselves, though in the case of adequacy, etc. the Scale referred to is quality.  'I probably have enough. DNI DNI'  'I was mad enough to scream.'  'I was too mad to keep myself from screaming.'  'I was way too hot. DNI'  'The particles are sufficiently small in diameter that they may be considered points.'"}, {'frame': 'Questioning', 'tfidf': 2.2935611252669785, 'lexical_unit': 'grill.v / inquire.v / inquiry.n / interrogate.v / interrogation.n / query.n / query.v / question.n / question.v / questioning.n / quiz.v / ask.v', 'definition': "The words in this frame have to do with a Speaker asking an Addressee a question which calls for a reply (as opposed to making a request which calls for an action on the part of the Addressee).  '' 'We asked Ruby what kind of food they ate.'  'Yeats was able to interrogate the spirit world about his relationship with Maude.'"}, {'frame': 'Manipulation', 'tfidf': 2.194858326194115, 'lexical_unit': 'clasp.v / claw.v / clutch.v / finger.v / grab.v / grasp.v / grip.v / knead.v / massage.v / nip.v / nudge.v / paw.v / pinch.v / pull.v / push.v / seize.v / squeeze.v / tug.v / tweak.v / wring.v / yank.v / fumble.v / grope.v / stroke.n / rub.v / grab hold.v / pull.n / lick.v / touch.v / kiss.v / caress.v / caress.n / stroke.v / diddle.v / hold.v / tickle.v / handle.v / kiss.n / poke.v', 'definition': "The words in this frame describe the manipulation of an Entity by an Agent.  Generally, this implies that the Entity is not deeply or permanently physically affected, nor is it overall moved from one place to another.  'Ian squeezed Mara's hand.' ''  A number of lexemes listed in this frame also occur in the Cause_motion frame (for example, push, yank).  Only the non-motion uses of these words belong in this frame, e.g., combinations such as push at, push on, yank at. "}, {'frame': 'Make_noise', 'tfidf': 2.15739236847637, 'lexical_unit': 'babble.v / bark.v / bellow.v / blare.v / blast.v / bleat.v / bray.v / burble.v / cackle.v / caterwaul.v / caw.v / chatter.v / cheep.v / chirp.v / chuckle.v / clang.v / clash.v / clatter.v / click.v / coo.v / cough.v / creak.v / croak.v / croon.v / crunch.v / drone.v / fizzle.v / gasp.v / giggle.v / gobble.v / growl.v / grunt.v / guffaw.v / gurgle.v / hawk.v / hiss.v / hoot.v / howl.v / hum.v / keen.v / mew.v / mewl.v / moan.v / moo.v / neigh.v / patter.v / peal.v / peep.v / plash.v / plonk.v / plop.v / purr.v / quack.v / rasp.v / rattle.v / roar.v / rustle.v / scrape.v / screech.v / scrunch.v / sizzle.v / snarl.v / snicker.v / snigger.v / snore.v / snort.v / sob.v / sough.v / squawk.v / squeak.v / squeal.v / thump.v / thunder.v / tinkle.v / titter.v / toll.v / trumpet.v / tweet.v / twitter.v / ululate.v / wail.v / whimper.v / whine.v / whinny.v / whisper.v / whistle.v / yammer.v / yap.v / yelp.v / yodel.v / yowl.v / crepitate.v / laugh.v / clack.v / sploosh.v / scream.v / ring.v / beep.v / hem and haw.v / boom.v / cry.v / sound.v / honk.v / play.v / toot.v', 'definition': "A physical entity, construed as a point-Sound_source, emits a Sound.  This includes animals and people making noise with their vocal tracts. Sometimes the sound itself is referred to with a nominal expression, in which case it is called the Sound. Manner expressions may also be relevant in this frame, if they describe properties of the sound as such.  A path-schema can be overlaid on the simple noise-making scene, adding a Location_of_source and/or a Path.   This frame does not cover scenarios where objects create sound by coming into forceful contact with one another or rubbing against each other. Such scenarios are covered by the Impact and Friction frames. The current frame also does not cover cases where an animate Agent or a natural Force or Cause causes a single Source or several Sources (moving or rubbing against each other) to make noise. Such scenarios are  covered by the Cause_to_make_noise, Cause_impact and Cause_friction frames (the latter of which is not yet existent). Cases where the major emphasis of the portrayed scene is on the motion of a Theme, with sound emission only an accompaniment, are covered by the Motion_noise frame. Likewise, cases where the Sound itself is portrayed as moving through space are not covered in this frame but rather in Sound_movement. Finally, all nouns used to evoke Sounds have been placed in the Sounds frame. We have done this because these nouns do  not denote sound emission/production events but only the Sound itself (*The siren's blare occurred right on time)."}, {'frame': 'Ingest_substance', 'tfidf': 2.0695601688920946, 'lexical_unit': 'smoke.v / snort.v / drag.v / drag.n / toke.n / pull.v / pop.v / inject.v / shoot.v / sniff.v / do.v / use.v / take.v / puff.v / have.v', 'definition': "In this frame an Ingestor takes a Substance into his or her body. The Delivery_device can appear as a direct object.    'You should refrain from taking vodka up the nose.'  'Smoking a cigarette only takes a couple of minutes . CNI '"}, {'frame': 'Distributed_position', 'tfidf': 1.9010068486738012, 'lexical_unit': 'adorn.v / blanket.v / cloak.v / coat.v / cover.v / deck.v / decorate.v / envelop.v / festoon.v / fill.v / film.v / line.v / pave.v / wreathe.v / dot.v / stud.v / garnish.v / encrust.v / litter.v / all over.prep / across.prep / over.prep / around.prep', 'definition': 'This frame involves a static (primarily spatial) relationship between a Location and a Theme, in which the Theme is located in many or all subregions of the Location, and is thus construable as covering it. The Time when the covering configuration holds, and the Subregion of the Location that is involved may, optionally, be indicated.    \'By Summer, weeds dotted the field .\' \'The papers around my office were too messy .\' Prepositional and verb targets of this frame differ in the ways they can participate in forming sentences; one of the most important differences is that prepositions may modify the entire sentence to describe the event (the Theme) as distributed over the Location. \'Puddles were rippling all over the roof .\'  Some members of this frame specifically indicate that the configuration is attractive or unattractive; this is indicated by the semantic types Positive_judgement and Negative_judgement respectively.  Some of the non-verb LUs of the frame (esp. around.prep) refer to multiple possible positions that might be occupied by a single Theme, often accompanied by "somewhere":  \'I hope my wallet is around here (somewhere) .\'  These same LUs may refer a vague sequence of locations occupied by a single Theme:  \'I kept walking around my apartment .\'  All or virtually all of the verbs used statically in this frame can also occur in the frame Filling, producing pairs such as the following:  \'Filling: Pat covered the table with flowers.\'  \'Distributed_position: Flowers covered the table.\'  \'\' Please note: adorned, covered, etc are in the Abounding_with frame because of the point of view shift. \'\' \'The tree was studded all over with soft dark fruit.\''}, {'frame': 'Preventing_or_letting', 'tfidf': 1.792930254894732, 'lexical_unit': 'prevent.v / avert.v / frustrate.v / nip in the bud.v / obviate.v / stave off.v / check.v / avoid.v / prevention.n / stopping.n / prohibit.v / stop.v / upset.v / keep (from).v / preempt.v / preemption.n / preemptive.a / allow.v / let.v / permit.v / enable.v / enablement.n / forestall.v / preclude.v', 'definition': 'A Potential_hindrance or an Agent (via their actions) keeps an Event from taking place, or despite the possibility of prevent the Event, do not do so. Lexical units which indicate that the event is not prevented, e.g. allow.v, are marked with the semantic type "Negative".  Some lexical units, like avert and avoid indicate that the Potential_hindrance or Agent would have been affected if the Event occurred.   \' Rain prevented the ball game from taking place.\'   \' He could have stopped the riot .\'  \' The government narrowly averted a coup . \' \'She allowed more than a few mistakes to happen .\' \'Technology has permitted firms to link together more closely.\' \'Unlike DOS , Windows lets you get on with something else when sending a fax.\' \'Liberalization allows easier entry into particular markets .\' \'Mesh allows the water to circulate normally through the aquarium.\'  \'\'  Unlike in the Thwarting frame, the Potential_hindrance or Agent does not directly prevent the actions of an individual, but rather affects the world in such a way that an Event cannot occur.'}, {'frame': 'Experiencer_obj', 'tfidf': 1.7646162083512724, 'lexical_unit': 'aggrieve.v / alarm.v / amaze.v / anger.v / annoy.v / antagonize.v / astonish.v / astound.v / baffle.v / bewilder.v / bewitch.v / calm.v / captivate.v / charm.v / cheer.v / comfort.v / conciliate.v / confuse.v / console.v / dazzle.v / delight.v / depress.v / disappoint.v / discomfit.v / disconcert.v / discourage.v / dishearten.v / displease.v / distress.v / disturb.v / embarrass.v / enchant.v / enrage.v / entertain.v / enthrall.v / exasperate.v / excite.v / fascinate.v / frighten.v / frustrate.v / gall.v / gladden.v / gratify.v / hearten.v / humiliate.v / impress.v / infuriate.v / irk.v / irritate.v / mollify.v / pacify.v / perplex.v / placate.v / please.v / puzzle.v / rattle.v / reassure.v / rile.v / sadden.v / satisfy.v / scare.v / shake.v / shame.v / shock.v / soothe.v / spook.v / startle.v / stimulate.v / stun.v / surprise.v / terrify.v / thrill.v / unnerve.v / unsettle.v / upset.v / bore.v / wow.v / vex.v / vexation.n / shocker.n / sicken.v / stupefy.v / tickle.v / trouble.v / sting.v / solace.v / nettle.v / abash.v / aggravate.v / exhilarate.v / faze.v / embitter.v / flabbergast.v / floor.v / rankle.v / nonplus.v / mortify.v / madden.v / incense.v / petrify.v / revolt.v / sober.v / repel.v / torment.v / beguile.v / traumatize.v / interest.v / intrigue.v / offend.v / intimidate.v / mystify.v / perturb.v / stir.v / fluster.v / flummox.v / outrage.v / surprise.n / boggle.v / trouble.n / fulfill.v / crush.v / devastate.v / arouse.v / grate.v / appeal.v / worry.v / harass.v / engage.v / stagger.v / destroy.v / demolish.v / agonize.v / encourage.v / wound.v / kill.v / let down.v', 'definition': "Some phenomenon (the Stimulus) provokes a particular emotion in an Experiencer.  'Nightmare on Elm Street scared me silly.'"}, {'frame': 'Intentionally_act', 'tfidf': 1.6667911420073651, 'lexical_unit': 'action.n / do.v / step.n / act.v / doing.n / activity.n / perform.v / carry out.v / conduct.v / execute.v / engage.v / measures.n / act.n / move.n / actor.n / agent.n / deed.n', 'definition': "This is an abstract frame for acts performed by sentient beings. It exists mostly for FE inheritance.  'I carried out the deed easily .'"}, {'frame': 'Desirability', 'tfidf': 1.6283881722762799, 'lexical_unit': 'pathetic.a / superb.a / superlative.a / excellent.a / fabulous.a / outstanding.a / pitiful.a / appalling.a / execrable.a / fantastic.a / awful.a / splendid.a / sensational.a / wonderful.a / astonishing.a / rotten.a / terrible.a / magnificent.a / horrible.a / dreadful.a / stupendous.a / marvellous.a / super.a / first-rate.a / tremendous.a / good.a / bad.a / fair.a / mediocre.a / decent.a / okay.a / average.a / tolerable.a / second-rate.a / third-rate.a / astounding.a / fine.a / terrific.a / great.a / so-so.a / substandard.a / shitty.a / inferior.a / top-notch.a / tip-top.a / incredible.a / crappy.a / amazing.a / suck.v / rock.v / lamer.n / lame.a / uncool.a / excellence.n / desirable.a / extraordinary.a / sweet.a / cool.a / nasty.a / miserable.a / unfortunate.a / popular.a / idyllic.a / poor.a / atrocious.a / well.adv / standout.n / crap.n / shit.n / garbage.n / gem.n / gold.n / killer.a / awesome.a / best thing since sliced bread.n / junk.n / worthless.a', 'definition': "This frame concerns an Evaluee being judged for its quality, i.e. how much it would probably be liked.  In many cases, the Evaluee is implicitly judged good or bad relative to other instances of its type. The Evaluee's desirability is determined by one or more Parameters, which are scalar properties of the Evaluee. The evaluation may also explicitly be relativized to a set of Circumstances, a Comparison_set of entities that belong to the same class as the Evaluee, or an Affected_party. The Degree of goodness or badness may also be expressed.  Note: With some targets, desirability is conventionally aligned with quantity, i.e., GOOD is MORE.  'The view was  astonishing.' 'On clear days, the view was excellent.' 'The book is astounding in its scope.' 'The games have been awful for the team.' "}, {'frame': 'Size', 'tfidf': 1.6184513195837744, 'lexical_unit': 'large.a / big.a / huge.a / small.a / tiny.a / little.a / enormous.a / great.a / infinitesimal.a / gigantic.a / giant.a / miniature.a / grand.a / immense.a / miniscule.a / massive.a / sizable.a / substantial.a / ample.a / bulky.a / capacious.a / colossal.a / humongous.a / immeasurable.a / voluminous.a / jumbo.a / mini.a / petite.a / wee.a / bitty.a / puny.a / Brobdingnagian.a / Lilliputian.a / medium.a / mid-size.a / medium-sized.a', 'definition': 'The size of an Entity is assessed in terms of the Degree by which it deviates from the norm. The size generally refers to the amount of three-dimensional space that is occupied by the Entity, not primarily to its weight, density, or length, which is why it is peculiar to refer to a bullet as "large", even if it is heavy, unless it actually has larger dimensions than usual, or to a rope as "big", even if it is long, unless its other, cross-sectional dimensions are also significant.  \'I own a very small home.\' \'Where is my little notebook?\' \'That dog is huge!\' \'\'  There are an enormous number of productive metaphors that involve this frame as the source domain; two of the most frequent metaphors come from the target domains of quantity/amount and importance.    \'He gave me a small sum of money.\' \'The novel was a substantial achievement.\' \'\'  Subcases of the quantity/amount and importance metaphors are also prominent. These involve cases describing the extent of an action\'s, event\'s, or person\'s effect ("his influence on her work was massive"), as well as those related to events ("big party"), similarity ("gigantic difference"), communication ("giant misunderstanding"), and emotions ("great joy", "little joys").  Other productive metaphors include those dealing with groups (in terms of their number of members, net worth, importance to the economy, i.e. "giant electronics company") and those describing sound volume ("in a tiny voice", "the enormous thundering of her heart").  \'\'  The target domain of fame, by contrast, occurs in a non-productive metaphor, found especially with big.a and huge.a. Maturity and age also occur in non-productive metaphors ("big boy", "little baby").'}, {'frame': 'Spatial_contact', 'tfidf': 1.5773421178156426, 'lexical_unit': 'on.prep / atop.prep / on top (of).prep / against.prep / touch.v / touching.a / contact.v / contact.n / tangent.a / upon.prep / off.prep', 'definition': 'A Figure is located in contact with a Ground.  With some words that evoke this frame, the Figure is also asserted to be fully or partially supported by the Ground (e.g. on), while in others a support relation is either denied (e.g. to, as in "she put her hand to the wall") or unspecified (e.g. against).  In addition, some LUs assert a direction in which to find the Figure from the Ground (e.g. atop).  \'There was a tight-fitting lid on the bottle .\' \'Against the back wall stood a young black man staring at his shoes .\' \'Against the back wall three students were reading .\' \'Clean if the jewelery is ever in contact with water or chlorine .\'  This frame participates in productive metaphor cases, like "shining a light on corruption", "Stalin\'s hand lay heavy on the presses", "it touched her heart" in each of which an abstract entity affects another entity as if they were in physical contact. \'\'  This frame is intended to cover the description of writing, images, or situations being depicted on a document, canvas, screen, or other flat surface, including metaphorical cases where there is no literal document, like "on record" or "pretty low on my list". \'They were arguing on screen .\' \'Watching chess is pretty low on my list .\'  The use of on.prep to describe use of a vehicle is not included in this frame even though it does involve contact and support. The sense distinction is proven by the omissability of the Ground only in the vehicle cases: \'She is already on (the bus/the ship...) .\' \'My paper is on *(the desk) .\' This use is related to Ride_vehicle.  A similar argument holds for uses of on.prep with a clothing Figure, which virtually always omits the Ground; see Wearing. \'\'  The use of on.prep and upon.prep for Topics is considered a non-productive metaphor (see Topic).  No other target in the frame allows the use, nor is is correlated with other language of the source domain of contact (e.g. stand, sit, lie, put, rest). '}, {'frame': 'Frequency', 'tfidf': 1.5024886051086646, 'lexical_unit': 'annual.a / bi-annual.a / bi-monthly.a / biennial.a / daily.a / fortnightly.a / frequent.a / infrequent.a / intermittent.a / monthly.a / nightly.a / occasional.a / periodic.a / recurrent.a / recurring.a / sporadic.a / weekly.a / yearly.a / interval.n / period.n / sometime.a / on and off.adv / off and on.adv / frequency.n / always.adv / time to time.adv / never.adv / often.adv / frequently.adv / infrequently.adv / occasionally.adv / sometimes.adv / every.prep / all the time.adv / once in a while.adv / every once in a while.adv / at times.adv / constantly.adv / rare.a / regularly.adv / daily.adv / seldom.adv / usually.adv / normally.adv / in general.adv / generally.adv / ordinarily.adv / every so often.adv / now and then.adv / common.a / recurrence.n', 'definition': "This frame has to do with the repetition (and especially the frequency of repetition) of an event. Many of the adjectives and adverbs in this frame are based on nouns in the Calendric_unit frame.   'China will have to face a high frequency of sand storms in the years to come.' "}, {'frame': 'Cardinal_numbers', 'tfidf': 1.4278748228936322, 'lexical_unit': 'one.num / two.num / three.num / million.num / zero.num / brace.n / couple.n / pair.n / score.n / five.num / seven.num / thirty.num / hundred.num / billion.num / dual.a / thousand.num / ninety.num / fourteen.n / five hundred.num / twenty-five.num / two hundred.num / fifteen.num / fifty.num / forty.num / ten.num / four.num / six.num / twenty.num / sixty.num / seventy.num / twenty-one.num / eight.num / fifty-two.num / twelve.num / seventy-four.num / number.n / nine.num / twenty-seven.num', 'definition': 'This frame presents a situation where there is a certain Number of instances of an Entity or a certain Number that quantifies a Unit. Numbers are used to count any kind of Entity that has distinct individuals, or alternatively, to count Units whose own function is to quantify some property, with the Number associated with each word of this frame differentiating groups, individuals, parts of individual Entitys of different sizes, or to differentiate the quantity of the Units. A countable Entity prototypically occupies its own space separately from other instances of the Entity, and each instance of the Entity has specific kinds of parts or substance or characteristics as specified by the kind of Entity it is described as.   Units (e.g., hours, inches, dozens) have the function of quantifying some property and as a result, naturally occur with a Number to say how the current property compares to the standard quantification of the Unit.  Less prototypical numbers, which occur much more frequently with Units rather than Entitys, describe situations with less than a whole Unitor Entity (half.n), or the lack of a Unit or Entity (zero.num). \'\' There is also a Precision associated with the Number. In most cases, there is a certain amount of imprecision in the Number that is assumed, especially for so-called "round" numbers like twenty.num or hundred.num, and for the class of approximate numbers, like couple.n; for other numbers, e.g. two.num, the expected precision is very high. Separately from this inherent possibility of precision or imprecision, numbers may be modified by an explicit specification of their Precision, with phrases like "about", etc.   \'Only two senators voted in support of the president .\' \'Dr. Malik has confined almost a score of such unfortunates in his basement, you know.\' \'We endured forty days of snow .\' \'There were thirty of the little blue creatures staring up at him.\' \'She had only two pieces of Halloween candy left, but I still had ten! DNI\' \'The ship was three degrees off course .\'  \'\' This frame includes extrathematic FEs for a set of non-lexical constructions that put together quantifying expressions.  Firstly, a Number may itself be quantified by having a certain Multiplier, e.g. "three hundred".  Secondly, a sequence of numerical expressions may be strung together, with or without "and", to produce a Composite_number representing a Number that is the sum of the constituent numbers and that collectively modifies the Entity or Unit.  \'Stephen has more than five hundred in his closet! DNI\' \'\' \'\' As can be seen in the first of the next two examples, when the target is a number in front of another number in the function of a Multiplier, we consider the number it is modifying to be a Unit:  \'There are just over six billion people in the world today.\' \'There are just over six billion people in the world today.\'  The relationship between numbers, as lexical units in this frame, and the broader category of numbers is a complex one.  In particular, there is a semiotic system that arranges the tiny set of numeral symbols (0, 1, 2 ... 9), with some additional symbols (commas, decimal points, fraction lines, scientific notation of exponents) to generate a standard representation for numbers that, while not universal, is at least language independent.  Our description of numbers is focused on the English system of numbers, as would occur in the spoken language or in pronunciations (actually decodings) of written numerals in English.  Since numerals are well-understood by virtually all speakers of most languages, and are well-processed by computers, we do not view the description of these structures in FrameNet as necessary.  As a convenience, we include numerals as wordforms when they coincide with a basic number word of English (e.g., "3" is a wordform of three.num). \'\' Of more interest for the FrameNet Project is the large number of idiosyncrasies in the constructions that use numbers, very few of which will be well-exemplified in our annotation.  These include indications of range (from ... to), approximation (in the neighborhood of), and descriptions of group properties ("A whopping three singers showed up")  \'\'  Technical note: The frame as currently devised does not distinguish between "six apples" and "six of the apples".  It is clear that in the first case, we are talking about six entities that fit whatever properties apples have.  In the second case, however, there is a specific set of apples that was already under discussion, and the six apples are members of this set.  There is a way of understanding this second case in terms of the first, namely, that "six of the apples" is interpreted as six entities with the property of being members of the given set of apples.  Since understanding the second case involves an additional notion of set membership, this could be indicated with a different FE than any we currently have in this frame, perhaps *Set, which is in an exclusion relation with Entity.  However, the major semantic distinction between these two types of Entity is whether there is a definite set, and this distinction is independently indicated by the definite article in examples like "six of the apples".   '}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"Spiritus A Paranormal Romance Spiritus Series Book1"</span>.</h5>
+                        <br/>
+                        <pre>
+"Which makes her want him that much more," Billie added.
+"It's sort of like watching Karma in action."
+I had to laugh with them over that.
+If my first impression of Ashley was correct, she and I were in different leagues.
+It was nice to have proof that someone like her could strike out too, like it balanced the universe or something.
+Maybe Billie was right and it was Karma.
+There was more idle chatter about celebrities and clothes, and then Ally let out a dramatic sigh.
+"So are we doing this or not?"
+"Might as well get started," Billie agreed.
+I didn't really care about the seance, but I wanted to hold onto this rare moment of female bonding so I agreed.
+"So what all do we need?"
+I asked Billie looked puzzled, "Haven't you ever done one of these before?"
+"Not really," I confessed.
+Ally clapped her hands together like a little girl, almost bouncing on the bed.
+"Oh, this will be fun."
+I brought the candles they requested and hoped the spirits didn't mind the scent of vanilla bean.
+As commanded, I joined the circle the two of them had started on the floor.
+"Now only one person should talk at a time," Billie explained.
+"We don't want to confuse the spirits."
+Playing along, I nodded.
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"A Body In The Backyard"</span>.</h5>
+                        <br/>
+                        <pre>
+Elaine stared at the purse.
+"That is the most hideous pocketbook I've ever seen.
+All right, Myrtle, what's up?
+I know you're not buying something like that for yourself."
+Myrtle filled her in quickly.
+Elaine said, "I was wondering how everything was going with the case.
+But why not just use one of the millions of bags you've got in your closet?"
+"Silas would suspect something if I brought one of those over, and said I thought it belonged to Annette.
+My pocketbooks are roomy, comfortable, and perfect for me--and they wouldn't work at all for somebody like Annette.
+Plus," said Myrtle with a sigh, "they look like old lady purses."
+"Nothing wrong with that!"
+said Elaine emphatically.
+Then she added, "What are you hoping to find out from Silas when you see him?"
+"Well, it would be lovely if he just gave up and told me that he was responsible for killing two people.
+Somehow, though, I'm thinking that probably won't happen.
+I'd love to find out if he has an alibi for the murders.
+And I'd also like to hear him unload about Charles Clayborne--maybe give me some more insight into the guy."
+"I thought that Miles was Charles Clayborne's cousin," said Elaine with a frown.
+"Wasn't he able to fill you in about him?"
+"Not particularly," said Myrtle dryly.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="78">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="1">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

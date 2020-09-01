@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Appellations', 'tfidf': 5.987992203306863, 'lexical_unit': 'officer.n / general.n / captain.n / president.n / bishop.n / chairman.n / chairperson.n / chief.n / commander.n / commissioner.n / congressman.n / congresswoman.n / director.n / duchess.n / emperor.n / empress.n / executive.n / governor.n / headmaster.n / imam.n / kaiser.n / king.n / leader.n / legislator.n / maharaja.n / mayor.n / minister.n / mogul.n / monarch.n / official.n / premier.n / prince.n / principal.n / queen.n / representative.n / secretary.n / shah.n / sheik.n / sultan.n / superintendent.n / supervisor.n / tsar.n / mother.n / father.n / doctor.n / dr.n / mr.n / mrs.n / ms.n / miss.n / child.n / aunt.n / uncle.n / sister.n / brother.n / cousin.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Aging', 'tfidf': 5.368260050400483, 'lexical_unit': 'aging.a / age.v / mature.v', 'definition': "An Entity is undergoing a change in age typically associated with some deterioration or change in state.   'This bark ages and turns black.'  'The U.S. is to upgrade aging missile defense systems with advanced tech.' "}, {'frame': 'Possibility', 'tfidf': 4.950989151130835, 'lexical_unit': 'can.v / might.v / may.v / could.v', 'definition': "A Possible_event is deemed to have all pre-conditions satisfied; in other words, it has some probability of occurrence, if some (generally implicit) further Condition pertains.  The Condition, whether overt or implicit, often concerns the decision of an agent to attempt to bring the Possible_event about. The primary implication is that certain other aspects of the situation that might have been expected to prevent the Possible_event, usually lack of capability or permission, do not pertain.  'You ca n't burn glass . INI' 'You can have two more if you want .' 'This sense of lack can never be satisfied .' 'We just ca n't stand it anymore . INI'  This frame is confusable with the Capability frame, which specifically involves an Agent who is presented as needing only the decision to perform an Action in order to successfully perform the Action."}, {'frame': 'Vocalizations', 'tfidf': 4.670881632468243, 'lexical_unit': 'cry.n / howl.n / squeak.n', 'definition': "This frame is concerned with the sounds produced by animate entities by means of their vocal tracts. Descriptions of sounds from artifacts meant to emulate such sounds, or to act as vocalizing animals or people, are also treated here as figurative language.  'He woke up because of the cries of the crows outside.'"}, {'frame': 'Employing', 'tfidf': 4.325014627694585, 'lexical_unit': 'employ.v / employer.n / employee.n / commission.v / personnel.n / staff.n / employment.n / worker.n', 'definition': "An Employer employs an Employee whose Position entails that the Employee perform certain Tasks in exchange for Compensation.  'I employed him as Chief Gardener for ten years.'"}, {'frame': 'Replacing', 'tfidf': 4.261733558640317, 'lexical_unit': 'replace.v / substitute.v / replacement.n / substitution.n / swap out.v / exchange.v / change.v / switch.v', 'definition': "An Agent changes the filler of a  Role by placing a New filler in the position after the Old filler ceases to occupy the position.  Often this entails the Agent removing the Old filler.  In most cases the Role is implicit.  'If you replace me with a robot, who's gonna make excuses to your wife for you?'  'Following Keating 's resignation from the Cabinet Hawke immediately replaced him as Deputy Prime Minister with Brian Howe , Minister for Community Services and Health.' "}, {'frame': 'Surviving', 'tfidf': 4.247135857738195, 'lexical_unit': 'survive.v / ride out.v / weather.v / survival.n / live [through].v', 'definition': "A Survivor manages to avoid being negatively affected, despite encountering a Dangerous_situation. The negative effect is most often death, destruction, or a metaphorical construal of one of these.  'Wilderness Survival: Could You Survive the Wild?'  'More than 400 of the 600 residents rode out the hurricane in Gulfport's 11-story high-rise beachfront facility.'"}, {'frame': 'Intentionally_affect', 'tfidf': 4.1464864309931775, 'lexical_unit': 'do.v / do something (to/with).v / do what (to/with).v', 'definition': "An Agent causes a Patient to be affected, sometimes by a particular Means or by use of an Instrument.  'A professional dishwasher doesn't do dishes with a rag anymore!'"}, {'frame': 'Temperature', 'tfidf': 4.125930814342747, 'lexical_unit': 'temperature.n / hot.a / cool.a / freezing.a / cold.a / lukewarm.a / tepid.a / frigid.a / scalding.a / warm.a', 'definition': "An Entity has a Temperature characterized by the target.  The Temperature is a value of the temperature Attribute.  'The pan is already too hot to touch.'  'The walk-in was freezing, but it was better than hanging out in the kitchen.' '' Note that in this  frame, the Entity does not experience the temperature, but is merely described as being in a certain externally verifiable state.   Thus 'Open a window; I'm too hot.' is not in frame but rather in Subjective_temperature. "}, {'frame': 'Halt', 'tfidf': 3.9379126150304824, 'lexical_unit': 'stop.v / halt.v / to a halt.adv / to a stop.adv', 'definition': "This frame consists of LUs which denote a Theme ceasing motion.   'Peter stopped immediately and span to see Aeryn frozen where she stood.'  'He stopped at the door, not wanting to see what he knew must be on the other side'  'As Lynn walked through the bedroom on her way to the shower she stopped to look at her sleeping husband'  "}, {'frame': 'Process_end', 'tfidf': 3.8553340480397704, 'lexical_unit': 'end.v / come to a end.v / come to a close.v / conclude.v / draw to a close.v / draw to a end.v / end [cessation].n / end [final-subevent].n / final.a / finale.n / pass.v / end.n', 'definition': "A Process comes to an end.  'The project came to a close.'"}, {'frame': 'Fire_going_out', 'tfidf': 3.8543248643836288, 'lexical_unit': 'die.v / burn out.v / go out.v / gutter out.v', 'definition': "A Fire goes out.  'The fire is expected to burn out within a week.'  "}, {'frame': 'Cause_to_fragment', 'tfidf': 3.806659284020487, 'lexical_unit': 'fracture.v / rend.v / snap.v / break.v / shiver.v / splinter.v / fragment.v / shatter.v / smash.v / shred.v / rip.v / tear.v / rip up.v / cleave.v / tear up.v / break apart.v / break up.v / break down.v / chip.v / dissect.v / dissolve.v / rive.v / sliver.v / split.v / take apart.v', 'definition': 'An Agent suddenly and often violently separates the Whole_patient into two or more smaller Pieces, resulting in the Whole_patient no longer existing as such.  Several lexical items are marked with the semantic type Negative, which indicates that the fragmentation is necessarily judged as injurious to the original Whole_patient.  Compare this frame with Damaging, Render_non-functional, and Removing.  \'He ripped up the letter faster than you can say "Jack Robbins". INI\' \'Don\'t go in there or you \'ll be torn to bits! CNI\' \'She shattered the vase with a casual backhand blow to make it look like there had been a struggle. INI\' \'Tear into 6" strips, each about one inch wide, then bake at 400. CNI CNI\''}, {'frame': 'Biological_classification', 'tfidf': 3.6873600126086603, 'lexical_unit': 'kingdom.n / phylum.n / class.n / order.n / family.n / genus.n / species.n / domain.n / variety.n', 'definition': "This frame has to do with scientific taxonomy.  The lexical units in this frame include the seven major classifications in which organisms are grouped based on common biological characteristics.  These classifications are labeled Rank in this frame.  The Members or Subtype of the Rank is often expressed with the use of the target-denoting noun. '' 'Phylum Arthropoda contains crustaceans, insects, spiders and other creepy-crawlies.' '' 'The snow leopard belongs to the kingdom Animalia.'"}, {'frame': 'Commerce_pay', 'tfidf': 3.6003913150326223, 'lexical_unit': 'pay.v / payment.n / disburse.v / disbursement.n / shell out.v / payer.n', 'definition': "This frame involves Buyers paying Money for Goods.  In this frame the Money is the direct object, and is mapped to the theme of the transfer.  'I paid her $50 for a video game.'"}, {'frame': 'Attaching', 'tfidf': 3.505401288904795, 'lexical_unit': 'fasten.v / attach.v / tie.v / tack.v / glue.v / staple.v / tape.v / pin.v / nail.v / affix.v / chain.v / paste.v / sew.v / stick.v / lash.v / bond.v / cinch.v / secure.v / fuse.v / shackle.v / bind.v / detach.v / manacle.v / handcuff.v / fetter.v / rivet.v / tether.v / cement.v / gum.v / fix.v / weld.v / solder.v / agglutinate.v / moor.v / anchor.v / attachment [item].n / hitch.v / tying.n / untie.v / hook.v / plaster.v / attachment [act].n / strap.v / adhere.v / append.v / concatenate.v / tack on.v / yoke.v / truss.v / link.v / connect.v / join.v / mount.v / wire.v / bracket.v', 'definition': "The Attaching frame covers two situations: a scene in which somebody causes one thing to be physically connected to something else; or a scene in which somebody causes two things to be connected to each other.  In the first, the frame includes an Agent who attaches an Item to a Goal by manipulating a Connector, creating an asymmetric relationship between the Item and the Goal.  In the second, the Agent attaches two Items to each other, where each serves as a Goal for the other, creating a symmetric relationship between the two Items. In both cases, the  Connector remains to bind the two entities (either Item and Goal, or two Items), without creating a new entity.  'The robber tied Harry to the chair.'  'Make sure you bind his wrists as tightly as possible.'"}, {'frame': 'Communication_noise', 'tfidf': 3.4609015740882016, 'lexical_unit': 'babble.n / bark.v / bawl.v / bellow.v / bleat.v / bray.v / burble.v / cackle.v / chirp.v / chirrup.v / chuckle.v / cluck.v / coo.v / croak.v / croon.v / crow.v / cry.v / drone.v / gasp.v / grate.v / groan.v / growl.v / grunt.v / gurgle.v / hiss.v / hoot.v / howl.v / moan.v / murmur.v / purr.v / rap.v / rasp.v / rattle.v / roar.v / rumble.v / scream.v / screech.v / shriek.v / shrill.v / snarl.v / snort.v / splutter.v / sputter.v / squawk.v / squeak.v / squeal.v / thunder.v / titter.v / trill.v / trumpet.v / twitter.v / wail.v / warble.v / wheeze.v / whimper.v / whine.v / whoop.v / yell.v / yelp.v', 'definition': 'This frame contains words for types of noise which can be used to characterize verbal communication.  It inherits from Communication (possibly more specifically Communication_manner) and the Sound_emission frame (which simply characterizes basic sounds of whatever source, including those made by animals and inanimate objects).  As such, it involves a Speaker who produces noise and thus communicates a Message to an Addressee. \'\' \'"Don\'t treat me as a child!" she cried scornfully.\'  \'A writer in the Town Planning Review trumpeted that train-sheds were now obsolete.\'  \'You know he yelled at Aunt Lou yesterday, because he slipped on that mat in the hall.\''}, {'frame': 'Cause_to_perceive', 'tfidf': 3.2296105375050796, 'lexical_unit': 'show.v / demonstrate.v / present.v / point.v / depict.v / represent.v / exhibit.v / present[medical].v / bring to attention.v', 'definition': 'An Agent, Actor, Entity, or Medium causes a Phenomenon to be perceived by a Perceiver.  With an Actor, Entity, or Medium, the Perceiver is usually unspecified.   \'Aileen showed Rob the book.\' \'He exhibited great interest in the project.\' \'The second scene depicts  Dad  holding the ball for a place kick.\' \'The economy is showing signs of growth.\'  NB: This may change in the future, but as of now this frame subsumes three closely-related cause/perceiver alternations:  a.) perception of a specific Perceiver caused by an Agent, b.) perception of some implicit audience caused, possibly unintentionally, by an Actor, and c.) perception of some implicit audience caused by a Medium or Entity. Perhaps this frame is too broad - the different subject FEs seem to all indicate different ways of "showing."'}, {'frame': 'Killing', 'tfidf': 3.2273179173858435, 'lexical_unit': "kill.v / annihilate.v / assassinate.v / behead.v / eliminate.v / exterminate.v / drown.v / liquidate.v / murder.v / slay.v / terminate.v / suffocate.v / smother.v / starve.v / asphyxiate.v / suicide.v / homicide.n / suicide.n / euthanize.v / euthanasia.n / dispatch.v / lethal.a / annihilation.n / liquidation.n / crucify.v / crucifixion.n / decapitate.v / massacre.v / slaughter.v / lynch.v / liquidator.n / killing.n / murder.n / slaughter.n / killer.n / massacre.n / infanticide.n / smothering.n / slaying.n / regicide.n / pogrom.n / shooting.n / holocaust.n / matricide.n / genocide.n / butcher.v / beheading.n / assassination.n / butchery.n / carnage.n / suffocation.n / assassin.n / blood-bath.n / decapitation.n / extermination.n / fratricide.n / garrotte.v / murderer.n / slaughterer.n / slayer.n / immolation.n / patricide.n / silence.v / deadly.a / fatal.a / fatality.n / destroy.v / take out.v / bloodshed.n / do in.v / take (someone's) life.idio", 'definition': "A Killer or Cause causes the death of the Victim. 'John drowned Martha.'"}, {'frame': 'Level_of_force_exertion', 'tfidf': 2.8933157645428618, 'lexical_unit': 'strong.a / weak.a / mighty.a / power.n / might.n / forceful.a / force.n / strength.n / weakness.n / powerful.a / powerless.a', 'definition': 'An Exerter, Action, or Force is capable of exerting or does exert a physical force at a level specified by the target. That physical force may cause deformation or breakage of, or simply motion in the receiving entity. The receiving entity is conceptually present (even if remotely), but is usually not lexically explicit. This frame covers both individual-level/static uses ("a STRONG person") as well as stage-level/dynamic uses ("a STRONG push"). However, the durative, individual-level meaning appears more frequently in the data and seems more basic.   \'Eugenie loved the sea and was a strong swimmer.\'  \'Spartacus dealt the Roman soldier a mighty blow.\'  \'A powerful force tore off the tree\'s branches.\'  Exerter, Action, and Force belong to a Core set. \'\'  There are several productive metaphors covered by this frame. The first and most common is one in which social influence or control is conceptualized as the physical exertion of force. The social influence/control is more specifically a propensity to cause change in social realms such as the economic, political, militaristic, cultural, or intimate: \'There were theoretical limits to the power of the king.\' \'Voters in the South have a strong incentive to keep such Democrats in office.\'  Another similar metaphor is one in which psychological influence or control is understood as the physical exertion of force. The psychological influence/control includes the emotional as well: \'Poetic words in a text can be given more emotive power by using melisma.\' \'He was a forceful speaker.\'  A third metaphor involves the amount of an entity construed as the physical force exertion of said entity. Depending on context, amount could be volume, etc. (“STRONGEST critics”; “MIGHTY uproar”).  \'\'  Two related physical force dynamic frames are Level_of_force_resistance and Dynamism.  This frame is distinguished from the Level_of_force_resistance frame in that it describes the level of force exertion instead of the level of resistance, and also in that there are three categories of Core FE available to the target (i.e Exerter, Action, or Force), whereas in Level_of_force_resistance there are only two Core FEs (i.e. Resisting_entity and Opposing_force). Of the latter frame\'s FEs, Opposing_force specifies the thing that the main entity resists to a level desginated by the target. Its parallel in Level_of_force_exertion is implied but backgrounded to the extent that it rarely appears as explicit lexical material; thus there is no corresponding Core FE.   This frame differs from Dynamism with regard to individual-level cases; targets here express the FE\'s capability. In contrast, Dynamism targets express the FE\'s tendency. For example, "a STRONG person" is generally construed as a person who is capable of strength, while "an ENERGETIC person" (energetic.a from the Dynamism frame) is construed as a person who tends to be energetic.   However, there is overlap between the two frames in stage-level cases - "a STRONG push" and "an ENERGETIC push" seem rather comparable. '}, {'frame': 'Chatting', 'tfidf': 2.6505538153292334, 'lexical_unit': 'chat.v / badinage.n / banter.n / chat.n / chit-chat.n / colloquy.n / conversation.n / converse.v / speak.v / talk.v / joke.v / gossip.n / gossip.v / gab.v / shoot the breeze.v / yak.v', 'definition': "A group of people (the Interlocutors or Interlocutor_1 and Interlocutor_2 together) have a conversation.  No person is construed as only a speaker or only an addressee. Rather, it is understood that both (or all) participants do some speaking and some listening--the process is understood to be symmetrical or reciprocal.  In this frame, the purpose of the conversation is generally social, rather than specifically to decide something or exchange information, or to quarrel (see Discussion and Quarreling).  'If you ain't got nothin' better to do, I 'd like to shoot the breeze with you for a couple.' 'We used to chat about everything.'"}, {'frame': 'Activity_start', 'tfidf': 2.5892457638082638, 'lexical_unit': 'start.v / begin.v / take up.v / beginner.n / neophyte.n / enter.v / swing (into).v / initiate.v / commence.v / launch (into).v / strike up.v / open.v / set about.v / get started.v', 'definition': "An Agent initiates the beginning of an ongoing Activity in which he will be continuously involved. '' 'At the same time, city-states began to grow in influence on the southern Greek mainland.'  'Naturally, I started crying to get out of work.'  "}, {'frame': 'Filling', 'tfidf': 2.5404406887213966, 'lexical_unit': 'adorn.v / anoint.v / cover.v / dust.v / load.v / pack.v / smear.v / spread.v / stuff.v / wrap.v / plaster.v / drape.v / dab.v / daub.v / inject.v / cram.v / sow.v / seed.v / brush.v / hang.v / spatter.v / splash.v / splatter.v / spray.v / sprinkle.v / squirt.v / shower.v / drizzle.v / heap.v / pile.v / pump.v / jam.v / plant.v / scatter.v / butter.v / asphalt.v / surface.v / tile.v / wallpaper.v / coat.v / suffuse.v / fill.v / strew.v / douse.v / flood.v / crowd.v / pave.v / varnish.v / paint.v / gild.v / glaze.v / embellish.v / panel.v / wax.v / wash.v / plank.v / yoke.v / dress.v / accessorize.v', 'definition': "These are words relating to filling containers and covering areas with some thing, things or substance, the Theme. The area or container can appear as the direct object with all these verbs, and is designated Goal because it is the goal of motion of the Theme. Corresponding to its nuclear argument status, it is also affected in some crucial way, unlike goals in other frames.  'Lionel Hutz coated the wall with paint. '"}, {'frame': 'Documents', 'tfidf': 2.4911032992544357, 'lexical_unit': 'visa.n / passport.n / subpoena.n / warrant.n / certificate.n / papers.n / license.n / summons.n / diploma.n / deed.n / lease.n / agreement.n / treaty.n / charter.n / authorization.n / deposition.n / brief.n / writ.n / affidavit.n / will.n / testimony.n / testament.n / ruling.n / finding.n / opinion.n / title.n / orders.n / contract.n / permit.n / document.n / contractual.a / accord.n / confirmation.n / identification.n / business card.n', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Cause_harm', 'tfidf': 2.471174941529442, 'lexical_unit': 'bayonet.v / beat.v / boil.v / burn.v / bludgeon.v / club.v / crush.v / cut.v / slice.v / hammer.v / hit.v / kick.v / knife.v / punch.v / smash.v / stab.v / spear.v / stone.v / hurt.v / whip.v / batter.v / break.v / butt.v / chop.v / claw.v / clout.v / crack.v / cudgel.v / cuff.v / fracture.v / gash.v / injure.v / jab.v / bruise.v / knock.v / lash.v / maul.v / pelt.v / strike.v / thwack.v / bash.v / belt.v / buffet.v / horsewhip.v / smack.v / squash.v / slap.v / knee.v / wound.v / pummel.v / electrocute.v / electrocution.n / poisoning.n / beat up.v / torture.v / maim.v / flog.v / impale.v / biff.v / cane.v / flagellate.v / poison.v / transfix.v / welt.v / mutilate.v / elbow.v / sting.v / swipe.v / strike.n / drug.v / twist.v / run through.v', 'definition': "The words in this frame describe situations in which an Agent or a Cause injures a Victim. The Body_part of the Victim which is most directly affected may also be mentioned in the place of the Victim.  In such cases, the Victim is often indicated as a genitive modifier of the Body_part, in which case the Victim FE is indicated on a second FE layer. '' 'Rod saw his father beating his mother.'  'In the end Wormtongue is fed up with being beaten so he cuts Saruman's throat to free himself.'  'A mother stabbed to death by her husband made a secret will stating that he must never be allowed to care for their son.'"}, {'frame': 'Part_inner_outer', 'tfidf': 2.4496162613541568, 'lexical_unit': 'outside.a / outer.a / inside.a / exterior.a / inner.a / outside.n / skin.n / lining.n / perimeter.n / center.n / exterior.n / inside.n / interior.n / interior.a / middle.n / shell.n / surface.n / central.a', 'definition': 'This frame concerns Parts of objects that are defined relative to the center or edge of the object.  The Part is a part of the Whole and the Part_prop describes a property of the Part.  \'She discarded the exterior of the walnut.\' \' She preferred a sparse church interior . \'  In cases where the Target is an adjective, it has a special relationship with the noun that it modifies such that a phrase which is a syntactic argument of the noun is semantically available to fill the argument structure of the adjective, as in "the outside row of the class"\'The inner shelf of the bookcase was lying on the floor.\'  '}, {'frame': 'Desirable_event', 'tfidf': 2.4141690196865944, 'lexical_unit': 'should.v / ought to.v / bad idea.n / good idea.n / have to.v / be supposed to.v', 'definition': "A particular State_of_affairs is desirable.  The State_of_affairs may be required to achieve a Purpose.  A set of Circumstances may be specified under which the assessment of desirability holds.   'You should take the doses about 12 hours apart and at the same time each day.' ' If the metal is seriously rusted or warped, it should be repaired or replaced with a chimney top damper.' 'To ensure that, you should have no CLASSPATH set.'"}, {'frame': 'Entity', 'tfidf': 2.288568322926364, 'lexical_unit': 'item.n / entity.n / object.n / thing.n / individual.n / what.n', 'definition': "This frame is for words that denote highly schematic entities.  'We found an unusual wooden object in the desert.'"}, {'frame': 'Spatial_co-location', 'tfidf': 2.1438243065372378, 'lexical_unit': 'at.prep / where [relativizer].adv / here.adv / there.adv / where [interrog].adv / home.adv', 'definition': 'A Figure is located essentially at the same location as a Ground, which is viewed as point-like, or having no important internal or external structure.  Typically, the Ground is viewed as point-like due to its small size with respect to a conversationally relevant spatial scale; this scale may be provided by reference to other, distant entities or full paths of travel that make the size of the Ground seem relatively small.  Another use of this frame is to specify a location via a Ground that is primarily considered for its function, rather than its shape; this second use explains why "at the store" is typically used even when a Figure is inside the Ground, but only in cases where the store is considered, according to its prototype, as a place to buy and sell, rather than an architectural entity (in which case "in the store" would be more usual).  \'We are now at the cathedral .\' \'They claim that many Christians were martyred at the Collosseum .\' \'I \'m at my mother \'s .\'  This frame has a very large family of productive metaphors associated with it, the foremost of which maps from the target meaning of values on a quantitive scale (e.g. price, temperature, speed) onto the source domain of vertically-arranged positions in space.  Because this metaphor does not normally serve to locate a cognitive agent, it is only rarely and exceptionally usable with the LU here.adv, which implies being at the same location as the speaker. A separate metaphor maps the target meaning of quantified progress (measured by a quantity associated with a processed entity vs. a quantity associated with what is left to be done) onto the source domain of forward-backward-arranged positions in space.  \' Tesla stock is at a three-month low today .\' \'She put the biscuits in the oven at only 400 degrees .\' \'At fifty dollars , everyone \'s gonna buy one !\' \'If you \'re only at page 20 , just start over .\' '}, {'frame': 'Political_locales', 'tfidf': 2.1297389047886948, 'lexical_unit': 'barony.n / territory.n / country.n / province.n / duchy.n / viscountcy.n / county.n / state [sovereign].n / principality.n / borough.n / town.n / realm.n / kingdom.n / municipality.n / metropolis.n / megalopolis.n / city.n / world.n / federal.a / global.a / parish.n / diocese.n / international.a / local.a / locality.n / municipal.a / national.a / empire.n / village.n / nation.n / commonwealth.n / internationally.adv / multinational.a / city-state.n / district.n / fiefdom.n / jurisdiction.n / land.n / state [internal].n / provincial.a / territorial.a / township.n', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"A Whispered Wish"</span>.</h5>
+                        <br/>
+                        <pre>
+As he stands there, feeling her wrenching sobs in his own heart, Tristian becomes more determined than ever to get her back to them.
+Even though now, he wants her to stay.
+When the tears finally stop, Zoe looks around at the pixie's faces; it's hard to miss the sorrow they hold in their eyes for her.
+She sits back down, wrapping her arms around her knees and putting her chin on her hands.
+She sits there and waits with the pixies until Garrett and the others go to sleep, with Fionna at her side.
+They all are listening to the same sounds, crickets and frogs, but somehow it just doesn't have the same effect for everyone.
+To Zoe, they just sound lonely.
+Even the twinkling of the stars seem pale to her now.
+CHAPTER EIGHT
+When the camp quiets and the pixies are sure they are all asleep, they make their decent into the camp.
+Tristian takes Zoe as he flies down to land on the table.
+Things look completely different when you are this size, Zoe thought, now knowing how the pixies feel.
+The heat from the campfire is hot, almost scorching her as they fly past.
+Tristian lets her go and she wanders aimlessly around, looking at all the things they brought with them with a look of deep sadness and longing.
+Tristian knows what it's like to miss someone; the feeling seems to envelope your very soul.
+The sadness in her eyes makes his need to make this all right even more urgent.
+Leaning against the coffee pot crossing his arms over his chest, Tristian just watches Zoe.
+Looking around the equipment, Zoe realizes that they each have their own memories.
+The first time the gang went camping, they brought all of this canned food with them.
+As soon as it got too late to do anything about it, they start looking for the can opener and can't find it.
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"The Lost Princess In Winters Grip"</span>.</h5>
+                        <br/>
+                        <pre>
+The Royal robes dissolving and pink fleshy skin dissolving into pale translucence.
+They each held ice staffs in their hands, pointed at the real Royal family.
+The Ice King chuckled, "Princess, I'm so glad you could join us.
+Honestly we couldn't have done this without you.
+Try as we might, we could never find that stone in the Godmother's house.
+But you found it and we are so very grateful."
+The Ice Queen sneered, "And now the one thing that could stop us is here."
+Annabeth cried out, "Why are you doing this?
+What did we ever do to you?"
+The Ice Queen was taken aback, "Do?
+DO?
+You and your people have done enough.
+They exiled my people to the far north and made sure that nothing could survive there.
+So my people died; starved and cut off from the world.
+You all should pay for what you've done.
+Now, we will begin a new age of ice and snow, filling this world with eternal cold."
+The Real King spoke, "I am sorry for what my ancestors did.
+I cannot change their actions, but I beseech you now, end this madness.
+We can reach some agreement."
+The Ice King spat out, "There is nothing you could offer us.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="33">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="2">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

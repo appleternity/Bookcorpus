@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Experimentation', 'tfidf': 8.036038587505143, 'lexical_unit': 'control.n / control group.n / experiment.n / study.n / treatment.n / test.v / experiment.v / subject.n / hypothesis.n', 'definition': "An Experimenter conducts an Experiment based on a Hypothesis.  This Experiment contains a Control_group or Control_group_member which is compared with a Treatment_group or Treated_individual in order to determine the Result. '' 'Johann's experiment proved the new drug was effective in treating the disease.'  'Jacob placed the control group under a strong light for 20 hours each day.'   'Rolf tested his hypothesis in Vienna in 1973.'"}, {'frame': 'Directional_locative_relation', 'tfidf': 6.252722357289435, 'lexical_unit': 'above.prep / below.prep / east.adv / east.n / north.adv / north.n / northeast.adv / northeast.n / northwest.adv / northwest.n / south.adv / south.n / southeast.adv / southeast.n / southwest.adv / southwest.n / west.adv / west.n', 'definition': "A Figure is located relative to a (presumably more easily located) Ground, asserting that the Figure lies (approximately) on line from the Ground whose direction is established by semantic types of the particular LUs.  'The plane landed 10 miles due north of Lake Travis in an empty field .' "}, {'frame': 'Emotion_heat', 'tfidf': 5.671417659787173, 'lexical_unit': 'boil.v / burn.v / chafe.v / fume.v / seethe.v / simmer.v / smoulder.v / stew.v', 'definition': "This frame contains verbs that describe emotional experiences and participate in the locative alternation, as in the following examples: '' ' I was boiling with anger.' 'Anger was boiling inside me.'   While these words might seem to be like support verbs for emotion nouns such as anger, the same verbs can be used in the absence of such nouns, as in: '' 'His remarks made me boil inside.' "}, {'frame': 'Activity_start', 'tfidf': 5.1784915276165275, 'lexical_unit': 'start.v / begin.v / take up.v / beginner.n / neophyte.n / enter.v / swing (into).v / initiate.v / commence.v / launch (into).v / strike up.v / open.v / set about.v / get started.v', 'definition': "An Agent initiates the beginning of an ongoing Activity in which he will be continuously involved. '' 'At the same time, city-states began to grow in influence on the southern Greek mainland.'  'Naturally, I started crying to get out of work.'  "}, {'frame': 'Temporal_subregion', 'tfidf': 4.277574701999166, 'lexical_unit': 'late.a / later.a / middle.n / middle.a / early.a / earlier.a / mid.a / end.n / beginning.n / outset.n / start.n / dawning.n / turn.n', 'definition': "A Subpart of a Time_period is picked out.  In some cases, the part (as opposed to the entire Time_period) may be described by a Subpart_property.  The Time_period may be indicated by an event which takes place during the Time_period.  'I nearly kicked my TV this afternoon after watching the shambolic end of the Austrian Grand-Prix .' 'Jack Yan looks at how the branding profession will be affected in the early 2000s by globalization .' 'The late part of the afternoon is the worst time to get things done .' "}, {'frame': 'Records', 'tfidf': 4.268197213705388, 'lexical_unit': 'book.n / log.n / record.n / journal.n / recording.n', 'definition': "A Record that contains a permanent account of Data.  This Record may be maintained by a Recorder for a certain Entity.   '' 'The bank's books were not accurate.'  'He made notes of the subject's responses in the journal by the desk.'  'She kept a record of how many times Steven had asked her for money.'"}, {'frame': 'Replacing', 'tfidf': 4.261733558640317, 'lexical_unit': 'replace.v / substitute.v / replacement.n / substitution.n / swap out.v / exchange.v / change.v / switch.v', 'definition': "An Agent changes the filler of a  Role by placing a New filler in the position after the Old filler ceases to occupy the position.  Often this entails the Agent removing the Old filler.  In most cases the Role is implicit.  'If you replace me with a robot, who's gonna make excuses to your wife for you?'  'Following Keating 's resignation from the Cabinet Hawke immediately replaced him as Deputy Prime Minister with Brian Howe , Minister for Community Services and Health.' "}, {'frame': 'Expressing_publicly', 'tfidf': 4.234872286032584, 'lexical_unit': 'vent.v / air.v / express.v / voice.v / give voice.v / expression.n / articulate.v / put into words.v', 'definition': "A Communicator publically communicates some difficult-to-express Content which they (or a social group of which they are a member) have had for some time. The Content may not have been previously communicated due to inability or social stricture.  In cases where the individuals addressed are a smaller group than the public at large, a separate Addressee may be expressed.  'Those grievances can be aired during Board meetings. CNI'  'Saddam voiced his joy when he was told Spain's new government had left the US-led military coalition in Iraq.'   "}, {'frame': 'Undressing', 'tfidf': 4.2170412494673615, 'lexical_unit': 'doff.v / take off.v / slip.v / kick off.v / peel off.v / pull off.v / remove.v / shed.v / strip off.v / throw off.v', 'definition': "A Wearer removes an item of Clothing from a Body_location (the part of the body that the Clothing is prototypically worn on.)  'Walking on sand is better if you take off your shoes. INI'"}, {'frame': 'Change_tool', 'tfidf': 4.142679612765524, 'lexical_unit': 'change.v / transfer.v / switch.v / swap.v / trade.v', 'definition': "An Agent changes Tools, from the Old_tool to a New_tool.  The Tools may include vehicles, services providers, or more proto-typical implements.  'If this happens one more time, we 're going to switch operating systems.'  'Stephen had to transfer five times by the time he got to Lincolnville. DNI.'"}, {'frame': 'Military', 'tfidf': 4.099161572110009, 'lexical_unit': 'military.n / force.n / navy.n / air force.n / army.n / naval.a / armed forces.n / military.a / military forces.n / militia.n / national guard.n / marines.n / coast guard.n', 'definition': 'Some Possessor, either a nation, institution, or private individual, controls a Force whose primary functions to defend the Possessor (or, in the case of an institution or individual, some area of land significant to them) and to carry out offensive actions for the Possessor.  The Domain of operation of the Force may be expressed.'}, {'frame': 'Light_movement', 'tfidf': 3.923703267972704, 'lexical_unit': 'glow.v / twinkle.v / twinkle.n / sparkle.v / shine.v / shine.n / shimmer.v / sheen.n / scintillation.n / scintillate.v / refulgence.n / glow.n / glitter.v / glitter.n / glister.v / glister.n / glistening.a / glisten.v / glint.v / glint.n / glimmer.v / glimmer.n / gleam.v / gleam.n / flicker.v / flicker.n / flash.v / flash.n / flare.v / flame.v / coruscation.n / coruscate.v / strike.v', 'definition': "An Emitter emits a Beam of light from a Source, along a Path, and/or towards a Goal.  Essentially, this frame denotes the (semi-)fictive motion of the the Beam. 'Avoid allowing light to shine into neighbors' gardens.' 'Clear yellow sunlight shone through the window-panes.' 'She thinks the sun shines out of his backside.' '...when the candles shine out.' 'It shines in my eyes. ('It' is both Beam and Emitter, though only one will show up in the display.) ' '...light shines down on the world.' 'The moonlight shone off the fields.' 'The candlelight glinted from pearls and rubies.'"}, {'frame': 'Cause_motion', 'tfidf': 3.9144803674639794, 'lexical_unit': 'cast.v / catapult.v / chuck.v / drag.v / fling.v / hurl.v / nudge.v / pitch.v / press.v / push.v / shove.v / throw.v / thrust.v / toss.v / tug.v / yank.v / scoot.v / draw.v / run.v / slide.v / pull.v / drive.v / move.v / force.v / haul.v / attract.v / knock.v / punt.v / roll.v / jerk.v / propel.v / launch.v / stick.v / transfer.v / hit.v / slam.v / drop.v / rake.v / impel.v / wrench.v / wrest.v / lift.v', 'definition': 'An Agent causes a Theme to move from a Source, along a Path, to a Goal.  Different members of the frame emphasize the trajectory to different degrees, and a given instance of the frame will usually leave some of the Source, Path and/or Goal implicit. The completion of motion is not required (unlike the Placing frame, see below), although individual sentences annotated with this frame may emphasize the Goal.   \'\' This frame is very broad and contains several different kinds of words that refer to causing motion.  Some words in this frame do not emphasize the Manner/Means of causing the motion (transfer.v, move.v).  For many of the others (cast.v, throw.v, chuck.v, etc.), the Agent has control of the Theme only at the Source of motion, and does not experience overall motion.  For others (e.g. drag.v, push.v, shove.v, etc.) the Agent has control of the Theme throughout the motion; for these words, the Theme is resistant to motion due to some friction with the surface along which they move.    \'She threw her shoes into the dryer .\' \'The mechanic dragged the jack out from under the car .\' \'We will move the sofa out of the room through the french doors, down the stairs, and onto the sidewalk .\' \'\' \'\'  This frame is used in a very large number of productive metaphors, not all of which can be outlined here.  The most salient types include causing an entity, construed as a Theme, to change state from an initial state (Source) via an intermediate state (Path) to a final state (Goal): \'Hillary was catapulted to stardom and his life has never been the same since . CNI\' \'She felt as though flung from health to illness and back by the day , by the hour .\' \'Once our parents are dead , we are catapulted into becoming the older generation ourselves . CNI\' \'Croquet was pushed out by tennis .\' \'\'  A particularly divergent subtype casts changing someone\'s intentions as changing their location: \'Democratsforced the Senate into a rare closed door session .\' \'He nudged Mrs Thatcher towards acceptance of a unified Germany .\' \'\'  Another subtype is specifically about causing a change in quantity (the Theme) through some sequence of values (Source, Path, and Goal): \'Bonus payments would be handed out for pushing up voting levels CNI .\' \'\'  Another type, with many subtypes, involves causing an action or state (construed as a Theme) to have an effect on another person or location or conceptual domain. In such cases, theGoal is used for the final affected domain, and Source for initial affected domain, Path for an intermediate affected domain, and Distance for degree of difference between original application of the action and final: \'Jake had been hurling these same insults at her now for years\' \'One can not press this argument too far .\' \'She shoved the thought to the very back of her mind .\' \'She flung him a savage little smile .\' All of the foregoing metaphorical uses are annotated in this frame and marked "Metaphor", since they seem to be semantically motivated and not lexically idiosyncratic. \'\' \'\'  This frame contrasts with the following frames which talk about an Agent changing a Theme\'s position with respect to a landmark (either Source or Goal): \'\'  In Placing, the figure (Theme) is profiled as the object, and ends up on the ground (Goal).  The focus is on the final stage of motion, in which the Theme ends up at the Goal, and usually stably remains there. \'Joyce placed the flowers onto the bed.\' \'\'  In Filling, the ground (Goal) is profiled as the object, and the figure (Theme) ends up on the ground (Goal). \'John filled the box with old toys.\' \'\'  In Removing, the figure (Theme) is profiled, and is removed from the ground (Source). \'Jennifer removed the flowers from the bed.\' \'\'  In Emptying, the ground (Source) is profiled and the figure (Theme) is removed from it. \'Jason emptied the box of the old toys .\' \'\'  Words of this frame also differ from the words of the Bringing frame in that they are more general:  either the Agent has a momentary interaction with the Theme that causes its motion, unlike the continuous causation of Bringing, or the Agent continuously acts on the Theme, but there is no supporting object that helps with the motion like the Carrier of the Bringing frame.  '}, {'frame': 'Opportunity', 'tfidf': 3.809355741740575, 'lexical_unit': 'opportunity.n / chance.n / opportune.a / break.n', 'definition': "An Agent has a choice of whether or not to participate in some Desirable_event because of an Opportunity, a situation not completely under the Agent's control and usually of a limited duration.  'It would be pleasant in the opportune absence of the clergyman to have a dance . DNI'  'Her opportunities to apply to a good school are then limited .'  'Now was their big chance ! DNI'"}, {'frame': 'Reveal_secret', 'tfidf': 3.790584144761941, 'lexical_unit': "reveal.v / disclose.v / revelation.n / expose.v / disclosure.n / divulge.v / divulgence.n / confess.v / confession.n / confide.v / spill beans.v / come clean.v / let slip.v / leak.v / tip (someone's) hand.idio / admit.v / come forward.v / fess up.v / let on.v", 'definition': "A Speaker reveals Information that was previously secret to an Addressee. In some cases, the Addressee is expected to keep the Information from other parties. The Information may be damaging to the reputation of the Speaker. Instead of (or in addition to) a Speaker, a Medium may also be mentioned. Likewise, a Topic may be stated instead of Information. Some lexical units in this frame imply that the Addressee has already been confronted with the Information.    'Could it be true that Martin himself was the one who spilled the beans on Pops and Brad's planned wedding? '  "}, {'frame': 'Retaining', 'tfidf': 3.6892823918238293, 'lexical_unit': 'retain.v / keep.v / hold on to.v / hang on to.v', 'definition': "In this frame an Agent continues to possess a Theme for a Duration of time. '' 'In her heart she must retain bitterness against those who had killed him.'  'I kept the iPhone Sally gave me.'"}, {'frame': 'Cause_to_make_noise', 'tfidf': 3.6582127489532157, 'lexical_unit': 'blare.v / blast.v / clang.v / creak.v / peep.v / tinkle.v / play.v / ringer.n / ring.v / honk.v / toot.v / beep.v / clash.v / sound.v / toll.v / trumpet.v', 'definition': "An Agent manipulates a Sound_maker or a Cause causes the Sound_maker to emit a sound.  'The monks would ring the bell until sundown.'"}, {'frame': 'Commitment', 'tfidf': 3.450744390339383, 'lexical_unit': 'consent.v / covenant.n / covenant.v / oath.n / pledge.n / pledge.v / promise.n / promise.v / swear.v / threat.n / threaten.v / undertake.v / undertaking.n / volunteer.v / vow.n / commit.v / commitment.n / vow.v', 'definition': "A Speaker makes a commitment to an Addressee to carry out some future action.  This may be an action desirable (as with promise) or not desirable (as with threaten) to the Addressee. Some of the words in this frame allow an Addressee to be expressed. 'You promised me you'd come to my graduation.' Other words cannot normally occur with an Addressee. 'Kim undertook to finish the project by June.'"}, {'frame': 'Impact', 'tfidf': 3.4098226904887174, 'lexical_unit': 'graze.v / glancing.a / impact.v / hit.v / run.v / smack.v / crash.v / bump.v / clang.v / plow.v / bang.v / collide.v / collision.n / smash.v / strike.v / impact.n / hit.n / thud.v / crash.n / clunk.v / crunch.v / slam.v / plop.v / plunk.v / slap.v / thump.v / chatter.v / clash.v / click.v / patter.v / plash.v / rap.v / tinkle.v / clatter.v / clink.v / hiss.v / rattle.v / touch.v / brush.v / knock.v / impinge.v', 'definition': "While in motion, an Impactor makes sudden, forcible contact with the Impactee, or two Impactors both move, mutually making forcible contact.   'The massive metal foot hit the ground with a huge thud.' "}, {'frame': 'Size', 'tfidf': 3.236902639167549, 'lexical_unit': 'large.a / big.a / huge.a / small.a / tiny.a / little.a / enormous.a / great.a / infinitesimal.a / gigantic.a / giant.a / miniature.a / grand.a / immense.a / miniscule.a / massive.a / sizable.a / substantial.a / ample.a / bulky.a / capacious.a / colossal.a / humongous.a / immeasurable.a / voluminous.a / jumbo.a / mini.a / petite.a / wee.a / bitty.a / puny.a / Brobdingnagian.a / Lilliputian.a / medium.a / mid-size.a / medium-sized.a', 'definition': 'The size of an Entity is assessed in terms of the Degree by which it deviates from the norm. The size generally refers to the amount of three-dimensional space that is occupied by the Entity, not primarily to its weight, density, or length, which is why it is peculiar to refer to a bullet as "large", even if it is heavy, unless it actually has larger dimensions than usual, or to a rope as "big", even if it is long, unless its other, cross-sectional dimensions are also significant.  \'I own a very small home.\' \'Where is my little notebook?\' \'That dog is huge!\' \'\'  There are an enormous number of productive metaphors that involve this frame as the source domain; two of the most frequent metaphors come from the target domains of quantity/amount and importance.    \'He gave me a small sum of money.\' \'The novel was a substantial achievement.\' \'\'  Subcases of the quantity/amount and importance metaphors are also prominent. These involve cases describing the extent of an action\'s, event\'s, or person\'s effect ("his influence on her work was massive"), as well as those related to events ("big party"), similarity ("gigantic difference"), communication ("giant misunderstanding"), and emotions ("great joy", "little joys").  Other productive metaphors include those dealing with groups (in terms of their number of members, net worth, importance to the economy, i.e. "giant electronics company") and those describing sound volume ("in a tiny voice", "the enormous thundering of her heart").  \'\'  The target domain of fame, by contrast, occurs in a non-productive metaphor, found especially with big.a and huge.a. Maturity and age also occur in non-productive metaphors ("big boy", "little baby").'}, {'frame': 'Used_up', 'tfidf': 2.990485418495533, 'lexical_unit': 'spent.a / worn out.a / depleted.a / used up.a / exhausted.a / through.a', 'definition': "Through use, a Resource is diminished in quality or quantity (up to complete attrition) such that it becomes less capable of sustaining future use.   'My entire life savings is depleted due to university and medical bills.'  'All significant oil and gas reserves are exhausted or have dwindled to an uneconomical level except for those of the Middle East.'  'Use shampoo and conditioner every day until the shampoo and conditioner are completely used up.'"}, {'frame': 'Evidence', 'tfidf': 2.8249733626006495, 'lexical_unit': 'argument.n / attest.v / confirm.v / corroborate.v / demonstrate.v / evidence.v / evince.v / prove.v / reveal.v / show.v / substantiate.v / testify.v / verify.v / disprove.v / contradict.v / argue.v / mean.v / evidence.n / from.prep / suggest.v / indicate.v / imply.v / proof.n / illustrate.v / point (to).v / credence [lend].n / support.v / tell.v / rule out.v / demonstration.n / assure.v', 'definition': "The Support, a phenomenon or fact,  lends support to a claim or proposed course of action, the Proposition, where the Domain_of_relevance may also be expressed.  Some of the words in this frame (e.g. argue) are communication words used in a non-communicative, epistemic sense.  'The latest poll results show that support of the president is at an all-time low.' "}, {'frame': 'Relative_time', 'tfidf': 2.564224667966838, 'lexical_unit': 'antecedent.a / belated.a / early.a / follow.v / following.a / late.a / overdue.a / precede.v / preceding.a / predate.v / premature.a / previous.a / prior.a / punctual.a / subsequent.a / tardy.a / come on heels.v / ahead.adv / behind.adv / later.adv / after.prep / sooner.adv / sooner rather than later.adv / subsequently.adv / erstwhile.a / as.adv / in parallel.a / while.c / recent.a / last.a / past.a / on time.adv / punctually.adv / punctuality.n / next.a / latest.a / late [at night].a / coming.a / succeed.v', 'definition': "These words relate to the relative ordering of two events or times.  There are two major types of relations evoked by the words of this frame.   '' Some of the words (e.g. follow.v, antecedent.a, previous.a) describe the (definitively) stative relationship between two events (the Landmark_occasion and the Focal_occasion).  This first type will be moved to the Time_vector frame.  'After she arrived , she laid out her papers on the desk.' 'The following morning, she tried to figure out what it meant . DNI'  '' Others (e.g. belated.a, early.a) refer to the change or deviation of an event from the Landmark_occasion (which is expected or usual at a particular time) to the Focal_occasion (which occurs at a different time).  Quite often, a Focal_participant who is saliently involved in the Focal_occasion stands in for the occasion.  'My flight is early by 20 minutes.' 'I 'm late for my departure !'"}, {'frame': 'Cause_harm', 'tfidf': 2.471174941529442, 'lexical_unit': 'bayonet.v / beat.v / boil.v / burn.v / bludgeon.v / club.v / crush.v / cut.v / slice.v / hammer.v / hit.v / kick.v / knife.v / punch.v / smash.v / stab.v / spear.v / stone.v / hurt.v / whip.v / batter.v / break.v / butt.v / chop.v / claw.v / clout.v / crack.v / cudgel.v / cuff.v / fracture.v / gash.v / injure.v / jab.v / bruise.v / knock.v / lash.v / maul.v / pelt.v / strike.v / thwack.v / bash.v / belt.v / buffet.v / horsewhip.v / smack.v / squash.v / slap.v / knee.v / wound.v / pummel.v / electrocute.v / electrocution.n / poisoning.n / beat up.v / torture.v / maim.v / flog.v / impale.v / biff.v / cane.v / flagellate.v / poison.v / transfix.v / welt.v / mutilate.v / elbow.v / sting.v / swipe.v / strike.n / drug.v / twist.v / run through.v', 'definition': "The words in this frame describe situations in which an Agent or a Cause injures a Victim. The Body_part of the Victim which is most directly affected may also be mentioned in the place of the Victim.  In such cases, the Victim is often indicated as a genitive modifier of the Body_part, in which case the Victim FE is indicated on a second FE layer. '' 'Rod saw his father beating his mother.'  'In the end Wormtongue is fed up with being beaten so he cuts Saruman's throat to free himself.'  'A mother stabbed to death by her husband made a secret will stating that he must never be allowed to care for their son.'"}, {'frame': 'Non-gradable_proximity', 'tfidf': 2.4344294606822006, 'lexical_unit': 'by.prep / beside.prep / under.prep / underneath.prep / behind.prep / in front (of).prep / in back (of).prep / ahead.adv / along.prep / neighboring.a / over.prep / opposite.a / left [landmark-based].n / right [landmark-based].n / left [viewpoint-based].n / right [viewpoint-based].n / beneath.prep / opposite.prep / starboard.n / port.n / on.prep', 'definition': 'A Figure is characterized as near the Ground, according to some contextually given scale. Many lexical units of this frame additionally specify in which direction relative to the Ground one can find the Figure (under.prep, north.adv), or directions from the Ground from which the Figure is excluded (e.g. beside.prep excludes the vertical and front/back axes); for specifications of direction, see the semantic types attached to the lexcial units.  Members of this frame that make reference to an absolute, earth-based grid (e.g. north, south, etc.) imply a geographic scale of proximity, and so are frequently not paraphrasable as "near".   \'She put her shoes under the table .\' \'Michael Jackson was right next to me !\' \'Down by his left foot was a little grenade .\' \'\' The subset of LUs that inherently pick out a particular direction (e.g. north, behind) may occur with a specification of a Distance in that direction from a Ground at which the Figure may be found, while LUs that pick out two or more directions of relevance from a Ground (e.g. beside) can only characterize the general accessibility of the Figure relative to the Ground. \'30 miles north\' \'right beside my leg\'  This frame is intended to cover a limited set of productive metaphor cases in which allegiance is expressed as a Devotee standing to one side or behind an Allegiance_holder:  \'I stand beside what I said to him .\' \'They will stand right next to me in the fight against homophobia .\'  This frame is not intended for metaphorical cases of quantity specification:  \'There was above 500 kg of cocaine in the shipment .\'  This frame does not cover the multitude of other metaphorical cases like "next to impossible", "under consideration", "under his rule", "beside himself", "beside the point". '}, {'frame': 'Transition_to_a_situation', 'tfidf': 2.4332627072908215, 'lexical_unit': 'come.v', 'definition': "An Entity ends up in a Final_situation.   'I have come to appreciate good coffee .' 'We have come to expect three meals a day .' 'When the history of our times comes to be written , They Organized Themselves to Death will be the only possible epitaph . ' '' This frame should be compared to the more general Transition_to_a_state, which also includes changes to a Final_category and a Final_quality. '' This frame should be compared to Process_start and Activity_start.  Unlike Process_start's Process FE and Activity_start's Activity FE, the Final_situation need not be conceived of as an ongoing event.  Also, there is no emphasis on the temporal profiling in Transition_to_a_situation other than the before (where the Final_situation is not true) to the after (where the Final_situation is true)."}, {'frame': 'Dead_or_alive', 'tfidf': 2.395890481124762, 'lexical_unit': 'deceased.a / lifeless.a / dead.a / alive.a / undead.a / undead.n / living.n / dead.n / living.a / nonliving.a / live.v / life.n / late.a / dirt nap.n', 'definition': "A Protagonist is in the dynamic, maintained state of being alive or has exited this state.  'Frank's dead body was apalling.'"}, {'frame': 'Cotheme', 'tfidf': 2.3555514467795367, 'lexical_unit': "accompany.v / chase.v / conduct.v / escort.v / follow.v / guide.v / hound.v / lead.v / pursue.v / shadow.v / shepherd.v / tail.v / track.v / trail.v / pursuit.n / pursuer.n / usher.v / stalk.v / tag along.v / walk.v / guided.a / dog.v / dog (someone's) steps.idio / show.v / lead the way.v", 'definition': "This frame contains words that necessarily indicate the motion of two distinct objects. The Theme is typically animate and is expressed the same way a Self-mover is expressed in the Self-motion frame--i.e. as the subject of a target verb. The Cotheme may or may not be animate and is typically expressed as a direct object or an oblique. Source, Path, Goal, and the other frame elements common to motion words also regularly occur with the words in this frame.  '' 'She accompanied him in the ambulance to Hollywood Memorial Hospital.'  'Police persue teenage joyrider across three counties.'  'My pursuit of academic superiority shows that I was still striving to be the person my parents wanted me to be.'"}, {'frame': 'Undergo_change', 'tfidf': 2.219343478487506, 'lexical_unit': 'change.v / turn.v / change.n / veer.v / swing.v / plummet.v / changeable.a / shift.n / shift.v / transition.n / go.v', 'definition': "An Entity changes, either in its category membership, its situation, or in terms of the quality of an Attribute. In the first case, where category membership is changing, an Initial_category and a  Final_category may be expressed. In the second case, where a situation as a whole is changing, an Initial_situation and a Final_situation can be present. And in the last case, where some characterization of the Entity is changing, an Initial_quality and a Final_quality can be specified.    'As soon as Tiffany kissed the frog, Tiffany turned into a frog. '  'He chanted and the rock changed shape, becoming a great double bitted axe.'  'The College has changed markedly over the century since it first opened its doors.'  'If I'm understanding you correctly, you want the switchbar color to change whenever the bot says something?'  'My life instantly changed from an empty life, to a life full of joy and purpose.'  'As you can see, the word WALK changed from red to green rather than have a separate lens for each colour.'  'My feet turned to stone.'  'The promise will turn to ashes if progress is not made.'  'The price  changed from $1.26 to $1.27 per pint. DNI'  'At least one relative instruction has changed in size from short to long.'  In some cases, the types of perspective are mixed, so that, e.g., an Initial_quality is mixed with a Final_situation; this is usually considered poor style.  'She went from confused to acting completely confident .'  This frame is often the target domain of motion metaphors, in which the moving Theme corresponds to the  changing Entity, the Source of motion corresponds to the Initial_category, Initial_quality, or Initial_situation and the Goal of motion corresponds to the Final_category, Final_quality, or Final_situation of the Entity.  By correspondence with the complex domain of motion, this metaphor introduces several FEs to the target domain of change, such as an Intermediate_state (etc.) from Path, and Tendency_of_change from Direction.  'The nation was crawling towards oblivion.' 'We were walking past almost reasonable and heading right for what-the-bleep.' "}, {'frame': 'Ordinal_numbers', 'tfidf': 2.151063379193142, 'lexical_unit': 'first.a / second.a / third.a / fourth.a / fifth.a / thirteenth.a / nineteenth.a / last.a / eighth.a / tenth.a / ninth.a / seventeenth.a / sixteenth.a / final.a', 'definition': "An Item is picked out either by the order in which the members of a set would be encountered by an implicit cognizer, or by the order in which the members of a set participate in an event or state which serves as the Basis_of_order. The former case usually involves a Starting_point for going through the set, while the latter involves a Basis_of_order, which is normally an event that the Item along with other members of its Comparison_set has participated in.  Note that Item should be annotated on a second layer, except in cases when the noun structure the ordinal participates in is predicative.  'The first car from the left is a Magosix.' 'The first car from the left is a Magosix.' 'Barney was only the second Asian student at my college.' 'Felix was the first of my cats to realize that human food was tastier.' 'Felix was the first of my cats to realize that human food was tastier.'"}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"Layla"</span>.</h5>
+                        <br/>
+                        <pre>
+My ankle twisted all the way around, but I didn't hear it snap.
+But it hurt like it had.
+For a second I thought I saw my life flashing before my eyes, but then I realized it was just helpless tears streaming down liberally.
+And it was just a sprained ankle.
+Thoughts of dread and anguish tried to push away the pain with little success.
+I looked at my ankle, trapped under the root, and twisted all the way around.
+It was swelling noticeably, and the circulation was sure to be cut off if I didn't get it out from under the root.
+If I tugged, I would scream from torment.
+But if I didn't, I wasn't sure what would happen.
+I was on my own.
+I had to make my own life or limb-saving decisions.
+My ankle was already the size of an orange.
+I winced every time I looked at it.
+But nonetheless, I had to look at it as I pulled the root from the ground to free my ankle.
+Remembering that I was on a mission, I looked up to see how far the soldiers had gotten.
+They were grapes in the distance.
+Why was I thinking about food?
+"No!
+We are late already."
+I heard them shouting in the distance.
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"Gryphon Of The Hidden Realm"</span>.</h5>
+                        <br/>
+                        <pre>
+A smell as of lightning filled Azure Bloodstone's nostrils, and a split second later a thunderous cracking sound broke out.
+Lightning jumped from the pearl spheres and struck the gryphon, who began shaking uncontrollably.
+The smell of burning fur and feathers filled the air, and the gryphon cried out in agony as black patches on its fur appeared wherever the lightning struck it.
+After five minutes of this torture, the gryphon went completely limp.
+The elf pressed a switch, pulled the lever, cursed loudly, and went and removed the dead gryphon from the manacles that kept it strung up.
+The gryphon's body slumped onto the floor and four assistant elves came in and removed it.
+As the archmage pressed switches on the switchboard Azure Bloodstone studied the room from his vantage-point.
+There were only two entrances - large, heavy stone doors on the floor below, and no windows apart from the tiny barred window that Azure was looking through.
+Directly below the archmage there were several books on a small table.
+One of them was open and an assistant elf was reading it.
+The assistant walked out.
+Azure Bloodstone looked at the book; it was very old, split along the middle.
+The binding could be seen, clearly exposed, in the middle of the book.
+Another elf entered the cavern.
+This one wore shiny black military armour, probably a grandmaster, or possibly even the military chancellor, who was an elf famous in the Nomoi Empire for his dedication to the Emperor.
+His voice carried well in the huge cavern as he said, "The Emperor asks, how do the experiments come along?
+He wishes to know."
+"We have no success as yet.
+But the experiments lately have been very promising, very promising."
+"Have you need of more resources?
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="74">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="2">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Inclusion', 'tfidf': 6.608033036882437, 'lexical_unit': 'include.v / contain.v / have.v / integrated.a / exclude.v / excluding.prep / inclusive.a / including.prep / incorporate.v', 'definition': "A Total has a Part, either  as a member of an aggregate or as  a constituent part of a simple entity.  'His collection included two El Grecos.'"}, {'frame': 'Posture', 'tfidf': 6.29794373110199, 'lexical_unit': 'bend.v / crouch.v / hunch.v / huddle.v / kneel.v / lean.v / lie.v / sit.v / slouch.v / sprawl.v / squat.v / stand.v / stoop.v / bent.a / crouched.a / huddled.a / hunched.a / sprawled.a / slouched.a / seated.a / posture.n / stance.n / position.n / cower.v / shrink.v', 'definition': "An Agent supports their body in a particular Location.  The LUs of the frame convey which body part is the Point_of_contact where the Agent is supported, what orientation the body is in, and some overall arrangement of the limbs (especially the legs) and the torso.  'He knelt down, hand on heart .'"}, {'frame': 'Ordinal_numbers', 'tfidf': 4.302126758386284, 'lexical_unit': 'first.a / second.a / third.a / fourth.a / fifth.a / thirteenth.a / nineteenth.a / last.a / eighth.a / tenth.a / ninth.a / seventeenth.a / sixteenth.a / final.a', 'definition': "An Item is picked out either by the order in which the members of a set would be encountered by an implicit cognizer, or by the order in which the members of a set participate in an event or state which serves as the Basis_of_order. The former case usually involves a Starting_point for going through the set, while the latter involves a Basis_of_order, which is normally an event that the Item along with other members of its Comparison_set has participated in.  Note that Item should be annotated on a second layer, except in cases when the noun structure the ordinal participates in is predicative.  'The first car from the left is a Magosix.' 'The first car from the left is a Magosix.' 'Barney was only the second Asian student at my college.' 'Felix was the first of my cats to realize that human food was tastier.' 'Felix was the first of my cats to realize that human food was tastier.'"}, {'frame': 'Undressing', 'tfidf': 4.2170412494673615, 'lexical_unit': 'doff.v / take off.v / slip.v / kick off.v / peel off.v / pull off.v / remove.v / shed.v / strip off.v / throw off.v', 'definition': "A Wearer removes an item of Clothing from a Body_location (the part of the body that the Clothing is prototypically worn on.)  'Walking on sand is better if you take off your shoes. INI'"}, {'frame': 'Performing_arts', 'tfidf': 4.079576243838355, 'lexical_unit': 'music.n / performance.n / play.n', 'definition': 'The Performers, together with behind the scenes Personnel, execute a Performance according to a Script and/or Score.  The purpose of the Performance is to create an experience for an Audience, who then judge its merits.  Performances may be in many different Mediums and be of various Types.   This frame is very elaborate in modern society and there are a number of traditions and practices typically (but not necessarily) related to Performances:       The Performance is preceded by many practice sessions in which the Performers and other Personnel attempt to improve the quality and/or fidelity of their individual and collective performances to the Script and/or Score.         The Audience members pay a fee to experience the Performance.       The Performers (and Personnel) receive payment for contributing to the Performance.       Often there are other individuals involved in the specifically financial aspects of the Performance and Performers.       Critics act as part of the Audience and then write reviews that evaluate the merits of the Performance, describing the Performance to other potential Audience members.       Due to the high quality of previous Performances, Performers can become famous, i.e. well known and liked.  Those who like them particularly well become fans of the Performer.  (Shared with writers...)'}, {'frame': 'Light_movement', 'tfidf': 3.923703267972704, 'lexical_unit': 'glow.v / twinkle.v / twinkle.n / sparkle.v / shine.v / shine.n / shimmer.v / sheen.n / scintillation.n / scintillate.v / refulgence.n / glow.n / glitter.v / glitter.n / glister.v / glister.n / glistening.a / glisten.v / glint.v / glint.n / glimmer.v / glimmer.n / gleam.v / gleam.n / flicker.v / flicker.n / flash.v / flash.n / flare.v / flame.v / coruscation.n / coruscate.v / strike.v', 'definition': "An Emitter emits a Beam of light from a Source, along a Path, and/or towards a Goal.  Essentially, this frame denotes the (semi-)fictive motion of the the Beam. 'Avoid allowing light to shine into neighbors' gardens.' 'Clear yellow sunlight shone through the window-panes.' 'She thinks the sun shines out of his backside.' '...when the candles shine out.' 'It shines in my eyes. ('It' is both Beam and Emitter, though only one will show up in the display.) ' '...light shines down on the world.' 'The moonlight shone off the fields.' 'The candlelight glinted from pearls and rubies.'"}, {'frame': 'Remembering_to_do', 'tfidf': 3.873213042052717, 'lexical_unit': 'remember.v / forget.v', 'definition': "A Cognizer thinks of and performs an Action that is a self- or other-imposed task or some other kind of desirable behavior. The Action may involve a Salient_entity in some way affected by the Cognizer. If a Salient_entity is mentioned, the Action is left unexpressed.   'You invited everybody but you forgot Harry.'  'Thank God Smithers remembered to return the video..'  'If you forget your textbook and there is an assignment to be done, the highest grade you will receive on the work is aC (70%).'  'Did you remember about the letter?'  "}, {'frame': 'Resurrection', 'tfidf': 3.4964402428780295, 'lexical_unit': 'resurrect.v / come back.v / rise.v / resurrection.n / return.v', 'definition': "A Protagonist which had been dead returns to life.  'He'll come back from the dead at 11:03PM exactly, since that's what his suicide note indicated.'"}, {'frame': 'Remembering_experience', 'tfidf': 3.4603572453001816, 'lexical_unit': 'remember.v / forget.v / memory.n / recall.v / look back.v / reminisce.v', 'definition': 'A Cognizer calls up an episodic memory of past Experience or an Impression of a Salient_entity formed  on the basis of past experience. The Cognizer may also remember  the Salient_entity in a particular State, which serves as a frame of reference in the Cognizer\'s mind.   When attention is focused on a Salient_entity, then mention of a global Experience is excluded and typically, but not always, either a State or Impression of the Salient_entity is presented.  \'\' Episodic memory is the  explicit memory of events. It includes time, place, and associated emotions (which affect the quality of the memorization). Episodic memory contrasts and interacts with semantic memory, the memory of facts and concepts. The Remembering_information frame is concerned with this latter type of memory.   \'Kozmo could remember when his modem was the fastest he could buy.\'  \'That\'s probably before my time, which was long time ago, Fish may remember that time.\'  \'Who remembers me being a total dork and going up to everyone saying "Hey, I\'m Ashley Hunt from Chicago"!?!\'   \' I wanted to remember how good that felt.\'  \'Hummel says staff, both students and professional, remember  her as a "very good friend, available for new staff and well-respected by everyone."\'   \'Somehow I remember him as older, with long eyelashes, and doe eyes.\'  \'When he died he was just a kid himself but for some reason at the age of 44 I still remember him as older than me. \'  \'Retro games are great, but a lot of the time people get clouded by nostalgia and remember them to be better than they really were\'  \'He remembered him as a kindly man but not a very lively one. \'  \'The part I vividly remember was about a South Seas tramp steamer captain . \''}, {'frame': 'Killing', 'tfidf': 3.2273179173858435, 'lexical_unit': "kill.v / annihilate.v / assassinate.v / behead.v / eliminate.v / exterminate.v / drown.v / liquidate.v / murder.v / slay.v / terminate.v / suffocate.v / smother.v / starve.v / asphyxiate.v / suicide.v / homicide.n / suicide.n / euthanize.v / euthanasia.n / dispatch.v / lethal.a / annihilation.n / liquidation.n / crucify.v / crucifixion.n / decapitate.v / massacre.v / slaughter.v / lynch.v / liquidator.n / killing.n / murder.n / slaughter.n / killer.n / massacre.n / infanticide.n / smothering.n / slaying.n / regicide.n / pogrom.n / shooting.n / holocaust.n / matricide.n / genocide.n / butcher.v / beheading.n / assassination.n / butchery.n / carnage.n / suffocation.n / assassin.n / blood-bath.n / decapitation.n / extermination.n / fratricide.n / garrotte.v / murderer.n / slaughterer.n / slayer.n / immolation.n / patricide.n / silence.v / deadly.a / fatal.a / fatality.n / destroy.v / take out.v / bloodshed.n / do in.v / take (someone's) life.idio", 'definition': "A Killer or Cause causes the death of the Victim. 'John drowned Martha.'"}, {'frame': 'Imprisonment', 'tfidf': 3.0953098569737483, 'lexical_unit': 'imprison.v / imprisonment.n / put away.v / jail.v / incarcerate.v / incarceration.n / time.n / life.n', 'definition': "The Authorities put a Prisoner in Prison as punishment for an Offense.   'US Drug Researcher Imprisoned for FDA Fraud.' 'Men will be more likely to be put away for murder rather than manslaughter for killing their wives.' 'However, any treatments may be years in the future and in the meantime, criminals will continue to be imprisoned for public safety.'  'The government wrongfully imprisoned them in ?detention centers? (a nice term for concentration camps), tortured them mentally and physically' "}, {'frame': 'Placing', 'tfidf': 2.9452789090479383, 'lexical_unit': 'deposit.v / embed.v / hang.v / immerse.v / implant.v / inject.v / insert.v / insertion.n / lay.v / lean.v / load.v / lodge.v / pack.v / park.v / pile.v / place.v / placement.n / plant.v / position.v / rest.v / set.v / situate.v / smear.v / stand.v / stash.v / stow.v / stuff.v / tuck.v / wrap.v / bag.v / billet.v / bin.v / bottle.v / archive.v / box.v / cage.v / crate.v / file.v / garage.v / pocket.v / shelve.v / stable.v / perch.v / sit.v / daub.v / drizzle.v / dab.v / drape.v / brush.v / dust.v / heap.v / jam.v / rub.v / cram.v / shower.v / pot.v / sheathe.v / warehouse.v / shoulder.v / stick.v / bestow.v / put.v / package.v / plunge.v / arrange.v / emplace.v / enclose.v / implanted.a / gag.v', 'definition': "Generally without overall (translational) motion,  an Agent places a Theme at a location, the Goal, which is profiled.  In this frame, the Theme is under the control of the Agent/Cause at the time of its arrival at the Goal.  'David placed his briefcase on the floor.'  This frame differs from Filling in that it focuses on the Theme rather than the effect on the Goal entity.  It differs from Removing in focusing on the Goal rather than the Source of motion for the Theme."}, {'frame': 'Level_of_force_exertion', 'tfidf': 2.8933157645428618, 'lexical_unit': 'strong.a / weak.a / mighty.a / power.n / might.n / forceful.a / force.n / strength.n / weakness.n / powerful.a / powerless.a', 'definition': 'An Exerter, Action, or Force is capable of exerting or does exert a physical force at a level specified by the target. That physical force may cause deformation or breakage of, or simply motion in the receiving entity. The receiving entity is conceptually present (even if remotely), but is usually not lexically explicit. This frame covers both individual-level/static uses ("a STRONG person") as well as stage-level/dynamic uses ("a STRONG push"). However, the durative, individual-level meaning appears more frequently in the data and seems more basic.   \'Eugenie loved the sea and was a strong swimmer.\'  \'Spartacus dealt the Roman soldier a mighty blow.\'  \'A powerful force tore off the tree\'s branches.\'  Exerter, Action, and Force belong to a Core set. \'\'  There are several productive metaphors covered by this frame. The first and most common is one in which social influence or control is conceptualized as the physical exertion of force. The social influence/control is more specifically a propensity to cause change in social realms such as the economic, political, militaristic, cultural, or intimate: \'There were theoretical limits to the power of the king.\' \'Voters in the South have a strong incentive to keep such Democrats in office.\'  Another similar metaphor is one in which psychological influence or control is understood as the physical exertion of force. The psychological influence/control includes the emotional as well: \'Poetic words in a text can be given more emotive power by using melisma.\' \'He was a forceful speaker.\'  A third metaphor involves the amount of an entity construed as the physical force exertion of said entity. Depending on context, amount could be volume, etc. (“STRONGEST critics”; “MIGHTY uproar”).  \'\'  Two related physical force dynamic frames are Level_of_force_resistance and Dynamism.  This frame is distinguished from the Level_of_force_resistance frame in that it describes the level of force exertion instead of the level of resistance, and also in that there are three categories of Core FE available to the target (i.e Exerter, Action, or Force), whereas in Level_of_force_resistance there are only two Core FEs (i.e. Resisting_entity and Opposing_force). Of the latter frame\'s FEs, Opposing_force specifies the thing that the main entity resists to a level desginated by the target. Its parallel in Level_of_force_exertion is implied but backgrounded to the extent that it rarely appears as explicit lexical material; thus there is no corresponding Core FE.   This frame differs from Dynamism with regard to individual-level cases; targets here express the FE\'s capability. In contrast, Dynamism targets express the FE\'s tendency. For example, "a STRONG person" is generally construed as a person who is capable of strength, while "an ENERGETIC person" (energetic.a from the Dynamism frame) is construed as a person who tends to be energetic.   However, there is overlap between the two frames in stage-level cases - "a STRONG push" and "an ENERGETIC push" seem rather comparable. '}, {'frame': 'Making_faces', 'tfidf': 2.8701473799098496, 'lexical_unit': 'frown.v / grimace.v / grin.v / pout.v / scowl.v / smile.v / smirk.v', 'definition': "An Agent makes a particular facial expression, generally in response to some Internal_cause (generally an emotional state).  Sometimes the Body_part involved in the expression is mentioned in lieu of the Agent.  'His eyes smile, but his lips do not.'"}, {'frame': 'Time_vector', 'tfidf': 2.727947633847117, 'lexical_unit': 'from.prep / hence.prep / after.prep / before.prep / ago.idio / since.adv / down the road.adv / previously.adv / prior.adv / beforehand.adv / afterward.adv / afterwards.adv / right away.adv / sooner rather than later.adv / later.adv / thereafter.adv / through.prep / former.a / formerly.adv / eventually.adv / previous.a / pre.prep / post.prep / ante.prep / finally.adv / then.a / already.adv / until.prep / following.prep / since.prep / in time.adv / yet.adv', 'definition': "An Event is identified as occurring at a particular Distance and in a particular Direction from a Landmark_event.   The lexical units incorporate the Direction and, in some cases, the Landmark_event.   This frame builds on the Direction frame, further specifying the Domain as Time.  This frame will receive some of the lexical units currently found in Relative_time.  ' Tell me that a week from now. ' ' Some twelve months after I had graduated, I had my first job interview'"}, {'frame': 'Encoding', 'tfidf': 2.5930961457595827, 'lexical_unit': 'couch.v / expression.n / formulation.n / frame.v / phrase.v / put.v / word.v / wording.n / phrasing.n / misword.v / express.v / cast.v', 'definition': "A person (Speaker) expresses a Message or mental content, broadly understood, in a particular Manner. The content may be emotional, as in 'Humans express  feelings through words' intellectual, as in 'Formulate the idea carefully'  or linguistic, as in 'Phrase your question as a comment.'    "}, {'frame': 'Sensation', 'tfidf': 2.583540302610957, 'lexical_unit': 'aroma.n / bouquet.n / feel.n / feeling.n / flavour.n / fragrance.n / incense.n / noise.n / odor.n / perception.n / perfume.n / reek.n / savour.n / scent.n / sensation.n / sense.n / sight.n / smell.n / sound.n / stink.n / taste.n / whiff.n / scene.n / image.n', 'definition': "This frame contains nouns that refer to sensations in different modalities. The FE Source is used for the phenomenon that gives rise to the sensation in question. The FE Percept is used for the characteristic quality of the sensation. In cases of veridical perception these are not typically distinguished from one another; we use the FE Percept as the default in these cases. With some nouns in this frame it is possible to express the being who experiences the sensation, or the part of the body of such a being. We mark such expressions with the FEs Perceiver_passive and Body_part, respectively. (The -passive part of this label serves to distinguish this FE from the Perceiver-Agentive FE used in other frames.)  '' 'The huge sand dunes, perpetually changing, make for a surreal sight.'  'Endill heard the noise of glass smashing, plaster crumbling and furniture being broken.'  'The feel of his strong fingers enclosing her small palm came as something of a shock to her system.'"}, {'frame': 'Identicality', 'tfidf': 2.556248432482189, 'lexical_unit': 'same.a / different.a / identical.a / distinct.a / identity.n', 'definition': "A Current_instance of a certain Type is under discussion. This instance  is evaluated as being the same instance or a different instance from a Previous_instance encountered in a Previous_context.  'Kim has a different hair color every week' 'Kim has a different hair color every week'  'Is this the same sofa as the one that used to be in the lobby?' 'Is this the same sofa as the one that used to be in the lobby?'   'Dracula and your neighbor are different people' 'Dracula and your neighbor are different people'"}, {'frame': 'Clothing', 'tfidf': 2.534359342357988, 'lexical_unit': 'dress.n / frock.n / petticoat.n / ballgown.n / culottes.n / chemise.n / jodhpurs.n / sock.n / stocking.n / leggings.n / tunic.n / slip.n / gown.n / skirt.n / shorts.n / pants.n / trousers.n / wrap.n / shirt.n / blouse.n / cloak.n / cape.n / coat.n / greatcoat.n / overcoat.n / jacket.n / vest.n / tie.n / hose.n / hosiery.n / clothing.n / clothes.n / finery.n / suit.n / necktie.n / neckwear.n / cummerbund.n / scarf.n / shawl.n / bow-tie.n / pantyhose.n / garter.n / panties.n / knickers.n / sweater.n / jumper.n / cardigan.n / pullover.n / blazer.n / kilt.n / swimsuit.n / bikini.n / robe.n / bathrobe.n / apron.n / miniskirt.n / fishnet.n / legwarmers.n / regalia.n / raiment.n / apparel.n / attire.n / vestment.n / livery.n / outfit.n / garment.n / undergarment.n / underclothing.n / underclothes.n / underwear.n / togs.n / undies.n / shift.n / pinafore.n / mitten.n / mitt.n / glove.n / bodice.n / corset.n / parka.n / windbreaker.n / windcheater.n / raincoat.n / pyjama.n / nightie.n / nightdress.n / nightgown.n / nightwear.n / lingerie.n / camisole.n / waistcoat.n / jeans.n / overall.n / coverall.n / garb.n / smock.n / sundress.n / bra.n / brassiere.n / teddy.n / tights.n / jumpsuit.n / kimono.n / kaftan.n / uniform.n / costume.n / motley.n / get-up.n / ensemble.n / surplice.n / galosh.n / welly.n / wellington.n / slipper.n / sandal.n / sneaker.n / stiletto.n / boot.n / shoe.n / gumboot.n / clog.n / footwear.n / sari.n / sarong.n / poncho.n / abaya.n / jerkin.n / crinoline.n / muff.n / cowl.n / tutu.n / t-shirt.n / polo-neck.n / g-string.n / flip-flops.n / one-piece.n / two-piece.n / flannels.n / rags.n / silks.n / satins.n / cottons.n / tweeds.n / ermines.n / muslins.n / tippet.n / doublet.n / tatters.n / neckerchief.n / breeches.n / sweatshirt.n / sweatpants.n / tracksuit.n / alb.n / stole.n / chasuble.n / cope.n / buskin.n / pallium.n / gauntlet.n / cravat.n / briefs.n / cossie.n', 'definition': "This frame refers to clothing and its characteristics,  including anything that people conventionally wear.  The Wearer wears a Garment that has a certain Style, is made of a certain Material, and can be otherwise characterized by a Descriptor.  In some cases, the Body_location (where the garment is worn) and Subregion of the clothing may also be specified.  'Claudia dressed in a dark green cotton DRESS clasped round her slender waist with a broad yellow belt , drank a cup of coffee and opened her neglected post .'"}, {'frame': 'Communication_response', 'tfidf': 2.3283979427395565, 'lexical_unit': 'answer.n / answer.v / comeback.n / counter.v / rejoin.v / rejoinder.n / reply.n / reply.v / respond.v / response.n / retort.n / retort.v / riposte.n / come back.v / reaction.n / acknowledge.v', 'definition': 'This frame deals with a Speaker communicating a reply or response, a Message, to some prior communication or action, the Trigger.  \'\' \'The landlord has not yet replied in writing to the tenant objecting the proposed alterations.DNI\'  \'"No, I do not agree with you," responded another officer to the CEO. DNI\''}, {'frame': 'Questioning', 'tfidf': 2.2935611252669785, 'lexical_unit': 'grill.v / inquire.v / inquiry.n / interrogate.v / interrogation.n / query.n / query.v / question.n / question.v / questioning.n / quiz.v / ask.v', 'definition': "The words in this frame have to do with a Speaker asking an Addressee a question which calls for a reply (as opposed to making a request which calls for an action on the part of the Addressee).  '' 'We asked Ruby what kind of food they ate.'  'Yeats was able to interrogate the spirit world about his relationship with Maude.'"}, {'frame': 'Capability', 'tfidf': 2.2612599215580325, 'lexical_unit': 'able.a / unable.a / can.v / capable.a / ability.n / potential.n / capability.n / capacity.n / potential.a / power.n / power [statistical].n / powerless.a / powerlessness.n / inability.n / incapable.a / incapacity.n / powerful.a', 'definition': "An Entity meets the pre-conditions for participating in an Event.  A Degree modifier may be included to indicate by how much the Entity exceeds or falls short of the minimum requirements.  'Conductor software gives us the hands-on capability to provide updates immediately'  'The GOP is afraid that it might not be capable of keeping the seat vacated by Dunn.'  'NASA is unable to communicate with Mars rover.'  'He can fly a kite.'"}, {'frame': 'Spatial_co-location', 'tfidf': 2.1438243065372378, 'lexical_unit': 'at.prep / where [relativizer].adv / here.adv / there.adv / where [interrog].adv / home.adv', 'definition': 'A Figure is located essentially at the same location as a Ground, which is viewed as point-like, or having no important internal or external structure.  Typically, the Ground is viewed as point-like due to its small size with respect to a conversationally relevant spatial scale; this scale may be provided by reference to other, distant entities or full paths of travel that make the size of the Ground seem relatively small.  Another use of this frame is to specify a location via a Ground that is primarily considered for its function, rather than its shape; this second use explains why "at the store" is typically used even when a Figure is inside the Ground, but only in cases where the store is considered, according to its prototype, as a place to buy and sell, rather than an architectural entity (in which case "in the store" would be more usual).  \'We are now at the cathedral .\' \'They claim that many Christians were martyred at the Collosseum .\' \'I \'m at my mother \'s .\'  This frame has a very large family of productive metaphors associated with it, the foremost of which maps from the target meaning of values on a quantitive scale (e.g. price, temperature, speed) onto the source domain of vertically-arranged positions in space.  Because this metaphor does not normally serve to locate a cognitive agent, it is only rarely and exceptionally usable with the LU here.adv, which implies being at the same location as the speaker. A separate metaphor maps the target meaning of quantified progress (measured by a quantity associated with a processed entity vs. a quantity associated with what is left to be done) onto the source domain of forward-backward-arranged positions in space.  \' Tesla stock is at a three-month low today .\' \'She put the biscuits in the oven at only 400 degrees .\' \'At fifty dollars , everyone \'s gonna buy one !\' \'If you \'re only at page 20 , just start over .\' '}, {'frame': 'Expressing_publicly', 'tfidf': 2.117436143016292, 'lexical_unit': 'vent.v / air.v / express.v / voice.v / give voice.v / expression.n / articulate.v / put into words.v', 'definition': "A Communicator publically communicates some difficult-to-express Content which they (or a social group of which they are a member) have had for some time. The Content may not have been previously communicated due to inability or social stricture.  In cases where the individuals addressed are a smaller group than the public at large, a separate Addressee may be expressed.  'Those grievances can be aired during Board meetings. CNI'  'Saddam voiced his joy when he was told Spain's new government had left the US-led military coalition in Iraq.'   "}, {'frame': 'Roadways', 'tfidf': 2.045728577416956, 'lexical_unit': 'road.n / path.n / way.n / street.n / avenue.n / artery.n / highway.n / expressway.n / motorway.n / sidewalk.n / pavement.n / underpass.n / overpass.n / railway.n / railroad.n / route.n / line.n / crosswalk.n / bridge.n / tunnel.n / autobahn.n / lane.n / track.n / trail.n / boulevard.n / course.n / freeway.n / pathway.n / roadway.n / thoroughfare.n / byway.n / cul-de-sac.n / driveway.n / parkway.n / runway.n / bypass.n / flyover.n / rail.n', 'definition': "This frame involves stable Roadways which connect two stable Endpoints, the Source and the Goal.  Being physical objects, these Roadways may have Names and Characteristics; they are also made of a Material.  They also cover ground, so they may have a Path or a Relative_location that the travel occurs in.  ' We crossed the brick road.' ' I prefer to travel on highway I-80.'  'This is the only highway between Lodi and Sonoma.' ' She dreaded turning onto the busy street.'"}, {'frame': 'Bringing', 'tfidf': 2.0107011018258105, 'lexical_unit': 'lug.v / haul.v / wheel.v / cart.v / carry.v / hump.v / fly.v / transport.v / take.v / drive.v / schlep.v / truck.v / tote.v / trundle.v / ferry.v / jet.v / paddle.v / motor.v / row.v / convey.v / bike.v / bring.v / bear.v / fetch.v / get.v / portable.a / mobile.a / transport.n / bus.v / shuttle.v / airlift.v', 'definition': "This frame concerns the movement of a Theme and an Agent and/or Carrier.   The Agent, a person or other sentient entity, controls the shared Path by moving the Theme during the motion. In other words, the Agent has overall motion in directing the motion of the Theme.  The Carrier may be a separate entity, or it may be the Agent's body. The Constant_location may be a subregion of the Agent's body or (a subregion of) a vehicle that the Agent uses.  'Karl carried the books across campus to the library on his head.' 'Karl carried the books across campus to the library in his truck.' 'Karl carried the books across campus to the library by truck.' 'The truck carried the books across campus to the library in specially designed boxes.' The  FEs include Path, Goal, and Source.  Area is an area that contains the motion when the path is understood as irregular.   This frame emphasizes the path of movement as opposed to the FEs Source or Goal as in Filling or Placing. "}, {'frame': 'Appellations', 'tfidf': 1.9959974011022878, 'lexical_unit': 'officer.n / general.n / captain.n / president.n / bishop.n / chairman.n / chairperson.n / chief.n / commander.n / commissioner.n / congressman.n / congresswoman.n / director.n / duchess.n / emperor.n / empress.n / executive.n / governor.n / headmaster.n / imam.n / kaiser.n / king.n / leader.n / legislator.n / maharaja.n / mayor.n / minister.n / mogul.n / monarch.n / official.n / premier.n / prince.n / principal.n / queen.n / representative.n / secretary.n / shah.n / sheik.n / sultan.n / superintendent.n / supervisor.n / tsar.n / mother.n / father.n / doctor.n / dr.n / mr.n / mrs.n / ms.n / miss.n / child.n / aunt.n / uncle.n / sister.n / brother.n / cousin.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Continued_state_of_affairs', 'tfidf': 1.9657189314199803, 'lexical_unit': 'so far.adv / to date.adv / up to.prep / as yet.adv / as of yet.adv / still.adv', 'definition': "A State_of_affairs has held and continues to hold up to the Reference_occasion.   'To date, the Department already has numerous requests for new systems to be developed.'  'SAGE has no activities planned as of yet.'  'PBGC guarantees the benefit that you had earned up to the date of plan termination'  'I think that she 's still in her office .'"}, {'frame': 'Accuracy', 'tfidf': 1.9572780110804104, 'lexical_unit': 'accurate.a / on.prep / off.prep / inaccurate.a / accuracy.n / inaccuracy.n / exact.a / precise.a / precision.n / accurately.adv / inaccurately.adv / true.a', 'definition': "An Agent is involved in an activity whose degree of success is dependent on a parameter of the action matching a particular set of values of a continuous variable or variables (e.g. quantity, location, time).    The Agent, or metonymically the Instrument or Means action, is described in terms of the actual or expected Deviation between the location, time, or quantity in the activity and the location, time, or quantity which is necessary for the intended event.  'The Longview Rangefinder is accurate to within one foot per hundred yards .' 'His estimate was off by an order of magnitude .'  'The fork truck operator must be fairly accurate in his aim.'  'The precision of the daily measurements is dependent on a number of factors.'"}, {'frame': 'Increment', 'tfidf': 1.9572316307959352, 'lexical_unit': 'other.a / another.a / other.n / another.n / further.a / more.a / more.n / additional.a', 'definition': "A member or members of a Class have just been  mentioned or are present in the discourse setting and now a different instance  (or group of instances) of the same class is referred to.  'My husband left me for another woman -- and now wants to get back together again!'  'My husband left me for another woman -- and now wants to get back together again!'"}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"Double Death"</span>.</h5>
+                        <br/>
+                        <pre>
+Chapter 26.
+Tony was still sitting in the same position, still clasping the same drink.
+It was as if time had become stationary for him.
+One second, the hologram had been standing there in front of him, and in the blink of an eye, it seemed, it had flashed away, and had returned in that same second.
+He sat there without a word until the hologram asked him whether he had enjoyed the interview.
+It took him several more seconds to make his brain recollect the past few minutes.
+It was as though he had not wanted to be able to remember the scene.
+Eventually he recalled the feeling of horror that had coursed through him when the Prime Minister had whispered, pray for us.
+Lights were still burning in Downing Street as the cabinet met in another emergency session.
+Time had drifted past without result, as one Minister reported failure after another.
+The head of Special Branch stated that he was no nearer flushing out Mr. Walker, as he was now known, than he had been weeks before.
+Finally it was the turn of the Profiler.
+He stood and regarded the others with a small smile, and holding a finger to his lips to indicate silence, removed his shoes, and silently tip toed to the computer in the corner of the room, bent down and pulled the power feed plug from its socket, and ripped the modem cable from the telephone jack.
+The others had watched this performance in shocked amazement.
+The profiler returned to his chair, replaced his shoes, and said in a very firm voice.
+"That will stop the bastard snooping on our deliberations."
+The Prime Minister snapped tartly.
+"What are you doing?
+"  The profiler replied  "Mr Walker was using the computer to eavesdrop on us.
+How was it he knew exactly what we had said at our last meeting?
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"This Game Has No Loyalty"</span>.</h5>
+                        <br/>
+                        <pre>
+Gloria thought KB was cute, while Shondra returned Kendu's glare.
+"Stump ready to move on that dude, you know?"
+KB told him after the girls passed them.
+"I hear you.
+I don't like that faggot-ass muhfucka no way.
+When y'all ready to get at him, let me know, 'cause I'm down for whatever."
+"Ain't that his wisdom that just walked by with that dark-skinned chick?"
+KB asked.
+"Yeah, that's his bitch.
+I don't like her fronting ass either.
+She be actin' like she all dat, and she used to be a bum-ass bitch back in the day."
+"He must be getting money, 'cause they look like they just came from shopping with all dem bags they had.
+Plus, she's dressed fly as fuck," KB acknowledged.
+"Yeah, yeah, his trickin' ass probably is giving that ho all his money.
+That's why he stressin' me for his money and shit."
+"I'm saying, though, she draped in jewels and the whole nine," KB elaborated.
+"Fuck that bitch, son.
+She ain't nobody.
+She ain't shit either, just like her punk-ass man."
+When Shondra and Gloria got in her house, Shondra threw the bags on her bed and Gloria turned on the Sony radio/CD/cassette player on her dresser.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="22">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="1">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Verdict', 'tfidf': 7.181315861622868, 'lexical_unit': 'pronounce.v / find.v / finding.n / ruling.n / convict.v / conviction.n / acquit.v / acquittal.n / verdict.n / clear.v / guilty.a / not guilty.a', 'definition': "In this frame, which is a  part of the Trial sequence, a Judge gives a Finding with respect to the Charges against the Defendant in a particular Case.  'He was convicted of fraud by Judge Judy.'"}, {'frame': 'Progression', 'tfidf': 4.770262622449818, 'lexical_unit': 'progress.v / progress.n / advance.v / advance.n / development.n / develop.v / mature.v / maturation.n / advancement.n / stagnate.v / progression.n', 'definition': "An Entity changes from a Prior_state to a Post_state in a sequence that follows a pre-defined plan, expectation, or model of change.  The change is usually assumed to be an improvement for the Entity. Because this frame is describing change according to some known model of the Entity, the Prior_state and Post_state are backgrounded, and often implicit.  'Their offensive armament has developed from short range missiles to long-range ballistic weaponry in a relatively short period .' 'The maturation of warhead technology is, perhaps, not far off .' 'Recovery in our major overseas markets has progressed tentatively and increased spending by consumers and government does not appear to be benefiting this' 'Why have we developed economically as we have?'  This frame is not equivalent to the frame Improvement_or_decline for two reasons.  Firstly, Progression implies a smooth or multi-stage change involving several different states of the Entity in an expected sequence, while Improvement_or_decline may be simple or complex, in accord with an expected sequence or not.  Secondly, progression along an expected sequence does not necessarily mean that things get better (or worse) for the Entity.  This is clear in the case of progression of a disease, since different ailments have very different expected sequenes, with initial onset leading to expected disappearance (for cases like the cold), or to permanent impairment (in the case of Parkinsons), or to death (in many forms of cancer).  However, it is more confusing in the very common case of the progress of a biological Entity from birth to death, where this frame often emphasizes the phases of the lifespan where the organism increases in ability, thus reaching a more desirable state.  Plans are also spoken of as progressions, and because the expected sequence is towards the goal of the agents that formed the plan, these uses of the progress frame also emphasize improvement. "}, {'frame': 'Offenses', 'tfidf': 4.769758590181082, 'lexical_unit': 'assault.n / murder.n / statutory rape.n / sabotage.n / manslaughter.n / hijacking.n / theft.n / burglary.n / robbery.n / conspiracy.n / larceny.n / copyright infringement.n / negligence.n / possession.n / felony.n / sexual harassment.n / treason.n / battery.n / kidnapping.n / fraud.n / indecent assault.n / sexual assault.n / child abuse.n / homicide.n / arson.n / rape.n', 'definition': "Words in this frame describe acts in violation of a legal code.  'He was accused of hijacking a tour bus full of people.'"}, {'frame': 'Instance', 'tfidf': 4.724080679859112, 'lexical_unit': 'specimen.n / example.n / case.n / instance.n', 'definition': "This frame concerns transparent nouns that denote Instances of Types of entities or events.  'The survey confirmed that management interference in team operations had increased , and instances of management decisions being taken without team consultation had also increased .'"}, {'frame': 'Mention', 'tfidf': 4.636006763300184, 'lexical_unit': 'mention.v / touch (on).v', 'definition': "A Communicator or Medium briefly references something in a Message, in which only a subpart of the full content is profiled.   'The General Secretary mentions some of them in his report.'  'The Queen 's Speech also mentions the importance of making sure that Iraq complies with United Nations resolutions.'  ' When Barack Obama's name was mentioned, boos filled the room. CNI'"}, {'frame': 'Fame', 'tfidf': 4.108807220611494, 'lexical_unit': 'famous.a / fame.n / stature.n / legendary.a / well known.a / infamous.a / renown.n / renowned.a / notorious.a / notoriety.n / reputation.n / epic.a / name.n / known.a / big name.n / make a name for oneself.v', 'definition': "An Entity is well-known among a wide range of people (in general or in a particular domain) for a particular Reason, which may be a behavior, characteristic, or some other associated item. In the case of events, fame entails a large number of people being aware of the event's occurence; in the case of concrete entities, including humans, fame entails awareness of existence. In both cases, often fame is accompanied by awareness of the Entity's significance in historical, cultural, or social contexts.  'Shakespeare was famous during his life because he performed in front of Queen Elizabeth I more than anyone else.'"}, {'frame': 'Personal_relationship', 'tfidf': 4.068365531283197, 'lexical_unit': 'husband.n / wife.n / widow.n / widower.n / widowed.a / spouse.n / couple.n / companion.n / divorcee.n / married.a / betrothed.n / bachelor.n / engaged.a / engagement.n / marriage.n / boyfriend.n / girlfriend.n / single.a / date.v / break-up.n / lover.n / partner.n / mistress.n / suitor.n / court.v / spinster.n / estranged.a / friend.n / betrothed.a / cohabit.v / cohabitation.n / seeing.v / widow.v / divorced.a / buddy.n / moll.n / paramour.n / inamorata.n / beau.n / sugar daddy.n / significant other.n / chum.n / pal.n / cobber.n / mate.n / crush.n / affair.n / adultery.n / amigo.n / sleep (together/with).v / spousal.a / marital.a / affianced.a / friendship.n / romance.n / befriend.v / familiar.a / fiancée.n / fiancé.n / relationship.n / chummy.a', 'definition': "The words in this frame have to do with people and the personal Relationships they are or can be a part of.  Some of the words denote people engaged in a particular kind of Relationship, others denote the Relationship, yet others the events bringing about or ending the Relationships. Many of the words presuppose an understanding of states and events that must have occurred before another event takes place or before a person can be classified in a certain way. '' 'And of course that drippy boyfriend of hers backed her up.'  'As the happy couple took their places there was a stir and a rising babble behind them.'  'Pattie is living proof that if you live with a man, you discover a lot you didn't know when you were just dating him.'"}, {'frame': 'Cause_impact', 'tfidf': 4.005211091505942, 'lexical_unit': 'hit.v / smack.v / slam.v / bang.v / crash.v / graze.v / plow.v / run.v / slap.v / strike.v / thud.v / ram.v / clang.v / clash.v / clatter.v / click.v / clink.v / rap.v / rattle.v / rustle.v / thump.v / collide.v / jab.v', 'definition': "An Agent causes an Impactor to make sudden, forcible contact with an Impactee, or manipulates two (or more) Impactors so that they make mutual forcible contact.    'He slammed his fist down on the table and bellowed something unintelligible.'"}, {'frame': 'Wearing', 'tfidf': 3.6523107641240764, 'lexical_unit': 'naked.a / nude.a / unclad.a / unshod.a / shoeless.a / sockless.a / nakedness.n / nudity.n / clad.a / clothed.a / wear.v / dressed.a / barefoot.a / bare.a / bare.v / bareheaded.a / barelegged.a / bare-chested.a / hatless.a / coatless.a / shirtless.a / barefooted.a / undressed.a / topless.a / masked.a / hooded.a / undress.n / costumed.a / garbed.a / unclothed.a / bare-armed.a / bare-breasted.a / hatted.a / braless.a / robed.a / attired.a / gloved.a / gloveless.a / have on.v / with on.idio / have got on.v / in.prep / decked out.a / dolled up.a / got on.v / sport.v / swaddled.a / swathed.a', 'definition': "The words in this frame refer to what Clothing the Wearer (or a specific Body_part of the Wearer) has on.  'I had on the most ridiculous monkey-suit you could imagine.' 'These two losers were wearing bras on their heads!'  Many targets incorporate the Clothing item, and some targets describe the state of not wearing something (when it might be expected).  'Do you think anyone would notice if I went topless?'    NB: There is a very common metonymy in which characteristics of the clothing stand for the clothing itself, such as   'the man clad in leather.' 'She was dressed all in red.'  Such sentences should be tagged METAPHOR on the sentence level."}, {'frame': 'Commerce_pay', 'tfidf': 3.6003913150326223, 'lexical_unit': 'pay.v / payment.n / disburse.v / disbursement.n / shell out.v / payer.n', 'definition': "This frame involves Buyers paying Money for Goods.  In this frame the Money is the direct object, and is mapped to the theme of the transfer.  'I paid her $50 for a video game.'"}, {'frame': 'Aesthetics', 'tfidf': 3.4851153317705377, 'lexical_unit': 'beautiful.a / lovely.a / smart.a / ugly.a / tasty.a / elegant.a / fair.a / handsome.a / hideous.a', 'definition': "An Entity is judged to be sensually pleasing or intellectually interesting to a (generally implicit) Judge.   'We saw this beautiful boat with the red sails several times' 'We camped here on the beach and had an absolutely lovely early morning walk through farm fields' "}, {'frame': 'Luck', 'tfidf': 3.383023409128993, 'lexical_unit': 'lucky.a / luck.n / happy.a / fortunate.a / luckily.adv / fortunately.adv / fortune.n / fortuitous.a / poor.a', 'definition': "A State_of_affairs is evaluated as good (or bad), against a background assumption that previously, the State_of_affairs was thought to be unlikely to occur. The State_of_affairs holds for a particular Protagonist.  'He is a lucky gambler.'"}, {'frame': 'Text_creation', 'tfidf': 3.107872097400629, 'lexical_unit': 'pen.v / author.v / write.v / compose.v / draft.v / jot down.v / jot.v / speak.v / say.v / utter.v / write up.v / write down.v / write in.v / write out.v / print.v / type.v / type out.v / type up.v / type in.v / print out.v / print up.v / get down.v / chronicle.v / sign.v / dash off.v / list.v', 'definition': "An Author creates a Text, either written, such as a letter, or spoken, such as a speech,  that contains meaningful linguistic tokens, and may have a particular Addressee in mind.  The Text may include information about its topic, although the latter is not an FE in this frame.  'I penned a letter concerning racism  to Congress.' 'The brothers said not two words to each other.' 'Jot any notes you need below the line in red pen only.'"}, {'frame': 'Being_named', 'tfidf': 2.929556951915176, 'lexical_unit': 'pseudonym.n / name.n / nickname.n / surname.n / forename.n / maiden name.n / Christian name.n / family name.n / nom de plume.n / nom de guerre.n / moniker.n / pen name.n / first name.n / last name.n / middle name.n / stage name.n / alias.n / given name.n / entitled.a / named.a / codename.n / codenamed.a / pet name.n / cognomen.n / agnomen.n / by-name.n / caconym.n / praenomen.n / misnomer.n / married name.n / allonym.n / soubriquet.n / nee.a / brand name.n / patronymic.n / metronymic.n / trivial name.n / eponym.n / also known as.a / aka.a / go.v / nameless.a / known.a / so-called.a / designated.a / full name.n', 'definition': "This frame concerns entities conventionally being referred to by particular names.  'Her name was Lola.' "}, {'frame': 'Possession', 'tfidf': 2.8889355882814383, 'lexical_unit': 'own.v / have.v / lack.v / possess.v / possession.n / ownership.n / owner.n / possessor.n / lacking.a / lack.n / wanting.a / want.n / want.v / belong.v / belongings.n / assets.n / property.n / possession [definite noun].n / possession [of goods].n / effects.n / have got.v / custody.n / got.v', 'definition': "An Owner has (or lacks) a Possession. '' 'The river's part of my  manor, but of course it also belongs to the River Police.'  'It's a nuisance having to abandon my belongings, though.'"}, {'frame': 'Weapon', 'tfidf': 2.867605938957603, 'lexical_unit': 'rifle.n / pistol.n / six-shooter.n / firearm.n / gun.n / cannon.n / bomb.n / warhead.n / sword.n / knife.n / gat.n / AK-47.n / grenade.n / crossbow.n / machine-gun.n / shotgun.n / shooter.n / flame-thrower.n / weapon.n / handgun.n / club.n / twenty-two.n / forty-four.n / missile.n / garrotte.n / revolver.n / weaponry.n / Scud-B missile.n / arsenal.n / chemical weapon.n / ballistic missile.n / biological weapon.n / nuclear weapon.n / mustard gas.n / CW.n / BW.n / WMD.n / weapon of mass destruction.n / mine.n / spear.n / bow.n / explosive.a / explosive.n / plastic explosive.n / dynamite.n / nuclear.a / Scud-B.n / Scud-C missile.n / atomic weapon.n / ordnance.n / arms.n / artillery.n / shell.n / atomic bomb.n / biological.a / chemical.a / nerve gas.n / strategic.a / strategic nuclear weapon.n / ICBM.n / RPG.n / rocket.n / small arms.n / EFP.n / assault rifle.n / mortar.n / automatic weapon.n / C4.n / phosgene.n', 'definition': "A Weapon is an artifact created specifically to cause harm or damage.  In some cases, a Use, Material of construction, Part or Type may be more narrowly specified.  'Did you, or did you not, fire this gun with intent to harm my client?'  'Cyra tried to swing her sword to parry, but it was to heavy.'  'I investigated a specialist precious metal firearms manufacturer.'  'My neighbor, a member of the NRA since birth, has got an AK-47 fully automatic assault rifle.'  'Let 's just say that he 's the kind of guy who likes guns with hair triggers.' "}, {'frame': 'Substance', 'tfidf': 2.807940658091131, 'lexical_unit': 'gas.n / sand.n / oil.n / liquid.n / methane.n / chemical.n / iron.n / material.n / uranium.n / aluminum.n / plutonium.n / atropine.n / yellowcake.n / solid.n / ore.n / petroleum.n / water.n / juice.n / metal.n / glass.n / paper.n / mud.n / cement.n / calcium.n / oxygen.n / fertilizer.n', 'definition': 'This frame concerns internally undifferentiated Substances.   \'As their gut bacteria ferment cellulose , they generate methane gas , which escapes from the rear ends of the insects.\'  \' The pipes are leaking noxious gas.\'  \'Some CH-47 "Bombers" were equipped to roll-out riot control gas or napalm onto Viet Cong bunker complexes from the rear cargo ramp.\''}, {'frame': 'Change_direction', 'tfidf': 2.6265996788531822, 'lexical_unit': 'cut.v / turn.v / bear.v / left.n / right.n / turn.n / swing.v / veer.v', 'definition': "A Theme that is in motion assumes a new Direction in which it moves.   'We took our chances and turned right by a petrol station and, bingo, there she was--Fir Park.'  'Molly followed silently as Desmond left the large paneled hall and turned right through a swing door into a long, bare corridor.'  'Cross O'Connell Bridge and continue along D'Olier Street, make a right turn onto College Street. CNI'  'Go past the unattended guardhouse, and take a sharp left turn down the ramp. CNI'  'Take the elevator to the sixth floor and make two lefts. CNI'"}, {'frame': 'Alternatives', 'tfidf': 2.621574061260394, 'lexical_unit': 'possibility.n / way.n / choice.n / use.n / alternative.n / option.n / future.n / chance.n', 'definition': "There exist a number of different possible Situations that may happen in the future.  (In some cases, the Situation is concurrent or past, and only the knowledge of which has happened is in the future.)  In most cases, there is an Agent involved who has to consider which of the possible Situations will or should occur.  A Salient_entity which is deeply involved in the Situation may also be mentioned.  'You have but two choices for your daughter .'  While all the members of this frame denote possible situations, in principle, this frame could be split into a number of subtypes on the following basis:  ''1. Future.n, and most uses of alternative.n and possibility.n all evoke nothing more than a simple possible situation (not necessarily an Situation) with no Agent; the remaining frames would inherit from this. ''2. Use.n evokes different possible things that can be done with a Salient_entity (i.e., Purposes) and thus uses the Using frame; in this frame, the target denotes the Purpose that can be achieved. ''3. way.n evokes different events that can lead to an Outcome (not necessarily a Purpose); this frame should use the Means frame.  In this frame, the target denotes the possible Means actions. ''4. option.n, choice.n, and many instances of alternative.n and possibility.n, evoke possible Situations that an implicit or explicit Agent can bring about at will.  A Purpose that would be served by bringing these Situations about may be mentioned. A Salient_entity related to the Purpose may occur in place of the Purpose.  "}, {'frame': 'Usefulness', 'tfidf': 2.3863752171315027, 'lexical_unit': 'good.a / effective.a / excellent.a / outstanding.a / superb.a / wonderful.a / fantastic.a / fine.a / tremendous.a / terrific.a / marvellous.a / great.a / super.a / splendid.a / useful.a / utility.n / value.n / valuable.a / perfect.a / ideal.a / ineffective.a / work.v / strong.a', 'definition': "An Entity aids in the successful completion of a Purpose.  Its Degree of utility may also be expressed. Some of the lexical units  in this frame (e.g. great, good) can only express permanent, generic states of the Entity.  'A box is an ideal storage device.'"}, {'frame': 'Undergo_change', 'tfidf': 2.219343478487506, 'lexical_unit': 'change.v / turn.v / change.n / veer.v / swing.v / plummet.v / changeable.a / shift.n / shift.v / transition.n / go.v', 'definition': "An Entity changes, either in its category membership, its situation, or in terms of the quality of an Attribute. In the first case, where category membership is changing, an Initial_category and a  Final_category may be expressed. In the second case, where a situation as a whole is changing, an Initial_situation and a Final_situation can be present. And in the last case, where some characterization of the Entity is changing, an Initial_quality and a Final_quality can be specified.    'As soon as Tiffany kissed the frog, Tiffany turned into a frog. '  'He chanted and the rock changed shape, becoming a great double bitted axe.'  'The College has changed markedly over the century since it first opened its doors.'  'If I'm understanding you correctly, you want the switchbar color to change whenever the bot says something?'  'My life instantly changed from an empty life, to a life full of joy and purpose.'  'As you can see, the word WALK changed from red to green rather than have a separate lens for each colour.'  'My feet turned to stone.'  'The promise will turn to ashes if progress is not made.'  'The price  changed from $1.26 to $1.27 per pint. DNI'  'At least one relative instruction has changed in size from short to long.'  In some cases, the types of perspective are mixed, so that, e.g., an Initial_quality is mixed with a Final_situation; this is usually considered poor style.  'She went from confused to acting completely confident .'  This frame is often the target domain of motion metaphors, in which the moving Theme corresponds to the  changing Entity, the Source of motion corresponds to the Initial_category, Initial_quality, or Initial_situation and the Goal of motion corresponds to the Final_category, Final_quality, or Final_situation of the Entity.  By correspondence with the complex domain of motion, this metaphor introduces several FEs to the target domain of change, such as an Intermediate_state (etc.) from Path, and Tendency_of_change from Direction.  'The nation was crawling towards oblivion.' 'We were walking past almost reasonable and heading right for what-the-bleep.' "}, {'frame': 'Reason', 'tfidf': 2.108437187260303, 'lexical_unit': 'reason.n / why.n / motive.n / motivation.n / basis.n', 'definition': "A volitional  Agent is responding to a State_of_affairs by performing some Action.  'And was that your reason for becoming an actor ?' 'But Giles is the reason that I am here .' 'Oh my reason for including it was Section fifty four A.'  "}, {'frame': 'Familiarity', 'tfidf': 2.0788785558961136, 'lexical_unit': 'familiar.a / unfamiliar.a / new.a / know.v / acquainted.a / ken.n / intimate.a', 'definition': "An Entity is presented as having been seen or experienced by a (typically generic and backgrounded) Cognizer on a certain number of occasions, causing the Entity to have a certain degree of recognizability for the Cognizer.  'Susanna Fulton's work is new to me.'  'Two of these frames were new to me as a beginning professor.'  'This was as new to him as the rest of the outcity.'  'JSON is fairly new to me as a data format.'  'Moreover, this way of describing and categorizing architecture is familiar to most people.'  'Coronaviruses are not unfamiliar to the epidemiological world.'  'Abbey Stadium will bring us into contact with one familiar face at least.'"}, {'frame': 'Means', 'tfidf': 1.9888817061074051, 'lexical_unit': 'means.n / way.n / method.n / technique.n / procedure.n / approach.n / course of action.n / mechanism.n / modus operandi.n / nuts and bolts.n / process.n / recipe [cooking].n / by.prep / tactic.n / on.prep / how.adv', 'definition': "An Agent makes use of a Means (either an action or a (system of) entities standing in for the action) in order to achieve a Purpose.  (This frame may be broadened to include non-agentive intermediate actions.)  'The primary means of gas detection is mass spectroscopy .' 'They learned of the attack by monitoring the allied communications channels .' "}, {'frame': 'Spelling_and_pronouncing', 'tfidf': 1.7966086919785622, 'lexical_unit': 'spell.v / misspell.v / pronounce.v / mispronounce.v / say.v / write.v / sound.n', 'definition': 'A Speaker realizes a Sign, usually a linguistic one, in some Formal_realization. The Formal_realization may be described as correct or incorrect in a Judgment expression, or it may be partially indicated as a Part_of_form.  Manner may be used as a more general indication of the Formal_realization  \'A person doesn\'t always pronounce a word the way they say  it in context\'  \'I can\'t spell. INI INI\'  \'Stephanopolous spells his name with a "ph".\'  \'On page 87465, you spelled the name of my dog incorrectly as "Checquers".\'  \'In German, the word for \'peace\' is written "Friede" CNI\''}, {'frame': 'Being_in_operation', 'tfidf': 1.7578874109330354, 'lexical_unit': 'on.prep / off.prep / operate.v / operational.a', 'definition': "A Device or machine is in (or out of) service. Note that being broken or functional is a separate issue from being turned on or off. This latter notion is what the present frame is concerned with. <br /> The Time when and the Place where the Device is in use may be specified, as may be the Purpose a backgrounded human User had in turning the Device on or off.    'The TV is on' 'The lights were off when I came by.'  "}, {'frame': 'People', 'tfidf': 1.7443253271162142, 'lexical_unit': 'people.n / person.n / un.n / guy.n / dude.n / lady.n / man.n / woman.n / fellow.n / gentleman.n / girl.n / individual.n / chap.n / human.n / human being.n / folks.n / life.n / pax.n / folk.n / who.pron / someone.n / somebody.n / personage.n / gent.n / character.n', 'definition': "This frame contains general words for Individuals, i.e. humans. The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have an Age, Descriptor, Origin, Persistent_characteristic, or Ethnicity.  ' A man from Phoenix was shot yesterday.'  ' She gave birth to a screaming babyyesterday.'  ' I study 16-year-old female adolescents.'  ' I am dating an African-American man.'  ' She comforted the terrified child.'  ' I always thought of him as a stupid man.'"}, {'frame': 'Frequency', 'tfidf': 1.5024886051086646, 'lexical_unit': 'annual.a / bi-annual.a / bi-monthly.a / biennial.a / daily.a / fortnightly.a / frequent.a / infrequent.a / intermittent.a / monthly.a / nightly.a / occasional.a / periodic.a / recurrent.a / recurring.a / sporadic.a / weekly.a / yearly.a / interval.n / period.n / sometime.a / on and off.adv / off and on.adv / frequency.n / always.adv / time to time.adv / never.adv / often.adv / frequently.adv / infrequently.adv / occasionally.adv / sometimes.adv / every.prep / all the time.adv / once in a while.adv / every once in a while.adv / at times.adv / constantly.adv / rare.a / regularly.adv / daily.adv / seldom.adv / usually.adv / normally.adv / in general.adv / generally.adv / ordinarily.adv / every so often.adv / now and then.adv / common.a / recurrence.n', 'definition': "This frame has to do with the repetition (and especially the frequency of repetition) of an event. Many of the adjectives and adverbs in this frame are based on nouns in the Calendric_unit frame.   'China will have to face a high frequency of sand storms in the years to come.' "}, {'frame': 'Placing', 'tfidf': 1.4726394545239692, 'lexical_unit': 'deposit.v / embed.v / hang.v / immerse.v / implant.v / inject.v / insert.v / insertion.n / lay.v / lean.v / load.v / lodge.v / pack.v / park.v / pile.v / place.v / placement.n / plant.v / position.v / rest.v / set.v / situate.v / smear.v / stand.v / stash.v / stow.v / stuff.v / tuck.v / wrap.v / bag.v / billet.v / bin.v / bottle.v / archive.v / box.v / cage.v / crate.v / file.v / garage.v / pocket.v / shelve.v / stable.v / perch.v / sit.v / daub.v / drizzle.v / dab.v / drape.v / brush.v / dust.v / heap.v / jam.v / rub.v / cram.v / shower.v / pot.v / sheathe.v / warehouse.v / shoulder.v / stick.v / bestow.v / put.v / package.v / plunge.v / arrange.v / emplace.v / enclose.v / implanted.a / gag.v', 'definition': "Generally without overall (translational) motion,  an Agent places a Theme at a location, the Goal, which is profiled.  In this frame, the Theme is under the control of the Agent/Cause at the time of its arrival at the Goal.  'David placed his briefcase on the floor.'  This frame differs from Filling in that it focuses on the Theme rather than the effect on the Goal entity.  It differs from Removing in focusing on the Goal rather than the Source of motion for the Theme."}, {'frame': 'Intentionally_affect', 'tfidf': 1.3821621436643925, 'lexical_unit': 'do.v / do something (to/with).v / do what (to/with).v', 'definition': "An Agent causes a Patient to be affected, sometimes by a particular Means or by use of an Instrument.  'A professional dishwasher doesn't do dishes with a rag anymore!'"}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"The Blue Note"</span>.</h5>
+                        <br/>
+                        <pre>
+They said they never heard of the bum.
+I was starting to smell a rat, a two legged one, like this dame wasn't exactly on the up and up."
+"How come you didn't just give up the case Dirk?"
+Bone asked, so I had to clue him in.
+"She had already paid me in advance.
+Besides I wanted to find out why this dame was giving me the run around.
+Also, did I mention she was quite beautiful?"
+"Oh, all right, gotcha Dirk."
+"Anyway, so I gave a friend of mine who was a member of the L.A. cop shop a jingle.
+He owed me a favorite from back in the days.
+Just so happen I had a glass in my possession with a perfect set of her finger prints.
+I forgot to mention, I gave her a glass of water, that's how I got her prints, you see.
+Hopefully she was on file and I could find out who she was.
+As luck would have it, she was.
+You won't believe who she turned out to be.
+Go on and guess Bone."
+"I don't know, Dirk.
+You telling the story.
+"Her real name was Maria Demucci, an ex-stripper and wife to a notorious mob hit man by the name of Vinnie "the pick" Demucci.
+He got his nick name from his choice of murder weapon.
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"City Of Rogues Book I Of The Kobalos Trilogy"</span>.</h5>
+                        <br/>
+                        <pre>
+If to no one else, you owe it to them to end your father's reign of horror."
+"I don't even know who I am."
+Randall's voice was vacuous, ethereal.
+"You are royalty.
+Act like it."
+Was Kron right?
+Randall had been in hiding for three years.
+He was tired of it, but he had found some kind of life in Bond.
+Now that was shattered.
+He couldn't go back to being a healer, at least not in this city.
+He would have to move on, find another place to hide.
+Perhaps in a few years he could send a note to Maslin to tell him he was safe, but until then he would have to cut all ties with Bond and West Ursia.
+It would mean a life of hiding again, a life on the road searching for something never to be found.
+Verkain would always be after him, especially now that his father had been so close to capturing him.
+Randall knew it was only a matter of time before he was caught, returned to Kobalos and slain.
+Was he running for nothing?
+Was delaying the inevitable only bringing more pain and death to others?
+For the first time in a long time, Randall felt as if he was back in Kobalos, wrapped in iron chains within his father's dungeon.
+Death was inevitable.
+The healer stood.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="41">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="1">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

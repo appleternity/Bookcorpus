@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Referring_by_name', 'tfidf': 13.275982832262947, 'lexical_unit': 'address.v / call.v / refer.v / name.n / designation.n', 'definition': 'A Speaker uses a particular linguistic form, a Name to refer to an Entity.   The Entity often is an interlocutor but may be somebody that the Speaker is talking about, or even just a physical object. Note that we include titles such as "Sir" in the Name category.   \'They corresponded frequently and at length, exchanging intimate letters in which he addressed her as Windflower. \'  \'We always called her "my lady," from the moment that she was put at the head of our section;\'  \'Sharpton called him Obama Baracka in HIS speech .... of all the people to screw his name up! \'  \' And then in private he called me "Sausage", which really pissed me off. \'  \'I found out that her name for Barack was Obama .\'  \' Advanced Micro Devices is going to call its next chip the Athlon 4\' '}, {'frame': 'Body_description_holistic', 'tfidf': 7.2969550034005195, 'lexical_unit': 'lanky.a / chubby.a / flabby.a / corpulent.a / obese.a / portly.a / svelte.a / stocky.a / dumpy.a / gaunt.a / skinny.a / beefy.a / short.a / brawny.a / paunchy.a / fat.a / thin.a / spindly.a / slim.a / slender.a / puny.a / scrawny.a / heavy-set.a / stout.a / stubby.a / tall.a / muscular.a / lean.a / angular.a / bony.a / rangy.a / squat.a / thickset.a / lithe.a / plump.a / pudgy.a / wiry.a / hefty.a / medium-build.a / big-boned.a / male.a / female.a', 'definition': "This frame covers descriptions of an entire human body, viewed as a gestalt (as opposed to descriptions based on salient body parts).  The Frame Elements are Individual and Figure.    'Chuck is muscular.'  'Chuck has a muscular body.' "}, {'frame': 'Adducing', 'tfidf': 6.493647395498304, 'lexical_unit': 'adduce.v / cite.v / point.v / name.v', 'definition': "A Speaker mentions a Specified_entity filling a Role, thereby providing information which supports a point of the Speaker.  'He cites the chief original observations adduced by Darwin as evidence for his theory.'  'Mexico cited the drought, now in its eighth year, to avoid releasing Texas' full share of 110 billion gallons per year from the reservoirs. DNI'  'An objector will immediately point to the lack of stability of this  simple, some will say simple-minded, hierarchy. DNI'  'She expected a restaurant as their meeting place, but instead the lady named the hotel where she was staying.DNI'  'Where is the second-order neural pattern located? Damasio already pointed to the cingulate cortex in his 1994 book.'"}, {'frame': 'Social_interaction_evaluation', 'tfidf': 4.3797249580014865, 'lexical_unit': 'inconsiderate.a / kind.a / considerate.a / mean.a / insensitive.a / thoughtless.a / thoughtful.a / cruel.a / sweet.a / rude.a / impolite.a / ill-mannered.a / churlish.a / discourteous.a / unkind.a / courteous.a / polite.a / impudent.a / respectful.a / disrespectful.a / boorish.a / compassionate.a / nice.a / friendly.a / unfriendly.a / amiable.a / sociable.a / cordial.a / genial.a / gracious.a / ungracious.a / civil.a / uncivil.a / impertinent.a / tactful.a / diplomatic.a / barbaric.a / spiteful.a / pleasant.a / horrible.a / good.a / good-natured.a / good-humored.a / warm.a / smart.a / mature.a / maturity.n / cruelty.n / thoughtfulness.n / rudeness.n / compassion.n / atrocious.a', 'definition': "In this frame an Evaluee is judged by a (usually implicit) Judge to be of a certain character based on her or his Behavior towards other human beings; a specific Affected_party may be overtly mentioned along with the Degree to which the Evaluee behaves appropriately towards others. TheBehavior alone may be mentioned with the understanding that these behaviors characterize a property of the unmentioned Evaluee. The Evaluee's Behavior may be in the context of a Topic.  ' It was nice of you to send a card. '   ' Jim was thoughtful to email the directions.'   ' For Martha to smoke in the car was extremely inconsiderate.'   ' It was cruel that he continued to call her.'   ' Mary was cruel to her friends.'   ' Samson was a thoughtless person.'   'Mrs. Robinson was always considerate of her students.'   ' The press was always kind about Madonna.'   ' Lee was nice about my car accident.'   ' I appreciated his kind offer of the car.'"}, {'frame': 'Treating_and_mistreating', 'tfidf': 4.226069998728667, 'lexical_unit': 'treat.v / mistreat.v / use.v', 'definition': "In this frame an Agent is evaluated as behaving toward an Affected_Party in some Manner, which may or may not be incorporated into the target LU.  'Douglas always treated Mary well.'"}, {'frame': 'Respond_to_proposal', 'tfidf': 4.168306313320643, 'lexical_unit': 'turn down.v / rebuff.v / rebuff.n / reject.v / accept.v / acceptance.n / rejection.n / refuse.v', 'definition': "A Speaker addresses a Proposal made by an Interlocutor, either agreeing to it or rejecting it. Agreeing entails a social responsibility on the Speaker to bring about some state of affairs encoded in the Proposal.  'They were rebuffed again in the larger city of Provo. CNI '  'Last month Mr Duisenberg delivered a sharp rebuff to Mr Welteke. '  'He rebuffed Singh's every overture,  relentlessly pursuing a cap on India's nuclear capability.'"}, {'frame': 'Name_conferral', 'tfidf': 4.034369410934603, 'lexical_unit': 'nickname.v / dub.v / christen.v / name.v / baptize.v / rename.v / entitle.v / call.v', 'definition': "This  frame contains words that talk about how Speakers name Entities.  'They drove through an area nicknamed Sniper's Alley' 'His parents named him Winston after the British prime minister.'   In this frame we will ignore uses of words like baptize and christen that don't clearly bring out the name conferral but talk about the meaning of baptism etc. as a sacrament:  'They christened  the child on December 4th.' 'Method was baptized into the church soon thereafter.' 'Cyril was baptized as  a Methodist.'  "}, {'frame': 'Cause_to_make_noise', 'tfidf': 3.6582127489532157, 'lexical_unit': 'blare.v / blast.v / clang.v / creak.v / peep.v / tinkle.v / play.v / ringer.n / ring.v / honk.v / toot.v / beep.v / clash.v / sound.v / toll.v / trumpet.v', 'definition': "An Agent manipulates a Sound_maker or a Cause causes the Sound_maker to emit a sound.  'The monks would ring the bell until sundown.'"}, {'frame': 'Memory', 'tfidf': 3.5417386260723123, 'lexical_unit': 'remember.v / memory.n / recall.v / recollect.v / recollection.n / retain.v / bethink oneself.v', 'definition': "This frame is concerned with Cognizers remembering and forgetting mental Content.  'John forgot everything about his uncle.'  "}, {'frame': 'Give_impression', 'tfidf': 3.352068301092949, 'lexical_unit': 'appear.v / feel.v / look.v / reek.v / seem.v / smell.v / sound.v / stink.v / taste.v', 'definition': "In this class of perception words, a Phenomenon, typically expressed as External Argument, and its perceptual characteristics are given some description.  This may be a Characterization describing purely perceptual properties, an Appraisal (i.e. positive or negative judgment) or an Inference about some non-perceptual property based on the Perceiver_passive's perception.  '' 'There's a hamburger bar open, and it smells real good.'  'What we drank then tasted like sulphur and ox blood.'"}, {'frame': 'Simple_name', 'tfidf': 3.3168846139913217, 'lexical_unit': 'term.n / word.n', 'definition': "A Term is the linguistic sign conventionally used by a Speaker to refer to a type of Entity.  ' Perianth is a collective term for the outer whorls of the flower, which protect the reproductive parts during development.'  'The Polish word for it is czarnuszka'"}, {'frame': 'Expected_location_of_person', 'tfidf': 3.1722397206803787, 'lexical_unit': 'in.prep / out.prep / home.n', 'definition': "A Person usually resides or works in a Location.     'Is Mr. Adams in today? DNI'"}, {'frame': 'Becoming', 'tfidf': 3.0826180511231365, 'lexical_unit': 'become.v / turn.v', 'definition': "An Entity ends up with some Final_quality--a new fact about the Entity. Alternatively, based on a cluster of changes of characteristics, the Entitynewly meets the conditions for being a member of a Final_category.  'The weather turned cold .' 'You can become a firefighter today !'  This frame should be compared with the Transition_to_state frame, which is more general in allowing arbitrary descriptions of a final situation:  'We ended up telling him to leave .'  There is no way to effectively paraphrase such a sentence in the Becoming frame.  "}, {'frame': 'Manufacturing', 'tfidf': 3.0409320338664365, 'lexical_unit': 'manufacture.v / produce.v / manufacture.n / make.v / manufacturing.n / manufacturer.n / production.n / producer.n / industrial.a / fabricate.v / fabrication.n / maker.n / product.n / assembly line.n', 'definition': "A Producer produces a Product from a Resource for commercial purposes. ' They produced only half of the units after an injunction to follow the environmental policy.'"}, {'frame': 'Ranked_expectation', 'tfidf': 2.975922669050744, 'lexical_unit': 'entire.a / whole.a / mere.a', 'definition': "An Entity is rated as unexpected for its context in terms of its magnitude.  Either some different type of Entity with a different scope would be expected, or a different amount of the Entity.    'The entire apple was riddled with worms .' 'The inevitable fate of the Warsaw Resistance fighters was not finally sealed until nine whole weeks of vicious fighting had taken a terrible toll on the people .'  'A mere two percent of Afghan women are registered to vote.' 'The crime scene doesn't wrap up in an hour, never mind an entire investigation . ' 'It 's a huge engineering project when you 're building a whole car .' Although there are some words that overlap between this frame and Completeness, the words in this frame indicate specifically that the magnitude of the Entity is different from what is expected, rather than grading an entity as to whether all its parts are present.  The Ranked_expectation uses must occur with an explicit or implicit quantification.  The Completeness uses can only occur with entities that have salient necessary parts and structure."}, {'frame': 'Emptying', 'tfidf': 2.9478257105822436, 'lexical_unit': 'clear.v / drain.v / empty.v / purge.v / strip.v / divest.v / rid.v / disembowel.v / skin.v / core.v / peel.v / gut.v / bone.v / debug.v / deforest.v / degrease.v / descale.v / scalp.v / defrost.v / delouse.v / eviscerate.v / denude.v / unload.v / emptying.n / expurgate.v / void.v / evacuate.v / debone.v / devein.v / disarm.v / disarmament.n / decontaminate.v / decontamination.n / cleanse.v / pit.v / seed.v / stone.v / stalk.v / flush.v / expunge.v / weed.v', 'definition': "These are words relating to emptying containers and clearing areas of some substance or items. The area or container can appear as the direct object with all these verbs, and is designated  Source because it is the source of motion of the Theme. Corresponding to its nuclear argument status, it is also affected in some crucial way, unlike Source in other frames. Some words in this frame, such as empty, may also occur with Path or Goal expressions, e.g.  'The players emptied the bucket over his head. '"}, {'frame': 'Increment', 'tfidf': 2.935847446193903, 'lexical_unit': 'other.a / another.a / other.n / another.n / further.a / more.a / more.n / additional.a', 'definition': "A member or members of a Class have just been  mentioned or are present in the discourse setting and now a different instance  (or group of instances) of the same class is referred to.  'My husband left me for another woman -- and now wants to get back together again!'  'My husband left me for another woman -- and now wants to get back together again!'"}, {'frame': 'Level_of_force_exertion', 'tfidf': 2.8933157645428618, 'lexical_unit': 'strong.a / weak.a / mighty.a / power.n / might.n / forceful.a / force.n / strength.n / weakness.n / powerful.a / powerless.a', 'definition': 'An Exerter, Action, or Force is capable of exerting or does exert a physical force at a level specified by the target. That physical force may cause deformation or breakage of, or simply motion in the receiving entity. The receiving entity is conceptually present (even if remotely), but is usually not lexically explicit. This frame covers both individual-level/static uses ("a STRONG person") as well as stage-level/dynamic uses ("a STRONG push"). However, the durative, individual-level meaning appears more frequently in the data and seems more basic.   \'Eugenie loved the sea and was a strong swimmer.\'  \'Spartacus dealt the Roman soldier a mighty blow.\'  \'A powerful force tore off the tree\'s branches.\'  Exerter, Action, and Force belong to a Core set. \'\'  There are several productive metaphors covered by this frame. The first and most common is one in which social influence or control is conceptualized as the physical exertion of force. The social influence/control is more specifically a propensity to cause change in social realms such as the economic, political, militaristic, cultural, or intimate: \'There were theoretical limits to the power of the king.\' \'Voters in the South have a strong incentive to keep such Democrats in office.\'  Another similar metaphor is one in which psychological influence or control is understood as the physical exertion of force. The psychological influence/control includes the emotional as well: \'Poetic words in a text can be given more emotive power by using melisma.\' \'He was a forceful speaker.\'  A third metaphor involves the amount of an entity construed as the physical force exertion of said entity. Depending on context, amount could be volume, etc. (“STRONGEST critics”; “MIGHTY uproar”).  \'\'  Two related physical force dynamic frames are Level_of_force_resistance and Dynamism.  This frame is distinguished from the Level_of_force_resistance frame in that it describes the level of force exertion instead of the level of resistance, and also in that there are three categories of Core FE available to the target (i.e Exerter, Action, or Force), whereas in Level_of_force_resistance there are only two Core FEs (i.e. Resisting_entity and Opposing_force). Of the latter frame\'s FEs, Opposing_force specifies the thing that the main entity resists to a level desginated by the target. Its parallel in Level_of_force_exertion is implied but backgrounded to the extent that it rarely appears as explicit lexical material; thus there is no corresponding Core FE.   This frame differs from Dynamism with regard to individual-level cases; targets here express the FE\'s capability. In contrast, Dynamism targets express the FE\'s tendency. For example, "a STRONG person" is generally construed as a person who is capable of strength, while "an ENERGETIC person" (energetic.a from the Dynamism frame) is construed as a person who tends to be energetic.   However, there is overlap between the two frames in stage-level cases - "a STRONG push" and "an ENERGETIC push" seem rather comparable. '}, {'frame': 'Attention_getting', 'tfidf': 2.8784567070454257, 'lexical_unit': "pal.n / sir.n / ma'am.n / buddy.n / kid.n / dude.n / boy.n / guy.n / miss.n / bro.n / homes.n / yoohoo.intj / hello there.intj / excuse me.intj / hey.intj / officer.n", 'definition': "This frame covers terms used to get someone's attention, including Interjections (e.g. hey, yo) and certain terms of address (Address_term), the latter of which may serve the function of attention getting.    'Hey.' 'Hey, boy.' 'Hey, boy, come over here now!'  "}, {'frame': 'Stimulus_focus', 'tfidf': 2.8215834344949173, 'lexical_unit': 'gratifying.a / delightful.a / alarming.a / worrisome.a / agonizing.a / comforting.a / maddening.a / sobering.a / terrifying.a / pathetic.a / pitiful.a / aggravating.a / exasperating.a / vexing.a / revolting.a / heartening.a / disheartening.a / embittering.a / discomfiting.a / discomforting.a / beguiling.a / captivating.a / cheering.a / disillusioning.a / upsetting.a / unsettling.a / unnerving.a / troubling.a / tormenting.a / thrilling.a / stupefying.a / stirring.a / stinging.a / stimulating.a / startling.a / soothing.a / sickening.a / perplexing.a / infuriating.a / shocking.a / scary.a / surprising.a / saddening.a / repellent.a / reassuring.a / displeasing.a / unpleasing.a / pleasing.a / pleasant.a / unpleasant.a / pleasurable.a / enjoyable.a / blood-curdling.a / hair-raising.a / spine-chilling.a / frightening.a / dismaying.a / heart-warming.a / uplifting.a / irksome.a / irritating.a / enraging.a / galling.a / vexatious.a / worrying.a / mortifying.a / annoying.a / bothersome.a / troublesome.a / boring.a / encouraging.a / distressing.a / alienating.a / tiresome.a / astonishing.a / astounding.a / appalling.a / baffling.a / bewildering.a / bewitching.a / calming.a / relaxing.a / charming.a / confusing.a / consoling.a / depressing.a / disappointing.a / disconcerting.a / discouraging.a / disturbing.a / embarrassing.a / enchanting.a / entertaining.a / enthralling.a / exciting.a / exhilarating.a / pacifying.a / placating.a / heartbreaking.a / nerve-racking.a / stressful.a / spine-tingling.a / heart-rending.a / heart-stopping.a / suspenseful.a / sad.a / hilarious.a / unfunny.a / droll.a / comical.a / white-knuckle.a / rousing.a / tear-jerking.a / funny.a / jaw-dropping.a / earth-shattering.a / devastating.a / side-splitting.a / humorous.a / dull.a / unexciting.a / intriguing.a / fascinating.a / offensive.a / mind-numbing.a / tedious.a / gripping.a / absorbing.a / engrossing.a / tiring.a / intimidating.a / traumatising.a / traumatic.a / poignant.a / disorientating.a / mystifying.a / thorny.a / electrifying.a / invigorating.a / disagreeable.a / agreeable.a / nice.a / dreadful.a / distasteful.a / ghastly.a / abominable.a / delight.n / aggravation.n / annoyance.n / vexation.n / amusing.a / jolly.a / harrowing.a / chilling.a / touching.a / amazing.a / empty.a / fulfilling.a / full.a / rich.a / unfulfilling.a / satisfying.a / solemn.a / mind-boggling.a / breathtaking.a / impressive.a / formidable.a / striking.a / disgusting.a / charm [mass].n / charm [count].n / recreation.n / relaxation.n / insulting.a / rest.n / cool.a / color.n / strike a chord.v / dear.a', 'definition': "In this frame either a Stimulus brings about a particular emotion or experience in the Experiencer or  saliently fails to bring about a particular experience. Some words indicate that the Stimulus is characterized by the experience it is likely to evoke in an Experiencer and for these, the Experiencer may rarely be present. There may also be a Degree to which the Stimulus affects the Experiencer and Circumstances under which the experience occurs. There may also be a Comparison_set to which the Stimulus is compared and a Parameter that indicates the area in which the Stimulus has its effect.  ' The view is breathtaking in January. '  ' That movie was quite fascinating. '  ' That was certainly a gratifying experience.' ' The report was very alarming to me. '"}, {'frame': 'Compliance', 'tfidf': 2.7732653654100963, 'lexical_unit': 'adhere.v / comply.v / observe.v / adherence.n / compliance.n / follow.v / observance.n / break.v / violate.v / contravene.v / breach.v / violation.n / contravention.n / breach.n / flout.v / conform.v / obey.v / compliant.a / transgress.v / transgression.n / lawless.a / contrary.a / conformity.n / keep.v / honor.v / abide (by).v / obedient.a / observant.a / play by the rules.v / circumvent.v / noncompliance.n / (in/out of) line.n / disobey.v / in accordance.a / by-pass.v', 'definition': "This frame concerns Acts and State_of_Affairs for which Protagonists are responsible and which either follow or violate some set of rules  or Norms. '' 'A lot of people suspect that blocking savers' access to their money violates the new constitution's explicit ban on compulsory loans to the government.'  'Not that by adhering to the subject-before-predicate principle, the translator of the above extract has had to ignore the principle of end-weight.'"}, {'frame': 'Capacity', 'tfidf': 2.7639842007227693, 'lexical_unit': 'seat.v / fit.v / take.v / sleep.v / feed.v / serve.v', 'definition': "An Entity has the ability to contain a Theme.  'Our facility seats up to 500 people.'"}, {'frame': 'Importance', 'tfidf': 2.726374465795822, 'lexical_unit': 'crucial.a / critical.a / key.a / decisive.a / pivotal.a / important.a / significant.a / importance.n / significance.n / import.n / major.a / instrumental.a / vital.a / considerable.a / fundamental.a / main.a / serious.a / seriously.adv / acute.a / landmark.n / epic.a / count.v / priority.n', 'definition': "A Factor affects the outcome of an Undertaking, which  can be a goal-oriented activity or the maintenance of a desirable state, the work in a Field, or something portrayed as affecting an Interested_party. A Reason may be given for the importance of the Factor. The Degree of importance may also be specified.  'Temperature is the most critical factor in successful storage.' ' Timing will be critical.' 'Heathcliff is more important to me than myself . ' ' 1992 was of great importance to the business community. ' "}, {'frame': 'Experiencer_focus', 'tfidf': 2.6627114460306434, 'lexical_unit': 'abhor.v / abominate.v / adore.v / delight.v / despair.v / despise.v / detest.v / dislike.v / dread.v / envy.v / fear.v / grieve.v / hate.v / like.v / loathe.v / love.v / mourn.v / pity.v / regret.v / resent.v / rue.v / rueful.a / hatred.n / empathy.n / compassion.n / dislike.n / desperation.n / envy.n / loathing.n / pity.n / regret.n / resentment.n / adoration.n / abhorrence.n / relish.n / detestation.n / nettled.a / worried.a / nervous.a / apprehensive.a / fond.a / interested.a / agape.a / fulfilled.a / fulfillment.n / satisfaction.n / satisfied.a / worked up.a / dissatisfied.a / fazed.a / unfazed.a / calm.a / comfort.n / solace.n / pleasure.n / irritated.a / upset.a / antipathy.n / taken.a / fed up.a / intimidated.a / happily.adv / feverish.a / feverishly.adv / cool.a / easy.a / discomfort.n', 'definition': "The words in this frame describe an Experiencer's emotions with respect to some Content. A Reason for the emotion may also be expressed.  Although the Content may refer to an actual, current state of affairs, quite often it refers to a general situation which causes the emotion.    ' My enjoyment of the movie was considerably impaired by the seven-foot guy sitting in front of me. ' ' Smithers takes great pleasure in collecting matchboxes.' ' Sergio derives great pleasure  from  smoking.' ' Smoking gives me extreme pleasure.' With certain verbs, the Circumstances can be expressed in a finite clausal or wh- complement which may optionally be preceded by a Null NP Object: 'I hate it when you do that.' Note: This is not how it is currently tagged. "}, {'frame': 'Transition_to_state', 'tfidf': 2.6356980043371983, 'lexical_unit': 'grow.v / get.v / end up.v', 'definition': "An Entity ends up in a Final_category, Final_situation, or Final_quality which it was not in before.  Some members of the frame (e.g. grow.v) tend to emphasize a gradual change, while most members of the frame do not indicate whether a change is gradual or not.    'Why I became an Emacs user'  'I left the ministry and became an atheist.'  'Surprisingly, various veteran organizations also turned vehemently antiwar.'  ' Over the years she grew to hate him.'  This frame should be compared to Undergoing_change.  Undergoing_change is different in that it much more emphasizes the difference between the pre- and post-states of the Entity.  This shows up both in Undergoing_change's increased occurrence with Initial_category and Initial_state (change from red to blue) and in its increased occurrence with Final_category (changed into a toad) rather than Final_situation or Final_quality (?changed to red vs. became/turned red).  In addition, when Undergoing_change occurs with the Final_category frame element, it presents a deep difference between the Initial_category and the Final_category, so that it is humorous to say 'she turned into a Republican', because it presents this as a fundamental change of identity; compare to 'she became a Republican', which is quite normal.  In a less humorous example, someone can 'turn into a Mac user', strongly implying that they no longer use their former operating system, while if they 'become a Mac user', this is either as a replacement of other OS's or potentially as an addition to the use of other OS's."}, {'frame': 'Text', 'tfidf': 2.600524939837167, 'lexical_unit': 'tome.n / fanzine.n / epilogue.n / benediction.n / imprecation.n / eulogy.n / autobiography.n / ballad.n / biography.n / chronicle.n / comedy.n / diary.n / drama.n / elegy.n / epic.n / epigram.n / epistle.n / essay.n / exemplum.n / fable.n / festschrift.n / haiku.n / letter.n / limerick.n / lyric.n / memoir.n / monograph.n / mystery.n / novel.n / novelette.n / novella.n / ode.n / poetry.n / poem.n / rhyme.n / saga.n / song.n / sonnet.n / speech.n / tetralogy.n / thriller.n / tragedy.n / trilogy.n / whodunit.n / manual.n / handbook.n / paperback.n / hardback.n / grimoire.n / spellbook.n / lay.n / book.n / magazine.n / account.n / sermon.n / tract.n / screenplay.n / script.n / article.n / obituary.n / volume.n / mag.n / edition.n / treatise.n / report.n / bulletin.n / tractate.n / hagiography.n / journal.n / periodical.n / editorial.n / meditation.n / booklet.n / fiction.n / writings.n / missive.n / newspaper.n / list.n / manuscript.n / literature.n / history.n / brochure.n / material.n / pamphlet.n / issue.n / paper [newspaper].n / paper [article].n / epic.a / publication.n / life.n / record.n / textbook.n', 'definition': "A Text is an entity that contains linguistic, symbolic information on a Topic, created by an Author at the Time_of_creation.  It may be a physical entity that is made of a certain Material etc.  It may be constructed for an Honoree.  'It was a good book.'"}, {'frame': 'Sensation', 'tfidf': 2.583540302610957, 'lexical_unit': 'aroma.n / bouquet.n / feel.n / feeling.n / flavour.n / fragrance.n / incense.n / noise.n / odor.n / perception.n / perfume.n / reek.n / savour.n / scent.n / sensation.n / sense.n / sight.n / smell.n / sound.n / stink.n / taste.n / whiff.n / scene.n / image.n', 'definition': "This frame contains nouns that refer to sensations in different modalities. The FE Source is used for the phenomenon that gives rise to the sensation in question. The FE Percept is used for the characteristic quality of the sensation. In cases of veridical perception these are not typically distinguished from one another; we use the FE Percept as the default in these cases. With some nouns in this frame it is possible to express the being who experiences the sensation, or the part of the body of such a being. We mark such expressions with the FEs Perceiver_passive and Body_part, respectively. (The -passive part of this label serves to distinguish this FE from the Perceiver-Agentive FE used in other frames.)  '' 'The huge sand dunes, perpetually changing, make for a surreal sight.'  'Endill heard the noise of glass smashing, plaster crumbling and furniture being broken.'  'The feel of his strong fingers enclosing her small palm came as something of a shock to her system.'"}, {'frame': 'Emotion_directed', 'tfidf': 2.5004757549693046, 'lexical_unit': 'angry.a / appalled.a / cross.a / disappointed.a / furious.a / mad.a / pleased.a / sore.a / upset.a / petrified.a / miffed.a / embarrassed.a / anxious.a / excited.a / livid.a / rattled.a / relaxed.a / resentful.a / revolted.a / sad.a / sickened.a / sorrowful.a / startled.a / stressed.a / stupefied.a / terror-stricken.a / tormented.a / traumatised.a / unsettled.a / vexed.a / worried.a / disquieted.a / harried.a / ruffled.a / abashed.a / flustered.a / humiliated.a / flummoxed.a / nonplussed.a / disconsolate.a / glum.a / woebegone.a / lugubrious.a / desolate.a / wretched.a / miserable.a / blue.a / despondent.a / downcast.a / low-spirited.a / crestfallen.a / disgruntled.a / downhearted.a / flabbergasted.a / affronted.a / incensed.a / overwrought.a / riled.a / agonized.a / inconsolable.a / stunned.a / befuddled.a / anguished.a / happy.a / revulsion.n / vexation.n / anger.n / anguish.n / agony.n / annoyance.n / despondency.n / disquiet.n / elation.n / bafflement.n / astonishment.n / bewilderment.n / perplexity.n / puzzlement.n / stupefaction.n / mystification.n / dismay.n / discomfiture.n / disgruntlement.n / disorientation.n / discouragement.n / glumness.n / disconcertion.n / displeasure.n / dejection.n / sorrow.n / embarrassment.n / exhilaration.n / disappointment.n / exasperation.n / agitation.n / amusement.n / boredom.n / distress.n / chagrined.a / excitement.n / gratification.n / heartbreak.n / horror.n / mortification.n / sadness.n / sympathy.n / agitated.a / alarmed.a / amused.a / ashamed.a / astonished.a / astounded.a / baffled.a / bewildered.a / bored.a / chagrin.n / concerned.a / contented.a / covetous.a / dejected.a / delight.n / delighted.a / depressed.a / despair.n / devastated.a / discomfited.a / disconcerted.a / discouraged.a / disheartened.a / dismayed.a / disoriented.a / distressed.a / ecstatic.a / elated.a / displeased.a / embittered.a / enraged.a / exasperated.a / exhilarated.a / fed-up.a / gleeful.a / gratified.a / grief-stricken.a / heartbroken.a / horrified.a / indignant.a / infuriated.a / frightened.a / mortified.a / glee.n / grief.n / mourning.n / sympathetic.a / sympathize.v / unsympathetic.a / thrilled.a / saddened.a / irate.a / irked.a / jubilant.a / mournful.a / mystified.a / nervous.a / nettled.a / offended.a / overjoyed.a / peeved.a / perplexed.a / perturbed.a / interest.n / concern.n / fed up.a / all about.prep / fury.n / outrage.n / demolished.a / crushed.a / bitterness.n / OK.a / fine.a / misery.n / grim.a', 'definition': "The adjectives and nouns in this frame describe an Experiencer who is feeling or experiencing a particular emotional response to a Stimulus or about a Topic.  There can also be a Circumstances under which the response occurs or a Reason that the Stimulus evokes the particular response in the Experiencer.  'Mr. Whiskers is upset that there are no more cat treats.' 'The furious parent stormed into the office.' 'Franz gets infuriated at the thought of his ex-wife remarried.' ' She flashed a jubilant smile.' "}, {'frame': 'Part_inner_outer', 'tfidf': 2.4496162613541568, 'lexical_unit': 'outside.a / outer.a / inside.a / exterior.a / inner.a / outside.n / skin.n / lining.n / perimeter.n / center.n / exterior.n / inside.n / interior.n / interior.a / middle.n / shell.n / surface.n / central.a', 'definition': 'This frame concerns Parts of objects that are defined relative to the center or edge of the object.  The Part is a part of the Whole and the Part_prop describes a property of the Part.  \'She discarded the exterior of the walnut.\' \' She preferred a sparse church interior . \'  In cases where the Target is an adjective, it has a special relationship with the noun that it modifies such that a phrase which is a syntactic argument of the noun is semantically available to fill the argument structure of the adjective, as in "the outside row of the class"\'The inner shelf of the bookcase was lying on the floor.\'  '}, {'frame': 'Condition_symptom_relation', 'tfidf': 2.3696668719942164, 'lexical_unit': 'manifest.v / manifest.n / present.v / symptom.n / symptomatic.a / asymptomatic.a / cause.v / cause.n / associate.v / mimic.v / show.v / see.v / produce.v / link.v / include.v / relate.v / characterize.v / due to.prep / result.v / consequence.n / contribute.v / induce.v / present.a / provoke.v / result.n / lead.v / indicate.v / uncommon.a / common.a / suggest.v / damage.v / occur.v / observe.v / characteristic.n / frequent.a', 'definition': "A Patient has a Medical_condition that can be understood by its Symptoms. This frame has been constructed to list all the ways to speak of relating a Patient, a Medical_condition, and Symptoms, including LUs that are also related to much more general frames like Causation (e.g. cause.v).  ' Neurally mediated syncope is thethe most common cause of syncope.'  'Tietze Syndrome and Costochondritis Tietze syndrome manifested by painful swelling of one or more costochondral articulations'"}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"The Ship"</span>.</h5>
+                        <br/>
+                        <pre>
+When it spoke in my head again, there was feeling in its words.
+Emotion?
+"Thank you for accepting me.
+I was never aware that something was missing, but now that I am about to have an identity, my thinking has become more clear.
+I analyzed all speeches and presentations in memory, and I believe my thinking is more feminine in nature.
+May I have a female name please?"
+Oddly enough, or perhaps not so oddly enough, the entire presence inside my head suddenly 'felt' more feminine, almost like a little girl getting her best birthday present ever.
+I'm not normally very emotional, but I had to work a little at maintaining my composure.
+It was special, petite, just nice...she was going to get her name, that seemed more important to her than anything right then.
+Now, what name would that be...long winded names always sound so formal I think, almost made up names for no purpose other than to use up time.
+Really short names seem rushed to me, like why bother...there were so many potential names to consider, it might take a week or more to decide, but one name kept swimming into my consciousness.
+It had a nice sound to it, formal but not overly so.
+It also had the benefit of a nice sounding little girl nickname to make it special.
+"How does Angela sound to you?
+And I can call you Angie for short, how's that..."
+" I have two names?
+I am honored!
+Thank you Daniel..."
+There was a happy little girl quality to the voice in my head.
+Kind of like a child at Christmas, excited and happily so.
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"Climbing To Freedom"</span>.</h5>
+                        <br/>
+                        <pre>
+"Looks like the building was located on Massachusetts Avenue ..."
+Katherine was trying her best to fight it, but her grief took over.
+"Is he going to live?"
+she sobbed into the phone.
+"I don't understand how this could have happened ... are you sure about what you're saying?"
+"Please, ma'am, please just come to Sibley.
+When he was conscious, he did nothing but repeat your name.
+Please get here as soon as you can."
+Katherine placed the phone back with trembling fingers.
+Tears poured down her cheeks.
+Objects swam in and out of her vision.
+Thoughts jumbled in her mind.
+One thought, however, kept cutting through with searing clarity.
+What had they done to him?
+She forced her legs to move, one step at a time, leaning against the hallway walls as she walked.
+She grabbed a coat and pulled the door closed behind her.
+Lost in tears of unspeakable sadness, she never looked back.
+Chapter 15
+"What's the latest, John?"
+Richards demanded.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="29">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="1">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Clothing_parts', 'tfidf': 7.50102772823674, 'lexical_unit': 'bootlace.n / shoelace.n / lace.n / button.n / zip.n / zipper.n / buckle.n / snap.n / thong.n / collar.n / neck.n / sleeve.n / cuff.n / waist.n / tassel.n / fringe.n / pocket.n / braid.n / seat.n / leg.n / sash.n / strap.n / hood.n / cowl.n / skirt.n / breastplate.n / waist-band.n / clasp.n / seam.n / placket.n / monogram.n / decolletage.n / cuff-link.n / hem.n / insole.n / waistband.n / waistline.n / sole.n / brim.n / neckband.n', 'definition': "The Subparts of Clothing items worn by a Wearer and made of a certain Material.  The Subpart may itself have parts, which we label Subregion:  'The shirt features a long sleeve with shiny gold buttons.'"}, {'frame': 'Being_dry', 'tfidf': 5.919544834373901, 'lexical_unit': 'dry.a / parched.a / desiccated.a / waterless.a / dehydrated.a', 'definition': 'An Item is in a state of dryness. \'The shingles  are dry.\'  \'The apple is completely dehydrated.\' \'<fex name = "Item" >The mop is dry.\''}, {'frame': 'Grinding', 'tfidf': 5.176925826359778, 'lexical_unit': 'flake.v / pulverize.v / grind.v / crumble.v / crush.v / mill.v / grate.v / shred.v / crunch.v / masticate.v / chew.v / mastication.n / mash.v / pulp.v', 'definition': "In this frame a Grinder or Grinding_cause causes a Patient to be broken into smaller pieces.  A Result or Goal can be present.'Bill ground the coffee beans into a fine powder.'"}, {'frame': 'Court_examination', 'tfidf': 5.063252428833368, 'lexical_unit': 'examine.v / cross-examine.v / cross.n / cross-examination.n / examination.n', 'definition': "A Questioner asks a Witness (or defendant) questions in the context of a court procedure. 'We 'd like to cross-examine the witness if we can.'"}, {'frame': 'Locale_by_collocation', 'tfidf': 4.705243689881816, 'lexical_unit': 'position.n / location.n', 'definition': "A Profiled_region is identified as being the region where an Entity is located.  'State your location.'  'I can't get a lock on their position.'"}, {'frame': 'Store', 'tfidf': 4.5129721920221835, 'lexical_unit': 'store.n / stock.n / stockpile.n / supply.n / inventory.n / reserve.n / cargo.n', 'definition': "A Supply of a Resource is kept safe and available for a future Use.  The Supply may be under the control of a Possessor.  'Our supply of food is running low.'"}, {'frame': 'Sharpness', 'tfidf': 4.505400075461673, 'lexical_unit': 'sharp.a / dull.a / blunt.a', 'definition': "An Entity has a Sharpness characterized by its capability to cut.  The Sharpness is a value of the Attribute of sharpness.  'That axe seems dangerously sharp.'"}, {'frame': 'Temporal_subregion', 'tfidf': 4.277574701999166, 'lexical_unit': 'late.a / later.a / middle.n / middle.a / early.a / earlier.a / mid.a / end.n / beginning.n / outset.n / start.n / dawning.n / turn.n', 'definition': "A Subpart of a Time_period is picked out.  In some cases, the part (as opposed to the entire Time_period) may be described by a Subpart_property.  The Time_period may be indicated by an event which takes place during the Time_period.  'I nearly kicked my TV this afternoon after watching the shambolic end of the Austrian Grand-Prix .' 'Jack Yan looks at how the branding profession will be affected in the early 2000s by globalization .' 'The late part of the afternoon is the worst time to get things done .' "}, {'frame': 'Personal_success', 'tfidf': 4.223075656524239, 'lexical_unit': 'success [person].n / success [event].n / success [state].n / successful.a / make it.v / arrive.v / succeed.v', 'definition': "A Person is in a state of prosperity and/or renown after some period of development or hardship in an Endeavor.  LUs in this frame invoke a developmental path that is related to the goal one should have in a Person, such that the Person, after traversing a path of development (including hardship, effort, and time), completes or does not complete these goals. Note that this distinguishes an event's success in this frame from Successful_action.  'Framenet is enjoying huge success.' 'He had a long and successful career in banking.'"}, {'frame': 'Connectors', 'tfidf': 4.1106954264008735, 'lexical_unit': 'ribbon.n / rope.n / thread.n / string.n / cord.n / chain.n / bond.n / adhesive.n / tape.n / glue.n / bolt.n / nut.n / nail.n / peg.n / strap.n / tack.n / staple.n / withy.n / tie.n / lace.n / shoelace.n / wire.n / screw.n / link.n / connector.n / trace.n', 'definition': "The Connector is an artifact created to affix a Connected_item or to bind onto a Fixed_location and is primarily so used.  A more specific Use may also be specified.  Certain words in this frame (e.g. bond, chain in the phrase in chains) indicate specifically that the Connector is being used to immobilize something.  Connectors have a wide variety of physical forms:  long, thin, and flexible for tying (ropes, bonds, withies); solid, with a shape corresponding to holes in the entities to be connected (bolts, nails, pegs); and liquid (glues, adhesives, pastes). 'A waterproof adhesive should be used for this exterior job.' 'His bonds had to be loosened before they could be cut.' 'She jerked on His neck rope again, to keep his attention.' 'I think they cut his bike chain with bolt cutters.'"}, {'frame': 'Locale_by_use', 'tfidf': 3.9601476663788606, 'lexical_unit': 'farm.n / hedge.n / mine.n / field.n / airfield.n / cemetery.n / rural.a / country.n / countryside.n / urban.a / city.n / village.n / center.n / facility.n / complex.n / installation.n / reactor.n / harbor.n / lab.n / plant.n / laboratory.n / depot.n / site.n / school.n / university.n / factory.n / silo.n / parking lot.n / base.n / settlement.n / courtyard.n / institute.n / pub.n / restaurant.n / museum.n / gallery.n / garden.n / park.n / square.n / theater.n / shop.n / college.n / open space.a / post office.n / canal.n / green.n / park[2].n / ranch.n / headquarters.n / downtown.n / campus.n / zoo.n / port.n / work.n / court.n / range.n / compound.n / station.n / firehouse.n / bathhouse.n / development.n / plantation.n / safe house.n / boutique.n', 'definition': "Geography as defined by its use.   'You must land in the next airfield, as this one is currently having difficulties.' 'The new sports complex was the tallest building on campus, oddly enough.' 'Cities of the Northeast tend to be dingier.'"}, {'frame': 'Body_parts', 'tfidf': 3.886522789054892, 'lexical_unit': 'arm.n / ankle.n / anus.n / back.n / beard.n / belly.n / body.n / breast.n / buttocks.n / cheek.n / chest.n / chin.n / ear.n / earlobe.n / elbow.n / eyelid.n / face.n / finger.n / flesh.n / foot.n / forearm.n / forehead.n / groin.n / hair.n / hand.n / head.n / heel.n / incisor.n / jaw.n / toe.n / hoof.n / claw.n / paw.n / talon.n / wing.n / pelt.n / snout.n / maw.n / fang.n / mane.n / whisker.n / feeler.n / antler.n / muzzle.n / beak.n / trunk.n / tail.n / eye.n / foreleg.n / forefoot.n / forepaw.n / limb.n / fin.n / flipper.n / horn.n / nape.n / nose.n / antenna.n / fluke.n / skin.n / forelimb.n / hindlimb.n / hindleg.n / fingertip.n / brow.n / lip.n / temple.n / fingernail.n / tongue.n / toenail.n / thumb.n / nostril.n / sole.n / midriff.n / navel.n / neck.n / hindquarters.n / forefinger.n / thigh.n / mouth.n / tentacle.n / bill.n / appendage.n / thorax.n / rump.n / crown.n / member.n / leg.n / shoulder.n / tooth.n / mustache.n / knee.n / pupil.n / throat.n / lung.n', 'definition': "This frame covers words for Body_part(s) (BP) belonging to a Possessor (Poss), which may be characterized by a Descriptor (Desc). The location of the BP may be identified in terms of  its Attachment or its Orientational_location.  A Subregion of a BP may also be indicated.   '' 'He had to brace his right arm against his leg in order to fight the roll.'  'The dog measured its blond belly in the mud.'  ''"}, {'frame': 'Finish_competition', 'tfidf': 3.7421387953594065, 'lexical_unit': 'win.n / victorious.a / winner.n / victory.n / lose.v / loss.n / tie.v / tie.n / victor.n / draw.n / show.v / win.v / fold.v', 'definition': "A Competition comes to an end, with a Competitor tying, winning, or losing against an Opponent (or opponents) according to their Score.  (In the symmetrical situation of a tie, the Competitor and Opponent may be jointly mentioned as Competitors.)  According to the Score that the Competitor and Opponent have achieved, they may receive a Rank or a Prize.  The Margin may also be mentioned.  'Unbelievable--he lost the gold medal by just .02 points!' 'Looks like it will came to a draw between Woods and Stephenson.'"}, {'frame': 'Natural_features', 'tfidf': 3.7058287667059764, 'lexical_unit': 'rill.n / hill.n / mountain.n / knoll.n / cordillera.n / lake.n / pond.n / tarn.n / creek.n / vale.n / crevasse.n / sound.n / strait.n / valley.n / river.n / sea.n / ocean.n / pool.n / peninsula.n / fjord.n / outcrop.n / island.n / archipelago.n / crag.n / glacier.n / canyon.n / mount.n / cove.n / bay.n / inlet.n / cliff.n / channel.n / headland.n / isthmus.n / cave.n / cavern.n / iceberg.n / berg.n / waterfall.n / falls.n / spring.n / cataract.n / stream.n / brook.n / atoll.n / floe.n / dune.n / massif.n / loch.n / butte.n / fell.n / hillock.n / mesa.n / isle.n / islet.n / cay.n / sandbar.n / coombe.n / key.n / crater.n / bar.n / sandbank.n / sandspit.n / reef.n / clough.n / dale.n / defile.n / dell.n / depression.n / range.n / dingle.n / gap.n / pass.n / glen.n / graben.n / gulch.n / gully.n / hollow.n / ravine.n / beck.n / hummock.n / moraine.n / burn.n / shelf.n / shoal.n / lagoon.n / slough.n / bayou.n / tor.n / eyot.n / plateau.n / seamount.n / guyot.n / volcano.n / declivity.n / corrie.n / ridge.n / skerry.n / rapids.n / watershed.n / height.n / cirque.n / beach.n / continent.n / continental.a / peak.n / coastal.a / wash.n / strand.n / rugged.a / gulf.n / cascade.n / land.n / water.n / range [grazing].n', 'definition': "The Locale is a geographical location as defined by shape.  This frame includes natural geographic features, including land/ice forms and bodies of water.  ' We climbed up the rock cliff.' "}, {'frame': 'Activity_prepare', 'tfidf': 3.59251940656806, 'lexical_unit': 'prepare.v / get ready.v / ready.v / fix.v / gear up.v / preparation.n / compose.v', 'definition': "An Agent prepares for an Activity. '' 'The troops were preparing themselves for the mission.'  'The boats are getting ready to leave the pier.'"}, {'frame': 'Partitive', 'tfidf': 3.5259430445852846, 'lexical_unit': 'of.prep / out of.prep', 'definition': "A Subset is profiled against the Group it belongs to. The Subset may consist of a single member. Frequently, the Group is actually a generic sample of a full population, and the Subset is  representative of the relative proportion.  'Of all scenes that evoke rural England, this is one of the loveliest.'  ' As of 5:30 p.m. Moscow time, 23 out of 46 miners stranded in the Zapadnaya-Kapitalnaya mine have been rescued'  '1.5 out of  10 respondents preferred Shrub over Ferry'  "}, {'frame': 'Gradable_proximity', 'tfidf': 3.1703481090779846, 'lexical_unit': 'near.a / close.a / proximity.n / far.a / distant.a', 'definition': 'A Figure is (stably) located with respect to a Ground in terms of how the distance between them compares to some general or contextually relevant scale.  The Degree of divergence from the expected distance may also be expressed.  In addition to the asymmetrical consideration of Figure and Ground, these may be construed collectively as Figures, in which case each entity is assessed for how expected its distance is from others in the group of Figures. \'\' Productive metaphors include cases where the degree of closeness or intimacy between people/entities is conceptualized as gradable proximity ("their close / distant relationship..."). The directness of familial relations is also construed this way ("a close / distant cousin"). Other metaphors involve possibility - usually of more extreme events - as proximity ("it was near collapse / extinction / disaster") and of category fit as proximity ("that was far from perfection / the truth / a miracle").  '}, {'frame': 'Conquering', 'tfidf': 3.1070175626291205, 'lexical_unit': 'conquer.v / takeover.n / capture.v / fall.v / take.v / reduce.v / overcome.v', 'definition': 'This frame describes a Theme losing its autonomy and perhaps sustaining material damage as the result of a successful invasion on the behalf of a Conqueror.  \'The Spaniards conquered the Incas with both the Cross and the arquebus\'  \'He said that the aim had been the takeover of the Soviet government by "advocates of swift privatization"\'  \'The Romans fell to the Goths in 410 AD.\'  \'Bright Star campaign forces captured the garrison town of Kajo Kaji\' '}, {'frame': 'Part_whole', 'tfidf': 3.0293498798728216, 'lexical_unit': 'part.n / fragment.n / half.n / segment.n / section.n / eighth.n / fifth.n / hundredth.n / third.n / quarter.n / tenth.n / portion.n / development.n', 'definition': "This frame is concerned with nouns denoting a part or parts of a Whole entity . The Part is not defined relative to the Whole's orientation, center, or edge and is not ordered.  We also annotate properties of the Part, e.g. relating to its size.  'Kim forgot a large part of the story.'  'Abby ate only the top half of the cake.'"}, {'frame': 'Trying_out', 'tfidf': 3.0118659211452514, 'lexical_unit': 'try.v / test out.v / try out.v', 'definition': "An Evaluator participates in an Experience (or metonymically, a salient Entity of the Experience), often for the first time, in order to form an opinion about its quality. The aspect of quality that is being judged is often implicit but may be expressed as the Purpose of the Evaluator's participation.   'Have you tried my latest get-rich-quick scheme? INI' 'Don tried out the bike to see if it was the right size.'"}, {'frame': 'Getting', 'tfidf': 2.9477034860964526, 'lexical_unit': 'get.v / obtain.v / acquire.v / acquisition [act].n / gain.v / acquisition [entity].n / secure.v / procure.v / procurement [act].n / score.v / win.v', 'definition': "A Recipient starts off without the Theme in their possession, and then comes to possess it.  Although the Source from which the Theme came is logically necessary, the Recipient and its changing relationship to the Theme is profiled.  'I got two whistles from John.'"}, {'frame': 'Containing', 'tfidf': 2.9327425293649068, 'lexical_unit': 'contain.v / hold.v / house.v / store.v', 'definition': "In this frame a Container holds within its physical boundaries the Contents.  'The box holds three hundred pictures.'"}, {'frame': 'Fluidic_motion', 'tfidf': 2.8133754540770877, 'lexical_unit': 'drip.v / flow.v / bubble.v / trickle.v / gush.v / cascade.v / dribble.v / splash.v / spew.v / seep.v / ooze.v / percolate.v / leak.v / jet.v / soak.v / run.v / squirt.v / spurt.v / spout.v / rush.v / course.v / purl.v / spill.v / stream.v / hiss.v / pump.v / splatter.v / spray.v', 'definition': "In this frame a Fluid moves from a Source to a Goal along a Path or within an Area.  ' The blood spurted from the wound. ''The water gushed into the house . '"}, {'frame': 'Expectation', 'tfidf': 2.7902612797694557, 'lexical_unit': 'anticipate.v / await.v / expect.v / foresee.v / predict.v / predictable.a / unpredictable.a / unforeseeable.a / foreseeable.a / expectation.n / prediction.n / premonition.n / unexpected.a / wait.v', 'definition': "Words in this frame have to do with a Cognizer believing that some Phenomenon will take place in the future.  Some words in the frame (e.g. foresee.v) indicate that the Phenomenon is asserted also to be true, while others do not.  'Michael expected Abby to demand examples.' 'From the look on her face Michael expected that she would say she got the job.'  "}, {'frame': 'Location_in_time', 'tfidf': 2.640855236250147, 'lexical_unit': 'time.n / date.n / day.n', 'definition': "The word(s) in this frame detail a particular moment in time.These often occur with demonstratives such as this and that.  'Late that day, 1776, America declared sovereignty.'"}, {'frame': 'Non-gradable_proximity', 'tfidf': 2.4344294606822006, 'lexical_unit': 'by.prep / beside.prep / under.prep / underneath.prep / behind.prep / in front (of).prep / in back (of).prep / ahead.adv / along.prep / neighboring.a / over.prep / opposite.a / left [landmark-based].n / right [landmark-based].n / left [viewpoint-based].n / right [viewpoint-based].n / beneath.prep / opposite.prep / starboard.n / port.n / on.prep', 'definition': 'A Figure is characterized as near the Ground, according to some contextually given scale. Many lexical units of this frame additionally specify in which direction relative to the Ground one can find the Figure (under.prep, north.adv), or directions from the Ground from which the Figure is excluded (e.g. beside.prep excludes the vertical and front/back axes); for specifications of direction, see the semantic types attached to the lexcial units.  Members of this frame that make reference to an absolute, earth-based grid (e.g. north, south, etc.) imply a geographic scale of proximity, and so are frequently not paraphrasable as "near".   \'She put her shoes under the table .\' \'Michael Jackson was right next to me !\' \'Down by his left foot was a little grenade .\' \'\' The subset of LUs that inherently pick out a particular direction (e.g. north, behind) may occur with a specification of a Distance in that direction from a Ground at which the Figure may be found, while LUs that pick out two or more directions of relevance from a Ground (e.g. beside) can only characterize the general accessibility of the Figure relative to the Ground. \'30 miles north\' \'right beside my leg\'  This frame is intended to cover a limited set of productive metaphor cases in which allegiance is expressed as a Devotee standing to one side or behind an Allegiance_holder:  \'I stand beside what I said to him .\' \'They will stand right next to me in the fight against homophobia .\'  This frame is not intended for metaphorical cases of quantity specification:  \'There was above 500 kg of cocaine in the shipment .\'  This frame does not cover the multitude of other metaphorical cases like "next to impossible", "under consideration", "under his rule", "beside himself", "beside the point". '}, {'frame': 'Containers', 'tfidf': 2.3860034526400233, 'lexical_unit': 'amphora.n / backpack.n / can.n / cart.n / casket.n / chest.n / envelope.n / flask.n / glass.n / handbag.n / jar.n / knapsack.n / ladle.n / locker.n / mug.n / pot [cooking].n / purse.n / reservoir.n / sack.n / satchel.n / spoon.n / suitcase.n / tin.n / wallet.n / teaspoon.n / ampule.n / ashtray.n / bag.n / barrel.n / basin.n / basket.n / beaker.n / bin.n / bottle.n / bowl.n / box.n / briefcase.n / bucket.n / canister.n / canteen.n / carafe.n / carton.n / cartridge.n / case.n / coffer.n / coffin.n / container.n / cooler.n / crate.n / crock.n / crucible.n / cruet.n / cup.n / cuspidor.n / cylinder.n / cask.n / carryall.n / censer.n / chalice.n / creamer.n / decanter.n / dish.n / dispenser.n / drum.n / duffel bag.n / flagon.n / empty.n / etui.n / goblet.n / grail.n / hamper.n / haversack.n / hopper.n / jeroboam.n / jigger.n / jug.n / keg.n / magnum.n / mailer.n / overnighter.n / pack.n / sarcophagus.n / tun.n / stein.n / spittoon.n / pannier.n / ramekin.n / reticule.n / salver.n / samovar.n / snifter.n / thermos.n / tureen.n / valise.n / cauldron.n / casserole.n / folder.n / rucksack.n / pouch.n / vial.n / vase.n / pail.n / pipette.n / tumbler.n / vat.n / vivarium.n / punch bowl.n / toilet bowl.n / wine bottle.n / chest of drawers.n / hot-water bottle.n / urn.n / tank.n / safe.n / planter.n / pot.n / drawer.n / goldfish bowl.a / tub.n', 'definition': "This frame covers entities which are prototypically conceived of and created to fulfill the function of containing--i.e. Containers  that contain objects or substances, the Contents.  This can be expressed as a complement , and includes potential or intended contents.   A Container may also have an Owner, a current Relative_location, Material from which it is constructed, a method of Construction, and a Type.  Note the connection between words in this frame and those in the Filling, Emptying, and Fullness frames. 'a bag of popcorn' 'underwear drawer' 'Chuck's suitcase' 'the suitcase in Chuck's office' 'straw basket' 'woven basket' 'Erlenmeyer flask'"}, {'frame': 'Direction', 'tfidf': 2.3842647503848085, 'lexical_unit': 'east.adv / up.adv / forward.adv / left.adv / right.adv / north.adv / south.n / east.n / south.adv / down.adv / outward.adv / north.n / west.adv / true north.n / way.n', 'definition': 'This frame covers the basic uses of direction words like the adverbs east, up, and forward.  These are used either to talk about a direction of facing (e.g., facing outward, pointing left, looking downward, turn east) or to talk about actual or metaphorical motion (went up, traveling due north).  Lexical units of this frame typically have a semantic type that refers to the means of determining the direction (e.g. forward.adv has the semantic type Landmark_front, meaning that "forward" is defined with respect to the direction from the center of some entity to its front, however defined).  Nevertheless, some words like way.n are used exactly when normal means of specifying direction are not available.  This frame is most frequently used to describe the motion of something along the Path from the Landmark, which is normally implicitly identified as the location of the viewpoint:    \'We went north . DNI\'  In such cases, a Distance from the Landmark can also be given:  \'After she was knocked on the head , it seemed like everything had moved three feet to the left . DNI\'  It can often be used for direction of facing, which is not compatible with the Distance frame element:  \'Look left and you \'ll see it . DNI \'  Although rare for certain lexical units (e.g., upward.adv), most words in this frame are commonly used in a fictive motion pattern to identify locations that can be reached by moving in the indicated way from the Landmark:  \'The book was unreachable, 10 feet up on the shelf. DNI\' \'East of Mt. Diablo the Sierras rise majestically above the Central Valley.\'  \'\'  In this fictive motion case, the Domain and the Independent_variable are both spatial, and should be marked as metaphorical.  Note this differs from members of the Directional_locative_relation frame (e.g., above.prep), which can only be used for relative static positions, and not for facings or for directions of motion:  \'??? The book faced above the door .\' vs. \'The book faced upward .\'  A potential point of confusion is that the Directional_locative_relation frame is also used for cases in which adverbs like east.adv, etc. are followed by "of", since such expressions can only be used of static relative positions and not facings:  \'??? I faced east of the mountains .\'  Another potential point of confusion is that nouns referring to directions can be used for facings if they are preceeded by the word "to".  Since this use of to.prep can be found with a broader class of words like side.n, we interpret this sense of to.prep as mapping relative postitions (belonging to the Directional_locative_relation frame) to true Directions, in the sense of this frame.  This applies to expressions like "to the east", as well as "to both sides" and "to the rear".  In the future, we may add these as multi-word members of the frame.  In the following case, the Domain is "potency" and the Independent_variable is, as usual, time; again, the example should be marked as metaphorical.  \'\' \'They decided to rerate the medication downward in potency .\' \'\'  In mathematical terms, all of these uses can be understood as a Path, made up of a set of positions in some N-space Domain (by default spatial, or metaphorically, other domains), being determined as a function of a Landmark (which may be incorporated and is usually implicit) and some one-dimensional Independent_variable (time, or, metaphorically, other domains).  The Domain and/or the Independent_variable are normally incorporated in the basic definition of the target; thus, for example, up.adv, by default, indicates the Domain is space, and time is the Independent_variable. From a linguistic point of view, we consider these literal spatio-temporal uses to be basic, and other cases, where space is replaced by some other kind of quantity, is to be understood as metaphorical.'}, {'frame': 'Condition_symptom_relation', 'tfidf': 2.3696668719942164, 'lexical_unit': 'manifest.v / manifest.n / present.v / symptom.n / symptomatic.a / asymptomatic.a / cause.v / cause.n / associate.v / mimic.v / show.v / see.v / produce.v / link.v / include.v / relate.v / characterize.v / due to.prep / result.v / consequence.n / contribute.v / induce.v / present.a / provoke.v / result.n / lead.v / indicate.v / uncommon.a / common.a / suggest.v / damage.v / occur.v / observe.v / characteristic.n / frequent.a', 'definition': "A Patient has a Medical_condition that can be understood by its Symptoms. This frame has been constructed to list all the ways to speak of relating a Patient, a Medical_condition, and Symptoms, including LUs that are also related to much more general frames like Causation (e.g. cause.v).  ' Neurally mediated syncope is thethe most common cause of syncope.'  'Tietze Syndrome and Costochondritis Tietze syndrome manifested by painful swelling of one or more costochondral articulations'"}, {'frame': 'Ingestion', 'tfidf': 2.327039079199718, 'lexical_unit': 'lap.v / slurp.v / swig.v / guzzle.v / gulp.v / down.v / sip.v / sup.v / munch.v / nosh.v / feast.v / feed.v / snack.v / breakfast.v / lunch.v / dine.v / ingest.v / nurse.v / nibble.v / eat.v / drink.v / gobble.v / devour.v / consume.v / sip.n / gulp.n / swig.n / slurp.n / have.v / imbibe.v / quaff.v / swill.v / put away.v / put back.v / tuck.v / ingestion.n', 'definition': "An Ingestor consumes food or drink (Ingestibles), which entails putting the Ingestibles in the mouth for delivery to the digestive system.  This may include the use of an Instrument.  Sentences that describe the provision of food to others are NOT included in this frame.  'The wolves devoured the carcass completely.'"}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"The Dead Rising The Beginning"</span>.</h5>
+                        <br/>
+                        <pre>
+Henry looked back towards the fence and could see several of the teenagers were missing the lower portions of their arms.
+He looked down as his arm and could see two hands and forearms still gripped around his wrist.
+He threw his arms around in the air to detach the grasp of the limbs.
+The arms fell to the ground with a dull thud.
+He looked back to the fence and the teenagers.
+Neither of the teenagers showed any sign of pain at the detachment of their limbs.
+The bloody stumps he expected to be spraying and dripping blood at the severing of a semi-major artery were dry.
+"What that hell are those things?"
+Henry turned and scrambled up the hill and onto the highway.
+Without glancing back towards the fence, Henry crossed the road, walked down into the median and on the other side.
+Henry focused on making it to the Wholesale store that was at the other end of the mall.
+If he had taken a moment to look behind him, he would have noticed several members of the group trying to mimic what he had done earlier by climbing the fence to get at him.
+Chapter Thirteen
+Henry walked down the embankment on the far side of the highway and crossed through a little clearing in a row of hedges and stepped into the parking lot of the town's mall.
+The mall was a typical commercial mall designed in a plus shape to be able to put four large box stores at the end of each row to draw people to the mall just to shop at those locations.
+On an average day, the mall did not open until 10 am and seeing as how the monsters were downtown at nine the parking lot of the mall was pretty empty.
+There were a few cars scattered in different spots through the parking lot.
+Most likely the managers or key holders arriving to get the stores ready for the shoppers that day.
+Henry was standing at the end of the mall that featured entrances to the movie theatre and chain bookstore.
+There were about a dozen cars parked in front of the movie theatre, probably a couple of cleaning crews trying to scrape chewing gum of the bottoms of the seats, and layers of butter from the floor underneath those seats.
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"Dead Is Dead"</span>.</h5>
+                        <br/>
+                        <pre>
+Wonder who got to him."
+"Roberts would know."
+"So he would."
+But will he tell me, that's the question.
+I decide to hustle out there and find out.
+"You done yet?"
+I ask Sketch.
+He leans back a little, staring at his work, then makes a couple more passes with the charcoal.
+Satisfied, he rips the big sheet of paper from the easel and hands it to me.
+I stare at it a long minute, trying to figure out what bothers me about it.
+It's my face, I suppose.
+Eyes, nose, mouth, jaw, all pretty much where they're supposed to be.
+So why do I look so goddam sad?
+"That ain't me," I tell him.
+"That's what the fat lady said."
+He holds out his hand.
+"Where's my buck?"
+There are only a few reasons you'd want to go to Gardena.
+It's a good place to pawn things.
+Three or four pawnshops right out on the main drag.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="85">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="1">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

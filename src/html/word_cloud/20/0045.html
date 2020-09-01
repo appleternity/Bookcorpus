@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Key', 'tfidf': 10.91475623695072, 'lexical_unit': 'key.n / combination.n / password.n / passcard.n / keycard.n', 'definition': "This frame is for objects, physical or otherwise, which are used to grant access to some location or function.  'Robert's master keycard opens any door in the building.'  'Robert's master keycard opens any door in the building.'"}, {'frame': 'Suitability', 'tfidf': 5.561574593610783, 'lexical_unit': 'suitable.a / unsuitable.a / suitability.n / unsuitability.n / suitableness.n / unsuitableness.n / fitting.a / fit.a / fit.v / proper.a / suit.v / suited.a / right.a / correct.a / become.v / appropriate.a / inappropriate.a', 'definition': "This Frame is concerned with evaluating an Evaluee as being suitable for a Purpose or a User, presupposing some choice that is being made about which Evaluee to use for the Purpose or User.  An LU like suitable.a thus implies that, given a particular Purpose or User, the Evaluee is one which could be or ought to be chosen.  The Evaluee may be deemed suitable to a greater or lesser Degree. This frame has some similarity to the compatibility frame where two Items are evaluated with respect to their compatibility with each other against some background.  '(1) We need to build more houses suitable for local residents.' '(2) These chips are not verysuitable for parallel processing. ' '(3) We are not sure about the Cathedral's suitability for Philharmonic concerts.'"}, {'frame': 'Importance', 'tfidf': 5.452748931591644, 'lexical_unit': 'crucial.a / critical.a / key.a / decisive.a / pivotal.a / important.a / significant.a / importance.n / significance.n / import.n / major.a / instrumental.a / vital.a / considerable.a / fundamental.a / main.a / serious.a / seriously.adv / acute.a / landmark.n / epic.a / count.v / priority.n', 'definition': "A Factor affects the outcome of an Undertaking, which  can be a goal-oriented activity or the maintenance of a desirable state, the work in a Field, or something portrayed as affecting an Interested_party. A Reason may be given for the importance of the Factor. The Degree of importance may also be specified.  'Temperature is the most critical factor in successful storage.' ' Timing will be critical.' 'Heathcliff is more important to me than myself . ' ' 1992 was of great importance to the business community. ' "}, {'frame': 'Prison', 'tfidf': 5.284328512480065, 'lexical_unit': 'penitentiary.n / jail.n / prison.n / jailhouse.n / slammer.n / stockade.n / pen.n / joint.n / correctional institution.n / brig.n', 'definition': "This Frame deals with Penal_institutions. They are run by an Operator and may be intended to hold certain kinds of Inmates.  Penal_institutions may have a special Name and their Location may also be indicated.  'He's in Pelican Bay state penitentiary.'"}, {'frame': 'Temporary_stay', 'tfidf': 5.048557115550184, 'lexical_unit': 'stay.v / stay.n / lodge.v / room.v / guest.v / overnight.v / sleep over.v / stay over.v / board.v / quarter.v', 'definition': "A Guest stays for a time at a Location, which is not his or her permanent residence, for some Duration. The Location is often the permanent residence of a Host.  'I usually stay with my aunt at her summer house when I go to Seville.'  'For a few days my father lodged at a hotel with a buddy who was a biology student.'"}, {'frame': 'Position_on_a_scale', 'tfidf': 4.229146698833515, 'lexical_unit': 'high.a / low.a / rich.a / deficient.a / lacking.a / advanced.a / medium.a / poor.a / through the roof.adv / moderate.a', 'definition': "This frame contains words that describe an Item's static position on a scale with respect to some property Variable.  '' 'Dried fruits are especially high in fibre, as are pulses.'  'Despite the fact that the local land was rich in silver, by 1865 most of the mining traffic through Las Vegas was of propectors headed to California or Northern Nevada in search of gold.'"}, {'frame': 'Making_arrangements', 'tfidf': 4.0303920644837135, 'lexical_unit': 'make arrangements.idio / plan.v / organize.v / set up.v / put together.v', 'definition': "An Agent performs a series of unspecified tasks to plan for an Event to take place at a Scheduled_time and Place.  'I've arranged a breakfast meeting for you tomorrow morning with Mr. Huntsberger.'  'Kevin and Beth organized the graduate student conference this year.'"}, {'frame': 'Quitting', 'tfidf': 3.983456600732861, 'lexical_unit': 'quit.v / resign.v / retire.v / stand down.v / resignation.n / retirement.n / give notice.idio / step down.v / leave.v', 'definition': "An Employee voluntarily leaves the service of an Employer.  'Leah quit her job after one month because of an evil force.'  ' It's Time for Glenn Hubbard to Quit as CEA Chair' 'Its chief executive officer has resigned amid a reorganization that will also eliminate about 20 percent of its work force.' 'Its chief executive officer has resigned amid a reorganization that will also eliminate about 20 percent of its work force.' 'You should fill in your name, the defendant's name, and the date and time you gave notice. DNI'  "}, {'frame': 'Remembering_to_do', 'tfidf': 3.873213042052717, 'lexical_unit': 'remember.v / forget.v', 'definition': "A Cognizer thinks of and performs an Action that is a self- or other-imposed task or some other kind of desirable behavior. The Action may involve a Salient_entity in some way affected by the Cognizer. If a Salient_entity is mentioned, the Action is left unexpressed.   'You invited everybody but you forgot Harry.'  'Thank God Smithers remembered to return the video..'  'If you forget your textbook and there is an assignment to be done, the highest grade you will receive on the work is aC (70%).'  'Did you remember about the letter?'  "}, {'frame': 'Race_descriptor', 'tfidf': 3.443293941404287, 'lexical_unit': 'white.a / black.a / color.n / yellow.a / asian.a / hispanic.a', 'definition': "This frame covers LUs that describe the race of a Person.  'Carlos is hispanic, or so he says.'"}, {'frame': 'Killing', 'tfidf': 3.2273179173858435, 'lexical_unit': "kill.v / annihilate.v / assassinate.v / behead.v / eliminate.v / exterminate.v / drown.v / liquidate.v / murder.v / slay.v / terminate.v / suffocate.v / smother.v / starve.v / asphyxiate.v / suicide.v / homicide.n / suicide.n / euthanize.v / euthanasia.n / dispatch.v / lethal.a / annihilation.n / liquidation.n / crucify.v / crucifixion.n / decapitate.v / massacre.v / slaughter.v / lynch.v / liquidator.n / killing.n / murder.n / slaughter.n / killer.n / massacre.n / infanticide.n / smothering.n / slaying.n / regicide.n / pogrom.n / shooting.n / holocaust.n / matricide.n / genocide.n / butcher.v / beheading.n / assassination.n / butchery.n / carnage.n / suffocation.n / assassin.n / blood-bath.n / decapitation.n / extermination.n / fratricide.n / garrotte.v / murderer.n / slaughterer.n / slayer.n / immolation.n / patricide.n / silence.v / deadly.a / fatal.a / fatality.n / destroy.v / take out.v / bloodshed.n / do in.v / take (someone's) life.idio", 'definition': "A Killer or Cause causes the death of the Victim. 'John drowned Martha.'"}, {'frame': 'Gradable_proximity', 'tfidf': 3.1703481090779846, 'lexical_unit': 'near.a / close.a / proximity.n / far.a / distant.a', 'definition': 'A Figure is (stably) located with respect to a Ground in terms of how the distance between them compares to some general or contextually relevant scale.  The Degree of divergence from the expected distance may also be expressed.  In addition to the asymmetrical consideration of Figure and Ground, these may be construed collectively as Figures, in which case each entity is assessed for how expected its distance is from others in the group of Figures. \'\' Productive metaphors include cases where the degree of closeness or intimacy between people/entities is conceptualized as gradable proximity ("their close / distant relationship..."). The directness of familial relations is also construed this way ("a close / distant cousin"). Other metaphors involve possibility - usually of more extreme events - as proximity ("it was near collapse / extinction / disaster") and of category fit as proximity ("that was far from perfection / the truth / a miracle").  '}, {'frame': 'Cause_change', 'tfidf': 3.111254603522477, 'lexical_unit': 'make.v / turn.v / change.v / convert.v / transform.v / modify.v / alter.v / modification.n / alteration.n / conversion.n / transformation.n / vary.v / variation.n / reshape.v / shift.v / deform.v', 'definition': "An Agent or Cause causes an Entity to change, either in its category membership or in terms of the value of an Attribute. In the former case, an Initial_category and a Final_category may be expressed, in the latter case an Initial_value and a Final_value can be specified.  'Our storylines follows the saga outlined by the Ultima Series, but we have modified it in order to make our writing more cohesive.'   'I don't think you can turn that rabbit into a hat.'  'How can a guy that changed his name from Bob Craft to Jack Ass declare anyone defamed his character?'  ' At this juncture, a new development changed the political situation on the island.'  'She had at some time earlier completely changed her clothing and appearance and now stood in front of me dressed like a garden gnome.'  'Hence, when (Hg 0 ) is converted to Hg 2+ , it can be rapidly taken up in rain water, snow, or adsorbed onto small particles' 'Hence, when (Hg 0 ) is converted to Hg 2+ , it can be rapidly taken up in rain water, snow, or adsorbed onto small particles'"}, {'frame': 'Imprisonment', 'tfidf': 3.0953098569737483, 'lexical_unit': 'imprison.v / imprisonment.n / put away.v / jail.v / incarcerate.v / incarceration.n / time.n / life.n', 'definition': "The Authorities put a Prisoner in Prison as punishment for an Offense.   'US Drug Researcher Imprisoned for FDA Fraud.' 'Men will be more likely to be put away for murder rather than manslaughter for killing their wives.' 'However, any treatments may be years in the future and in the meantime, criminals will continue to be imprisoned for public safety.'  'The government wrongfully imprisoned them in ?detention centers? (a nice term for concentration camps), tortured them mentally and physically' "}, {'frame': 'Correctness', 'tfidf': 3.0838076527469283, 'lexical_unit': 'correct.a / incorrect.a / wrong.a / right.a / accurate.a / correctness.n / exact.a / true.a', 'definition': "A particular piece of Information is evaluated for its accuracy.  The Degree of correctness may also be expressed.  The Source of information may also metonymically stand in for the Information.  'Is your reputation at risk due to incorrect information?' 'If your dealership service people make such totally wrong claims, I would be uncomfortable trusting their warranty claims too.' 'All users must verify the correctness of their own information.' 'We found all of his information to be right.'"}, {'frame': 'Regard', 'tfidf': 2.9489671934106867, 'lexical_unit': 'regard.n / esteem.n / regard.v / impression.n / opinion.n / think.v / appreciate.v / appreciative.a / find.v', 'definition': "A Cognizer has a Judgment of an Evaluee, expressing how high or low their regard for the Evaluee is.  'What do you think of him as a linguist?' 'She secretly thought well of him for his role in defrocking Mr. Matthews.' 'Please understand, I hold you in the highest regard.' 'My low opinion of him was of long standing.'"}, {'frame': 'Taking_time', 'tfidf': 2.9461924405154036, 'lexical_unit': 'take.v / in.prep / fast.a / quick.a / rapid.a / swift.a / speedy.a / slowly.adv / slow.a / gradually.adv / quickly.adv', 'definition': "An Activity takes some Time_length to complete.  If an Agent is involved they may stand in metonymically for the Activity. For some LUs (e.g., fast, speedy) the Degree to which the Activity is conceived of as taking less time than usual can be expressed.  'How long will this take?'  'The ride was speedy and often bumpy.'  'Under high-pressure situations, police officers are very fast at reacting to danger.'"}, {'frame': 'Infecting', 'tfidf': 2.9166386730151475, 'lexical_unit': 'give.v / infect.v', 'definition': "The action of spreading some Infection to an Infected_entity, intentionally or otherwise. Pathology indicates that the Infection_cause can be airborne, carried on the skin/hair, or transmitted via various other forms of contact.  'Her daughter infected her with chicken pox .'"}, {'frame': 'Cardinal_numbers', 'tfidf': 2.8557496457872644, 'lexical_unit': 'one.num / two.num / three.num / million.num / zero.num / brace.n / couple.n / pair.n / score.n / five.num / seven.num / thirty.num / hundred.num / billion.num / dual.a / thousand.num / ninety.num / fourteen.n / five hundred.num / twenty-five.num / two hundred.num / fifteen.num / fifty.num / forty.num / ten.num / four.num / six.num / twenty.num / sixty.num / seventy.num / twenty-one.num / eight.num / fifty-two.num / twelve.num / seventy-four.num / number.n / nine.num / twenty-seven.num', 'definition': 'This frame presents a situation where there is a certain Number of instances of an Entity or a certain Number that quantifies a Unit. Numbers are used to count any kind of Entity that has distinct individuals, or alternatively, to count Units whose own function is to quantify some property, with the Number associated with each word of this frame differentiating groups, individuals, parts of individual Entitys of different sizes, or to differentiate the quantity of the Units. A countable Entity prototypically occupies its own space separately from other instances of the Entity, and each instance of the Entity has specific kinds of parts or substance or characteristics as specified by the kind of Entity it is described as.   Units (e.g., hours, inches, dozens) have the function of quantifying some property and as a result, naturally occur with a Number to say how the current property compares to the standard quantification of the Unit.  Less prototypical numbers, which occur much more frequently with Units rather than Entitys, describe situations with less than a whole Unitor Entity (half.n), or the lack of a Unit or Entity (zero.num). \'\' There is also a Precision associated with the Number. In most cases, there is a certain amount of imprecision in the Number that is assumed, especially for so-called "round" numbers like twenty.num or hundred.num, and for the class of approximate numbers, like couple.n; for other numbers, e.g. two.num, the expected precision is very high. Separately from this inherent possibility of precision or imprecision, numbers may be modified by an explicit specification of their Precision, with phrases like "about", etc.   \'Only two senators voted in support of the president .\' \'Dr. Malik has confined almost a score of such unfortunates in his basement, you know.\' \'We endured forty days of snow .\' \'There were thirty of the little blue creatures staring up at him.\' \'She had only two pieces of Halloween candy left, but I still had ten! DNI\' \'The ship was three degrees off course .\'  \'\' This frame includes extrathematic FEs for a set of non-lexical constructions that put together quantifying expressions.  Firstly, a Number may itself be quantified by having a certain Multiplier, e.g. "three hundred".  Secondly, a sequence of numerical expressions may be strung together, with or without "and", to produce a Composite_number representing a Number that is the sum of the constituent numbers and that collectively modifies the Entity or Unit.  \'Stephen has more than five hundred in his closet! DNI\' \'\' \'\' As can be seen in the first of the next two examples, when the target is a number in front of another number in the function of a Multiplier, we consider the number it is modifying to be a Unit:  \'There are just over six billion people in the world today.\' \'There are just over six billion people in the world today.\'  The relationship between numbers, as lexical units in this frame, and the broader category of numbers is a complex one.  In particular, there is a semiotic system that arranges the tiny set of numeral symbols (0, 1, 2 ... 9), with some additional symbols (commas, decimal points, fraction lines, scientific notation of exponents) to generate a standard representation for numbers that, while not universal, is at least language independent.  Our description of numbers is focused on the English system of numbers, as would occur in the spoken language or in pronunciations (actually decodings) of written numerals in English.  Since numerals are well-understood by virtually all speakers of most languages, and are well-processed by computers, we do not view the description of these structures in FrameNet as necessary.  As a convenience, we include numerals as wordforms when they coincide with a basic number word of English (e.g., "3" is a wordform of three.num). \'\' Of more interest for the FrameNet Project is the large number of idiosyncrasies in the constructions that use numbers, very few of which will be well-exemplified in our annotation.  These include indications of range (from ... to), approximation (in the neighborhood of), and descriptions of group properties ("A whopping three singers showed up")  \'\'  Technical note: The frame as currently devised does not distinguish between "six apples" and "six of the apples".  It is clear that in the first case, we are talking about six entities that fit whatever properties apples have.  In the second case, however, there is a specific set of apples that was already under discussion, and the six apples are members of this set.  There is a way of understanding this second case in terms of the first, namely, that "six of the apples" is interpreted as six entities with the property of being members of the given set of apples.  Since understanding the second case involves an additional notion of set membership, this could be indicated with a different FE than any we currently have in this frame, perhaps *Set, which is in an exclusion relation with Entity.  However, the major semantic distinction between these two types of Entity is whether there is a definite set, and this distinction is independently indicated by the definite article in examples like "six of the apples".   '}, {'frame': 'Fluidic_motion', 'tfidf': 2.8133754540770877, 'lexical_unit': 'drip.v / flow.v / bubble.v / trickle.v / gush.v / cascade.v / dribble.v / splash.v / spew.v / seep.v / ooze.v / percolate.v / leak.v / jet.v / soak.v / run.v / squirt.v / spurt.v / spout.v / rush.v / course.v / purl.v / spill.v / stream.v / hiss.v / pump.v / splatter.v / spray.v', 'definition': "In this frame a Fluid moves from a Source to a Goal along a Path or within an Area.  ' The blood spurted from the wound. ''The water gushed into the house . '"}, {'frame': 'Cause_to_move_in_place', 'tfidf': 2.6693276136979307, 'lexical_unit': 'twirl.v / spin.v / vibrate.v / shake.v / swing.v / seesaw.v / turn.v / rotate.v / squeeze.v / swirl.v / rock.v / roll.v / wave.v / juggle.v / jiggle.v / wiggle.v', 'definition': "An Agent causes a Theme to move with respect to a certain Fixed_location, generally with a certain Periodicity, without undergoing unbounded translational motion or significant alteration of configuration/shape. 'Paul shook the remote control frantically.'"}, {'frame': 'Food', 'tfidf': 2.2670492301073932, 'lexical_unit': 'fruit.n / apple.n / banana.n / vegetable.n / carrot.n / potato.n / pea.n / meat.n / beef.n / lamb.n / veal.n / poultry.n / chicken.n / turkey.n / fish.n / salmon.n / tuna.n / shellfish.n / shrimp.n / lobster.n / milk.n / cheese.n / egg.n / butter.n / nut.n / almond.n / peanut.n / pasta.n / noodle.n / herb.n / spice.n / pepper.n / basil.n / cereal.n / lettuce.n / berry.n / bread.n / roll.n / cracker.n / cake.n / pancake.n / cheesecake.n / pastry.n / croissant.n / cookie.n / biscuit.n / sweet.n / chocolate.n / sweetener.n / sugar.n / honey.n / fat.n / oil.n / vinegar.n / coffee.n / juice.n / soup.n / stew.n / sauce.n / dressing.n / vinaigrette.n / ketchup.n / mayonnaise.n / lasagne.n / food.n / tea.n / water.n / date.n / cabbage.n / MRE.n / beer.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Undergo_change', 'tfidf': 2.219343478487506, 'lexical_unit': 'change.v / turn.v / change.n / veer.v / swing.v / plummet.v / changeable.a / shift.n / shift.v / transition.n / go.v', 'definition': "An Entity changes, either in its category membership, its situation, or in terms of the quality of an Attribute. In the first case, where category membership is changing, an Initial_category and a  Final_category may be expressed. In the second case, where a situation as a whole is changing, an Initial_situation and a Final_situation can be present. And in the last case, where some characterization of the Entity is changing, an Initial_quality and a Final_quality can be specified.    'As soon as Tiffany kissed the frog, Tiffany turned into a frog. '  'He chanted and the rock changed shape, becoming a great double bitted axe.'  'The College has changed markedly over the century since it first opened its doors.'  'If I'm understanding you correctly, you want the switchbar color to change whenever the bot says something?'  'My life instantly changed from an empty life, to a life full of joy and purpose.'  'As you can see, the word WALK changed from red to green rather than have a separate lens for each colour.'  'My feet turned to stone.'  'The promise will turn to ashes if progress is not made.'  'The price  changed from $1.26 to $1.27 per pint. DNI'  'At least one relative instruction has changed in size from short to long.'  In some cases, the types of perspective are mixed, so that, e.g., an Initial_quality is mixed with a Final_situation; this is usually considered poor style.  'She went from confused to acting completely confident .'  This frame is often the target domain of motion metaphors, in which the moving Theme corresponds to the  changing Entity, the Source of motion corresponds to the Initial_category, Initial_quality, or Initial_situation and the Goal of motion corresponds to the Final_category, Final_quality, or Final_situation of the Entity.  By correspondence with the complex domain of motion, this metaphor introduces several FEs to the target domain of change, such as an Intermediate_state (etc.) from Path, and Tendency_of_change from Direction.  'The nation was crawling towards oblivion.' 'We were walking past almost reasonable and heading right for what-the-bleep.' "}, {'frame': 'Social_interaction_evaluation', 'tfidf': 2.1898624790007433, 'lexical_unit': 'inconsiderate.a / kind.a / considerate.a / mean.a / insensitive.a / thoughtless.a / thoughtful.a / cruel.a / sweet.a / rude.a / impolite.a / ill-mannered.a / churlish.a / discourteous.a / unkind.a / courteous.a / polite.a / impudent.a / respectful.a / disrespectful.a / boorish.a / compassionate.a / nice.a / friendly.a / unfriendly.a / amiable.a / sociable.a / cordial.a / genial.a / gracious.a / ungracious.a / civil.a / uncivil.a / impertinent.a / tactful.a / diplomatic.a / barbaric.a / spiteful.a / pleasant.a / horrible.a / good.a / good-natured.a / good-humored.a / warm.a / smart.a / mature.a / maturity.n / cruelty.n / thoughtfulness.n / rudeness.n / compassion.n / atrocious.a', 'definition': "In this frame an Evaluee is judged by a (usually implicit) Judge to be of a certain character based on her or his Behavior towards other human beings; a specific Affected_party may be overtly mentioned along with the Degree to which the Evaluee behaves appropriately towards others. TheBehavior alone may be mentioned with the understanding that these behaviors characterize a property of the unmentioned Evaluee. The Evaluee's Behavior may be in the context of a Topic.  ' It was nice of you to send a card. '   ' Jim was thoughtful to email the directions.'   ' For Martha to smoke in the car was extremely inconsiderate.'   ' It was cruel that he continued to call her.'   ' Mary was cruel to her friends.'   ' Samson was a thoughtless person.'   'Mrs. Robinson was always considerate of her students.'   ' The press was always kind about Madonna.'   ' Lee was nice about my car accident.'   ' I appreciated his kind offer of the car.'"}, {'frame': 'Compatibility', 'tfidf': 2.171942514158698, 'lexical_unit': 'compatible.a / incompatible.a / incompatibility.n / compatibility.n / harmonize.v / congruent.a / congruous.a / consonant.a / dovetail.v / jibe.v / square.v / comport.v / rhyme.v / accord.v / agree.v / cohere.v / consistent.a / harmony.n / go.v / clash.v / match.v / biocompatible.a / conflict.v / conflicting.a / at variance.a / fly in the face of.v', 'definition': "Item-1 and Item-2 are compatible with each other if they can exist or function together in some context without problems, conflict, or other undesirable situation.  The set of Item-1 and Item-2 may be expressed jointly as Items. The Degree to which the Items are compatible may also be indicated, as may be a Parameter along whose lines the Items are compatible. ' Make sure your site is compatible with any browser.' 'Our software applications  are compatible. ' "}, {'frame': 'Reason', 'tfidf': 2.108437187260303, 'lexical_unit': 'reason.n / why.n / motive.n / motivation.n / basis.n', 'definition': "A volitional  Agent is responding to a State_of_affairs by performing some Action.  'And was that your reason for becoming an actor ?' 'But Giles is the reason that I am here .' 'Oh my reason for including it was Section fifty four A.'  "}, {'frame': 'Continued_state_of_affairs', 'tfidf': 1.9657189314199803, 'lexical_unit': 'so far.adv / to date.adv / up to.prep / as yet.adv / as of yet.adv / still.adv', 'definition': "A State_of_affairs has held and continues to hold up to the Reference_occasion.   'To date, the Department already has numerous requests for new systems to be developed.'  'SAGE has no activities planned as of yet.'  'PBGC guarantees the benefit that you had earned up to the date of plan termination'  'I think that she 's still in her office .'"}, {'frame': 'Thriving', 'tfidf': 1.9208333627443828, 'lexical_unit': 'thrive.v / flourish.v / prosper.v / languish.v / slump.n / do.v / fare.v / prosperity.n / live.v', 'definition': "An Entity is in a state such that it participates in a preponderance of states and events which are desirable for it. For living entities, this may entail a proliferation of instances of the entity, or of desirable properties associated with the (single) entity. For non-living entities (economies, political locales, academic topics, etc.), this entails a proliferation of instances, or of activities that lead to instances, or any attribute that would prevent the entity from disappearing. This state is conceived of as temporary, or at least contingent on a number of changeable factors. Words expressing the opposite state, i.e., a lack of such positive activity, are also in this frame.  'In the 1920s the peach industry flourished in Upson County.'  'Construction companies thrive on public projects.'"}, {'frame': 'Age', 'tfidf': 1.7807231447034004, 'lexical_unit': 'old.a / ancient.a / young.a / youngish.a / oldish.a / age.n / new.a / fresh.a / of.prep / maturity.n / mature.a / elderly.a', 'definition': "An Entity has existed for a length of time, the Age. The Age can be characterized as a value of the age Attribute, or a Degree modifier may express the deviation of the Age from the norm. The Expressor exhibits qualities of the age of the Entity.  'This building is twenty thousand years old.'  'My grandpa is really old'  'Junior is only five weeks old.'  'A cunning oldish voice called out from the crowd.'  'His age was 23 at the time.'  ' People of  age 55 or older should consult their physician. '  'I have a 13-year-old cousin'  'My grandma is old'  There are additional patterns that the LUs in this frame occur in which are not licensed by a particular lexical head but by a construction.  Additionally, there are patterns that evoke this frame without any overt lexical head that are part of this frame.   'She is 45 years of age.' 'Billy  is 13.'     "}, {'frame': 'Building_subparts', 'tfidf': 1.7721824645316044, 'lexical_unit': 'room.n / antechamber.n / anteroom.n / atelier.n / attic.n / ballroom.n / basement.n / bathroom.n / bedroom.n / ben.n / boudoir.n / buttery.n / catacomb.n / cell.n / cellar.n / chamber.n / chancellery.n / chapel.n / checkroom.n / cloakroom.n / closet.n / corridor.n / den.n / foyer.n / garret.n / hallway.n / kitchen.n / kitchenette.n / larder.n / laundry.n / lift.n / elevator.n / lobby.n / loft.n / nursery.n / office.n / pantry.n / parlor.n / playroom.n / porch.n / refectory.n / repository.n / sacristy.n / salon.n / scullery.n / solarium.n / stoop.n / storeroom.n / studio.n / study.n / veranda.n / vestibule.n / ward.n / wing.n / workroom.n / workshop.n / banquet room.n / dining room.n / dressing room.n / family room.n / guest room.n / living room.n / master bedroom.n / powder room.n / rest room.n / rumpus room.n / sitting room.n / utility room.n / wine cellar.n / apartment.n / flat.n / lavatory.n / TV room.n / belfry.n / tower.n / altar.n / laundry room.n / level.n / floor.n / deck.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"The Y2 Kaper"</span>.</h5>
+                        <br/>
+                        <pre>
+Val felt himself blush.
+"Sure.
+I mean, are you serious?"
+"Just because I matched the good professor stein for stein, while you, and I do appreciate it, did your civic duty by abstaining, does not mean that I have lost my ability to reason!
+I repeat: where to?"
+"Well, let's see.
+If we eliminate for the sake of argument the 90% of campus joints that feature either burgers, pizza or some combination, we're still left with a number of places that have an intellectual bent."
+"Can't we just go dancing?
+And what's wrong with burgers and pizza, not that I'm hungry?
+I tell you what.
+We're near the hotel, right?
+Why don't we go there, check in, and take a cab back here to High Street?"
+Val ran a yellow, smiling to himself and shaking his head.
+Chapter 27 Val had made the three-hour drive home to Toledo from Columbus dozens of times in college.
+As usual he hadn't really planned to visit his mother but for some reason felt like taking advantage of being in Ohio.
+He decided he could spare the time, so he dropped Jenny at the airport and headed north.
+He had only a small headache, appropriate for the more than one but less than I forget how many beers he had drunk.
+On any given afternoon between three and four he was at significant risk of falling asleep at the wheel - or in the conference room - but he figured he'd be OK after three coffees.
+He could nap on his mom's couch.
+She had converted his room into a combination office and sewing room.
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"From Hell With Love"</span>.</h5>
+                        <br/>
+                        <pre>
+"I inherit the powers of the slain, Amon," Cadmus interrupted, getting impatient with the demon.
+The raven's head twitched at the statement and he stared hard into the reaper's grey eyes.
+Amon walked forward until he was within a few feet of the Horseman and almost seemed to smile.
+"How interesting...I did not know that, reaper.
+Are you implying you have inherited the future sight?"
+he asked, but Cadmus shook his head at that.
+"No, Amon, but in a flash I was able to see the future, or at least what Raum had seen in his visions."
+"And what did you see?"
+Amon asked, inching closer to the reaper.
+"I...that's not what we need to ask about."
+"Tut, tut, Horseman, this game will not be so one-sided," Amon stated, just slightly baring his wolf's teeth.
+"First," Cadmus said, backing away and bringing his scythe in front of him, trying to ward off the raven's aggressive behavior.
+"First I need to know how to interpret it."
+"You should tell me what it was, Horseman," the demon's head twitched as it made the suggestion, but Cadmus shook his head.
+"Would it be reliable, Amon?
+Anything I saw?
+Or could it just be something that Raum wanted to happen?
+Could it just be some demented fantasy?
+Would it be reliable even if it was just a vision?"
+Cadmus asked, keeping his gaze fixed on the black eyes of the demon.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="45">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="1">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

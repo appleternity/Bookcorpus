@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Protest', 'tfidf': 4.920974134352578, 'lexical_unit': 'demonstration.n / demonstrate.v / protest.n / protest.v / protester.n', 'definition': "A Protester (or Protesters) expresses a strong opinion either in support of or against an Issue, or the Action(s) of a Side which relate to the Issue. The public expression of support or opposition often involves multiple Protesters participating in an orginized assembly in a public area.  'Several hundred Tibetans, already worried by inflation, took to the streets to protest at the new measures.'  'Fourteen people were killed in the demonstration for the unemployed.'"}, {'frame': 'Change_of_temperature', 'tfidf': 4.480565943423935, 'lexical_unit': 'chill.v / cool.v / heat.v / refrigerate.v / reheat.v / warm.v / cool off.v', 'definition': "In this frame, the temperature of an Item changes.  An Initial_temperature, Final_temperature, or Temperature_change can also be indicated.    'The house had cooled off by a few more degrees by midnight, and we finally managed to eat a bite.' "}, {'frame': 'Temperature', 'tfidf': 4.125930814342747, 'lexical_unit': 'temperature.n / hot.a / cool.a / freezing.a / cold.a / lukewarm.a / tepid.a / frigid.a / scalding.a / warm.a', 'definition': "An Entity has a Temperature characterized by the target.  The Temperature is a value of the temperature Attribute.  'The pan is already too hot to touch.'  'The walk-in was freezing, but it was better than hanging out in the kitchen.' '' Note that in this  frame, the Entity does not experience the temperature, but is merely described as being in a certain externally verifiable state.   Thus 'Open a window; I'm too hot.' is not in frame but rather in Subjective_temperature. "}, {'frame': 'Confronting_problem', 'tfidf': 3.568624277684325, 'lexical_unit': 'face.v / confront.v', 'definition': "An Agent becomes involved in an Issue which has negative consequences for them. The Agent will normally respond to resolve the Issue.  'I confronted both issues.'"}, {'frame': 'Aesthetics', 'tfidf': 3.4851153317705377, 'lexical_unit': 'beautiful.a / lovely.a / smart.a / ugly.a / tasty.a / elegant.a / fair.a / handsome.a / hideous.a', 'definition': "An Entity is judged to be sensually pleasing or intellectually interesting to a (generally implicit) Judge.   'We saw this beautiful boat with the red sails several times' 'We camped here on the beach and had an absolutely lovely early morning walk through farm fields' "}, {'frame': 'Speak_on_topic', 'tfidf': 3.1286042613845497, 'lexical_unit': 'lecture.v / sermonize.v / expound.v / preach.v / hold forth.v / expatiate.v / ramble.v / go on.v / discuss.v / address.v / address.n / lecture.n / pontificate.v / tell.v', 'definition': "A Speaker addresses an Audience on a particular Topic.  The Audience is generally passive, although for many types of address (including academic talks and press conferences), a discussion or question-answer period is virtually always required.  'McNamara addressed congress on the state of affairs of the Department of Defense.'"}, {'frame': 'Making_faces', 'tfidf': 2.8701473799098496, 'lexical_unit': 'frown.v / grimace.v / grin.v / pout.v / scowl.v / smile.v / smirk.v', 'definition': "An Agent makes a particular facial expression, generally in response to some Internal_cause (generally an emotional state).  Sometimes the Body_part involved in the expression is mentioned in lieu of the Agent.  'His eyes smile, but his lips do not.'"}, {'frame': 'Residence', 'tfidf': 2.6163541845968457, 'lexical_unit': 'reside.v / resident.n / dwell.v / stay.v / lodge.v / inhabit.v / inhabitant.n / live.v / camp.v / squat.v / camp.n / camped.a / room-mate.n / squatter.n / occupy.v / dweller.n / camper.n / occupant.n / room.v / shack up.v / bivouac.v / bivouac.n / tenant.n', 'definition': "This frame has to do with people (the Residents) residing in Locations, sometimes with a Co-resident.  'Peter lives in New York.' 'Sue is an inhabitant of Los Angeles.'"}, {'frame': 'Capability', 'tfidf': 2.2612599215580325, 'lexical_unit': 'able.a / unable.a / can.v / capable.a / ability.n / potential.n / capability.n / capacity.n / potential.a / power.n / power [statistical].n / powerless.a / powerlessness.n / inability.n / incapable.a / incapacity.n / powerful.a', 'definition': "An Entity meets the pre-conditions for participating in an Event.  A Degree modifier may be included to indicate by how much the Entity exceeds or falls short of the minimum requirements.  'Conductor software gives us the hands-on capability to provide updates immediately'  'The GOP is afraid that it might not be capable of keeping the seat vacated by Dunn.'  'NASA is unable to communicate with Mars rover.'  'He can fly a kite.'"}, {'frame': 'Change_position_on_a_scale', 'tfidf': 2.1895952065148543, 'lexical_unit': 'increase.v / increase.n / fall.v / fall.n / rise.v / rise.n / decrease.n / decrease.v / soar.v / diminish.v / plummet.v / grow.v / move.v / decline.v / decline.n / tumble.v / tumble.n / rocket.v / slide.v / gain.v / advance.v / jump.v / drop.v / dwindle.v / double.v / triple.v / fluctuate.v / fluctuation.n / hike.n / explode.v / explosion.n / mushroom.v / growth.n / swell.v / skyrocket.v / reach.v / dip.v / edge.v / climb.v / swing.v / escalation.n / shift.n / shift.v / gain.n / increasingly.adv / balloon.v / growing.a / contract.v / contraction.n / depressed.a / elevated.a / accelerated.a / depression.n / elevation.n / lower.v / down.prep', 'definition': 'This frame consists of words that indicate the change of an Item\'s position on a scale (the Attribute) from a starting point (Initial_value) to an end point (Final_value). The direction (Path) of the movement can be indicated as well as the magnitude of the change (Difference).  The rate of change of the value (Speed) is optionally indicated.  Another scale (Correlate), which the values are correlated with, is indicated if it is not the default correlate (namely, absolute time).  \'\' The distinction between Attributes and Items is not always an easy one. The clear cases involve the expression of the Attribute in an in-PP.  \'Hawke\'s Bay winery doubled in size last year.\'  \'The amount you can deduct, then, depends on whether or not the stock has increased in value during the period you have owned it.\'  Other clear cases of Attributes involve NP\'s like size, quality, number, value that denote abstract attributes rather than events or classes of things.   \'\' The analysis is more complicated when an event-denoting noun phrase occurs as the subject and the sentence has no in-PP. In the simplest cases, where the Attribute is the number of occurrences of the event, the Attribute is usually left implicit, as in exx. 1 and 2, the Attribute below.  \'(1)Accidents increased 20% to 345.\' \'(1--second FE layer)Accidents increased 20% to 345.\' \'(2) Attacks on civilians decreased over the last 4 months  DNI.\'  In cases  like (1), we will tag the Attribute on the second layer below the Final_value label, as that FE makes it clear that the Attribute is simply cardinality. In cases like (2), we tag it as DNI because in context the hearer has to understand a particular Attribute rather than just some or any appropriate Attribute of the Item.  Note that the above pattern can be compared to cases involving tangible Items, where the Attribute may similarly be missing when the incidence or frequency of the Item is specified.  \'(3) Woodland birds increasedto their highest level since 1990 DNI.\'   A more complicated case involving event-denoting subjects is when the Attribute measured is not the incidence of the type of event specified but rather an Attribute of an event-participant. In (4), it is not the number of times that turbot was caught that has changed but the amount of fish caught.  \'(4) Turbot catches increased from around 100 tonnes in the 1960s to around 1,200 tonnes in the mid 1990s.\' \'(4-second FE layer) Turbot catches increased from around 100 tonnes in the 1960s to around 1,200 tonnes in the mid 1990s.\'  (Note the 2nd layer annotation of the Attribute below the Initial_value and Final_value FEs, since they indicate that the Attribute is implicitly weight.)  Similarly, in (5), the report is (in context) about the total monetary value of the gifts, not about the number of donations made.  \'(5)Overall Giving by Church Members increased  from 2000 to 2001\'  As can be seen from the above examples, we consider the event nouns in uses such as (4) and (5) to also specify Items. Note that in cases like (4), we do not want to treat the subject NP "turbot catches" as an Attribute that includes information about the Item, since it would not make sense to restate (4) as follows:  \'*Turbot increased in catches.\'  Two more complications arise. First, certain nouns that do not, by their etymology, denote abstract attributes have a second sense in which they do denote an Attribute.  \'(6) The population of Smallville increased fourfold to 807.\'   Under one reading, (6a), the population could be understood as referring to "the people", in which case the Attribute cardinality is understood as unexpressed, as in (1),  (2), and (3).  The Attribute could be overtly specified:  \'(6a) The population of Smallville increased fourfold in size to 807.\'  Under another reading, (6b), population is an Attribute that habitats or locations possess. In this case, the whole NP "the population of Smallville" is treated as the Attribute and on the second layer "of Smallville" is tagged as Item.   \'(6b) The population of Smallville increased fourfold to 807.\' \'(6b-second FE layer) The population of Smallville increased fourfold to 807.\' Support for the possibility of this second reading comes from the fact that you can also state the facts as in (6c).  \'(6c) Smallville increased fourfold in population to 807.\'   The last complication is that Initial_value expressions can also function as the subject, which superficially look like expressions of Attribute.  \'(7) The 1999 price had increased to $3400 by 2001.\' \'(7--second layer) The 1999 price had increased to $3400 by 2001.\'  There is no Attribute "1999 price" here (though the concept is plausible in certain special statistical contexts where prices are indexed to prices of a particular year). (7) simply reports that the value of the price-Attribute changed from whatever it was in 1999 to the new value of $3400 by 2001. For sentence (7), Attribute would only be indicated as "price" on the 2nd layer. '}, {'frame': 'Wearing', 'tfidf': 1.8261553820620382, 'lexical_unit': 'naked.a / nude.a / unclad.a / unshod.a / shoeless.a / sockless.a / nakedness.n / nudity.n / clad.a / clothed.a / wear.v / dressed.a / barefoot.a / bare.a / bare.v / bareheaded.a / barelegged.a / bare-chested.a / hatless.a / coatless.a / shirtless.a / barefooted.a / undressed.a / topless.a / masked.a / hooded.a / undress.n / costumed.a / garbed.a / unclothed.a / bare-armed.a / bare-breasted.a / hatted.a / braless.a / robed.a / attired.a / gloved.a / gloveless.a / have on.v / with on.idio / have got on.v / in.prep / decked out.a / dolled up.a / got on.v / sport.v / swaddled.a / swathed.a', 'definition': "The words in this frame refer to what Clothing the Wearer (or a specific Body_part of the Wearer) has on.  'I had on the most ridiculous monkey-suit you could imagine.' 'These two losers were wearing bras on their heads!'  Many targets incorporate the Clothing item, and some targets describe the state of not wearing something (when it might be expected).  'Do you think anyone would notice if I went topless?'    NB: There is a very common metonymy in which characteristics of the clothing stand for the clothing itself, such as   'the man clad in leather.' 'She was dressed all in red.'  Such sentences should be tagged METAPHOR on the sentence level."}, {'frame': 'Building_subparts', 'tfidf': 1.7721824645316044, 'lexical_unit': 'room.n / antechamber.n / anteroom.n / atelier.n / attic.n / ballroom.n / basement.n / bathroom.n / bedroom.n / ben.n / boudoir.n / buttery.n / catacomb.n / cell.n / cellar.n / chamber.n / chancellery.n / chapel.n / checkroom.n / cloakroom.n / closet.n / corridor.n / den.n / foyer.n / garret.n / hallway.n / kitchen.n / kitchenette.n / larder.n / laundry.n / lift.n / elevator.n / lobby.n / loft.n / nursery.n / office.n / pantry.n / parlor.n / playroom.n / porch.n / refectory.n / repository.n / sacristy.n / salon.n / scullery.n / solarium.n / stoop.n / storeroom.n / studio.n / study.n / veranda.n / vestibule.n / ward.n / wing.n / workroom.n / workshop.n / banquet room.n / dining room.n / dressing room.n / family room.n / guest room.n / living room.n / master bedroom.n / powder room.n / rest room.n / rumpus room.n / sitting room.n / utility room.n / wine cellar.n / apartment.n / flat.n / lavatory.n / TV room.n / belfry.n / tower.n / altar.n / laundry room.n / level.n / floor.n / deck.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}, {'frame': 'Size', 'tfidf': 1.6184513195837744, 'lexical_unit': 'large.a / big.a / huge.a / small.a / tiny.a / little.a / enormous.a / great.a / infinitesimal.a / gigantic.a / giant.a / miniature.a / grand.a / immense.a / miniscule.a / massive.a / sizable.a / substantial.a / ample.a / bulky.a / capacious.a / colossal.a / humongous.a / immeasurable.a / voluminous.a / jumbo.a / mini.a / petite.a / wee.a / bitty.a / puny.a / Brobdingnagian.a / Lilliputian.a / medium.a / mid-size.a / medium-sized.a', 'definition': 'The size of an Entity is assessed in terms of the Degree by which it deviates from the norm. The size generally refers to the amount of three-dimensional space that is occupied by the Entity, not primarily to its weight, density, or length, which is why it is peculiar to refer to a bullet as "large", even if it is heavy, unless it actually has larger dimensions than usual, or to a rope as "big", even if it is long, unless its other, cross-sectional dimensions are also significant.  \'I own a very small home.\' \'Where is my little notebook?\' \'That dog is huge!\' \'\'  There are an enormous number of productive metaphors that involve this frame as the source domain; two of the most frequent metaphors come from the target domains of quantity/amount and importance.    \'He gave me a small sum of money.\' \'The novel was a substantial achievement.\' \'\'  Subcases of the quantity/amount and importance metaphors are also prominent. These involve cases describing the extent of an action\'s, event\'s, or person\'s effect ("his influence on her work was massive"), as well as those related to events ("big party"), similarity ("gigantic difference"), communication ("giant misunderstanding"), and emotions ("great joy", "little joys").  Other productive metaphors include those dealing with groups (in terms of their number of members, net worth, importance to the economy, i.e. "giant electronics company") and those describing sound volume ("in a tiny voice", "the enormous thundering of her heart").  \'\'  The target domain of fame, by contrast, occurs in a non-productive metaphor, found especially with big.a and huge.a. Maturity and age also occur in non-productive metaphors ("big boy", "little baby").'}, {'frame': 'Being_employed', 'tfidf': 1.5678564424601489, 'lexical_unit': 'work.v / work.n / employ.n / wait tables.idio / job.n / clerk.v / temp.v / stint.n / employed.a / subcontract.v / farm (out).v / employment.n / unemployment.n / unemployed.a / jobless.a / position.n / at.prep', 'definition': "An Employee has a Position doing work in a particular Field, or doing work on a particular Task, for which an Employer gives Compensation to the Employee.  ' Undocumented foreigners are working as  building contractors for Laing Builders.'"}, {'frame': 'Hedging', 'tfidf': 1.4818616755291847, 'lexical_unit': 'a bit.n / sort of.adv / like.adv / kind of.adv / on the side.a / something.n / in a way.adv / rather.adv', 'definition': 'When words of this frame are used as hedge markers, they signal that the speaker of the sentence wishes to be careful about asserting some Hedged_content.  Use of a hedge marker may mean that the speaker is uncertain of how factual of the Hedged_content is, or uncertain of whether they\'re expressing the idea behind Hedged_content well, or it may mean that the Hedged_content is socially undesirable or awkward in the conversational context.   \'The president is a bit of an idiot when it comes to foreign policy .\' \'I \'m sorry , but he is on the heavy side , you understand .\' \'I thought, like, maybe you would know .\' \'My father was something of a dilettante .\' \'He rather doubts you\'ll be able to convince your mom. \' \'\' Because these words serve to indicate hesitancy, often for purposes of increased politeness, speakers may use several encodings of hedging simultaneously to iconically indicate the degree of politeness or hesitancy that they wish to express:  \'Your story, is, like, kind of a bit on the short side .\' \'\' There is also an ironic or sarcastic use of LUs in this frame, as in the following:  \'When a standard vaccuum can\'t even pick up the clods, you know you\'ve kinda got a problem.\' \'\' Words expressing small quantities or degrees (e.g., "a tad", "a little", etc.) can be used in a very similar function to words of this frame.  However, these words do not simply signify hesitation, but merely frequently imply it when used to modify a predication.  Such words can only be used on their on or with a noun to signify a small quantity or number ("a little whiskey", see Proportional_quantity), or with an adjective to indicate that the quality described by the adjective is close to average ("a mite stupid", "somewhat confused" see Degree).  Words of those frames may be nested within noun phrases or in other positions where content is not asserted but rather presupposed.  Words that belong to the Hedging frame, by contrast, either take a noun complement and indicate hesitancy or imprecision concerning the category ("something of a klutz"), or modify an entire proposition to indicate imprecision of the proposition ("I, like, waved it around").  In both cases, the Hedged_content must occur in the at-issue focus of a proposition, the part of a statement that the speaker is, so to speak, on record as asserting.'}, {'frame': 'Giving', 'tfidf': 1.3341188048377426, 'lexical_unit': 'give.v / donate.v / donation.n / donor.n / foist.v / endow.v / fob off.v / give out.v / hand over.v / hand out.v / gift.v / gift.n / pass out.v / bequeath.v / treat.v / hand.v / hand in.v / contribute.v / contribution.n / charity.n / volunteer.v / will.v / leave.v / advance.v / confer (upon).v / bequest.n', 'definition': "A Donor transfers a Theme from a Donor to a Recipient.  This frame includes only actions that are initiated by the Donor (the one that starts out owning the Theme).  Sentences (even metaphorical ones) must meet the following entailments: the  Donor first has possession of the Theme.  Following the transfer the Donor no longer has the Theme and the Recipient does. 'Barney gave the beer to Moe.' '$300 was endowed to the university to build a new performing arts building.'"}, {'frame': 'Direction', 'tfidf': 1.1921323751924042, 'lexical_unit': 'east.adv / up.adv / forward.adv / left.adv / right.adv / north.adv / south.n / east.n / south.adv / down.adv / outward.adv / north.n / west.adv / true north.n / way.n', 'definition': 'This frame covers the basic uses of direction words like the adverbs east, up, and forward.  These are used either to talk about a direction of facing (e.g., facing outward, pointing left, looking downward, turn east) or to talk about actual or metaphorical motion (went up, traveling due north).  Lexical units of this frame typically have a semantic type that refers to the means of determining the direction (e.g. forward.adv has the semantic type Landmark_front, meaning that "forward" is defined with respect to the direction from the center of some entity to its front, however defined).  Nevertheless, some words like way.n are used exactly when normal means of specifying direction are not available.  This frame is most frequently used to describe the motion of something along the Path from the Landmark, which is normally implicitly identified as the location of the viewpoint:    \'We went north . DNI\'  In such cases, a Distance from the Landmark can also be given:  \'After she was knocked on the head , it seemed like everything had moved three feet to the left . DNI\'  It can often be used for direction of facing, which is not compatible with the Distance frame element:  \'Look left and you \'ll see it . DNI \'  Although rare for certain lexical units (e.g., upward.adv), most words in this frame are commonly used in a fictive motion pattern to identify locations that can be reached by moving in the indicated way from the Landmark:  \'The book was unreachable, 10 feet up on the shelf. DNI\' \'East of Mt. Diablo the Sierras rise majestically above the Central Valley.\'  \'\'  In this fictive motion case, the Domain and the Independent_variable are both spatial, and should be marked as metaphorical.  Note this differs from members of the Directional_locative_relation frame (e.g., above.prep), which can only be used for relative static positions, and not for facings or for directions of motion:  \'??? The book faced above the door .\' vs. \'The book faced upward .\'  A potential point of confusion is that the Directional_locative_relation frame is also used for cases in which adverbs like east.adv, etc. are followed by "of", since such expressions can only be used of static relative positions and not facings:  \'??? I faced east of the mountains .\'  Another potential point of confusion is that nouns referring to directions can be used for facings if they are preceeded by the word "to".  Since this use of to.prep can be found with a broader class of words like side.n, we interpret this sense of to.prep as mapping relative postitions (belonging to the Directional_locative_relation frame) to true Directions, in the sense of this frame.  This applies to expressions like "to the east", as well as "to both sides" and "to the rear".  In the future, we may add these as multi-word members of the frame.  In the following case, the Domain is "potency" and the Independent_variable is, as usual, time; again, the example should be marked as metaphorical.  \'\' \'They decided to rerate the medication downward in potency .\' \'\'  In mathematical terms, all of these uses can be understood as a Path, made up of a set of positions in some N-space Domain (by default spatial, or metaphorically, other domains), being determined as a function of a Landmark (which may be incorporated and is usually implicit) and some one-dimensional Independent_variable (time, or, metaphorically, other domains).  The Domain and/or the Independent_variable are normally incorporated in the basic definition of the target; thus, for example, up.adv, by default, indicates the Domain is space, and time is the Independent_variable. From a linguistic point of view, we consider these literal spatio-temporal uses to be basic, and other cases, where space is replaced by some other kind of quantity, is to be understood as metaphorical.'}, {'frame': 'Ingestion', 'tfidf': 1.163519539599859, 'lexical_unit': 'lap.v / slurp.v / swig.v / guzzle.v / gulp.v / down.v / sip.v / sup.v / munch.v / nosh.v / feast.v / feed.v / snack.v / breakfast.v / lunch.v / dine.v / ingest.v / nurse.v / nibble.v / eat.v / drink.v / gobble.v / devour.v / consume.v / sip.n / gulp.n / swig.n / slurp.n / have.v / imbibe.v / quaff.v / swill.v / put away.v / put back.v / tuck.v / ingestion.n', 'definition': "An Ingestor consumes food or drink (Ingestibles), which entails putting the Ingestibles in the mouth for delivery to the digestive system.  This may include the use of an Instrument.  Sentences that describe the provision of food to others are NOT included in this frame.  'The wolves devoured the carcass completely.'"}, {'frame': 'Degree', 'tfidf': 0.9093020604034969, 'lexical_unit': 'so.adv / a little.adv / a little bit.adv / very.adv / that.adv / totally.adv / fully.adv / heavily.adv / far.adv / somewhat.adv / in part.adv / great.a / way.adv / particular.a / a lot.adv / stone (cold).n / dirt (poor).n / sopping (wet).a / crystal (clear).n / as hell.adv / kind of.adv', 'definition': "LUs in this frame modify a gradable attribute and describe intensities at the extreme positions on a scale.  'She is very brave.'  'It is that simple!'  'The feuds are so vicious because the stakes are so low.'  'The plant is totally red  without the slightest hint of green.' "}, {'frame': 'Entity', 'tfidf': 0.7628561076421213, 'lexical_unit': 'item.n / entity.n / object.n / thing.n / individual.n / what.n', 'definition': "This frame is for words that denote highly schematic entities.  'We found an unusual wooden object in the desert.'"}, {'frame': 'Causation', 'tfidf': 0.6328379667674535, 'lexical_unit': 'cause.v / cause.n / make.v / lead (to).v / reason.n / send.v / bring about.v / precipitate.v / causative.a / render.v / bring.v / bring on.v / induce.v / wreak.v / put.v / since.c / because.c / because of.prep / raise.v / result (in).v / mean.v / result.n / leave.v / for.c / see.v / force.v / give rise.v / so.c / due to.prep / responsible.a / consequence.n / resulting.a / consequent.a / consequential.a / resultant.a / dictate.v / motivate.v / sway.v / legacy.n', 'definition': "A Cause causes an Effect.  Alternatively, an Actor, a participant of a (implicit) Cause, may stand in for the Cause.  The entity Affected by the Causation may stand in for the overall Effect situation or event.   '' Those frames that inherit the Causation frame have as their background the idea that some event is responsible for the occurrence of another event (or state).  In the  inheriting frame, typically an FE like Agent or Causer is proposed in the place of the Actor, but in the daughter frames, as in this frame, the Actor is semantically dependent on the idea of a Cause (an event or state-of-affairs) that the Actor is a participant in.  Similarly, most inheriting frames profile only the Affected entity, not the full Effect situation which is often incorporated into the frame or the particular target.  So, for example, paint.v in the Filling frame entails the final situation of something (the Affected) being covered in paint (the Effect).  'He made me angry.'  'If such a small earthquake causes problems, just imagine a big one!'  'The strange mutations of the rumor mill in the end led to it being said that he was actually a woman.'  'You 've made it impossible to continue!'  'The ending left me feeling kinda empty.'"}, {'frame': 'Negation', 'tfidf': 0.6288679584707727, 'lexical_unit': 'not.adv / never.adv / without.prep / no.art / no longer.adv / far.a', 'definition': 'This frame models the semantic contribution of negation, in which the profiled content of the Negated_proposition is asserted to contrast incompatibly with a corresponding Factual_situation, which is normally implicit.  The Negated_proposition and the Factual_situation share non-focal content, on the basis of which they correspond, and contrast in a subset of their content, the focal content, established with reference to a set of focus constructions not described here.  (The focus of negation is often conveyed intonationally in spoken English; in text, however, negative focus must be derived inferentially from contextual reference. A subset of focus constructions will be annotated in the constructicon.)  \'\' While the semantics of negation are quite different from the semantics belonging to most frames, at a minimum, our modeling of the concept using frame semantic tools can be viewed as a practical attempt to label a problem and annotate examples that may inform further research. \'\' Negation can be evoked verbally (analytic or synthetic) or nominally. Negators include "not", "no", "never", and negational affixes, such as those used on inflected verbs in synthetic verbal negation (wasn\'t, isn\'t, haven\'t).  \'It \'s not far from here . INI\' \'She \'s not smart , she \'s sly .\'    '}, {'frame': 'Locative_relation', 'tfidf': 0.24942517311962972, 'lexical_unit': 'at.prep / athwart.prep / over.prep / beyond.prep / along.prep / up.prep / down.prep / astride.prep / all over.prep / border.v / where.adv / near.prep / underground.a / above-ground.a / underground.adv / everywhere.adv / elsewhere.adv / here.adv / surrounding.a / distant.a / outlying.a / north.prep / south.prep / out.prep / west.prep / ubiquitous.a / there.adv / offshore.a / inland.a / past.prep / to.prep / southeast.prep / mainland.n / throughout.prep / meet.v / bracket.v / southwest.prep / northeast.prep / northwest.prep', 'definition': "A Figure is located relative to a Ground location.    'The cat is on the mat.' 'The kitchen, with its breakfast / snack bar, adjoins on one side while the dining area adjoins on the other side. DNI' 'The president's plane landed in Washington.'  This frame is used for LUs that do not belong in daughter frames, either because they are too general to have any particular image schema associated with them (e.g., here.adv), or because we do not (yet) have a specific frame with the correct image schema (e.g., inland.a).  Prepositions, adverbs, and spatial adjectives that act as targets in this frame and its descendants cooccur with a number of constructions that may supply extra information and should be annotated as extrathematic frame elements.  The location of the Figure may be further specified by its Distance from the Ground along a vector implied by the targets image schema, or the Direction in which the Figure lies from a reference location (generally, the deictic center).  In cases where both seem to cooccur, the Distance actually modifies the Direction, as seen in the following example:  'This pup was lying abandoned, 350 feet down at the bottom of an Arizona canyon.'  There is no sense in which the Distance is measured using the schema for at.prep ('350 feet at the bottom of the canyon' doesn't mean the right thing at all); rather the distance is measured using the schema for down.adv, and is thus considered a modifier of the Direction FE.  In some very specific situations, prepositions, adjectives, and nouns can be used with a copula to describe the whole Profiled_region where a Figure is or could be, as in the following:  'Inside my wallet is where I put it .' 'Outside your blind date's door seems like the worst place in the world .'   "}, {'frame': 'Performers_and_roles', 'tfidf': 0.18074090603733906, 'lexical_unit': 'star.v / act.v / play.v / be.v / star.n / co-star.n / co-star (in).v / lead.n / star (in).v / as.prep / co-star.v / feature.v / character.n / role.n / part.n / appear.v', 'definition': 'A Performer has a certain Role in a Performance and plays their part by following the directions in the Script for that particular Role.   \'Margaret Thatcher played Juliet in a school play.\' \'"Pulp Fiction" starred John Travolta and a lot of other big names.\' \'Mel Gibson starred in "Braveheart" as the leader of a Scottish rebellion.\' \'I play the character of Yusuf in this film.\''}, {'frame': 'Goal', 'tfidf': 0.1234955468884728, 'lexical_unit': 'to.prep / into.prep', 'definition': "A Landmark (in combination with the image schema evoked by particular targets) serves to pick out the final location of a Trajector in a construed or actual motion event.  'Flights into Denver are not permitted at this time.'"}, {'frame': 'Duration_scenario', 'tfidf': 0.0, 'lexical_unit': '', 'definition': 'An Event or Period has a particular Duration.  The Duration may be characterized in several different ways: as a Durational direct measure, a Degree of deviation from an expected Duration, or as a Count of Units of standard, known duration.'}, {'frame': 'Duration_relation', 'tfidf': 0.0, 'lexical_unit': 'last.v / persist.v / for.prep', 'definition': "A Period or Eventuality is related to its Duration.  Alternatively, an Entity may stand in metonymically for an Eventuality that it is involved in.  'You wouldn't last five minutes!'"}, {'frame': 'Emotion_heat', 'tfidf': 0.0, 'lexical_unit': 'boil.v / burn.v / chafe.v / fume.v / seethe.v / simmer.v / smoulder.v / stew.v', 'definition': "This frame contains verbs that describe emotional experiences and participate in the locative alternation, as in the following examples: '' ' I was boiling with anger.' 'Anger was boiling inside me.'   While these words might seem to be like support verbs for emotion nouns such as anger, the same verbs can be used in the absence of such nouns, as in: '' 'His remarks made me boil inside.' "}, {'frame': 'Emotion_directed', 'tfidf': 0.0, 'lexical_unit': 'angry.a / appalled.a / cross.a / disappointed.a / furious.a / mad.a / pleased.a / sore.a / upset.a / petrified.a / miffed.a / embarrassed.a / anxious.a / excited.a / livid.a / rattled.a / relaxed.a / resentful.a / revolted.a / sad.a / sickened.a / sorrowful.a / startled.a / stressed.a / stupefied.a / terror-stricken.a / tormented.a / traumatised.a / unsettled.a / vexed.a / worried.a / disquieted.a / harried.a / ruffled.a / abashed.a / flustered.a / humiliated.a / flummoxed.a / nonplussed.a / disconsolate.a / glum.a / woebegone.a / lugubrious.a / desolate.a / wretched.a / miserable.a / blue.a / despondent.a / downcast.a / low-spirited.a / crestfallen.a / disgruntled.a / downhearted.a / flabbergasted.a / affronted.a / incensed.a / overwrought.a / riled.a / agonized.a / inconsolable.a / stunned.a / befuddled.a / anguished.a / happy.a / revulsion.n / vexation.n / anger.n / anguish.n / agony.n / annoyance.n / despondency.n / disquiet.n / elation.n / bafflement.n / astonishment.n / bewilderment.n / perplexity.n / puzzlement.n / stupefaction.n / mystification.n / dismay.n / discomfiture.n / disgruntlement.n / disorientation.n / discouragement.n / glumness.n / disconcertion.n / displeasure.n / dejection.n / sorrow.n / embarrassment.n / exhilaration.n / disappointment.n / exasperation.n / agitation.n / amusement.n / boredom.n / distress.n / chagrined.a / excitement.n / gratification.n / heartbreak.n / horror.n / mortification.n / sadness.n / sympathy.n / agitated.a / alarmed.a / amused.a / ashamed.a / astonished.a / astounded.a / baffled.a / bewildered.a / bored.a / chagrin.n / concerned.a / contented.a / covetous.a / dejected.a / delight.n / delighted.a / depressed.a / despair.n / devastated.a / discomfited.a / disconcerted.a / discouraged.a / disheartened.a / dismayed.a / disoriented.a / distressed.a / ecstatic.a / elated.a / displeased.a / embittered.a / enraged.a / exasperated.a / exhilarated.a / fed-up.a / gleeful.a / gratified.a / grief-stricken.a / heartbroken.a / horrified.a / indignant.a / infuriated.a / frightened.a / mortified.a / glee.n / grief.n / mourning.n / sympathetic.a / sympathize.v / unsympathetic.a / thrilled.a / saddened.a / irate.a / irked.a / jubilant.a / mournful.a / mystified.a / nervous.a / nettled.a / offended.a / overjoyed.a / peeved.a / perplexed.a / perturbed.a / interest.n / concern.n / fed up.a / all about.prep / fury.n / outrage.n / demolished.a / crushed.a / bitterness.n / OK.a / fine.a / misery.n / grim.a', 'definition': "The adjectives and nouns in this frame describe an Experiencer who is feeling or experiencing a particular emotional response to a Stimulus or about a Topic.  There can also be a Circumstances under which the response occurs or a Reason that the Stimulus evokes the particular response in the Experiencer.  'Mr. Whiskers is upset that there are no more cat treats.' 'The furious parent stormed into the office.' 'Franz gets infuriated at the thought of his ex-wife remarried.' ' She flashed a jubilant smile.' "}, {'frame': 'Emotion_active', 'tfidf': 0.0, 'lexical_unit': 'fret.v / fuss.v / worry.v / lose sleep.v / agonize.v / obsess.v / obsession.n', 'definition': 'This frame has similarities to Experiencer_subject, but here the verbs are more \'active\' in meaning. (For example, they often occur in negative imperatives, e.g. "Don\'t worry!\'\').  They also differ from Experiencer_subject verbs in that they occur with Topic expressions and  can be used in the present progressive:  \'Pat is still worrying about the exam.\'  *Pat is fearing the exam. This frame can be thought of as a blend of a basic emotion frame with Cogitation. '}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"The Retreat A Clean And Sweet Romance Novella"</span>.</h5>
+                        <br/>
+                        <pre>
+It's a bit small, but it's cool."
+"Seriously?
+What were you expecting?
+A big room just because you're a celebrity?
+You got the same room as everyone else.
+And to be honest? it's a beautiful room.
+I'd give anything to have a room like this," Tamara said.
+She felt annoyed that she hadn't been able to keep her cool.
+But in that instant, she felt the heat rising to her face in anger.
+How dare he tell her that the room was small?
+He smiled at her.
+He obviously found her very amusing.
+He held up his hands in protest.
+"Whoa.
+I'm not being nasty.
+I said the room was cool.
+It is cool.
+I like it."
+Tamara huffed.
+"Okay.
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"Warm Comforts"</span>.</h5>
+                        <br/>
+                        <pre>
+"That would be difficult since I don't even know."
+"I know and I'm sorry about that.
+I'll let you know where I am when I get there.
+I don't want anyone to know before then."
+"I remember.
+Anyway, meet me at the car after school and I'll drive you home."
+"Thanks" Cori said as her friend walked away to her next class.
+Cori entered the classroom and prepared for one of the last tests she would ever take in high school.
+Two days before graduation, Cori watched Mr. and Mrs. Reynolds leave the house next door late in the afternoon and decided this was her opportunity.
+She was done studying so she had time to focus on this one last item that needed to be taken care of before she left Catesville, Texas.
+She took the eight pieces of paper that she had printed off her computer stuffed them in a large envelope and left her bedroom.
+Since no one was at her house, she locked the back door as she left and walked quickly through the backyard to the side yard and slipped into the side yard of the Reynolds' house next door.
+At the back door of the Reynolds' house she knocked hoping that someone would answer that door instead of the front door.
+A short minute after knocking, she heard the doorknob turning and saw the door opening.
+"Hi Cori" Micah Reynolds greeted.
+"Hi Micah.
+I didn't know you were home."
+"I just got home today.
+Summer break for me too.
+And I needed to be here to see Seth graduate."
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="91">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="1">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Scouring', 'tfidf': 5.602466171320775, 'lexical_unit': 'scour.v / comb.v / ransack.v / sift.v / sweep.v / sweep.n / rummage.v / rifle.v', 'definition': "A Searcher looks all over a Ground in order to find a Sought_entity. The Sought_entity is not presupposed to exist. The search activity is not concerned with the state of the Ground, which is the case in the Inspecting frame, but only with the finding of the Sought_entity, which is desirable.   'The newcomers combed the area looking for minerals' 'Scientists scoured the ice samples  for signs of life. ' 'Mulder rummaged through his toilet kit for a plastic razor.'"}, {'frame': 'Assemble', 'tfidf': 5.341350569163221, 'lexical_unit': 'meet.v / assemble.v / convene.v', 'definition': "In this frame a group of Individuals intentionally come together to form a Group.  Alternatively, a grammatically more prominent Party_1 assembles with a Party_2, expressed as an oblique phrase.  If this asymmetric construal is chosen, Purpose only relates to Party_1.   'We assembled in the courtyard to talk about our future plans.' 'Our study group is convening outside today.' 'The Dodgers meet the San Francisco Giants tomorrow at Dodger Stadium.' "}, {'frame': 'Membership', 'tfidf': 4.397508915457475, 'lexical_unit': 'member.n / belong.v / part.n / membership [status].n / membership.n / associated.a', 'definition': "A Member is semi-permanently part of a socially constructed Group.   'Victor is part of the Red Crescent'"}, {'frame': 'Buildings', 'tfidf': 3.865280409105421, 'lexical_unit': 'house.n / houseboat.n / church.n / tower.n / bungalow.n / cabin.n / castle.n / condominium.n / cottage.n / dacha.n / dormitory.n / dwelling.n / farmhouse.n / home.n / hospital.n / hostel.n / hotel.n / igloo.n / lodge.n / mansion.n / monastery.n / motel.n / palace.n / pension.n / pueblo.n / residence.n / shack.n / shanty.n / shelter.n / tenement.n / tent.n / villa.n / acropolis.n / arena.n / auditorium.n / barn.n / barracks.n / basilica.n / blockhouse.n / campanile.n / caravan.n / caravanserai.n / chalet.n / chateau.n / conservatory.n / garage.n / gazebo.n / greenhouse.n / hall.n / hangar.n / hippodrome.n / hovel.n / inn.n / kennel.n / kiosk.n / lighthouse.n / maisonette.n / mall.n / manor.n / manse.n / mosque.n / outbuilding.n / outhouse.n / pagoda.n / palazzo.n / pavilion.n / penthouse.n / pyramid.n / rotunda.n / shebang.n / shed.n / skyscraper.n / stable.n / stadium.n / supermarket.n / synagogue.n / tabernacle.n / tavern.n / tepee.n / terminal.n / triplex.n / warehouse.n / wigwam.n / hacienda.n / homestead.n / bunker.n / theater.n / bar.n / city hall.n / disco.n / discotheque.n / library.n / temple.n / building.n / structure.n / housing.n / fortress.n / fortification.n / citadel.n / fort.n / airport.n / pub.n / high-rise.n / quarters.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Fire_going_out', 'tfidf': 3.8543248643836288, 'lexical_unit': 'die.v / burn out.v / go out.v / gutter out.v', 'definition': "A Fire goes out.  'The fire is expected to burn out within a week.'  "}, {'frame': 'Process_stop', 'tfidf': 3.4468444391886877, 'lexical_unit': 'stop.v / discontinue.v / desist.v / quit.v / cease.v / cessation.n / discontinuation.n / halt.n / shutdown.n / kill.v / shut down.v', 'definition': "A Process stops at a certain Time and Place.  Reason may also be specified.  A Duration may be included in order to indicate the length of the persistence of the Paused-state before action resumes.  NB:  Refer to Process frame. '' 'The strident, static-like hiss ceased abruptly.'  'The use of railway-owned vehicles on aggregates traffic ceased altogether in 1989.'"}, {'frame': 'Luck', 'tfidf': 3.383023409128993, 'lexical_unit': 'lucky.a / luck.n / happy.a / fortunate.a / luckily.adv / fortunately.adv / fortune.n / fortuitous.a / poor.a', 'definition': "A State_of_affairs is evaluated as good (or bad), against a background assumption that previously, the State_of_affairs was thought to be unlikely to occur. The State_of_affairs holds for a particular Protagonist.  'He is a lucky gambler.'"}, {'frame': 'Intentionally_create', 'tfidf': 3.2394064234496818, 'lexical_unit': 'make.v / create.v / creation.n / establish.v / set up.v / generate.v / establishment.n / generation.n / produce.v / found.v / production.n / synthesise.v / synthesis.n / develop.v / development.n', 'definition': "The Creator creates a new entity, the Created_entity, possibly out of Components.  'The Libyans were generating arms for export.'"}, {'frame': 'Becoming', 'tfidf': 3.0826180511231365, 'lexical_unit': 'become.v / turn.v', 'definition': "An Entity ends up with some Final_quality--a new fact about the Entity. Alternatively, based on a cluster of changes of characteristics, the Entitynewly meets the conditions for being a member of a Final_category.  'The weather turned cold .' 'You can become a firefighter today !'  This frame should be compared with the Transition_to_state frame, which is more general in allowing arbitrary descriptions of a final situation:  'We ended up telling him to leave .'  There is no way to effectively paraphrase such a sentence in the Becoming frame.  "}, {'frame': 'Trying_out', 'tfidf': 3.0118659211452514, 'lexical_unit': 'try.v / test out.v / try out.v', 'definition': "An Evaluator participates in an Experience (or metonymically, a salient Entity of the Experience), often for the first time, in order to form an opinion about its quality. The aspect of quality that is being judged is often implicit but may be expressed as the Purpose of the Evaluator's participation.   'Have you tried my latest get-rich-quick scheme? INI' 'Don tried out the bike to see if it was the right size.'"}, {'frame': 'Hostile_encounter', 'tfidf': 2.880378229634276, 'lexical_unit': 'battle.n / fight.n / scuffle.n / spat.n / altercation.n / duel.n / clash.n / confrontation.n / row.n / fighting.n / bout.n / struggle.n / hostility.n / skirmish.n / combat.n / squabble.n / stalemate.n / brawl.n / strife.n / fight.v / battle.v / duel.v / clash.v / brawl.v / skirmish.v / scuffle.v / confront.v / war.n / war.v / gunfight.n / shootout.n / standoff.n / showdown.n / wrangling.n / tiff.n / fistfight.n / firefight.n / conflict.n / dust-up.n / warfare.n / cw.n / bw.n / tussle.n / struggle.v / infighting.n / engage.v / engagement.n', 'definition': "This frame consists of words that describe a hostile encounter between opposing forces (Side_1 and Side_2, collectively conceptualizable as Sides) over a disputed Issue and/or in order to reach a specific  Purpose. '' 'He still wants to fight Mike Tyson in about 8 months.'  'Dennis Andries's European cruiserweight title clash against Akim Tafer of France in Beausoleil last February has been voted as the EBU's fight of the year.'"}, {'frame': 'Ride_vehicle', 'tfidf': 2.864920919929445, 'lexical_unit': 'ride.v / sail.v / fly.v / taxi.v / take.v / cruise.v / coast.v / jet.v / hitchhike.v / ride.n / cruise.n / flight.n / bus.v', 'definition': "In this frame a Theme is moved by a Vehicle which is not directly under their power. The Source, Path, Goal, or Area of the motion may be indicated. The Distance traveled or the Speed of motion may also be indicated. A Route or Roadmay be present and the Manner in which the Theme moves may be given. 'Mrs. Smith rode on the train.' 'Sally flew 3000 miles from San Francisco to New York.' 'Every day, Martin rode the bus on highway 880.' 'Mr. Bigglesworth rides route 51.'  There is shared vocabulary between this frame and Carrying and Operate_vehicle. It is differentiated from Operate_vehicle in that the vehicle is not under the subject's control. It is differentiated from Carrying because the vehicle is not being used to transport goods."}, {'frame': 'Artistic_style', 'tfidf': 2.844541217213344, 'lexical_unit': 'style.n / sound.n / look.n / order.n', 'definition': "This frame contains LUs that express the Form which a piece of Artwork represents. The Form may also represent the entire body  of an Artist's work. The Form may be further characterized by the Time of some Artwork's creation or other Descriptors.  'Her style of painting is an excellent blend of traditional and modern.' 'The whimsical style of this piece is very effective.'"}, {'frame': 'Businesses', 'tfidf': 2.6688497090693475, 'lexical_unit': 'business.n / shop.n / establishment.n / mill.n / practice.n / firm.n / operation.n / company.n / chain.n / corporation.n / paper.n / store.n / bank.n / boutique.n', 'definition': "A Proprietor owns or runs a Business which provides a Product (which may be goods or services).  'The consumer electronics company Apple has exploded with popularity in recent years.'"}, {'frame': 'Surrounding', 'tfidf': 2.6514622181169094, 'lexical_unit': 'around.prep / surround.v / surrounding.a / astride.prep / straddle.v / ring.v / rim.v / edge.v / straddling.a', 'definition': 'A Figure surrounds a Ground.  The Ground location is presented as more likely to be a known location than the location of the Figure. Some lexical units entail more-or-less complete surrounding in two or three dimensions (e.g. surround.v), while others entail surrounding on only two sides (e.g. astride.prep, straddle.v).  Like other locative relations, the Figure may be any of a movable entity, an immovable entity, or an event.  \'The hand around the sword-hilt was no less impressive than the sword .\' \'The drug war straddles the border of the US and Mexico .\'  This frame resembles the Adorning frame, in that both involve a Figure "covering" some Ground, but the Surrounding frame differs in that the Profiled_region is not coextensive with the Ground, as it is in the Adorning frame, and, in fact, unusually for a locative relation, the Ground entity is normally smaller than the Figure.  For this reason, the verbs of this frame are often used in the passive (restoring the normal relationship of stative subjects to oblique elements). \'\' In addition to several lexical units of this frame originating as metaphorical extentions of much more specific posture descriptions (straddle.v, astride.prep), this frame is itself used in a productive metaphor, involving abstract entities metaphorically "impinging" on other entities (in terms of derivative similarity, control, etc.), as in the following: \'that led to Dolce and Gabbana to base their autumn/winter D and G collection around her style in 2008\' \'But he discovered that the literary world was a battlefield— mined with hatred, rimmed with snipers. \' \'Countless legends sprung up around the knight.\'  Common abstract entities that serve as Figure include emotions (\'the hopelessness surrounding them\'), as well as theories, arguments, and collective philosophies (\'Ageism surrounds us, but passes largely unnoticed\').  This metaphor arises from the normal invited implicature of this frame that the Figure may physically impinge on the Ground, either protecting it, or limiting its motion, or even supporting it.'}, {'frame': 'Purpose', 'tfidf': 2.6035090914609906, 'lexical_unit': 'purpose.n / goal.n / aim.n / objective.n / object.n / target.n / aim.v / intend.v / intention.n / use.n / plan.v / in order.adv / plan.n / bent.a / intent.a / determined.a / mean.v', 'definition': "An Agent wants to achieve a Goal,  or an object.  A Means  has been created or is used to allow the creator or a user to achieve a  Goal. The Goal is a state of the world that does not currently hold but which the Agent wants to realize and is planning and/or working towards. In some cases, it is difficult to decide whether a noun phrase metonymically stands for the Agent or the Means (e.g. The goal [of this paper/seminar/project] is to determine ...). We mark these phrases as Agent on the first layer but also annotate them as Means on a second annotation layer.  In some cases a Restrictor on the Goal state of affairs can be given prominence as a separate constituent. Talking about Goals frequently includes the mention of a Domain to which the Agent's Goal is relevant.  'The modest American goal of a threefold increase in capacity recognises this fact .' 'The object of the tutorial is to help a student concentrate on his writing skills ' ' The prime goal of the programme was to help develop processes of scientific thinking in children .' 'My goal in this book is to introduce the reader to Web programming applications.' 'The president's economic goal for the country was to overcome the recession.'"}, {'frame': 'Filling', 'tfidf': 2.5404406887213966, 'lexical_unit': 'adorn.v / anoint.v / cover.v / dust.v / load.v / pack.v / smear.v / spread.v / stuff.v / wrap.v / plaster.v / drape.v / dab.v / daub.v / inject.v / cram.v / sow.v / seed.v / brush.v / hang.v / spatter.v / splash.v / splatter.v / spray.v / sprinkle.v / squirt.v / shower.v / drizzle.v / heap.v / pile.v / pump.v / jam.v / plant.v / scatter.v / butter.v / asphalt.v / surface.v / tile.v / wallpaper.v / coat.v / suffuse.v / fill.v / strew.v / douse.v / flood.v / crowd.v / pave.v / varnish.v / paint.v / gild.v / glaze.v / embellish.v / panel.v / wax.v / wash.v / plank.v / yoke.v / dress.v / accessorize.v', 'definition': "These are words relating to filling containers and covering areas with some thing, things or substance, the Theme. The area or container can appear as the direct object with all these verbs, and is designated Goal because it is the goal of motion of the Theme. Corresponding to its nuclear argument status, it is also affected in some crucial way, unlike goals in other frames.  'Lionel Hutz coated the wall with paint. '"}, {'frame': 'Documents', 'tfidf': 2.4911032992544357, 'lexical_unit': 'visa.n / passport.n / subpoena.n / warrant.n / certificate.n / papers.n / license.n / summons.n / diploma.n / deed.n / lease.n / agreement.n / treaty.n / charter.n / authorization.n / deposition.n / brief.n / writ.n / affidavit.n / will.n / testimony.n / testament.n / ruling.n / finding.n / opinion.n / title.n / orders.n / contract.n / permit.n / document.n / contractual.a / accord.n / confirmation.n / identification.n / business card.n', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Locale', 'tfidf': 2.332419307510106, 'lexical_unit': 'area.n / zone.n / region.n / place.n / spot.n / location.n / locale.n / pocket.n / regional.a / site.n / point.n / grounds.n / earth.n', 'definition': "This frame contains general locale words, and is mostly a place-holder in the hierarchy. Words in this frame designate relatively stable bounded ares of the world which have permanent Relative_locations with respect to other locales, and thus are useful as permanent landmarks.  It is inherited by Locale_by_use, which has to do with places that are named according to their intended use, or some habitual use, such as factory.n, dance floor.n, village.n, field.n.  It is also inherited by Locale_by_event, which covers places that are names according to some event which took place there, such as concerts, battles, and meteor impacts.  'This is a pleasant area.'"}, {'frame': 'Being_located', 'tfidf': 2.3131632008228373, 'lexical_unit': 'located.a / situated.a / lie.v / stand.v / sit.v / whereabouts.n / twenty.n / find.v', 'definition': "A Theme is in a stable position with respect to a Location.  'Our offices are located about two miles south of I-85 .' "}, {'frame': 'Make_noise', 'tfidf': 2.15739236847637, 'lexical_unit': 'babble.v / bark.v / bellow.v / blare.v / blast.v / bleat.v / bray.v / burble.v / cackle.v / caterwaul.v / caw.v / chatter.v / cheep.v / chirp.v / chuckle.v / clang.v / clash.v / clatter.v / click.v / coo.v / cough.v / creak.v / croak.v / croon.v / crunch.v / drone.v / fizzle.v / gasp.v / giggle.v / gobble.v / growl.v / grunt.v / guffaw.v / gurgle.v / hawk.v / hiss.v / hoot.v / howl.v / hum.v / keen.v / mew.v / mewl.v / moan.v / moo.v / neigh.v / patter.v / peal.v / peep.v / plash.v / plonk.v / plop.v / purr.v / quack.v / rasp.v / rattle.v / roar.v / rustle.v / scrape.v / screech.v / scrunch.v / sizzle.v / snarl.v / snicker.v / snigger.v / snore.v / snort.v / sob.v / sough.v / squawk.v / squeak.v / squeal.v / thump.v / thunder.v / tinkle.v / titter.v / toll.v / trumpet.v / tweet.v / twitter.v / ululate.v / wail.v / whimper.v / whine.v / whinny.v / whisper.v / whistle.v / yammer.v / yap.v / yelp.v / yodel.v / yowl.v / crepitate.v / laugh.v / clack.v / sploosh.v / scream.v / ring.v / beep.v / hem and haw.v / boom.v / cry.v / sound.v / honk.v / play.v / toot.v', 'definition': "A physical entity, construed as a point-Sound_source, emits a Sound.  This includes animals and people making noise with their vocal tracts. Sometimes the sound itself is referred to with a nominal expression, in which case it is called the Sound. Manner expressions may also be relevant in this frame, if they describe properties of the sound as such.  A path-schema can be overlaid on the simple noise-making scene, adding a Location_of_source and/or a Path.   This frame does not cover scenarios where objects create sound by coming into forceful contact with one another or rubbing against each other. Such scenarios are covered by the Impact and Friction frames. The current frame also does not cover cases where an animate Agent or a natural Force or Cause causes a single Source or several Sources (moving or rubbing against each other) to make noise. Such scenarios are  covered by the Cause_to_make_noise, Cause_impact and Cause_friction frames (the latter of which is not yet existent). Cases where the major emphasis of the portrayed scene is on the motion of a Theme, with sound emission only an accompaniment, are covered by the Motion_noise frame. Likewise, cases where the Sound itself is portrayed as moving through space are not covered in this frame but rather in Sound_movement. Finally, all nouns used to evoke Sounds have been placed in the Sounds frame. We have done this because these nouns do  not denote sound emission/production events but only the Sound itself (*The siren's blare occurred right on time)."}, {'frame': 'Aggregate', 'tfidf': 1.8277758481012847, 'lexical_unit': 'army.n / colony.n / brood.n / bunch.n / group.n / cluster.n / herd.n / squad.n / pack.n / swarm.n / host.n / collection.n / gaggle.n / flock.n / team.n / batch.n / party.n / cohort.n / legion.n / heap.n / class.n / clique.n / crew.n / assembly.n / variety.n / crowd.n / assortment.n / gang.n / throng.n / multitude.n / assemblage.n / band.n / clutch.n / multiplicity.n / bevy.n / circle.n / coterie.n / family.n / corps.n / set.n / slew.n / package.n / shoal.n / school.n / covey.n / crop.n / mob.n / harem.n / horde.n / stand.n / repertoire.n / posse.n / huddle.n / claque.n / repertory.n / population.n / quartet.n / quintet.n / trio.n / sextet.n / flotilla.n / clump.n / passel.n / community.n / body.n / tribe.n / force.n / book.n / combination.n', 'definition': "This frame contains nouns denoting Aggregates of Individuals.  The Aggregates may be described by an Aggregate_property.   'An army of postal workers descended on my office.'  "}, {'frame': 'Wearing', 'tfidf': 1.8261553820620382, 'lexical_unit': 'naked.a / nude.a / unclad.a / unshod.a / shoeless.a / sockless.a / nakedness.n / nudity.n / clad.a / clothed.a / wear.v / dressed.a / barefoot.a / bare.a / bare.v / bareheaded.a / barelegged.a / bare-chested.a / hatless.a / coatless.a / shirtless.a / barefooted.a / undressed.a / topless.a / masked.a / hooded.a / undress.n / costumed.a / garbed.a / unclothed.a / bare-armed.a / bare-breasted.a / hatted.a / braless.a / robed.a / attired.a / gloved.a / gloveless.a / have on.v / with on.idio / have got on.v / in.prep / decked out.a / dolled up.a / got on.v / sport.v / swaddled.a / swathed.a', 'definition': "The words in this frame refer to what Clothing the Wearer (or a specific Body_part of the Wearer) has on.  'I had on the most ridiculous monkey-suit you could imagine.' 'These two losers were wearing bras on their heads!'  Many targets incorporate the Clothing item, and some targets describe the state of not wearing something (when it might be expected).  'Do you think anyone would notice if I went topless?'    NB: There is a very common metonymy in which characteristics of the clothing stand for the clothing itself, such as   'the man clad in leather.' 'She was dressed all in red.'  Such sentences should be tagged METAPHOR on the sentence level."}, {'frame': 'Kinship', 'tfidf': 1.7518564097136549, 'lexical_unit': 'father.n / mother.n / son.n / daughter.n / uncle.n / aunt.n / auntie.n / dad.n / daddy.n / grandson.n / granddaughter.n / niece.n / nephew.n / brother.n / sister.n / grandfather.n / grandmother.n / mother-in-law.n / father-in-law.n / son-in-law.n / daughter-in-law.n / stepson.n / stepdaughter.n / stepmother.n / stepfather.n / stepbrother.n / stepsister.n / brother-in-law.n / sister-in-law.n / cousin.n / mom.n / great-grandson.n / great-granddaughter.n / parent.n / child.n / in-law.n / family.n / sibling.n / ancestor.n / descendant.n / forebear.n / forefather.n / kinsman.n / kinsfolk.n / kinswoman.n / relative.n / kin.n / maternal.a / paternal.a / parental.a / filial.a / ancestral.a / scion.n / kid.n / offspring.n / clan.n / people.n / name.n / kinship.n', 'definition': "This frame contains words that denote Kinship relations. In annotating the directional uses of these words, we use the standard terms from anthropology, Ego and Alter.  'Matilde is Gilberto's cousin once removed' Compare to: Appellations."}, {'frame': 'Body_movement', 'tfidf': 1.663903914139826, 'lexical_unit': 'arch.v / bat.v / bend.v / blink.v / bob.v / clap.v / cock.v / crane.v / cross.v / drop.v / flap.v / flex.v / fling.v / flutter.v / gnash.v / grind.v / hang.v / jerk.v / lift.v / nod.v / pout.v / pucker.v / purse.v / roll.v / shake.v / shrug.v / shuffle.v / stretch.v / swing.v / throw.v / toss.v / twitch.v / wag.v / waggle.v / wave.v / wiggle.v / wink.v / wrinkle.v / curtsy.n / kneel.v / writhe.v / wriggle.v / shudder.v / fidget.v / yawn.v / jiggle.v / shiver.v / curtsy.v / duck.v / crease.v / smack.v / open.v / close.v / shut.v / twiddle.v / stamp.v / crinkle.v / crumple.v / scrunch.v / move.v / twist.v / wink.n / reach.v', 'definition': "This frame contains words for motions or actions an Agent performs using some part of his/her body.   A number of words in this frame occur as blends with Communication, in which the action has an Addressee.  For example,   'Pat nodded at Kim.'  These examples differ from Communication.Gesture in that no specific message need be expressed, as in  'She nodded to him to sit down.'  Since this frame involves a particular type of motion, it contains the frame elements Source, Path, Goal and Area, which originate in the motion frame.  All of these frame elements are generally expressed in PP Complements.  'The boy swung his legs from under the table.'"}, {'frame': 'Fields', 'tfidf': 1.6334923827219243, 'lexical_unit': 'industry.n / sector.n / in.prep / field.n / area.n / artistic.a / art.n / literary.a / literature.n / theater.n / industrial.a / history.n / mathematics.n / finance.n / math.n / technical.a', 'definition': "An individual or group (Practitioner) or a part of their work life (Work) is defined professionally by the Activity that they typically engage in. Alternatively, the Activity may be indicated by a Salient_entity conventionally associated with it.  ' Chris was in the construction  industry for 20 years before coming to GSCM.'  'My career was in oil and gas.'"}, {'frame': 'Giving_birth', 'tfidf': 1.6286604663555662, 'lexical_unit': 'bear.v / birth.n / whelp.v / father.v / beget.v / sire.v / spawn.v / have.v / drop.v / calve.v / kid.v / lay.v / calving.n / lambing.n / carry to term.v / birth.v / mother.v / bring forth.v / generate.v / propagate.v / get.v', 'definition': "A Mother and Father produce a Child or an Egg. 'Betty bore Gerry three intelligent daughters.'"}, {'frame': 'Desirability', 'tfidf': 1.6283881722762799, 'lexical_unit': 'pathetic.a / superb.a / superlative.a / excellent.a / fabulous.a / outstanding.a / pitiful.a / appalling.a / execrable.a / fantastic.a / awful.a / splendid.a / sensational.a / wonderful.a / astonishing.a / rotten.a / terrible.a / magnificent.a / horrible.a / dreadful.a / stupendous.a / marvellous.a / super.a / first-rate.a / tremendous.a / good.a / bad.a / fair.a / mediocre.a / decent.a / okay.a / average.a / tolerable.a / second-rate.a / third-rate.a / astounding.a / fine.a / terrific.a / great.a / so-so.a / substandard.a / shitty.a / inferior.a / top-notch.a / tip-top.a / incredible.a / crappy.a / amazing.a / suck.v / rock.v / lamer.n / lame.a / uncool.a / excellence.n / desirable.a / extraordinary.a / sweet.a / cool.a / nasty.a / miserable.a / unfortunate.a / popular.a / idyllic.a / poor.a / atrocious.a / well.adv / standout.n / crap.n / shit.n / garbage.n / gem.n / gold.n / killer.a / awesome.a / best thing since sliced bread.n / junk.n / worthless.a', 'definition': "This frame concerns an Evaluee being judged for its quality, i.e. how much it would probably be liked.  In many cases, the Evaluee is implicitly judged good or bad relative to other instances of its type. The Evaluee's desirability is determined by one or more Parameters, which are scalar properties of the Evaluee. The evaluation may also explicitly be relativized to a set of Circumstances, a Comparison_set of entities that belong to the same class as the Evaluee, or an Affected_party. The Degree of goodness or badness may also be expressed.  Note: With some targets, desirability is conventionally aligned with quantity, i.e., GOOD is MORE.  'The view was  astonishing.' 'On clear days, the view was excellent.' 'The book is astounding in its scope.' 'The games have been awful for the team.' "}, {'frame': 'Spatial_contact', 'tfidf': 1.5773421178156426, 'lexical_unit': 'on.prep / atop.prep / on top (of).prep / against.prep / touch.v / touching.a / contact.v / contact.n / tangent.a / upon.prep / off.prep', 'definition': 'A Figure is located in contact with a Ground.  With some words that evoke this frame, the Figure is also asserted to be fully or partially supported by the Ground (e.g. on), while in others a support relation is either denied (e.g. to, as in "she put her hand to the wall") or unspecified (e.g. against).  In addition, some LUs assert a direction in which to find the Figure from the Ground (e.g. atop).  \'There was a tight-fitting lid on the bottle .\' \'Against the back wall stood a young black man staring at his shoes .\' \'Against the back wall three students were reading .\' \'Clean if the jewelery is ever in contact with water or chlorine .\'  This frame participates in productive metaphor cases, like "shining a light on corruption", "Stalin\'s hand lay heavy on the presses", "it touched her heart" in each of which an abstract entity affects another entity as if they were in physical contact. \'\'  This frame is intended to cover the description of writing, images, or situations being depicted on a document, canvas, screen, or other flat surface, including metaphorical cases where there is no literal document, like "on record" or "pretty low on my list". \'They were arguing on screen .\' \'Watching chess is pretty low on my list .\'  The use of on.prep to describe use of a vehicle is not included in this frame even though it does involve contact and support. The sense distinction is proven by the omissability of the Ground only in the vehicle cases: \'She is already on (the bus/the ship...) .\' \'My paper is on *(the desk) .\' This use is related to Ride_vehicle.  A similar argument holds for uses of on.prep with a clothing Figure, which virtually always omits the Ground; see Wearing. \'\'  The use of on.prep and upon.prep for Topics is considered a non-productive metaphor (see Topic).  No other target in the frame allows the use, nor is is correlated with other language of the source domain of contact (e.g. stand, sit, lie, put, rest). '}, {'frame': 'Body_parts', 'tfidf': 1.5546091156219568, 'lexical_unit': 'arm.n / ankle.n / anus.n / back.n / beard.n / belly.n / body.n / breast.n / buttocks.n / cheek.n / chest.n / chin.n / ear.n / earlobe.n / elbow.n / eyelid.n / face.n / finger.n / flesh.n / foot.n / forearm.n / forehead.n / groin.n / hair.n / hand.n / head.n / heel.n / incisor.n / jaw.n / toe.n / hoof.n / claw.n / paw.n / talon.n / wing.n / pelt.n / snout.n / maw.n / fang.n / mane.n / whisker.n / feeler.n / antler.n / muzzle.n / beak.n / trunk.n / tail.n / eye.n / foreleg.n / forefoot.n / forepaw.n / limb.n / fin.n / flipper.n / horn.n / nape.n / nose.n / antenna.n / fluke.n / skin.n / forelimb.n / hindlimb.n / hindleg.n / fingertip.n / brow.n / lip.n / temple.n / fingernail.n / tongue.n / toenail.n / thumb.n / nostril.n / sole.n / midriff.n / navel.n / neck.n / hindquarters.n / forefinger.n / thigh.n / mouth.n / tentacle.n / bill.n / appendage.n / thorax.n / rump.n / crown.n / member.n / leg.n / shoulder.n / tooth.n / mustache.n / knee.n / pupil.n / throat.n / lung.n', 'definition': "This frame covers words for Body_part(s) (BP) belonging to a Possessor (Poss), which may be characterized by a Descriptor (Desc). The location of the BP may be identified in terms of  its Attachment or its Orientational_location.  A Subregion of a BP may also be indicated.   '' 'He had to brace his right arm against his leg in order to fight the roll.'  'The dog measured its blond belly in the mud.'  ''"}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"A Lonely Man Returns To Africa"</span>.</h5>
+                        <br/>
+                        <pre>
+On the bus was a young girl, early twenties.
+She told me her mother had died; she was going to her home for the burial.
+She was being very brave.
+The journey progressed; the girl would have little bouts of crying.
+When she finally neared her destination she became very distraught.
+Getting off at her stop, I watched her cross the road.
+She was met by family members, the floodgates opened.
+She wailed, flung her arms about, family members tried to console her.
+Finally she collapsed, a small cart was found and she was put into the back and taken away.
+The area around Georgetown and Bansang is very nice.
+The River sweeps around corners, there's lush vegetation on the side of the riverbanks.
+If you're lucky you will see hippo and monkeys.
+In Bansang I was staying in a family run guest house.
+The father had died; the children were struggling to keep the place going.
+They owned a building attached to the guest house.
+It was a nightclub, the only one in town.
+It had ceased trading; they were letting the building to a German man.
+He made it into a casino, just a load of old slots shoved in there.
+The amazing thing was how well used it was.
+The people using it looked very poor, villagers not business types.
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"A Terminal Agenda The Severance Series Book 1"</span>.</h5>
+                        <br/>
+                        <pre>
+He had no idea how long he'd been here, it could have been minutes or hours, the passing of time had lost all significance.
+Then his body stiffened and in that moment he knew someone was about to come through the front door.
+Suddenly, every sense was amplified.
+His body moved ahead of his mind and when he heard the key turn in the lock he was already up and waiting by the bedroom door.
+He heard two men talking in low voices, then one set of footsteps came down the hallway and stopped outside the door.
+If whoever it was expected to find the key to the bedroom where he'd left it then he gave no indication of any concern he might have at not seeing it there.
+He came straight into the room with no hesitation whatsoever.
+He was reaching for the light switch when Nick stepped out of the shadows.
+The eyes widened in shock, but before the man could react Nick had driven an open palm directly under his chin, snapping his head back.
+The neck went with an audible crack and the man slumped to the floor in a lifeless heap.
+Nick stepped over the body, drawn sword in his left hand.
+He had it raised above his head when the second man came out of the living room, holding a gun.
+Before the man could turn into the hall, Nick brought the sword down in a flashing arc, severing the gun hand at the wrist.
+The hand's owner stared in disbelief as he watched his useless limb tumble to the floor, the fingers still wrapped tightly around the gun's handle.
+Then he clutched at the stump of his arm and roared in pain as he turned to face his tormentor.
+He was a big man with a thick neck.
+There wasn't much room in the hall to swing a sword, so Nick improvised a diagonal overhead sweep, which he straightened out into a horizontal slicing stroke at the last moment.
+When it connected with the man's neck the sword went through the flesh and bone almost as if it wasn't there.
+His roar of pain became a gurgle and his head hit the floor, closely followed by the rest of him.
+Nick stepped back as the arterial blood spray spattered the walls.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="88">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="1">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

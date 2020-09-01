@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="../d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script>
+        var frame_list = [{'frame': 'Communication_manner', 'tfidf': 7.0698725079044795, 'lexical_unit': 'babble.v / bluster.v / chant.v / chatter.v / drawl.v / gabble.v / gibber.v / jabber.v / lisp.v / mouth.v / mumble.v / mutter.v / natter.v / prattle.v / rant.v / rave.v / shout.v / simper.v / sing.v / slur.v / stammer.v / stutter.v / whisper.v / blabber.v', 'definition': "The words in this frame describe Manners of verbal communication.  All of them can occur with quoted expressions.   'He slurred his confession.'"}, {'frame': 'Agriculture', 'tfidf': 5.649317312786508, 'lexical_unit': 'cultivate.v / farming.n / farm.v', 'definition': "In this frame an Agriculturist cultivates Food.  The location or Ground where the Food is cultivated by the Agriculturist is often expressed.  '' 'Peasants were encouraged to cultivate basic food crops such as beans and corn'.  'Shrimp farming seems to be a recipe for disaster'  'Some fields were probably cultivated only in the dry season CNI'"}, {'frame': 'Craft', 'tfidf': 4.7750636424107755, 'lexical_unit': 'art.n / craft.n / science.n', 'definition': "A  particular Activity, performed conventionally or habitually by more than one Practitioner  within a Culture, is described  in terms of its method.   'One lived-in cabin also had a grassy roof, as if the craft of thatching had died out locally'  "}, {'frame': 'Activity_stop', 'tfidf': 3.9242439838937404, 'lexical_unit': 'stop.v / halt.v / discontinue.v / cease.v / terminate.v / abandon.v / quit.v', 'definition': "An Agent ceases an Activity without completing it. '' 'After the lawsuit, the company stopped producing the once very profitable toy.'  'The rugby club terminated negotiations with Argyll in September 1988.'"}, {'frame': 'Commerce_buy', 'tfidf': 3.794709426223336, 'lexical_unit': 'buy.v / purchase.v / purchase [act].n / buyer.n / purchaser.n / client.n', 'definition': "These are words describing a basic commercial transaction involving a Buyer and a Seller exchanging Money and Goods, taking the perspective of the Buyer.  The words vary individually in the patterns of frame element realization they allow.  For example, the typical pattern for the verb BUY: Buyer buys Goods from Seller for Money. '' 'Abby bought a car from Robin for $5,000.'"}, {'frame': 'Project', 'tfidf': 3.709671867070522, 'lexical_unit': 'project.n / program.n / plan.n / scheme.n', 'definition': "An Agent, which may be an individual or group, is engaged in a complex Activity.  A larger Goal which motivates the Agent carrying out the Activity may be indicated. Instead of a particular  Activity, a Field of endeavor may be indicated. The project may also have a Name and the Time when as well as the Place where it is ongoing may be specified.  'The New Car Assessment Program (NCAP) is dedicated to helping the public buy a safer car.'  'The school will continue with its project to end all violence related to racism, xenophobia and intolerance.'"}, {'frame': 'Plants', 'tfidf': 3.5817861272015876, 'lexical_unit': 'tree.n / weed.n', 'definition': 'The LUs in this frame refer to biological entities other than human beings and animals, which are labeled by the FE Plant.'}, {'frame': 'Money', 'tfidf': 3.5500002271980464, 'lexical_unit': 'money.n / cash.n / funds.n / dough.n / capital.n / dinero.n / sterling.n / fund.n', 'definition': "Money is a medium used for exchanging goods and services. It is in most cases issued by a government (its Creator) in the form of coins and banknotes. Particular amounts of it may have a designated or planned Use, or may have come from some Origin.  'The money for our daughter's college education is currently earning interest in a savings account.'  'The entire project ended up being funded with Swiss funds.'  'The use of paper money really caught on in Europe in the 1700s'"}, {'frame': 'Try_defendant', 'tfidf': 3.4156600400515487, 'lexical_unit': 'try.v', 'definition': "A Defendant is tried by a Jury or Judge in a Court for Charges.  This frame perspectivalizes the general Trial frame.  'The state will try him for fraud.'"}, {'frame': 'Being_named', 'tfidf': 2.929556951915176, 'lexical_unit': 'pseudonym.n / name.n / nickname.n / surname.n / forename.n / maiden name.n / Christian name.n / family name.n / nom de plume.n / nom de guerre.n / moniker.n / pen name.n / first name.n / last name.n / middle name.n / stage name.n / alias.n / given name.n / entitled.a / named.a / codename.n / codenamed.a / pet name.n / cognomen.n / agnomen.n / by-name.n / caconym.n / praenomen.n / misnomer.n / married name.n / allonym.n / soubriquet.n / nee.a / brand name.n / patronymic.n / metronymic.n / trivial name.n / eponym.n / also known as.a / aka.a / go.v / nameless.a / known.a / so-called.a / designated.a / full name.n', 'definition': "This frame concerns entities conventionally being referred to by particular names.  'Her name was Lola.' "}, {'frame': 'Transition_to_state', 'tfidf': 2.6356980043371983, 'lexical_unit': 'grow.v / get.v / end up.v', 'definition': "An Entity ends up in a Final_category, Final_situation, or Final_quality which it was not in before.  Some members of the frame (e.g. grow.v) tend to emphasize a gradual change, while most members of the frame do not indicate whether a change is gradual or not.    'Why I became an Emacs user'  'I left the ministry and became an atheist.'  'Surprisingly, various veteran organizations also turned vehemently antiwar.'  ' Over the years she grew to hate him.'  This frame should be compared to Undergoing_change.  Undergoing_change is different in that it much more emphasizes the difference between the pre- and post-states of the Entity.  This shows up both in Undergoing_change's increased occurrence with Initial_category and Initial_state (change from red to blue) and in its increased occurrence with Final_category (changed into a toad) rather than Final_situation or Final_quality (?changed to red vs. became/turned red).  In addition, when Undergoing_change occurs with the Final_category frame element, it presents a deep difference between the Initial_category and the Final_category, so that it is humorous to say 'she turned into a Republican', because it presents this as a fundamental change of identity; compare to 'she became a Republican', which is quite normal.  In a less humorous example, someone can 'turn into a Mac user', strongly implying that they no longer use their former operating system, while if they 'become a Mac user', this is either as a replacement of other OS's or potentially as an addition to the use of other OS's."}, {'frame': 'Usefulness', 'tfidf': 2.3863752171315027, 'lexical_unit': 'good.a / effective.a / excellent.a / outstanding.a / superb.a / wonderful.a / fantastic.a / fine.a / tremendous.a / terrific.a / marvellous.a / great.a / super.a / splendid.a / useful.a / utility.n / value.n / valuable.a / perfect.a / ideal.a / ineffective.a / work.v / strong.a', 'definition': "An Entity aids in the successful completion of a Purpose.  Its Degree of utility may also be expressed. Some of the lexical units  in this frame (e.g. great, good) can only express permanent, generic states of the Entity.  'A box is an ideal storage device.'"}, {'frame': 'Bringing', 'tfidf': 2.0107011018258105, 'lexical_unit': 'lug.v / haul.v / wheel.v / cart.v / carry.v / hump.v / fly.v / transport.v / take.v / drive.v / schlep.v / truck.v / tote.v / trundle.v / ferry.v / jet.v / paddle.v / motor.v / row.v / convey.v / bike.v / bring.v / bear.v / fetch.v / get.v / portable.a / mobile.a / transport.n / bus.v / shuttle.v / airlift.v', 'definition': "This frame concerns the movement of a Theme and an Agent and/or Carrier.   The Agent, a person or other sentient entity, controls the shared Path by moving the Theme during the motion. In other words, the Agent has overall motion in directing the motion of the Theme.  The Carrier may be a separate entity, or it may be the Agent's body. The Constant_location may be a subregion of the Agent's body or (a subregion of) a vehicle that the Agent uses.  'Karl carried the books across campus to the library on his head.' 'Karl carried the books across campus to the library in his truck.' 'Karl carried the books across campus to the library by truck.' 'The truck carried the books across campus to the library in specially designed boxes.' The  FEs include Path, Goal, and Source.  Area is an area that contains the motion when the path is understood as irregular.   This frame emphasizes the path of movement as opposed to the FEs Source or Goal as in Filling or Placing. "}, {'frame': 'Communication', 'tfidf': 1.8858464402093695, 'lexical_unit': 'communicate.v / speech.n / indicate.v / signal.v / communication [act].n / communication [entity].n / contact.n / codeword.n / password.n / convey.v / say.v / share.v', 'definition': "A Communicator conveys a Message to an Addressee; the Topic and Medium of the communication also may be expressed.  This frame includes no specification of the method of communication (speech, writing, gesture, etc.).  This frame and the frames that inherit the general Communication frame can add elaboration to the Medium in a variety of ways (in French, on the radio program, in a letter) or to the Manner of communication (babble, rant, shout, whisper). There are also frames related to Communication that either do not inherit all of the FEs of this frame or do not inherit them in a straightforward manner (such as Conversation, in which Communicator and Addressee alternate roles, and are often expressed by a single, plural NP).  'Let's hope it did n't have time to communicate any of its findings to its overlords.'  NB:  For many words in this domain (those which do not inherently ascribe cognitive/social processes to a Communicator, position a statement within a conversation, or specify Medium in detail), there is a metaphorical usage which maps Communication onto an alternate POV of Becoming_aware, with corresponding maps for frames related to Communication.  This metaphor is most felicitous with Means or Medium subjects, which are mapped onto the Evidence FE of Becoming_aware.  In many cases this metaphor maps Communication onto the Evidence frame, but not always.  Some words from the Communication domain are listed in the Evidence frame since they are deemed to be lexicalized.  'A flick of his gaze toward the doorway told me what he really wanted. (METAPHOR)' 'This painting really speaks to me. INI (MET) ' 'Putting his arm around her protectively achieved nothing but announcing to their captors their vulnerability. (MET)' 'It says a lot that he did n't come back. INI (MET) '"}, {'frame': 'Certainty', 'tfidf': 1.783481305329834, 'lexical_unit': 'certain.a / uncertain.a / confident.a / sure.a / confidence.n / convinced.a / positive.a / dubious.a / certainty.n / doubt.v / doubtful.a / believe.v / uncertainty.n / unsure.a / doubt.n / trust.v / skeptical.a / skepticism.n / skeptic.n / know.v', 'definition': "This frame concerns a Cognizer's certainty about the correctness of beliefs  or expectations. It only includes uses where a Cognizer is expressed.  'Lermontov was certain he would come to the party.'"}, {'frame': 'Kinship', 'tfidf': 1.7518564097136549, 'lexical_unit': 'father.n / mother.n / son.n / daughter.n / uncle.n / aunt.n / auntie.n / dad.n / daddy.n / grandson.n / granddaughter.n / niece.n / nephew.n / brother.n / sister.n / grandfather.n / grandmother.n / mother-in-law.n / father-in-law.n / son-in-law.n / daughter-in-law.n / stepson.n / stepdaughter.n / stepmother.n / stepfather.n / stepbrother.n / stepsister.n / brother-in-law.n / sister-in-law.n / cousin.n / mom.n / great-grandson.n / great-granddaughter.n / parent.n / child.n / in-law.n / family.n / sibling.n / ancestor.n / descendant.n / forebear.n / forefather.n / kinsman.n / kinsfolk.n / kinswoman.n / relative.n / kin.n / maternal.a / paternal.a / parental.a / filial.a / ancestral.a / scion.n / kid.n / offspring.n / clan.n / people.n / name.n / kinship.n', 'definition': "This frame contains words that denote Kinship relations. In annotating the directional uses of these words, we use the standard terms from anthropology, Ego and Alter.  'Matilde is Gilberto's cousin once removed' Compare to: Appellations."}, {'frame': 'Give_impression', 'tfidf': 1.6760341505464744, 'lexical_unit': 'appear.v / feel.v / look.v / reek.v / seem.v / smell.v / sound.v / stink.v / taste.v', 'definition': "In this class of perception words, a Phenomenon, typically expressed as External Argument, and its perceptual characteristics are given some description.  This may be a Characterization describing purely perceptual properties, an Appraisal (i.e. positive or negative judgment) or an Inference about some non-perceptual property based on the Perceiver_passive's perception.  '' 'There's a hamburger bar open, and it smells real good.'  'What we drank then tasted like sulphur and ox blood.'"}, {'frame': 'Measure_duration', 'tfidf': 1.6667798254376436, 'lexical_unit': 'hour.n / minute.n / second.n / day.n / week.n / month.n / year.n / decade.n / century.n / millennium.n / fortnight.n / a while.n / nanosecond.n / time.n', 'definition': 'This frame contains (transparent ) nouns that are Units of measurement for time. The frame elements are Count, Unit and Process.  \'The final total was 606, scored in only 10 hours of excellent batsmanship.\'  In this frame, we will NOT annotate deictic, calendric uses of nouns like week, month, etc. as in "next week, this month, in the 21st century".'}, {'frame': 'Being_employed', 'tfidf': 1.5678564424601489, 'lexical_unit': 'work.v / work.n / employ.n / wait tables.idio / job.n / clerk.v / temp.v / stint.n / employed.a / subcontract.v / farm (out).v / employment.n / unemployment.n / unemployed.a / jobless.a / position.n / at.prep', 'definition': "An Employee has a Position doing work in a particular Field, or doing work on a particular Task, for which an Employer gives Compensation to the Employee.  ' Undocumented foreigners are working as  building contractors for Laing Builders.'"}, {'frame': 'Quantified_mass', 'tfidf': 1.4913270693711798, 'lexical_unit': 'oodles.n / pile.n / ton.n / heap.n / load.n / modicum.n / mite.n / mass.n / scads.n / hundreds.n / thousands.n / millions.n / billions.n / dozens.n / shitload.n / abundance.n / myriad.n / plethora.n / quantity.n / number.n / pinch.n / ounce.n / touch.n / measure.n / amount.n / scores.n / degree.n / avalanche.n / deluge.n / torrent.n / flood.n / trickle.n / stream.n / wave.n / raft.n / mountain.n / handful.n / a lot.n / few.n / many.n / several.n / several.a / few.a / a few.art / any.a / many.a / all.a / numerous.a / a bit.n / no.a / multiple.a / dose.n / a little.n / both.a / smattering.n / fair.a / trace.n / deal.n', 'definition': "This frame contains transparent nouns (and some adjectives) denoting quantities of a Mass or of Individuals. As opposed to aggregate words such as group, set, these Quantity do not have a status as Wholes on their own.   'He found them in the deluge of papers on his desk.'  Initially, at least, we have annotated both Quantity of Masses and of Individuals in this frame, though we may split the frame along these lines later on. "}, {'frame': 'Hedging', 'tfidf': 1.4818616755291847, 'lexical_unit': 'a bit.n / sort of.adv / like.adv / kind of.adv / on the side.a / something.n / in a way.adv / rather.adv', 'definition': 'When words of this frame are used as hedge markers, they signal that the speaker of the sentence wishes to be careful about asserting some Hedged_content.  Use of a hedge marker may mean that the speaker is uncertain of how factual of the Hedged_content is, or uncertain of whether they\'re expressing the idea behind Hedged_content well, or it may mean that the Hedged_content is socially undesirable or awkward in the conversational context.   \'The president is a bit of an idiot when it comes to foreign policy .\' \'I \'m sorry , but he is on the heavy side , you understand .\' \'I thought, like, maybe you would know .\' \'My father was something of a dilettante .\' \'He rather doubts you\'ll be able to convince your mom. \' \'\' Because these words serve to indicate hesitancy, often for purposes of increased politeness, speakers may use several encodings of hedging simultaneously to iconically indicate the degree of politeness or hesitancy that they wish to express:  \'Your story, is, like, kind of a bit on the short side .\' \'\' There is also an ironic or sarcastic use of LUs in this frame, as in the following:  \'When a standard vaccuum can\'t even pick up the clods, you know you\'ve kinda got a problem.\' \'\' Words expressing small quantities or degrees (e.g., "a tad", "a little", etc.) can be used in a very similar function to words of this frame.  However, these words do not simply signify hesitation, but merely frequently imply it when used to modify a predication.  Such words can only be used on their on or with a noun to signify a small quantity or number ("a little whiskey", see Proportional_quantity), or with an adjective to indicate that the quality described by the adjective is close to average ("a mite stupid", "somewhat confused" see Degree).  Words of those frames may be nested within noun phrases or in other positions where content is not asserted but rather presupposed.  Words that belong to the Hedging frame, by contrast, either take a noun complement and indicate hesitancy or imprecision concerning the category ("something of a klutz"), or modify an entire proposition to indicate imprecision of the proposition ("I, like, waved it around").  In both cases, the Hedged_content must occur in the at-issue focus of a proposition, the part of a statement that the speaker is, so to speak, on record as asserting.'}, {'frame': 'Placing', 'tfidf': 1.4726394545239692, 'lexical_unit': 'deposit.v / embed.v / hang.v / immerse.v / implant.v / inject.v / insert.v / insertion.n / lay.v / lean.v / load.v / lodge.v / pack.v / park.v / pile.v / place.v / placement.n / plant.v / position.v / rest.v / set.v / situate.v / smear.v / stand.v / stash.v / stow.v / stuff.v / tuck.v / wrap.v / bag.v / billet.v / bin.v / bottle.v / archive.v / box.v / cage.v / crate.v / file.v / garage.v / pocket.v / shelve.v / stable.v / perch.v / sit.v / daub.v / drizzle.v / dab.v / drape.v / brush.v / dust.v / heap.v / jam.v / rub.v / cram.v / shower.v / pot.v / sheathe.v / warehouse.v / shoulder.v / stick.v / bestow.v / put.v / package.v / plunge.v / arrange.v / emplace.v / enclose.v / implanted.a / gag.v', 'definition': "Generally without overall (translational) motion,  an Agent places a Theme at a location, the Goal, which is profiled.  In this frame, the Theme is under the control of the Agent/Cause at the time of its arrival at the Goal.  'David placed his briefcase on the floor.'  This frame differs from Filling in that it focuses on the Theme rather than the effect on the Goal entity.  It differs from Removing in focusing on the Goal rather than the Source of motion for the Theme."}, {'frame': 'Opinion', 'tfidf': 1.4329306557388823, 'lexical_unit': 'opinion.n / view.n / take.n / think.v / belief.n / expect.v / feel.v / figure.v / suppose.v / believe.v / hold.v / sense.n / subscribe.v / subscriber.n / believer.n', 'definition': "A Cognizer holds a particular Opinion, which may be portrayed as being about a particular Topic.  'John thinks that it looks better back .' 'Well, my opinion about that is none of your business. '  'What 's your take on the recent oil crisis ?'  'Your view of Smithers as an excellent secretary is not shared by the rest of the UN.'"}, {'frame': 'Means', 'tfidf': 0.9944408530537026, 'lexical_unit': 'means.n / way.n / method.n / technique.n / procedure.n / approach.n / course of action.n / mechanism.n / modus operandi.n / nuts and bolts.n / process.n / recipe [cooking].n / by.prep / tactic.n / on.prep / how.adv', 'definition': "An Agent makes use of a Means (either an action or a (system of) entities standing in for the action) in order to achieve a Purpose.  (This frame may be broadened to include non-agentive intermediate actions.)  'The primary means of gas detection is mass spectroscopy .' 'They learned of the attack by monitoring the allied communications channels .' "}, {'frame': 'Proportional_quantity', 'tfidf': 0.6529012337463653, 'lexical_unit': 'about.prep / a good.a / over.prep / almost.prep / approximately.adv / around.prep / circa.prep / or so.adv / in neighborhood (of).prep / nearly.adv / under.prep / close (to).a / roughly.adv / precisely.adv / exactly.adv / some.art / at least.adv / tops.n / minimum.n / at most.adv / thereabouts.adv / barely.adv / odd.a / much.art / little.art / most.art', 'definition': "The Denoted_quantity is (generally) an imprecise characterization of the quantity of Individuals or a Mass, made with reference to a relatively easily and precisely imaginable Reference_quantity.  'It took about three hours, but we 're done now.' 'But there were barely 300 in the whole district. DNI' 'Put in right around a pinch and a half. DNI ' 'She waited a good second before knocking.' 'She waited a good second before knocking.'"}, {'frame': 'Causation', 'tfidf': 0.6328379667674535, 'lexical_unit': 'cause.v / cause.n / make.v / lead (to).v / reason.n / send.v / bring about.v / precipitate.v / causative.a / render.v / bring.v / bring on.v / induce.v / wreak.v / put.v / since.c / because.c / because of.prep / raise.v / result (in).v / mean.v / result.n / leave.v / for.c / see.v / force.v / give rise.v / so.c / due to.prep / responsible.a / consequence.n / resulting.a / consequent.a / consequential.a / resultant.a / dictate.v / motivate.v / sway.v / legacy.n', 'definition': "A Cause causes an Effect.  Alternatively, an Actor, a participant of a (implicit) Cause, may stand in for the Cause.  The entity Affected by the Causation may stand in for the overall Effect situation or event.   '' Those frames that inherit the Causation frame have as their background the idea that some event is responsible for the occurrence of another event (or state).  In the  inheriting frame, typically an FE like Agent or Causer is proposed in the place of the Actor, but in the daughter frames, as in this frame, the Actor is semantically dependent on the idea of a Cause (an event or state-of-affairs) that the Actor is a participant in.  Similarly, most inheriting frames profile only the Affected entity, not the full Effect situation which is often incorporated into the frame or the particular target.  So, for example, paint.v in the Filling frame entails the final situation of something (the Affected) being covered in paint (the Effect).  'He made me angry.'  'If such a small earthquake causes problems, just imagine a big one!'  'The strange mutations of the rumor mill in the end led to it being said that he was actually a woman.'  'You 've made it impossible to continue!'  'The ending left me feeling kinda empty.'"}, {'frame': 'Locative_relation', 'tfidf': 0.49885034623925945, 'lexical_unit': 'at.prep / athwart.prep / over.prep / beyond.prep / along.prep / up.prep / down.prep / astride.prep / all over.prep / border.v / where.adv / near.prep / underground.a / above-ground.a / underground.adv / everywhere.adv / elsewhere.adv / here.adv / surrounding.a / distant.a / outlying.a / north.prep / south.prep / out.prep / west.prep / ubiquitous.a / there.adv / offshore.a / inland.a / past.prep / to.prep / southeast.prep / mainland.n / throughout.prep / meet.v / bracket.v / southwest.prep / northeast.prep / northwest.prep', 'definition': "A Figure is located relative to a Ground location.    'The cat is on the mat.' 'The kitchen, with its breakfast / snack bar, adjoins on one side while the dining area adjoins on the other side. DNI' 'The president's plane landed in Washington.'  This frame is used for LUs that do not belong in daughter frames, either because they are too general to have any particular image schema associated with them (e.g., here.adv), or because we do not (yet) have a specific frame with the correct image schema (e.g., inland.a).  Prepositions, adverbs, and spatial adjectives that act as targets in this frame and its descendants cooccur with a number of constructions that may supply extra information and should be annotated as extrathematic frame elements.  The location of the Figure may be further specified by its Distance from the Ground along a vector implied by the targets image schema, or the Direction in which the Figure lies from a reference location (generally, the deictic center).  In cases where both seem to cooccur, the Distance actually modifies the Direction, as seen in the following example:  'This pup was lying abandoned, 350 feet down at the bottom of an Arizona canyon.'  There is no sense in which the Distance is measured using the schema for at.prep ('350 feet at the bottom of the canyon' doesn't mean the right thing at all); rather the distance is measured using the schema for down.adv, and is thus considered a modifier of the Direction FE.  In some very specific situations, prepositions, adjectives, and nouns can be used with a copula to describe the whole Profiled_region where a Figure is or could be, as in the following:  'Inside my wallet is where I put it .' 'Outside your blind date's door seems like the worst place in the world .'   "}, {'frame': 'Degree', 'tfidf': 0.30310068680116564, 'lexical_unit': 'so.adv / a little.adv / a little bit.adv / very.adv / that.adv / totally.adv / fully.adv / heavily.adv / far.adv / somewhat.adv / in part.adv / great.a / way.adv / particular.a / a lot.adv / stone (cold).n / dirt (poor).n / sopping (wet).a / crystal (clear).n / as hell.adv / kind of.adv', 'definition': "LUs in this frame modify a gradable attribute and describe intensities at the extreme positions on a scale.  'She is very brave.'  'It is that simple!'  'The feuds are so vicious because the stakes are so low.'  'The plant is totally red  without the slightest hint of green.' "}, {'frame': 'Performers_and_roles', 'tfidf': 0.045185226509334764, 'lexical_unit': 'star.v / act.v / play.v / be.v / star.n / co-star.n / co-star (in).v / lead.n / star (in).v / as.prep / co-star.v / feature.v / character.n / role.n / part.n / appear.v', 'definition': 'A Performer has a certain Role in a Performance and plays their part by following the directions in the Script for that particular Role.   \'Margaret Thatcher played Juliet in a school play.\' \'"Pulp Fiction" starred John Travolta and a lot of other big names.\' \'Mel Gibson starred in "Braveheart" as the leader of a Scottish rebellion.\' \'I play the character of Yusuf in this film.\''}, {'frame': 'Emergency_fire', 'tfidf': 0.0, 'lexical_unit': 'wildland fire.n / wildfire.n', 'definition': 'A fire which burns and requires an emergency-type response.'}];
+    </script>
+    <script type="text/javascript" src="../word_cloud.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 100px;
+            padding-right: 100px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .selected_story_block {
+            border-color: red;
+            border-width: 3px;
+        }
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Guessing the Story from a Word-Cloud Representation</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that we generated to characterize a story snippet. 
+            For example, a "word-cloud representation of nouns" is a group of nouns that might occur, or are semantically relevant, in a story snippet.
+            Notice that the words in the word-cloud shows the concept of the story so the words will not necessarily appear in the story.
+            <br/><br/>
+            In this HIT, you will see two story snippets. <span class="highlight">Please read both of the stories carefully.</span>
+
+            <br/><br/>
+            At the bottom of the HIT, you will see the word-cloud representations of nouns, verbs, and adjectives. 
+            These three word clouds jointly represent one of the stories you just read. 
+            <br/><br/>
+            <span class="highlight">Please try your best to select the story that refers to the word-cloud representation.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following two story snippets carefully!</h3>
+            You will need to select the one that refers the word clouds.
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story 1</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"No One Will Ever Find Out"</span>.</h5>
+                        <br/>
+                        <pre>
+he sang out.
+High fives went up all over the place.
+"Now we're getting somewhere."
+Courtney asked him, "Are you trying to get your parents to buy you a pet?"
+Everyone stopped laughing and looked at her.
+"No," he said.
+"I just figured that's a good idea for a science project is all."
+He smirked at Tyrone and Clarence.
+"Well, if you think your parents are going to let you have bugs as pets, you're crazy."
+Courtney explained.
+"You know how much money it costs to have an exterminator come every year?
+And all those pesticides the city puts in trees?"
+She looked at him even harder.
+"You can't start a bug farm here.
+This is a residential area."
+Clarence glared at Courtney and whispered something to the others.
+They all had weird looks on their faces.
+Tanya leaned over.
+"What are they whispering about?"
+she whispered.
+                        </pre>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_2" id="story_block_id_2">
+                        <h4>Story 2</h4>
+                        <h5>An excerpt from the book <span style="font-weight:bold;">"The Final Converging An Immortal Heart Asunder"</span>.</h5>
+                        <br/>
+                        <pre>
+A dour maid squired the pair through the lavish interior of the Greavy home and as she viewed the opulent and tasteful trappings, Mary could not help but think that in the final summation, even Thomas' considerable fortune could not insulate him from harsh and ugly side of life.
+Isobel Greavy awaited the pair's arrival in a drawing room that was roughly the size of Mary Langdon's entire flat.
+Mary's first impression of the woman was one of instant admiration.
+Tall and eerily beautiful in the manner of Cassande Verhoeven, there was absolutely nothing self-deprecating about Isobel.
+She exuded the supreme confidence of a woman who is distinctly aware of her place and value in the world and who is certain that she is fully entitled to everything life has bestowed upon her.
+Hers was a regal bearing and poise that would make even Queen Katherine seem dowdy by comparison.
+Attired in a conservative black dress, the blond-haired widow was the very quintessence of grieving nobility...something from England's lost grand age.
+Isobel did not rise to greet the two inspectors, instead gesturing them into identical floral pattern wing backs near the hearth of the large fireplace that dominated the north wall of the room.
+"Would either of you care for tea?"
+she inquired in a rich erudite voice that reminded Mary of expensive silk.
+When both inspectors declined, Isobel inclined her head and the maid quickly departed, though not before giving the pair a rather puzzling frown of disapproval.
+Isobel noticed the look and when the maid closed the door, she remarked, "You will have to excuse Esther...she regards me as a particularly delicate piece of porcelain and is fiercely protective.
+Now, is this simply to be an information gathering affair...or do you have something tangible to bring me?"
+Donald glanced briefly at Mary, who did not envy his position as lead on this interview, and then began, "Mrs. Greavy, I want to begin by expressing our deepest condolences for you tragic loss and I can assure you that this investigation will bring every resource available to bear in the effort to find the person who committed this unspeakable crime."
+Isobel Greavy tilted her head slightly in acknowledgement of his expression of sympathy and her hazel eyes settled briefly on Mary.
+Mary's gaze shifted quickly to Isobel's long fingers, which rested lightly on the arms of her chair.
+Even her posture spoke of a woman whose grip on composure was literally unflappable, but Mary had little doubt that this facade was brittle and the right careless remark could cause it to crumble, revealing the turbulent vortex of her pain and grief.
+"Thank you inspector...and I can insure you that all resources will indeed be committed to finding the monster that did this to my husband.
+I am correct in assuming that the extensive web of surveillance cameras on the green did not capture what transpired the other night?"
+The not so subtle implication was clear to both inspectors...Isobel Greavy possessed the requisite clout to insure that the Yard was diligent in pursuing her husband's murderer.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center" id="word_cloud_panel">
+            <div class="col-12">
+                <h3>Word-Cloud Representation</h3>
+                The following three word clouds jointly represent one of the stories you just read. Which story are these word clouds referring to? <br/>
+                <br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adjective</h2>
+                <canvas width="700" height="700"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+        <br><hr><br>
+
+        <!-- Question -->
+        <div class="row justify-content-md-center" style="margin-bottom: 50px;">
+
+            <div class="col-12">
+                <h3>Question</h3>
+                Please select the correct statement.
+                <br>
+                <br>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="1">
+                <label for="radio_story_1">
+                    <input type="radio" id="radio_story_1" name="story_selection" value="1">
+                    <span>These word clouds are referring to Story 1.</span>
+                </label>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 options" value="2">
+                <label for="radio_story_2">
+                    <input type="radio" id="radio_story_2" name="story_selection" value="2">
+                    <span>These word clouds are referring to Story 2.</span>
+                </label>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="56">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input type="hidden" name="target" value="1">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+
+
+    </div>
+
+</body>
+</html>

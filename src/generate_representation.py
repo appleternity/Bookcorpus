@@ -433,7 +433,7 @@ def generate_html(block=20):
 
         answer_info.append({
             "file": f"{count:0>4}.html",
-            "answer": ans
+            "answer": ans+1
         })
     
     with open(os.path.join("html", "word_cloud", str(block), "answer_info.json"), 'w', encoding='utf-8') as outfile:
@@ -472,7 +472,7 @@ def generate_html_wordcloud(block=20):
     frame_dict = {v:frame_info_dict[k] for k, v in model.vocabulary.items()}
 
     answer_info = []
-    for count, sample in enumerate(data[:10]):
+    for count, sample in enumerate(data[:100]):
         frame_list = generate_frame_representation_for_word_cloud(sample, frame_dict)
         template = ori_template.replace("{{frame_list}}", str(frame_list))
         template = template.replace("{{setting}}", "block_{}".format(20))
@@ -482,12 +482,18 @@ def generate_html_wordcloud(block=20):
         if ans == 0:
             template = template.replace("{{target}}", "1")
             story_1, story_2 = sample["y_text"], sample["option_text"]
+            book_title_1 = " ".join([w.capitalize() for w in sample["book"][:-4].split("__")[1].split("-")])
+            book_title_2 = " ".join([w.capitalize() for w in sample["option_book"][:-4].split("__")[1].split("-")])
         else:
             template = template.replace("{{target}}", "2")
             story_1, story_2 = sample["option_text"], sample["y_text"] 
+            book_title_2 = " ".join([w.capitalize() for w in sample["book"][:-4].split("__")[1].split("-")])
+            book_title_1 = " ".join([w.capitalize() for w in sample["option_book"][:-4].split("__")[1].split("-")])
 
         template = template.replace("{{story_1}}", story_1)
         template = template.replace("{{story_2}}", story_2)
+        template = template.replace("{{book_title_1}}", book_title_1)
+        template = template.replace("{{book_title_2}}", book_title_2)
 
         # save
         with open(os.path.join("html", "word_cloud",  str(block), "{:0>4}.html".format(count)), 'w', encoding='utf-8') as outfile:
@@ -495,7 +501,7 @@ def generate_html_wordcloud(block=20):
 
         answer_info.append({
             "file": f"{count:0>4}.html",
-            "answer": ans
+            "answer": ans+1
         })
     
     with open(os.path.join("html", "word_cloud", str(block), "answer_info.json"), 'w', encoding='utf-8') as outfile:
