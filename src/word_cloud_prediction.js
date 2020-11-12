@@ -36,18 +36,28 @@ $(window).ready(function() {
     console.log("Hello");
     var time_lock = new TimeLock(30, "#submit_button");
 
-    $(document).on("click", ".options input[type='radio']", function(evt) {
+    $(document).on("click", ".word_cloud_box", function(evt) {
         
         // get correct story block
         var target = $(evt.target);
-    
+   
+        if (!target.hasClass("word_cloud_box")) {
+            target = target.parents(".word_cloud_box");
+        }
+
         // get value
-        var value = target.val();
+        var value = target.attr("value");
         
         $(".word_cloud_box").removeClass("selected_story_block");
         $("#word_cloud_panel_"+value).addClass("selected_story_block");
         console.log("#word_cloud_panel_"+value);
 
+        //$(".word_cloud_box .indicator").text("(   )");
+        //$("#word_cloud_panel_"+value+" .indicator").text("( V )");
+
+        $(".word_cloud_box .indicator").html("(&nbsp;)");
+        $("#word_cloud_panel_"+value+" .indicator").html("(V)");
+        //
         $("#story_answer").val(value);
     });
 
@@ -247,10 +257,14 @@ $(window).ready(function() {
             this.container(d3.select("body"));
             console.log("parent is null", this.container());
         }
-        test = this.container().append("svg")
+        var svg = this.container().append("svg")
               .attr("width", this.size()[0])
-              .attr("height", this.size()[1])
-            .append("g")
+              .attr("height", this.size()[1]);
+        svg.append("rect")
+              .attr("width", "100%")
+              .attr("height", "100%")
+              .attr("fill", "white");
+        svg.append("g")
               .attr("transform", "translate(" + this.size()[0] / 2 + "," + this.size()[1] / 2 + ")")
             .selectAll("text")
               .data(words)
