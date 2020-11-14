@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="text/javascript">
+        var frame_list_1 = [{'frame': 'Vehicle', 'tfidf': 2.68980073928833, 'lexical_unit': 'car.n / bus.n / truck.n / bike.n / taxi.n / plane.n / ferry.n / boat.n / bicycle.n / ship.n / tram.n / automobile.n / tricycle.n / airplane.n / scooter.n / schooner.n / train.n / carriage.n / cab.n / coach.n / vehicle.n / lorry.n / submarine.n / tank.n / cart.n / toboggan.n / pick-up.n / van.n / limousine.n / convertible.n / helicopter.n / canoe.n / kayak.n / buggy.n / liner.n / sedan.n / vessel.n / tank car.n / warplane.n / yacht.n / chopper.n / helo.n / bird.n / minivan.n / ambulance.n / aircraft.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'Spelling_and_pronouncing', 'tfidf': 2.5500502586364746, 'lexical_unit': 'spell.v / misspell.v / pronounce.v / mispronounce.v / say.v / write.v / sound.n', 'definition': 'A Speaker realizes a Sign, usually a linguistic one, in some Formal_realization. The Formal_realization may be described as correct or incorrect in a Judgment expression, or it may be partially indicated as a Part_of_form.  Manner may be used as a more general indication of the Formal_realization  \'A person doesn\'t always pronounce a word the way they say  it in context\'  \'I can\'t spell. INI INI\'  \'Stephanopolous spells his name with a "ph".\'  \'On page 87465, you spelled the name of my dog incorrectly as "Checquers".\'  \'In German, the word for \'peace\' is written "Friede" CNI\''}, {'frame': 'Communication', 'tfidf': 2.27634334564209, 'lexical_unit': 'communicate.v / speech.n / indicate.v / signal.v / communication [act].n / communication [entity].n / contact.n / codeword.n / password.n / convey.v / say.v / share.v', 'definition': "A Communicator conveys a Message to an Addressee; the Topic and Medium of the communication also may be expressed.  This frame includes no specification of the method of communication (speech, writing, gesture, etc.).  This frame and the frames that inherit the general Communication frame can add elaboration to the Medium in a variety of ways (in French, on the radio program, in a letter) or to the Manner of communication (babble, rant, shout, whisper). There are also frames related to Communication that either do not inherit all of the FEs of this frame or do not inherit them in a straightforward manner (such as Conversation, in which Communicator and Addressee alternate roles, and are often expressed by a single, plural NP).  'Let's hope it did n't have time to communicate any of its findings to its overlords.'  NB:  For many words in this domain (those which do not inherently ascribe cognitive/social processes to a Communicator, position a statement within a conversation, or specify Medium in detail), there is a metaphorical usage which maps Communication onto an alternate POV of Becoming_aware, with corresponding maps for frames related to Communication.  This metaphor is most felicitous with Means or Medium subjects, which are mapped onto the Evidence FE of Becoming_aware.  In many cases this metaphor maps Communication onto the Evidence frame, but not always.  Some words from the Communication domain are listed in the Evidence frame since they are deemed to be lexicalized.  'A flick of his gaze toward the doorway told me what he really wanted. (METAPHOR)' 'This painting really speaks to me. INI (MET) ' 'Putting his arm around her protectively achieved nothing but announcing to their captors their vulnerability. (MET)' 'It says a lot that he did n't come back. INI (MET) '"}, {'frame': 'Color', 'tfidf': 2.256831645965576, 'lexical_unit': 'red.a / green.a / color.n / vermilion.a / ebony.a / purple.a / blue.a / orange.a / yellow.a / violet.a / brown.a / gray.a / black.a / white.a / pink.a / crimson.a / maroon.a / turquoise.a / azure.a / beige.a / mauve.a / tan.a / buff.a / scarlet.a / pitchblack.a / colored.a / indigo.a / puce.a', 'definition': "A Color serves as a landmark in color-space, either a point-like landmark (e.g. burnt sienna) or a broader region (e.g. blue).  Especially when the Color designates a broad region in color-space, it may be defined with a specific Type, further specified by comparison to the color of a Comparand, modified by a Color_qualifier, or evaluated with a Descriptor.  All color words are generally used to specify the color of some (physical) Entity. 'I really like that shade of blue.' 'The welts on his side had already turned an angry red.' 'The room was bathed in a soft pink light.' 'They promptly set up a zillion bright vermilion pavilions.' 'His face and hands were brown from a life spent in the bright sun of the fields.' "}, {'frame': 'Text_creation', 'tfidf': 2.2473394870758057, 'lexical_unit': 'pen.v / author.v / write.v / compose.v / draft.v / jot down.v / jot.v / speak.v / say.v / utter.v / write up.v / write down.v / write in.v / write out.v / print.v / type.v / type out.v / type up.v / type in.v / print out.v / print up.v / get down.v / chronicle.v / sign.v / dash off.v / list.v', 'definition': "An Author creates a Text, either written, such as a letter, or spoken, such as a speech,  that contains meaningful linguistic tokens, and may have a particular Addressee in mind.  The Text may include information about its topic, although the latter is not an FE in this frame.  'I penned a letter concerning racism  to Congress.' 'The brothers said not two words to each other.' 'Jot any notes you need below the line in red pen only.'"}, {'frame': 'People_by_vocation', 'tfidf': 2.085751533508301, 'lexical_unit': 'politician.n / farmer.n / attendant.n / clerk.n / consultant.n / gardener.n / lawyer.n / maid.n / manager.n / professor.n / receptionist.n / salesman.n / servant.n / waiter.n / carpenter.n / scientist.n / private eye.n / actress.n / waitress.n / technician.n / toxicologist.n / engineer.n / double agent.n / researcher.n / archaeologist.n / professional.a / agent.n / journalist.n / judge.n / mechanic.n / oilman.n / reporter.n / scholar.n / veterinarian.n / trader.n / mole.n / spy.n / businessperson.n / speculator.n / architect.n / plain-clothes man.n / magistrate.n / officer.n / police officer.n / spokesperson.n / spokesman.n / spokeswoman.n / policeman.n / bodyguard.n / police.n / tailor.n / correspondent.n / cook.n / manservant.n / senator.n / attorney.n / athlete.n / chef.n / bartender.n / teacher.n / pilot.n / flight attendant.n / server.n / software developer.n / web developer.n / saleswoman.n / salesperson.n / homemaker.n / student.n / artist.n / musician.n / singer.n / painter.n / dancer.n / writer.n / editor.n / actor.n / producer.n / director.n / designer.n / neuroscientist.n / biologist.n / chemist.n / physicist.n / anthropologist.n / linguist.n / psychologist.n / psychiatrist.n / mathematician.n / sociologist.n / fire fighter.n / firefighter.n / programmer.n / driver.n', 'definition': "This frame contains  words for Individuals as viewed in terms of their vocation.   The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'Humphrey Bogart was a great actor.'"}, {'frame': 'Building_subparts', 'tfidf': 1.9721276760101318, 'lexical_unit': 'room.n / antechamber.n / anteroom.n / atelier.n / attic.n / ballroom.n / basement.n / bathroom.n / bedroom.n / ben.n / boudoir.n / buttery.n / catacomb.n / cell.n / cellar.n / chamber.n / chancellery.n / chapel.n / checkroom.n / cloakroom.n / closet.n / corridor.n / den.n / foyer.n / garret.n / hallway.n / kitchen.n / kitchenette.n / larder.n / laundry.n / lift.n / elevator.n / lobby.n / loft.n / nursery.n / office.n / pantry.n / parlor.n / playroom.n / porch.n / refectory.n / repository.n / sacristy.n / salon.n / scullery.n / solarium.n / stoop.n / storeroom.n / studio.n / study.n / veranda.n / vestibule.n / ward.n / wing.n / workroom.n / workshop.n / banquet room.n / dining room.n / dressing room.n / family room.n / guest room.n / living room.n / master bedroom.n / powder room.n / rest room.n / rumpus room.n / sitting room.n / utility room.n / wine cellar.n / apartment.n / flat.n / lavatory.n / TV room.n / belfry.n / tower.n / altar.n / laundry room.n / level.n / floor.n / deck.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}, {'frame': 'Attention_getting', 'tfidf': 1.7561166286468506, 'lexical_unit': "pal.n / sir.n / ma'am.n / buddy.n / kid.n / dude.n / boy.n / guy.n / miss.n / bro.n / homes.n / yoohoo.intj / hello there.intj / excuse me.intj / hey.intj / officer.n", 'definition': "This frame covers terms used to get someone's attention, including Interjections (e.g. hey, yo) and certain terms of address (Address_term), the latter of which may serve the function of attention getting.    'Hey.' 'Hey, boy.' 'Hey, boy, come over here now!'  "}, {'frame': 'Connecting_architecture', 'tfidf': 1.7256580591201782, 'lexical_unit': 'door.n / elevator.n / lift.n / escalator.n / corridor.n / hallway.n / window.n / staircase.n / stairs.n / step.n / gate.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  The Part itself connects locations within the building to each other, Connected_locations. If a particular point of view is adopted in the context of real or imagined motion, then one of the locations can be construed as Goal and the other as Source.   'It was of great interest to me to see the star signs of Taurus the Bull and Leo the Lion on the staircase to the upper Palace.'  'All visitors may use the elevator between the Main Level and the Upper Level instead of the main staircase'  'The window into the garden was open.'"}, {'frame': 'Social_event', 'tfidf': 1.6959010362625122, 'lexical_unit': 'party.n / banquet.n / shindig.n / fete.n / celebration.n / social.n / get-together.n / picnic.n / fair.n / reception.n / dance.n / festival.n / feast.n / dinner.n / dinner-party.n / bash.n / gala.n / jollification.n / rave.n / soiree.n / barbecue.n / ball.n / meeting.n / function.n / benefit.n', 'definition': "A Social_event occurs at which Attendees are present to conduct a social function or joint activity.  The Social_event is often a party or celebration, in which case it is possible to express someone who is being honored (the Honoree) or its function may be to celebrate an Occasion at which Attendees are present. Often, a specific Attendee, the Host, provides a venue for people to gather.  'Sue threw a party for Bob's birthday.'  'Who will host the Olympic games in eight years?'"}, {'frame': 'Buildings', 'tfidf': 1.680238127708435, 'lexical_unit': 'house.n / houseboat.n / church.n / tower.n / bungalow.n / cabin.n / castle.n / condominium.n / cottage.n / dacha.n / dormitory.n / dwelling.n / farmhouse.n / home.n / hospital.n / hostel.n / hotel.n / igloo.n / lodge.n / mansion.n / monastery.n / motel.n / palace.n / pension.n / pueblo.n / residence.n / shack.n / shanty.n / shelter.n / tenement.n / tent.n / villa.n / acropolis.n / arena.n / auditorium.n / barn.n / barracks.n / basilica.n / blockhouse.n / campanile.n / caravan.n / caravanserai.n / chalet.n / chateau.n / conservatory.n / garage.n / gazebo.n / greenhouse.n / hall.n / hangar.n / hippodrome.n / hovel.n / inn.n / kennel.n / kiosk.n / lighthouse.n / maisonette.n / mall.n / manor.n / manse.n / mosque.n / outbuilding.n / outhouse.n / pagoda.n / palazzo.n / pavilion.n / penthouse.n / pyramid.n / rotunda.n / shebang.n / shed.n / skyscraper.n / stable.n / stadium.n / supermarket.n / synagogue.n / tabernacle.n / tavern.n / tepee.n / terminal.n / triplex.n / warehouse.n / wigwam.n / hacienda.n / homestead.n / bunker.n / theater.n / bar.n / city hall.n / disco.n / discotheque.n / library.n / temple.n / building.n / structure.n / housing.n / fortress.n / fortification.n / citadel.n / fort.n / airport.n / pub.n / high-rise.n / quarters.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Performing_arts', 'tfidf': 1.654295563697815, 'lexical_unit': 'music.n / performance.n / play.n', 'definition': 'The Performers, together with behind the scenes Personnel, execute a Performance according to a Script and/or Score.  The purpose of the Performance is to create an experience for an Audience, who then judge its merits.  Performances may be in many different Mediums and be of various Types.   This frame is very elaborate in modern society and there are a number of traditions and practices typically (but not necessarily) related to Performances:       The Performance is preceded by many practice sessions in which the Performers and other Personnel attempt to improve the quality and/or fidelity of their individual and collective performances to the Script and/or Score.         The Audience members pay a fee to experience the Performance.       The Performers (and Personnel) receive payment for contributing to the Performance.       Often there are other individuals involved in the specifically financial aspects of the Performance and Performers.       Critics act as part of the Audience and then write reviews that evaluate the merits of the Performance, describing the Performance to other potential Audience members.       Due to the high quality of previous Performances, Performers can become famous, i.e. well known and liked.  Those who like them particularly well become fans of the Performer.  (Shared with writers...)'}, {'frame': 'Kinship', 'tfidf': 1.648321509361267, 'lexical_unit': 'father.n / mother.n / son.n / daughter.n / uncle.n / aunt.n / auntie.n / dad.n / daddy.n / grandson.n / granddaughter.n / niece.n / nephew.n / brother.n / sister.n / grandfather.n / grandmother.n / mother-in-law.n / father-in-law.n / son-in-law.n / daughter-in-law.n / stepson.n / stepdaughter.n / stepmother.n / stepfather.n / stepbrother.n / stepsister.n / brother-in-law.n / sister-in-law.n / cousin.n / mom.n / great-grandson.n / great-granddaughter.n / parent.n / child.n / in-law.n / family.n / sibling.n / ancestor.n / descendant.n / forebear.n / forefather.n / kinsman.n / kinsfolk.n / kinswoman.n / relative.n / kin.n / maternal.a / paternal.a / parental.a / filial.a / ancestral.a / scion.n / kid.n / offspring.n / clan.n / people.n / name.n / kinship.n', 'definition': "This frame contains words that denote Kinship relations. In annotating the directional uses of these words, we use the standard terms from anthropology, Ego and Alter.  'Matilde is Gilberto's cousin once removed' Compare to: Appellations."}, {'frame': 'Money', 'tfidf': 1.5985500812530518, 'lexical_unit': 'money.n / cash.n / funds.n / dough.n / capital.n / dinero.n / sterling.n / fund.n', 'definition': "Money is a medium used for exchanging goods and services. It is in most cases issued by a government (its Creator) in the form of coins and banknotes. Particular amounts of it may have a designated or planned Use, or may have come from some Origin.  'The money for our daughter's college education is currently earning interest in a savings account.'  'The entire project ended up being funded with Swiss funds.'  'The use of paper money really caught on in Europe in the 1700s'"}, {'frame': 'Clothing', 'tfidf': 1.5916719436645508, 'lexical_unit': 'dress.n / frock.n / petticoat.n / ballgown.n / culottes.n / chemise.n / jodhpurs.n / sock.n / stocking.n / leggings.n / tunic.n / slip.n / gown.n / skirt.n / shorts.n / pants.n / trousers.n / wrap.n / shirt.n / blouse.n / cloak.n / cape.n / coat.n / greatcoat.n / overcoat.n / jacket.n / vest.n / tie.n / hose.n / hosiery.n / clothing.n / clothes.n / finery.n / suit.n / necktie.n / neckwear.n / cummerbund.n / scarf.n / shawl.n / bow-tie.n / pantyhose.n / garter.n / panties.n / knickers.n / sweater.n / jumper.n / cardigan.n / pullover.n / blazer.n / kilt.n / swimsuit.n / bikini.n / robe.n / bathrobe.n / apron.n / miniskirt.n / fishnet.n / legwarmers.n / regalia.n / raiment.n / apparel.n / attire.n / vestment.n / livery.n / outfit.n / garment.n / undergarment.n / underclothing.n / underclothes.n / underwear.n / togs.n / undies.n / shift.n / pinafore.n / mitten.n / mitt.n / glove.n / bodice.n / corset.n / parka.n / windbreaker.n / windcheater.n / raincoat.n / pyjama.n / nightie.n / nightdress.n / nightgown.n / nightwear.n / lingerie.n / camisole.n / waistcoat.n / jeans.n / overall.n / coverall.n / garb.n / smock.n / sundress.n / bra.n / brassiere.n / teddy.n / tights.n / jumpsuit.n / kimono.n / kaftan.n / uniform.n / costume.n / motley.n / get-up.n / ensemble.n / surplice.n / galosh.n / welly.n / wellington.n / slipper.n / sandal.n / sneaker.n / stiletto.n / boot.n / shoe.n / gumboot.n / clog.n / footwear.n / sari.n / sarong.n / poncho.n / abaya.n / jerkin.n / crinoline.n / muff.n / cowl.n / tutu.n / t-shirt.n / polo-neck.n / g-string.n / flip-flops.n / one-piece.n / two-piece.n / flannels.n / rags.n / silks.n / satins.n / cottons.n / tweeds.n / ermines.n / muslins.n / tippet.n / doublet.n / tatters.n / neckerchief.n / breeches.n / sweatshirt.n / sweatpants.n / tracksuit.n / alb.n / stole.n / chasuble.n / cope.n / buskin.n / pallium.n / gauntlet.n / cravat.n / briefs.n / cossie.n', 'definition': "This frame refers to clothing and its characteristics,  including anything that people conventionally wear.  The Wearer wears a Garment that has a certain Style, is made of a certain Material, and can be otherwise characterized by a Descriptor.  In some cases, the Body_location (where the garment is worn) and Subregion of the clothing may also be specified.  'Claudia dressed in a dark green cotton DRESS clasped round her slender waist with a broad yellow belt , drank a cup of coffee and opened her neglected post .'"}, {'frame': 'Questioning', 'tfidf': 1.58853280544281, 'lexical_unit': 'grill.v / inquire.v / inquiry.n / interrogate.v / interrogation.n / query.n / query.v / question.n / question.v / questioning.n / quiz.v / ask.v', 'definition': "The words in this frame have to do with a Speaker asking an Addressee a question which calls for a reply (as opposed to making a request which calls for an action on the part of the Addressee).  '' 'We asked Ruby what kind of food they ate.'  'Yeats was able to interrogate the spirit world about his relationship with Maude.'"}, {'frame': 'Vehicle_subpart', 'tfidf': 1.5546374320983887, 'lexical_unit': 'door.n / window.n / seat.n / seatbelt.n / tire.n / wheel.n / brake.n / engine.n / hood.n / trunk.n / part.n / windshield.n', 'definition': "An entity is integrated into a vehicle as a Part of a (possibly unexpressed) Whole which may refer to the whole vehicle or merely to a sub-part of the vehicle.  '' 'The car's engine started smoking so we pulled over.' 'Put the bags in the trunk.' 'One should always wear a seatbelt while driving.' "}, {'frame': 'Contacting', 'tfidf': 1.5269510746002197, 'lexical_unit': 'reach.v / contact.v / contact.n / write in.v / write.v / e-mail.v / call.v / call up.v / phone.v / phone in.v / ring.v / ring up.v / get in touch.v / telephone.v / call.n / mail.v / telex.v / fax.v / cable.v / page.v / radio.v / telegraph.v / call in.v / get through.v', 'definition': "A Communicator (whose Location may be indicated) directs a Communication to an Addressee at a particular Address.  Note that no actual successful communicative act is implied, only the successful completion of acts which would establish the communication.  (In other words, Mari can e-mail Jon without Jon ever reading it.) NB:  The Address or Location_of_communicator may be a virtual address, such as an e-mail or telephone number.'Disgruntled voters phoned Congressman Neil at his Washington residence with complaints about the recent increases in corporate welfare.''She tried to call from the payphone down the street.' "}, {'frame': 'Temporary_stay', 'tfidf': 1.5191199779510498, 'lexical_unit': 'stay.v / stay.n / lodge.v / room.v / guest.v / overnight.v / sleep over.v / stay over.v / board.v / quarter.v', 'definition': "A Guest stays for a time at a Location, which is not his or her permanent residence, for some Duration. The Location is often the permanent residence of a Host.  'I usually stay with my aunt at her summer house when I go to Seville.'  'For a few days my father lodged at a hotel with a buddy who was a biology student.'"}, {'frame': 'Race_descriptor', 'tfidf': 1.4746458530426025, 'lexical_unit': 'white.a / black.a / color.n / yellow.a / asian.a / hispanic.a', 'definition': "This frame covers LUs that describe the race of a Person.  'Carlos is hispanic, or so he says.'"}, {'frame': 'Architectural_part', 'tfidf': 1.4529151916503906, 'lexical_unit': 'fireplace.n / floor.n / ceiling.n / mantel.n / roof.n / rail.n / wall.n / counter.n / facade.n / foundation.n / flight.n / landing.n / window.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  'We need new counters for the kitchen'  'The storm ripped off the bathroom's roof'  "}, {'frame': 'Artifact', 'tfidf': 1.4148544073104858, 'lexical_unit': 'wheel.n / technology.n / biotechnology.n / artifact.n / control panel.n / board.n / board [game].n / spatula.n / whisk.n / tub.n / timer.n / oven.n / phone.n', 'definition': "An Artifact is deliberately made or modified by an intelligent entity to be put to a certain kind of Use.  Various properties of the Artifact may be specified, such as its Creator, Time_of_creation, Name, Type, and the Material of which it is composed.  The Artifact may or may not be a physical entity.  'There are reports that Kim Il Sung asked China to share its nuclear weapons technology.'"}, {'frame': 'Appellations', 'tfidf': 1.409537434577942, 'lexical_unit': 'officer.n / general.n / captain.n / president.n / bishop.n / chairman.n / chairperson.n / chief.n / commander.n / commissioner.n / congressman.n / congresswoman.n / director.n / duchess.n / emperor.n / empress.n / executive.n / governor.n / headmaster.n / imam.n / kaiser.n / king.n / leader.n / legislator.n / maharaja.n / mayor.n / minister.n / mogul.n / monarch.n / official.n / premier.n / prince.n / principal.n / queen.n / representative.n / secretary.n / shah.n / sheik.n / sultan.n / superintendent.n / supervisor.n / tsar.n / mother.n / father.n / doctor.n / dr.n / mr.n / mrs.n / ms.n / miss.n / child.n / aunt.n / uncle.n / sister.n / brother.n / cousin.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Food', 'tfidf': 1.4039400815963745, 'lexical_unit': 'fruit.n / apple.n / banana.n / vegetable.n / carrot.n / potato.n / pea.n / meat.n / beef.n / lamb.n / veal.n / poultry.n / chicken.n / turkey.n / fish.n / salmon.n / tuna.n / shellfish.n / shrimp.n / lobster.n / milk.n / cheese.n / egg.n / butter.n / nut.n / almond.n / peanut.n / pasta.n / noodle.n / herb.n / spice.n / pepper.n / basil.n / cereal.n / lettuce.n / berry.n / bread.n / roll.n / cracker.n / cake.n / pancake.n / cheesecake.n / pastry.n / croissant.n / cookie.n / biscuit.n / sweet.n / chocolate.n / sweetener.n / sugar.n / honey.n / fat.n / oil.n / vinegar.n / coffee.n / juice.n / soup.n / stew.n / sauce.n / dressing.n / vinaigrette.n / ketchup.n / mayonnaise.n / lasagne.n / food.n / tea.n / water.n / date.n / cabbage.n / MRE.n / beer.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Cotheme', 'tfidf': 1.4023770093917847, 'lexical_unit': "accompany.v / chase.v / conduct.v / escort.v / follow.v / guide.v / hound.v / lead.v / pursue.v / shadow.v / shepherd.v / tail.v / track.v / trail.v / pursuit.n / pursuer.n / usher.v / stalk.v / tag along.v / walk.v / guided.a / dog.v / dog (someone's) steps.idio / show.v / lead the way.v", 'definition': "This frame contains words that necessarily indicate the motion of two distinct objects. The Theme is typically animate and is expressed the same way a Self-mover is expressed in the Self-motion frame--i.e. as the subject of a target verb. The Cotheme may or may not be animate and is typically expressed as a direct object or an oblique. Source, Path, Goal, and the other frame elements common to motion words also regularly occur with the words in this frame.  '' 'She accompanied him in the ambulance to Hollywood Memorial Hospital.'  'Police persue teenage joyrider across three counties.'  'My pursuit of academic superiority shows that I was still striving to be the person my parents wanted me to be.'"}, {'frame': 'Aesthetics', 'tfidf': 1.3565547466278076, 'lexical_unit': 'beautiful.a / lovely.a / smart.a / ugly.a / tasty.a / elegant.a / fair.a / handsome.a / hideous.a', 'definition': "An Entity is judged to be sensually pleasing or intellectually interesting to a (generally implicit) Judge.   'We saw this beautiful boat with the red sails several times' 'We camped here on the beach and had an absolutely lovely early morning walk through farm fields' "}, {'frame': 'Request', 'tfidf': 1.3565365076065063, 'lexical_unit': 'appeal.n / ask.v / beg.v / beseech.v / command.n / command.v / demand.n / demand.v / entreat.v / entreaty.n / implore.v / order.n / order.v / petition.n / plea.n / plead.v / request.n / request.v / summon.v / tell.v / urge.v / call.v / invite.v / call.n / instruct.v / invitation.n', 'definition': "In this frame a Speaker asks an Addressee for something, or to carry out some action.  'The customer demanded a refund.' 'I begged my parents to let me stay up late.' "}, {'frame': 'Text', 'tfidf': 1.352407455444336, 'lexical_unit': 'tome.n / fanzine.n / epilogue.n / benediction.n / imprecation.n / eulogy.n / autobiography.n / ballad.n / biography.n / chronicle.n / comedy.n / diary.n / drama.n / elegy.n / epic.n / epigram.n / epistle.n / essay.n / exemplum.n / fable.n / festschrift.n / haiku.n / letter.n / limerick.n / lyric.n / memoir.n / monograph.n / mystery.n / novel.n / novelette.n / novella.n / ode.n / poetry.n / poem.n / rhyme.n / saga.n / song.n / sonnet.n / speech.n / tetralogy.n / thriller.n / tragedy.n / trilogy.n / whodunit.n / manual.n / handbook.n / paperback.n / hardback.n / grimoire.n / spellbook.n / lay.n / book.n / magazine.n / account.n / sermon.n / tract.n / screenplay.n / script.n / article.n / obituary.n / volume.n / mag.n / edition.n / treatise.n / report.n / bulletin.n / tractate.n / hagiography.n / journal.n / periodical.n / editorial.n / meditation.n / booklet.n / fiction.n / writings.n / missive.n / newspaper.n / list.n / manuscript.n / literature.n / history.n / brochure.n / material.n / pamphlet.n / issue.n / paper [newspaper].n / paper [article].n / epic.a / publication.n / life.n / record.n / textbook.n', 'definition': "A Text is an entity that contains linguistic, symbolic information on a Topic, created by an Author at the Time_of_creation.  It may be a physical entity that is made of a certain Material etc.  It may be constructed for an Honoree.  'It was a good book.'"}, {'frame': 'Communication_means', 'tfidf': 1.3475961685180664, 'lexical_unit': 'cable.v / wire.v / phone.v / semaphore.v / telegraph.v / telex.v / radio.v / telephone.v / fax.v / call.v / pdf.v', 'definition': "This frame concerns Communicators communicating with each other with the aid of a Means of communication such as a telephone.  'I faxed him a resume.'"}, {'frame': 'Talking_into', 'tfidf': 1.3468217849731445, 'lexical_unit': 'incite.v / induce.v / influence.v / lead.v / talk.v', 'definition': 'A Speaker expresses through language his wish to get the Addressee to act.  The Addressee forms an intention to act and does so. \'\' \'You think I talked Peter into giving me those earrings, don\'t you?\'  \'Don\'t let a shop assistant talk you into buying a so-called "orthopaedic" bed -- there\'s no such thing.\''}];
+        var frame_list_2 = [{'frame': 'Kinship', 'tfidf': 1.7196193733998337, 'lexical_unit': 'father.n / mother.n / son.n / daughter.n / uncle.n / aunt.n / auntie.n / dad.n / daddy.n / grandson.n / granddaughter.n / niece.n / nephew.n / brother.n / sister.n / grandfather.n / grandmother.n / mother-in-law.n / father-in-law.n / son-in-law.n / daughter-in-law.n / stepson.n / stepdaughter.n / stepmother.n / stepfather.n / stepbrother.n / stepsister.n / brother-in-law.n / sister-in-law.n / cousin.n / mom.n / great-grandson.n / great-granddaughter.n / parent.n / child.n / in-law.n / family.n / sibling.n / ancestor.n / descendant.n / forebear.n / forefather.n / kinsman.n / kinsfolk.n / kinswoman.n / relative.n / kin.n / maternal.a / paternal.a / parental.a / filial.a / ancestral.a / scion.n / kid.n / offspring.n / clan.n / people.n / name.n / kinship.n', 'definition': "This frame contains words that denote Kinship relations. In annotating the directional uses of these words, we use the standard terms from anthropology, Ego and Alter.  'Matilde is Gilberto's cousin once removed' Compare to: Appellations."}, {'frame': 'Social_event', 'tfidf': 1.278503109734577, 'lexical_unit': 'party.n / banquet.n / shindig.n / fete.n / celebration.n / social.n / get-together.n / picnic.n / fair.n / reception.n / dance.n / festival.n / feast.n / dinner.n / dinner-party.n / bash.n / gala.n / jollification.n / rave.n / soiree.n / barbecue.n / ball.n / meeting.n / function.n / benefit.n', 'definition': "A Social_event occurs at which Attendees are present to conduct a social function or joint activity.  The Social_event is often a party or celebration, in which case it is possible to express someone who is being honored (the Honoree) or its function may be to celebrate an Occasion at which Attendees are present. Often, a specific Attendee, the Host, provides a venue for people to gather.  'Sue threw a party for Bob's birthday.'  'Who will host the Olympic games in eight years?'"}, {'frame': 'Color', 'tfidf': 1.118759513179486, 'lexical_unit': 'red.a / green.a / color.n / vermilion.a / ebony.a / purple.a / blue.a / orange.a / yellow.a / violet.a / brown.a / gray.a / black.a / white.a / pink.a / crimson.a / maroon.a / turquoise.a / azure.a / beige.a / mauve.a / tan.a / buff.a / scarlet.a / pitchblack.a / colored.a / indigo.a / puce.a', 'definition': "A Color serves as a landmark in color-space, either a point-like landmark (e.g. burnt sienna) or a broader region (e.g. blue).  Especially when the Color designates a broad region in color-space, it may be defined with a specific Type, further specified by comparison to the color of a Comparand, modified by a Color_qualifier, or evaluated with a Descriptor.  All color words are generally used to specify the color of some (physical) Entity. 'I really like that shade of blue.' 'The welts on his side had already turned an angry red.' 'The room was bathed in a soft pink light.' 'They promptly set up a zillion bright vermilion pavilions.' 'His face and hands were brown from a life spent in the bright sun of the fields.' "}, {'frame': 'Building_subparts', 'tfidf': 1.0018039739706233, 'lexical_unit': 'room.n / antechamber.n / anteroom.n / atelier.n / attic.n / ballroom.n / basement.n / bathroom.n / bedroom.n / ben.n / boudoir.n / buttery.n / catacomb.n / cell.n / cellar.n / chamber.n / chancellery.n / chapel.n / checkroom.n / cloakroom.n / closet.n / corridor.n / den.n / foyer.n / garret.n / hallway.n / kitchen.n / kitchenette.n / larder.n / laundry.n / lift.n / elevator.n / lobby.n / loft.n / nursery.n / office.n / pantry.n / parlor.n / playroom.n / porch.n / refectory.n / repository.n / sacristy.n / salon.n / scullery.n / solarium.n / stoop.n / storeroom.n / studio.n / study.n / veranda.n / vestibule.n / ward.n / wing.n / workroom.n / workshop.n / banquet room.n / dining room.n / dressing room.n / family room.n / guest room.n / living room.n / master bedroom.n / powder room.n / rest room.n / rumpus room.n / sitting room.n / utility room.n / wine cellar.n / apartment.n / flat.n / lavatory.n / TV room.n / belfry.n / tower.n / altar.n / laundry room.n / level.n / floor.n / deck.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}, {'frame': 'Buildings', 'tfidf': 0.9678621857577332, 'lexical_unit': 'house.n / houseboat.n / church.n / tower.n / bungalow.n / cabin.n / castle.n / condominium.n / cottage.n / dacha.n / dormitory.n / dwelling.n / farmhouse.n / home.n / hospital.n / hostel.n / hotel.n / igloo.n / lodge.n / mansion.n / monastery.n / motel.n / palace.n / pension.n / pueblo.n / residence.n / shack.n / shanty.n / shelter.n / tenement.n / tent.n / villa.n / acropolis.n / arena.n / auditorium.n / barn.n / barracks.n / basilica.n / blockhouse.n / campanile.n / caravan.n / caravanserai.n / chalet.n / chateau.n / conservatory.n / garage.n / gazebo.n / greenhouse.n / hall.n / hangar.n / hippodrome.n / hovel.n / inn.n / kennel.n / kiosk.n / lighthouse.n / maisonette.n / mall.n / manor.n / manse.n / mosque.n / outbuilding.n / outhouse.n / pagoda.n / palazzo.n / pavilion.n / penthouse.n / pyramid.n / rotunda.n / shebang.n / shed.n / skyscraper.n / stable.n / stadium.n / supermarket.n / synagogue.n / tabernacle.n / tavern.n / tepee.n / terminal.n / triplex.n / warehouse.n / wigwam.n / hacienda.n / homestead.n / bunker.n / theater.n / bar.n / city hall.n / disco.n / discotheque.n / library.n / temple.n / building.n / structure.n / housing.n / fortress.n / fortification.n / citadel.n / fort.n / airport.n / pub.n / high-rise.n / quarters.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Organization', 'tfidf': 0.9402559197531458, 'lexical_unit': 'cartel.n / club.n / government.n / organization.n / association.n / league.n / intelligence.n / agency.n / union.n / brotherhood.n / delegation.n / committee.n / group.n / board.n / order.n / society.n / parliament.n / news outlet.n', 'definition': "This frame describes intentionally formed human social groups (here termed Organizations) with some definite structure and Members.  They may be relatively informal, consisting only of a group of individuals who are aware of who is and who is not a fellow member, or they may be complex and long-lasting, such as the Roman Catholic Church or the Conservative Party.   'Lucien is in the brotherhood.'"}, {'frame': 'People_by_age', 'tfidf': 0.9392282928985619, 'lexical_unit': 'geezer.n / coot.n / spring chicken.n / adolescent.n / adult.n / baby.n / boy.n / child.n / infant.n / neonate.n / teenager.n / kid.n / youth.n / youngster.n / elderly.n / newborn.n', 'definition': "This frame contains words for individuals as viewed in terms of their age. The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'He is a 12-year-old kid.'"}, {'frame': 'Records', 'tfidf': 0.9069373106883859, 'lexical_unit': 'book.n / log.n / record.n / journal.n / recording.n', 'definition': "A Record that contains a permanent account of Data.  This Record may be maintained by a Recorder for a certain Entity.   '' 'The bank's books were not accurate.'  'He made notes of the subject's responses in the journal by the desk.'  'She kept a record of how many times Steven had asked her for money.'"}, {'frame': 'Race_descriptor', 'tfidf': 0.8577508728955133, 'lexical_unit': 'white.a / black.a / color.n / yellow.a / asian.a / hispanic.a', 'definition': "This frame covers LUs that describe the race of a Person.  'Carlos is hispanic, or so he says.'"}, {'frame': 'Manipulation', 'tfidf': 0.8266782149565342, 'lexical_unit': 'clasp.v / claw.v / clutch.v / finger.v / grab.v / grasp.v / grip.v / knead.v / massage.v / nip.v / nudge.v / paw.v / pinch.v / pull.v / push.v / seize.v / squeeze.v / tug.v / tweak.v / wring.v / yank.v / fumble.v / grope.v / stroke.n / rub.v / grab hold.v / pull.n / lick.v / touch.v / kiss.v / caress.v / caress.n / stroke.v / diddle.v / hold.v / tickle.v / handle.v / kiss.n / poke.v', 'definition': "The words in this frame describe the manipulation of an Entity by an Agent.  Generally, this implies that the Entity is not deeply or permanently physically affected, nor is it overall moved from one place to another.  'Ian squeezed Mara's hand.' ''  A number of lexemes listed in this frame also occur in the Cause_motion frame (for example, push, yank).  Only the non-motion uses of these words belong in this frame, e.g., combinations such as push at, push on, yank at. "}, {'frame': 'Appellations', 'tfidf': 0.8119334762591908, 'lexical_unit': 'officer.n / general.n / captain.n / president.n / bishop.n / chairman.n / chairperson.n / chief.n / commander.n / commissioner.n / congressman.n / congresswoman.n / director.n / duchess.n / emperor.n / empress.n / executive.n / governor.n / headmaster.n / imam.n / kaiser.n / king.n / leader.n / legislator.n / maharaja.n / mayor.n / minister.n / mogul.n / monarch.n / official.n / premier.n / prince.n / principal.n / queen.n / representative.n / secretary.n / shah.n / sheik.n / sultan.n / superintendent.n / supervisor.n / tsar.n / mother.n / father.n / doctor.n / dr.n / mr.n / mrs.n / ms.n / miss.n / child.n / aunt.n / uncle.n / sister.n / brother.n / cousin.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Discussion', 'tfidf': 0.8061539643395558, 'lexical_unit': 'confer.v / debate.n / debate.v / dialog.n / discuss.v / discussion.n / exchange.n / meeting.n / conference.n / parley.v / parley.n / interlocutor.n / discussant.n / negotiation.n / negotiate.v / talk.n / consultation.n / talk (to).v / talk over.v', 'definition': "Two (or more) people (the Interlocutors, also encodable as Interlocutor_1 and Interlocutor_2) talk to one another. No person is construed as only a speaker or only an addressee. Rather, it is understood that both (or all) participants do some speaking and some listening--the process is understood to be symmetrical or reciprocal.  This frame differs from the Chatting frame in that the Interlocutors have a particular question that they are attempting to decide or understand.  'I would rather discuss politics with anyone but him.'   'World leaders met to discuss global warming on the coldest day of the year.'"}, {'frame': 'Prohibiting_or_licensing', 'tfidf': 0.7896870290958101, 'lexical_unit': 'ban.v / forbid.v / prohibit.v / proscribe.v / outlaw.v / ban.n / prohibition.n / bar.v / allow.v / entitle.v / permit.v / sanction.v', 'definition': 'In this frame a State_of_affairs is prohibited (or allowed) by a Principle. Raising constructions are common in this frame. Because laws and principles usually focus on what is not allowed, the words of this frame that are synonyms of prohibit.v are considered more basic, and the words that are synonyms of permit.v are marked with the semantic type "Negative".  \' Guns were prohibited in the airport .\'  \' Code 1425 bans large trucks in the tunnel.\' \' Children were not permitted in the office. CNI\'  \' Code 1425 allows us to deduct interest payments.\' \'No religion accepts discrimination against women.\'  In this frame the Principle which prohibits the State_of_affairs is not an agent who denies permission to a specific individual or group of individuals, and thus differs from the Authority in the Deny_permission frame. '}, {'frame': 'Forming_relationships', 'tfidf': 0.7862889889044647, 'lexical_unit': 'befriend.v / woo.v / betrothal.n / betroth.v / divorce.n / divorce.v / leave.v / marriage.n / marry.v / marry (into).v / separate.v / separation.n / tie the knot.v / wed.v / wedding.n / marriage (into).n / engagement.n', 'definition': "Partner_1 interacts with Partner_2 (also collectively expressible as Partners) to change their social relationship.    'I befriended the little pony by giving him a piece of apple.'"}, {'frame': 'Personal_relationship', 'tfidf': 0.7448582440331225, 'lexical_unit': 'husband.n / wife.n / widow.n / widower.n / widowed.a / spouse.n / couple.n / companion.n / divorcee.n / married.a / betrothed.n / bachelor.n / engaged.a / engagement.n / marriage.n / boyfriend.n / girlfriend.n / single.a / date.v / break-up.n / lover.n / partner.n / mistress.n / suitor.n / court.v / spinster.n / estranged.a / friend.n / betrothed.a / cohabit.v / cohabitation.n / seeing.v / widow.v / divorced.a / buddy.n / moll.n / paramour.n / inamorata.n / beau.n / sugar daddy.n / significant other.n / chum.n / pal.n / cobber.n / mate.n / crush.n / affair.n / adultery.n / amigo.n / sleep (together/with).v / spousal.a / marital.a / affianced.a / friendship.n / romance.n / befriend.v / familiar.a / fiancée.n / fiancé.n / relationship.n / chummy.a', 'definition': "The words in this frame have to do with people and the personal Relationships they are or can be a part of.  Some of the words denote people engaged in a particular kind of Relationship, others denote the Relationship, yet others the events bringing about or ending the Relationships. Many of the words presuppose an understanding of states and events that must have occurred before another event takes place or before a person can be classified in a certain way. '' 'And of course that drippy boyfriend of hers backed her up.'  'As the happy couple took their places there was a stir and a rising babble behind them.'  'Pattie is living proof that if you live with a man, you discover a lot you didn't know when you were just dating him.'"}, {'frame': 'Temporary_stay', 'tfidf': 0.7367841654477286, 'lexical_unit': 'stay.v / stay.n / lodge.v / room.v / guest.v / overnight.v / sleep over.v / stay over.v / board.v / quarter.v', 'definition': "A Guest stays for a time at a Location, which is not his or her permanent residence, for some Duration. The Location is often the permanent residence of a Host.  'I usually stay with my aunt at her summer house when I go to Seville.'  'For a few days my father lodged at a hotel with a buddy who was a biology student.'"}, {'frame': 'Arrest', 'tfidf': 0.715396928225333, 'lexical_unit': 'arrest.v / apprehend.v / bust.v / nab.v / collar.v / cop.v / arrest.n / bust.n / apprehension.n / book.v / summons.v', 'definition': "Authorities charge a Suspect, who is under suspicion of having committed a crime (the Charges), and take him/her into custody.'The police arrested Harry on charges of manslaughter.'"}, {'frame': 'Aesthetics', 'tfidf': 0.690130228094399, 'lexical_unit': 'beautiful.a / lovely.a / smart.a / ugly.a / tasty.a / elegant.a / fair.a / handsome.a / hideous.a', 'definition': "An Entity is judged to be sensually pleasing or intellectually interesting to a (generally implicit) Judge.   'We saw this beautiful boat with the red sails several times' 'We camped here on the beach and had an absolutely lovely early morning walk through farm fields' "}, {'frame': 'Connecting_architecture', 'tfidf': 0.6857110796306846, 'lexical_unit': 'door.n / elevator.n / lift.n / escalator.n / corridor.n / hallway.n / window.n / staircase.n / stairs.n / step.n / gate.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  The Part itself connects locations within the building to each other, Connected_locations. If a particular point of view is adopted in the context of real or imagined motion, then one of the locations can be construed as Goal and the other as Source.   'It was of great interest to me to see the star signs of Taurus the Bull and Leo the Lion on the staircase to the upper Palace.'  'All visitors may use the elevator between the Main Level and the Upper Level instead of the main staircase'  'The window into the garden was open.'"}, {'frame': 'Residence', 'tfidf': 0.6772393679306733, 'lexical_unit': 'reside.v / resident.n / dwell.v / stay.v / lodge.v / inhabit.v / inhabitant.n / live.v / camp.v / squat.v / camp.n / camped.a / room-mate.n / squatter.n / occupy.v / dweller.n / camper.n / occupant.n / room.v / shack up.v / bivouac.v / bivouac.n / tenant.n', 'definition': "This frame has to do with people (the Residents) residing in Locations, sometimes with a Co-resident.  'Peter lives in New York.' 'Sue is an inhabitant of Los Angeles.'"}, {'frame': 'Reason', 'tfidf': 0.6709542588595607, 'lexical_unit': 'reason.n / why.n / motive.n / motivation.n / basis.n', 'definition': "A volitional  Agent is responding to a State_of_affairs by performing some Action.  'And was that your reason for becoming an actor ?' 'But Giles is the reason that I am here .' 'Oh my reason for including it was Section fifty four A.'  "}, {'frame': 'Spelling_and_pronouncing', 'tfidf': 0.6645554732713432, 'lexical_unit': 'spell.v / misspell.v / pronounce.v / mispronounce.v / say.v / write.v / sound.n', 'definition': 'A Speaker realizes a Sign, usually a linguistic one, in some Formal_realization. The Formal_realization may be described as correct or incorrect in a Judgment expression, or it may be partially indicated as a Part_of_form.  Manner may be used as a more general indication of the Formal_realization  \'A person doesn\'t always pronounce a word the way they say  it in context\'  \'I can\'t spell. INI INI\'  \'Stephanopolous spells his name with a "ph".\'  \'On page 87465, you spelled the name of my dog incorrectly as "Checquers".\'  \'In German, the word for \'peace\' is written "Friede" CNI\''}, {'frame': 'Biological_classification', 'tfidf': 0.6585823247655698, 'lexical_unit': 'kingdom.n / phylum.n / class.n / order.n / family.n / genus.n / species.n / domain.n / variety.n', 'definition': "This frame has to do with scientific taxonomy.  The lexical units in this frame include the seven major classifications in which organisms are grouped based on common biological characteristics.  These classifications are labeled Rank in this frame.  The Members or Subtype of the Rank is often expressed with the use of the target-denoting noun. '' 'Phylum Arthropoda contains crustaceans, insects, spiders and other creepy-crawlies.' '' 'The snow leopard belongs to the kingdom Animalia.'"}, {'frame': 'Co-association', 'tfidf': 0.6467723017259975, 'lexical_unit': 'associate.n / colleague.n / co-worker.n / countryman.n / partner.n / co-religionist.n / fellow.a / comrade.n / brother.n / sister.n', 'definition': 'Two or more individuals have a relationship by virtue of belonging to the same organization or institution. They may or may not be personally acquainted, and may or may not have chosen to have the relationship.'}, {'frame': 'Performing_arts', 'tfidf': 0.6380876552036577, 'lexical_unit': 'music.n / performance.n / play.n', 'definition': 'The Performers, together with behind the scenes Personnel, execute a Performance according to a Script and/or Score.  The purpose of the Performance is to create an experience for an Audience, who then judge its merits.  Performances may be in many different Mediums and be of various Types.   This frame is very elaborate in modern society and there are a number of traditions and practices typically (but not necessarily) related to Performances:       The Performance is preceded by many practice sessions in which the Performers and other Personnel attempt to improve the quality and/or fidelity of their individual and collective performances to the Script and/or Score.         The Audience members pay a fee to experience the Performance.       The Performers (and Personnel) receive payment for contributing to the Performance.       Often there are other individuals involved in the specifically financial aspects of the Performance and Performers.       Critics act as part of the Audience and then write reviews that evaluate the merits of the Performance, describing the Performance to other potential Audience members.       Due to the high quality of previous Performances, Performers can become famous, i.e. well known and liked.  Those who like them particularly well become fans of the Performer.  (Shared with writers...)'}, {'frame': 'Calendric_unit', 'tfidf': 0.6287185162992583, 'lexical_unit': 'day.n / week.n / daybreak.n / weekday.n / weekend.n / weeknight.n / dawn.n / morning.n / noon.n / Monday.n / Tuesday.n / Wednesday.n / Thursday.n / Friday.n / Saturday.n / today.n / yesterday.n / tomorrow.n / midday.n / afternoon.n / dusk.n / evening.n / eve.n / night.n / midnight.n / twilight.n / month.n / year.n / calendar year.n / fortnight.n / decade.n / January.n / February.n / March.n / April.n / May.n / June.n / July.n / August.n / September.n / October.n / November.n / December.n / Sunday.n / leap year.n / morn.n / winter.n / spring.n / summer.n / hour.n / minute.n / second.n / autumn.n / school year.n / quarter.n / era.n / age.n / rush hour.n / tonight.n / century.n / millennium.n / holiday.n / one day.n', 'definition': "Words in this frame name the different parts of the calendric cycle, both man-made and natural. The Unit (e.g. Tuesday) specifies some time period as part of a specific larger temporal Whole (Tuesday of next week), or may be resolved to an exact time span by a Relative_time (next Tuesday).   'Jo's mother will visit on this coming Tuesday.' '' Very frequently, the Whole or Relative_time are left out (i.e., DNI), and often should be interpreted as a time period overlapping with the communication, but more generally must be understood from context.  So, for example, in the first sentence below, we can imagine that the Whole refers to a year (e.g., 1983) that was already mentioned or established in context.  In the second example below, the most likely interpretation is the nearest April, whether in this year or the next, and this interpretation is best indicated by indicating the Relative_time is DNI.  'On April 2 , she finally found her mother . DNI. '  'I 'll come back in April .DNI' '' Most members of this frame can be used with iterative events, either with a plural Unit (on Tuesdays), or marked with every (every April).   'On Tuesday and Thursday afternoons , we have tea .' In this use, when the Whole is omitted, the Whole should be marked INI. 'On Tuesdays , we have tea . INI ' '' Words of this frame often occur in a non-lexical construction that uses some Calendric_unit expressions to establish when an event occurred.  To capture this information, we use the extra-thematic FEs Landmark_period and Trajector_event (see Temporal_collocation) on the second layer, as in the following: 'Last Tuesday she said I 'd have to come back .' 'Last Tuesday she said I 'd have to come back .' We do not use these FEs for cases where the temporal relationship is introduced by an overt word of the Temporal_collocation frame (like on, in, at, before, etc.).  Most lexical units of this frame occur in this construction, with or without requiring a Relative_time, while some idiosyncratically do not, so information on the use with the extra-thematic FE Trajector_event is lexically specific. '' There are a number of non-lexical constructions that evoke this frame, including date constructions (the third, May 5), decade constructions (the oughts), year constructions (1975, 24 BCE, 10 AH, year 19, etc.), and time-of-day constructions. Although not annotated in this frame, examples such as the following show that the FEs Unit and Whole are quite appropriate: 'The 4th of April dawned clear and cold .' 'December 11 was when Alix finally left .' 'The 23rd will be snowy . DNI ' 'Nothing much happened in the 90s , did it ? DNI ' As described above for the lexical targets that evoke this frame, some non-lexical versions of the frame may also occur in a non-lexical Temporal_collocation construction: 'No-one has forgotten what happened the 5th of November !' 'No-one has forgotten what happened the 5th of November !' ''  Words in this frame figure into a variety of temporal schemas, realized as constructions, primarily cases in which the Calendric_unit serves as a Landmark_period in the Temporal_collocation frame. There are families of constructions in which these words occur, including ones in which weekday names combine with day part names using particular prepositions (e.g. on Wednesday morning, cf. on Wednesday, but  in the morning) and ones in which  calendric terms fill the slots in multi-word expressions such as  N-after-N (e.g. day after day),  N-by-N (e.g. week by week),  N-to-N (e.g. month to month), etc. More can be found on these in Fillmore (2002).  Note, also, the connection between this frame and Frequency, specifically that many iterative adjectives and adverbs are based on calendric terms (e.g. daily, weekly, monthly, etc.).      "}, {'frame': 'Documents', 'tfidf': 0.6266141030322326, 'lexical_unit': 'visa.n / passport.n / subpoena.n / warrant.n / certificate.n / papers.n / license.n / summons.n / diploma.n / deed.n / lease.n / agreement.n / treaty.n / charter.n / authorization.n / deposition.n / brief.n / writ.n / affidavit.n / will.n / testimony.n / testament.n / ruling.n / finding.n / opinion.n / title.n / orders.n / contract.n / permit.n / document.n / contractual.a / accord.n / confirmation.n / identification.n / business card.n', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Food', 'tfidf': 0.6230896841186728, 'lexical_unit': 'fruit.n / apple.n / banana.n / vegetable.n / carrot.n / potato.n / pea.n / meat.n / beef.n / lamb.n / veal.n / poultry.n / chicken.n / turkey.n / fish.n / salmon.n / tuna.n / shellfish.n / shrimp.n / lobster.n / milk.n / cheese.n / egg.n / butter.n / nut.n / almond.n / peanut.n / pasta.n / noodle.n / herb.n / spice.n / pepper.n / basil.n / cereal.n / lettuce.n / berry.n / bread.n / roll.n / cracker.n / cake.n / pancake.n / cheesecake.n / pastry.n / croissant.n / cookie.n / biscuit.n / sweet.n / chocolate.n / sweetener.n / sugar.n / honey.n / fat.n / oil.n / vinegar.n / coffee.n / juice.n / soup.n / stew.n / sauce.n / dressing.n / vinaigrette.n / ketchup.n / mayonnaise.n / lasagne.n / food.n / tea.n / water.n / date.n / cabbage.n / MRE.n / beer.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Text', 'tfidf': 0.6158107558055822, 'lexical_unit': 'tome.n / fanzine.n / epilogue.n / benediction.n / imprecation.n / eulogy.n / autobiography.n / ballad.n / biography.n / chronicle.n / comedy.n / diary.n / drama.n / elegy.n / epic.n / epigram.n / epistle.n / essay.n / exemplum.n / fable.n / festschrift.n / haiku.n / letter.n / limerick.n / lyric.n / memoir.n / monograph.n / mystery.n / novel.n / novelette.n / novella.n / ode.n / poetry.n / poem.n / rhyme.n / saga.n / song.n / sonnet.n / speech.n / tetralogy.n / thriller.n / tragedy.n / trilogy.n / whodunit.n / manual.n / handbook.n / paperback.n / hardback.n / grimoire.n / spellbook.n / lay.n / book.n / magazine.n / account.n / sermon.n / tract.n / screenplay.n / script.n / article.n / obituary.n / volume.n / mag.n / edition.n / treatise.n / report.n / bulletin.n / tractate.n / hagiography.n / journal.n / periodical.n / editorial.n / meditation.n / booklet.n / fiction.n / writings.n / missive.n / newspaper.n / list.n / manuscript.n / literature.n / history.n / brochure.n / material.n / pamphlet.n / issue.n / paper [newspaper].n / paper [article].n / epic.a / publication.n / life.n / record.n / textbook.n', 'definition': "A Text is an entity that contains linguistic, symbolic information on a Topic, created by an Author at the Time_of_creation.  It may be a physical entity that is made of a certain Material etc.  It may be constructed for an Honoree.  'It was a good book.'"}, {'frame': 'Vehicle_subpart', 'tfidf': 0.611312218167182, 'lexical_unit': 'door.n / window.n / seat.n / seatbelt.n / tire.n / wheel.n / brake.n / engine.n / hood.n / trunk.n / part.n / windshield.n', 'definition': "An entity is integrated into a vehicle as a Part of a (possibly unexpressed) Whole which may refer to the whole vehicle or merely to a sub-part of the vehicle.  '' 'The car's engine started smoking so we pulled over.' 'Put the bags in the trunk.' 'One should always wear a seatbelt while driving.' "}];
+    </script>
+    <script type="text/javascript" src="word_cloud_prediction.js"></script>
+    <script type="text/javascript" src="../mturk.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 150px;
+            padding-right: 150px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel_1 canvas, #word_cloud_panel_2 canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+        .word_cloud_box {
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 3px rgba(70, 70, 70, 1) solid;
+            padding: 20px;
+            margin-bottom: 20px; 
+        }
+        .word_cloud_box:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+        }
+        .selected_story_block {
+            border-color: #7BDFF2;
+            border-width: 3px;
+            box-shadow: 0 0 10px 10px rgba(123, 223, 242, 0.3);
+            background-color: rgba(239, 247, 246, 0.8);
+        }
+        .indicator {
+            /*font-family: Courier;
+            font-weight: bold;*/
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px black solid;
+            border-radius: 20px;
+        }
+
+        .selected_story_block .indicator {
+            background-color: rgb(123, 223, 242);
+        }
+
+        #story_content {
+            max-height: 600px;
+        }
+        .not_qualified {
+            color: red;
+            font-weight: 900;
+        }
+        .qualified {
+            color: black;
+            font-weight: 900;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Which word-cloud best represents the story snippet?</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that a computer automatically 
+            generated to characterize a story snippet. 
+            These words can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            A <strong>word-cloud representation with nouns</strong> is a group of nouns a computer automatically 
+            generated to characterize a story snippet. 
+            These nouns can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            In this HIT, you will see a story snippet. <span class="highlight">Please read the it carefully.</span>
+            The story is long so we have a 3 minutes time lock for submission.
+            <br/><br/>
+
+            At the bottom of the HIT, you will see two sets of word-cloud representations, 
+            where each consists of nouns, verbs, and adjectives. 
+            <span class="highlight">Please select the word-cloud representation that best represents the story.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following story snippet carefully!</h3>
+            You will need to select the word-cloud representation that best represents this story. 
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story</h4>
+                        <h5>(An excerpt from the book <span style="font-weight:bold;">"Diane D The Musical Drama Volume 1 Part 1"</span>.)</h5>
+                        <span class="not_qualified" id="read_lock">Please read all the story.</span>
+                        <br/><br/>
+                        <pre id="story_content">
+She then says, "Wow.
+We see you have a very handsome fellow here with you Diane D.
+Who is this handsome guy?"
+The first black woman starts touching and rubbing on Jonathan's shoulder.
+Jonathan smiles at the woman.
+Diane D looks at the woman.
+She then looks at Jonathan seeing him smiling at the woman.
+She becomes annoyed and says to the woman, "Excuse me."
+The woman stops as she and Jonathan turn and look at Diane D.  Diane D then says to the woman, "Don't you see him talking with me?"
+Diane D holds her hand up to the woman and says, "Don't do that."
+The young woman puzzled looks at Diane D.
+She then says, "Oh I'm sorry Diane D, I didn't know he belonged to you.
+Aren't you already married?"
+"Yes, as a matter of fact, I am already married.
+What's your point?"
+"The point is, all I did was rub his shoulder."
+"And I'm telling you not to rub his shoulder."
+"Gosh Diane D?"
+the second black woman says.
+"Nobody can rub his shoulder?"
+"No she can't rub his shoulder, she don't know him like that."
+"But I didn't do anything wrong," the first black woman says.
+"All I did was touch his shoulder, like this."
+The woman rubs Jonathan's shoulder again.
+Diane D becomes more annoyed and says, "Are you looking for a beat down Miss?
+Get the hell off his shoulder!"
+The woman quickly lets go of Jonathan's shoulder and strangely looks at Diane D as Diane D says to her, "Rub his shoulder one more time and there's going to be a problem."
+"Calm down Diane D," Jonathan says.
+The woman strangely looks at Diane D again and says, "Fine, I won't rub his shoulder anymore."
+The woman and her friends puzzled look at Diane D.
+They back away from Diane D and Jonathan as the woman says, "Sorry to bother you two."
+"Yes we'll leave," the second black woman says.
+"And we are going to leave right now," the white woman says.
+"Please do," Diane D says as she angrily looks at the women.
+The white woman grab all the other women as they all strangely look at Diane D.
+They then turn and hurry away from Diane D as Diane D stares at them.
+Jonathan looks at the women.
+He then turns to Diane D and says, "Gosh Diane D, that was rude."
+Diane D looks at Jonathan and says, "Correction, they were rude."
+The young women quickly hurry to the other side of the lobby towards the elevator.
+They stop and turn their heads around and look back towards Diane D.
+They then turn to each other as the Hispanic woman says, "Man what is her problem?"
+"I don't understand," the first black woman says.
+"All I did was touch and rub the guy's shoulder and she had a fit."
+"I know," says the second black woman.
+"Who is she to tell somebody else to get off that guy's shoulder?
+She doesn't own him."
+"She sure doesn't.
+Doesn't she already have a husband?"
+"Yeah she sure does," the white woman says.
+"But it's a good thing you did get your hand off that guy's shoulder Joyce because Diane D look like she was about to get out of control right there, the same way she got out of control when we all heard she attacked and beat up those security guards and those police officers."
+"Would she have really gotten out of control if I didn't stop touching and rubbing that guy's shoulder?"
+"You want to try challenging her to find out?
+Try touching and rubbing that guy's shoulder again.
+Believe me, Diane D wasn't playing when she said to you 'Rub his shoulder one more time and there's going to be a problem', she wasn't playing.
+I saw it in her eyes."
+"Yeah I saw it in her eyes too, that's why I quickly got off that guy's shoulder.
+Isn't that the same guy everyone heard she disappeared with?"
+"I'm not sure.
+It sort of looks like him."
+"I think it is him," the Hispanic woman says.
+"That's probably why she was ready to get out of control again if you had touched that guy's shoulder again and we sure don't need that."
+"I don't understand how Diane D was able to get out of control in the first place when she attacked and beat up those security guards and those police officers," the first black woman says.
+"I don't understand how she was able to overpower them like that, she's only one woman."
+"Diane D might be only one woman Joyce," the white woman says, "but whenever she gets angry and turns violent, she is known to have superhuman strength.
+She is known to have the strength of ten men or have the strength of a wild animal or beast during her vicious assaults and vicious attacks.
+Those security guards she attacked and those correction officers who tried to keep her in that jail cell labeled her the female version of The Incredible Hulk, in other words, she is known as The She-Hulk."
+"The She-Hulk?"
+"Yeah."
+"Wow."
+"Diane D has been in jail and in prison because of her vicious temper and her violent rages and she probably would go back to jail and prison for it again if she has to.
+When it comes to situations like this, it's best to just walk away from it.
+It's just not worth it."
+"It sure isn't," the second black woman says.
+"Especially over some guy."
+"Yeah that's true.
+Sometimes in life, men are just not worth fighting or challenging over."
+"They sure aren't."
+The women turn back around and take one last look across the lobby at Diane D.
+They then see Diane D walking away as Jonathan walks behind her following her.
+"Well there goes the She-Hulk walking away with her guy."
+The women continue to stare at Diane D as Diane D continues to walk away with Jonathan then disappear around a corner.
+"Wow," the second black woman says.
+"It looks like the She-Hulk is disappearing with that same guy all over again."
+"It sure looks that way."
+The white woman turns to the other women and says, "Come on ladies let's get upstairs."
+The other women turn back around.
+They sadly walk away and head into the elevator.
+Chapter 25
+Mike And Mitch Get Dirty And Rude At Competition
+A week later, thousands of people are on the stands at the Dirt Bike Competition shouting and cheering as big signs and banners read 'THE DIAZ-DAVIDSON ORGANIZATION PRESENTS THE DIAZ-DAVIDSON DIRT BIKE COMPETITION'.
+Mike is wearing a short gray jacket, matching gray cap, gray jeans and black sneakers standing with his feet and legs spread apart, surrounded by around ten teen and pre-teen boys as four of them hold tightly on the dirt bike wheel as Mike tightens the screws on the motorized dirt bike wheel.
+Mike finishes tightening the screws.
+He throws the screw aside on the ground.
+He then takes the dirt bike and gets on it.
+He rides the dirt bike, speeding it as it roars down the dirt road.
+The Diaz-Davidson Youth performers and athletes call out to Mike as he speeds the dirt bike into the distance.
+Mike rides the dirt bike down the dirt path, speeding it as it roars down the dirt road.
+The Diaz-Davidson Youth performers and athletes call out to Mike, "Hey Mike!
+Yo Mike!"
+Mike turns his head around towards the Youth Performers and athletes as he continues to speed his dirt-bike down the dirt road.
+The Youth Performers and athletes continue to run towards him.
+Mike approaches near Mitch, Barry, Tomas and around 20 white and Latino boys who are all on motorbikes.
+The Youth Performers continue to run towards them.
+Barry then asks, "Uh, where are you two's helmets?"
+"We're gonna get them Mr. Barry," Mitch says, "right after this."
+Mike and Mitch quickly start up their dirt bike engines and speed away to the start line as the other boys speed behind them.
+Mike, Mitch and four other boys are at the start line.
+They line their dirt-bikes alongside each other facing the same direction.
+The rest of the boys start to line side by side and behind Mike and Mitch in 4 teams.
+Mike is at the head of line 2 as Mitch is at the head of line 3.
+The coach, a middle-aged white male, anxiously approaches Mike and Mitch.
+He stands between them and shouts, "Where are your helmets?!"
+"We don't know," Mike says.
+"You can't ride in this race without any helmets!"
+"Yes we can," Mitch says.
+"Oh no you can't!"
+"Yes we can," Mitch says as he turns his cap around.
+"Our caps will be our helmets!"
+"Your caps?!
+I don't think so!
+If you two ride without any helmets, your teams are gonna be disqualified!
+Where's Mr. Barry?!"
+"He went back to the stands!"
+Mike says.
+The gun sound pops!
+Mike, Mitch and the other two boys at the head of their team gear up their engines.
+The second gun sound goes off!
+The coach grabs on both Mike's and Mitch's handle bars!
+Mike and Mitch angrily shove the coach's hands off their handle bars then they and the other two boys race down the dirt way as their teams and people on the stands start to shout and cheer, "Go Mitch!
+Go Mike!"
+Several people in the stands are holding up large banners and signs high in the air reading 'GO MIKE AND MITCH!' while other people hold up signs reading 'THE DIAZ-DAVIDSON YOUTH DIRT-BIKE COMPETITION'.
+Other people are holding up banners and signs reading 'THE DIAZ-DAVIDSON YOUTH ORGANIZATION'.
+Mike, Mitch and the other two boys speed their dirt-bikes further down the dirt road!
+Their dirt-bikes start to cause clouds of dirt around them.
+The entire crowd and team continue to root for Mike, Mitch and the other two boys as they hold up the signs.
+Mike, Mitch and the other two boys disappear into the dirt-cloud!
+The coach turns around to the judges and shouts, "Mike and Mitch aren't wearing any protective jackets or any helmets!"
+"We noticed!"
+one of the judges shouts.
+"They're gonna have to be disqualified for that!"
+The coach and the judges look down the dirt road and watch the cloud of dirt that is still lingering on.
+An hour later, Mary is in the stadium storage room.
+She is pulling out some wash clothes and some hand towels.
+Four of the salon women, Rosa, Gladys, Miriam and Bonnie come into the office.
+They approach Mary as Rosa says,  "Hey Mary.
+I heard you need us.
+What happened?"
+Mary turns to Rosa and says, "It's Mike and Mitch."
+"Mike and Mitch?"
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+
+        <h3>Select the word-cloud representation that best represents the above story.</h3>
+        Below, there are two word-cloud representations. Read them carefully and select the one that best represent the above story.
+        <br/><br/>
+
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_1" value="1">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 1</h3>
+                The following three word clouds jointly represent the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_2" value="2">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 2</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_2">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_2">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_2">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_2-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="35">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input name="note" type="hidden" value="BERT, LGBM">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+    </div>
+
+</body>
+</html>

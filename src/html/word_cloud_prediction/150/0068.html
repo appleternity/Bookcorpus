@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="text/javascript">
+        var frame_list_1 = [{'frame': 'Ineffability', 'tfidf': 3.2842423915863037, 'lexical_unit': 'magic.n / magic.a / magical.a / ineffable.a / ineffability.n / je ne sais quoi.n / magicalness.n', 'definition': "A Stimulus inspires a feeling of awe and interest in a (generally implicit or generic) Experiencer due to desirable qualities which are difficult to explain.  Alternatively, the Attribute of the Stimulus may be described instead.  'There is a certain je-ne-sais-quoi about that city .'"}, {'frame': 'Firefighting', 'tfidf': 2.817345380783081, 'lexical_unit': 'fight.v / gain ground.idio / battle.n / control.v / tackle.v / attack.v / battle.v / fire fighting.n', 'definition': 'This frame characterizes the situation or state of affairs in which someone acts to prevent a Fire_disaster from occurring, accelerating, or affecting any area not identified as a Controlled_area. The named Burn_area, targeted by the Fire_disaster, is more salient than "fire" itself and is often used for reference instead. The organizational methods for Firefighting are of utmost importance in this frame.'}, {'frame': 'Hostile_encounter', 'tfidf': 2.68621826171875, 'lexical_unit': 'battle.n / fight.n / scuffle.n / spat.n / altercation.n / duel.n / clash.n / confrontation.n / row.n / fighting.n / bout.n / struggle.n / hostility.n / skirmish.n / combat.n / squabble.n / stalemate.n / brawl.n / strife.n / fight.v / battle.v / duel.v / clash.v / brawl.v / skirmish.v / scuffle.v / confront.v / war.n / war.v / gunfight.n / shootout.n / standoff.n / showdown.n / wrangling.n / tiff.n / fistfight.n / firefight.n / conflict.n / dust-up.n / warfare.n / cw.n / bw.n / tussle.n / struggle.v / infighting.n / engage.v / engagement.n', 'definition': "This frame consists of words that describe a hostile encounter between opposing forces (Side_1 and Side_2, collectively conceptualizable as Sides) over a disputed Issue and/or in order to reach a specific  Purpose. '' 'He still wants to fight Mike Tyson in about 8 months.'  'Dennis Andries's European cruiserweight title clash against Akim Tafer of France in Beausoleil last February has been voted as the EBU's fight of the year.'"}, {'frame': 'Ground_up', 'tfidf': 2.631173610687256, 'lexical_unit': 'pulverized.a / ground.a / crushed.a / milled.a / grated.a / flaked.a / powdered.a / shredded.a / crumbled.a / granulated.a', 'definition': "In this frame a Patient is in a state of having been broken into smaller pieces.  ' We enjoy eating ground beef . '"}, {'frame': 'Electricity', 'tfidf': 2.424677610397339, 'lexical_unit': 'electricity.n / electric.a / power.n / electric power.n / juice.n / electrical.a / hydroelectric.a / hydroelectricity.n / photoelectric.a / photoelectricity.n / energy.n / electrical power.n / current.n', 'definition': "Lexical units in this frame refer to Electricity, in particular as a form of energy harnessed for particular uses (such as powering machines).  The Source of the Electricity may also be expressed, or incorporated in the meaning of the LUs.  'A compound to generate wind electricity was built on the other side of those mountains.'  'China's hydroelectric dam is being built primarily for flood control and energy production.'"}, {'frame': 'Color', 'tfidf': 2.2015628814697266, 'lexical_unit': 'red.a / green.a / color.n / vermilion.a / ebony.a / purple.a / blue.a / orange.a / yellow.a / violet.a / brown.a / gray.a / black.a / white.a / pink.a / crimson.a / maroon.a / turquoise.a / azure.a / beige.a / mauve.a / tan.a / buff.a / scarlet.a / pitchblack.a / colored.a / indigo.a / puce.a', 'definition': "A Color serves as a landmark in color-space, either a point-like landmark (e.g. burnt sienna) or a broader region (e.g. blue).  Especially when the Color designates a broad region in color-space, it may be defined with a specific Type, further specified by comparison to the color of a Comparand, modified by a Color_qualifier, or evaluated with a Descriptor.  All color words are generally used to specify the color of some (physical) Entity. 'I really like that shade of blue.' 'The welts on his side had already turned an angry red.' 'The room was bathed in a soft pink light.' 'They promptly set up a zillion bright vermilion pavilions.' 'His face and hands were brown from a life spent in the bright sun of the fields.' "}, {'frame': 'Attack', 'tfidf': 2.021472215652466, 'lexical_unit': 'attack.v / assault.v / assault.n / attack.n / fall (upon).v / incursion.n / offensive.n / onset.n / strike.n / onslaught.n / charge.v / charge.n / lay (into).v / set (upon).v / storm.v / strike.v / ambush.v / ambush.n / jump.v / assail.v / raid.v / bomb.v / bombing.n / raid.n / attacker.n / offensive.a / infiltrate.v / infiltration.n / hit.v / fire.n / small arms fire.n / SAF.n / safire.n / drive-by.n / airstrike.n / assailant.n / bombardment.n / bombard.v', 'definition': "An Assailant physically attacks a Victim (which is usually but not always sentient), causing or intending to cause the Victim physical damage.   A Weapon used by the Assailant may also be mentioned, in addition to the usual Place, Time, Purpose, Explanation, etc.  Sometimes a location is used metonymically to stand for the Assailant or the Victim, and in such cases the Place FE will be annotated on a second FE layer.  'As soon as he stepped out of the bar he was set upon by four men in ski-masks.' 'Is he invading Iraq just to cover other shortcomings?' 'Then Jon-O's forces ambushed them on the left flank from a line of low hills.'"}, {'frame': 'Capability', 'tfidf': 1.6878430843353271, 'lexical_unit': 'able.a / unable.a / can.v / capable.a / ability.n / potential.n / capability.n / capacity.n / potential.a / power.n / power [statistical].n / powerless.a / powerlessness.n / inability.n / incapable.a / incapacity.n / powerful.a', 'definition': "An Entity meets the pre-conditions for participating in an Event.  A Degree modifier may be included to indicate by how much the Entity exceeds or falls short of the minimum requirements.  'Conductor software gives us the hands-on capability to provide updates immediately'  'The GOP is afraid that it might not be capable of keeping the seat vacated by Dunn.'  'NASA is unable to communicate with Mars rover.'  'He can fly a kite.'"}, {'frame': 'Weapon', 'tfidf': 1.6860674619674683, 'lexical_unit': 'rifle.n / pistol.n / six-shooter.n / firearm.n / gun.n / cannon.n / bomb.n / warhead.n / sword.n / knife.n / gat.n / AK-47.n / grenade.n / crossbow.n / machine-gun.n / shotgun.n / shooter.n / flame-thrower.n / weapon.n / handgun.n / club.n / twenty-two.n / forty-four.n / missile.n / garrotte.n / revolver.n / weaponry.n / Scud-B missile.n / arsenal.n / chemical weapon.n / ballistic missile.n / biological weapon.n / nuclear weapon.n / mustard gas.n / CW.n / BW.n / WMD.n / weapon of mass destruction.n / mine.n / spear.n / bow.n / explosive.a / explosive.n / plastic explosive.n / dynamite.n / nuclear.a / Scud-B.n / Scud-C missile.n / atomic weapon.n / ordnance.n / arms.n / artillery.n / shell.n / atomic bomb.n / biological.a / chemical.a / nerve gas.n / strategic.a / strategic nuclear weapon.n / ICBM.n / RPG.n / rocket.n / small arms.n / EFP.n / assault rifle.n / mortar.n / automatic weapon.n / C4.n / phosgene.n', 'definition': "A Weapon is an artifact created specifically to cause harm or damage.  In some cases, a Use, Material of construction, Part or Type may be more narrowly specified.  'Did you, or did you not, fire this gun with intent to harm my client?'  'Cyra tried to swing her sword to parry, but it was to heavy.'  'I investigated a specialist precious metal firearms manufacturer.'  'My neighbor, a member of the NRA since birth, has got an AK-47 fully automatic assault rifle.'  'Let 's just say that he 's the kind of guy who likes guns with hair triggers.' "}, {'frame': 'Expressing_publicly', 'tfidf': 1.6751887798309326, 'lexical_unit': 'vent.v / air.v / express.v / voice.v / give voice.v / expression.n / articulate.v / put into words.v', 'definition': "A Communicator publically communicates some difficult-to-express Content which they (or a social group of which they are a member) have had for some time. The Content may not have been previously communicated due to inability or social stricture.  In cases where the individuals addressed are a smaller group than the public at large, a separate Addressee may be expressed.  'Those grievances can be aired during Board meetings. CNI'  'Saddam voiced his joy when he was told Spain's new government had left the US-led military coalition in Iraq.'   "}, {'frame': 'Cause_harm', 'tfidf': 1.6576050519943237, 'lexical_unit': 'bayonet.v / beat.v / boil.v / burn.v / bludgeon.v / club.v / crush.v / cut.v / slice.v / hammer.v / hit.v / kick.v / knife.v / punch.v / smash.v / stab.v / spear.v / stone.v / hurt.v / whip.v / batter.v / break.v / butt.v / chop.v / claw.v / clout.v / crack.v / cudgel.v / cuff.v / fracture.v / gash.v / injure.v / jab.v / bruise.v / knock.v / lash.v / maul.v / pelt.v / strike.v / thwack.v / bash.v / belt.v / buffet.v / horsewhip.v / smack.v / squash.v / slap.v / knee.v / wound.v / pummel.v / electrocute.v / electrocution.n / poisoning.n / beat up.v / torture.v / maim.v / flog.v / impale.v / biff.v / cane.v / flagellate.v / poison.v / transfix.v / welt.v / mutilate.v / elbow.v / sting.v / swipe.v / strike.n / drug.v / twist.v / run through.v', 'definition': "The words in this frame describe situations in which an Agent or a Cause injures a Victim. The Body_part of the Victim which is most directly affected may also be mentioned in the place of the Victim.  In such cases, the Victim is often indicated as a genitive modifier of the Body_part, in which case the Victim FE is indicated on a second FE layer. '' 'Rod saw his father beating his mother.'  'In the end Wormtongue is fed up with being beaten so he cuts Saruman's throat to free himself.'  'A mother stabbed to death by her husband made a secret will stating that he must never be allowed to care for their son.'"}, {'frame': 'Dynamism', 'tfidf': 1.652474284172058, 'lexical_unit': 'dynamic.a / dynamism.n / energetic.a / energy.n / intense.a / intensity.n / lazy.a / laziness.n / lethargic.a / lethargy.n / sluggish.a / sluggishness.n / stamina.n / vibrant.a / vigorous.a / vigor.n', 'definition': 'A physical Exerter, Action, or Force exerts energy at a level specified by the target. This frame covers both individual-level/static uses ("an INTENSE person") as well as stage-level/dynamic uses ("an INTENSE look"), although the individual-level meaning seems more basic.   \'Although an energetic and able warrior, Charlemagne tended to direct battles rather than fight in person.\' \'She dumped a mug on the bedside table with such vigor that steaming coffee spashed out.\' \'Swing the racket with dynamic force.\'   \'I felt particularly sluggish at work that day.\' Exerter, Action, and Force belong to a Core set.  \'\' This frame also covers several productive metaphor cases. In the first one, movement or change caused by a social entity is conveyed as energy exerted by a physical entity. \'Social\' here encompasses entities that are economic, political, technological, historical, cultural, and intimate: \'The private sector is so much more dynamic.\' \'Singh had been under intense political pressure.\' \'Economies are still sluggish.\' Relatedly, the influential effect of an psychological entity is described in terms of energy exertion by a physical entity. \'Psychological\' includes the intellectual, emotional, and creative: \'Sinead\'s emotional intensity permeates every nuance of every lyric.\' \'He finds the Poet Laureate\'s theory about Shakespeare to be more energetic than persuasive.\' Both metaphors appear to involve a third metaphor, which is the anthropomorphization of processes (see examples directly above) or inhuman entities (e.g. in nature): \'The lazy creak of sails\' \'The energetic waves\' \'A broad, lethargic river\'  Further, there is a metonymy wherein energy exerted by people carrying out an activity characterizes instead a central object or other component of the activity: \'Lucker plays lazy games.\' \'She thought the lazy days in France would never end.\'  \'\' Compare to: Level_of_force_exertion. '}, {'frame': 'Light_movement', 'tfidf': 1.6161959171295166, 'lexical_unit': 'glow.v / twinkle.v / twinkle.n / sparkle.v / shine.v / shine.n / shimmer.v / sheen.n / scintillation.n / scintillate.v / refulgence.n / glow.n / glitter.v / glitter.n / glister.v / glister.n / glistening.a / glisten.v / glint.v / glint.n / glimmer.v / glimmer.n / gleam.v / gleam.n / flicker.v / flicker.n / flash.v / flash.n / flare.v / flame.v / coruscation.n / coruscate.v / strike.v', 'definition': "An Emitter emits a Beam of light from a Source, along a Path, and/or towards a Goal.  Essentially, this frame denotes the (semi-)fictive motion of the the Beam. 'Avoid allowing light to shine into neighbors' gardens.' 'Clear yellow sunlight shone through the window-panes.' 'She thinks the sun shines out of his backside.' '...when the candles shine out.' 'It shines in my eyes. ('It' is both Beam and Emitter, though only one will show up in the display.) ' '...light shines down on the world.' 'The moonlight shone off the fields.' 'The candlelight glinted from pearls and rubies.'"}, {'frame': 'Process_start', 'tfidf': 1.5685063600540161, 'lexical_unit': 'start.v / begin.v / commence.v / erupt.v / break out.v / commencement.n / incipient.a / onset.n / nascent.a / eruption.n', 'definition': "An Event begins at a certain Time and Place. Reason may also be indicated.  NB:  Refer to Event frame.  'The project began.'"}, {'frame': 'Authority', 'tfidf': 1.5413063764572144, 'lexical_unit': 'power.n / authority.n / jurisdiction.n / sway.n / dominion.n', 'definition': "An Agent has the means to affect a Theme along the lines of a certain Domain. There is an imbalance of influence or power within a certain Domain that favors the Agent (often due to some Source) over the Theme.   'His authority over his subjects was given to him by God.' 'Congress has the power to enact laws.' 'Only the King has the authority to declare war.'"}, {'frame': 'Objective_influence', 'tfidf': 1.539299726486206, 'lexical_unit': 'influence.v / impact.v / effect.n / influence.n / affect.v / impact.n / power.n', 'definition': "An Influencing_entity, an Influencing_situation, or an Influencing_variable has an influence on a Dependent_entity, Dependent_situation,  or a Dependent_variable.  ''  Compare to Subjective_influence. Words in Objective_influence are used to make claims about correlations in the world, where words in Subjective_influence are used to explain emotional impacts made on cognizers.   'More and more doctors realise that diet can influence disease.'  'Our subject is the body clock; how it influences our physiology and behaviour and how it interacts with the rhythms in our environment.'  'But it is more likely that a physical restraint influenced the swirling liquids.'  'It claimed, perhaps hollowly, that NT had yet to impact its business.'  'This kind of elementary boo-boo would certainly impact video speed.'"}, {'frame': 'Friendly_or_hostile', 'tfidf': 1.5141124725341797, 'lexical_unit': 'friendly.a / hostile.a / friendly.n / hostile.n / enemy.n', 'definition': "Two parties or individuals are on the same side or on different sides of a (typically military) conflict. The two sides may be expressed jointly as the Sides, or separately as Side_1 and Side_2.  'We received a tip from a friendly local about a possible attack. DNI'  'Infiltration from hostile forces is a constant threat. DNI'  In many cases only Side_1 is mentioned, leaving Side_2 as the perspective from whom the description is being given (typically the speaker/writer)."}, {'frame': 'Death', 'tfidf': 1.498702883720398, 'lexical_unit': 'death.n / demise.n / die.v / perish.v / terminator.n / croak.v / decease.v / starve.v / starvation.n / expire.v / pass away.v / kick the bucket.v / drown.v / croak it.v / asphyxiate.v / suffocate.v / suffocation.n / mortality.n / end.n / mortal.a', 'definition': "The words in this frame describe the death of a Protagonist.  A Cause of death may also be expressed obliquely. '' 'The machine was not switched off, but Mr. Lavelle died of natural causes, police said.'  'To avenge the death of a son is not hasty work, if he is to be honored.'"}, {'frame': 'Communication_noise', 'tfidf': 1.4873722791671753, 'lexical_unit': 'babble.n / bark.v / bawl.v / bellow.v / bleat.v / bray.v / burble.v / cackle.v / chirp.v / chirrup.v / chuckle.v / cluck.v / coo.v / croak.v / croon.v / crow.v / cry.v / drone.v / gasp.v / grate.v / groan.v / growl.v / grunt.v / gurgle.v / hiss.v / hoot.v / howl.v / moan.v / murmur.v / purr.v / rap.v / rasp.v / rattle.v / roar.v / rumble.v / scream.v / screech.v / shriek.v / shrill.v / snarl.v / snort.v / splutter.v / sputter.v / squawk.v / squeak.v / squeal.v / thunder.v / titter.v / trill.v / trumpet.v / twitter.v / wail.v / warble.v / wheeze.v / whimper.v / whine.v / whoop.v / yell.v / yelp.v', 'definition': 'This frame contains words for types of noise which can be used to characterize verbal communication.  It inherits from Communication (possibly more specifically Communication_manner) and the Sound_emission frame (which simply characterizes basic sounds of whatever source, including those made by animals and inanimate objects).  As such, it involves a Speaker who produces noise and thus communicates a Message to an Addressee. \'\' \'"Don\'t treat me as a child!" she cried scornfully.\'  \'A writer in the Town Planning Review trumpeted that train-sheds were now obsolete.\'  \'You know he yelled at Aunt Lou yesterday, because he slipped on that mat in the hall.\''}, {'frame': 'Quarreling', 'tfidf': 1.472626805305481, 'lexical_unit': 'argue.v / quarrel.v / bicker.v / altercation.n / argument.n / bickering.n / disagreement.n / dispute.n / disputation.n / fight.v / fight.n / quarrel.n / quibble.v / row.n / row.v / spat.n / squabble.v / squabble.n / tiff.n / wrangle.v / wrangling.n / wrangle.n', 'definition': "A group of Arguers (also expressible as Arguer1 and Arguer2) express incompatible opinions or beliefs about an Issue.  'We bickered about semantics for an hour.'"}, {'frame': 'Race_descriptor', 'tfidf': 1.4482665061950684, 'lexical_unit': 'white.a / black.a / color.n / yellow.a / asian.a / hispanic.a', 'definition': "This frame covers LUs that describe the race of a Person.  'Carlos is hispanic, or so he says.'"}, {'frame': 'Level_of_force_exertion', 'tfidf': 1.4462525844573975, 'lexical_unit': 'strong.a / weak.a / mighty.a / power.n / might.n / forceful.a / force.n / strength.n / weakness.n / powerful.a / powerless.a', 'definition': 'An Exerter, Action, or Force is capable of exerting or does exert a physical force at a level specified by the target. That physical force may cause deformation or breakage of, or simply motion in the receiving entity. The receiving entity is conceptually present (even if remotely), but is usually not lexically explicit. This frame covers both individual-level/static uses ("a STRONG person") as well as stage-level/dynamic uses ("a STRONG push"). However, the durative, individual-level meaning appears more frequently in the data and seems more basic.   \'Eugenie loved the sea and was a strong swimmer.\'  \'Spartacus dealt the Roman soldier a mighty blow.\'  \'A powerful force tore off the tree\'s branches.\'  Exerter, Action, and Force belong to a Core set. \'\'  There are several productive metaphors covered by this frame. The first and most common is one in which social influence or control is conceptualized as the physical exertion of force. The social influence/control is more specifically a propensity to cause change in social realms such as the economic, political, militaristic, cultural, or intimate: \'There were theoretical limits to the power of the king.\' \'Voters in the South have a strong incentive to keep such Democrats in office.\'  Another similar metaphor is one in which psychological influence or control is understood as the physical exertion of force. The psychological influence/control includes the emotional as well: \'Poetic words in a text can be given more emotive power by using melisma.\' \'He was a forceful speaker.\'  A third metaphor involves the amount of an entity construed as the physical force exertion of said entity. Depending on context, amount could be volume, etc. (“STRONGEST critics”; “MIGHTY uproar”).  \'\'  Two related physical force dynamic frames are Level_of_force_resistance and Dynamism.  This frame is distinguished from the Level_of_force_resistance frame in that it describes the level of force exertion instead of the level of resistance, and also in that there are three categories of Core FE available to the target (i.e Exerter, Action, or Force), whereas in Level_of_force_resistance there are only two Core FEs (i.e. Resisting_entity and Opposing_force). Of the latter frame\'s FEs, Opposing_force specifies the thing that the main entity resists to a level desginated by the target. Its parallel in Level_of_force_exertion is implied but backgrounded to the extent that it rarely appears as explicit lexical material; thus there is no corresponding Core FE.   This frame differs from Dynamism with regard to individual-level cases; targets here express the FE\'s capability. In contrast, Dynamism targets express the FE\'s tendency. For example, "a STRONG person" is generally construed as a person who is capable of strength, while "an ENERGETIC person" (energetic.a from the Dynamism frame) is construed as a person who tends to be energetic.   However, there is overlap between the two frames in stage-level cases - "a STRONG push" and "an ENERGETIC push" seem rather comparable. '}, {'frame': 'Fire_going_out', 'tfidf': 1.4322242736816406, 'lexical_unit': 'die.v / burn out.v / go out.v / gutter out.v', 'definition': "A Fire goes out.  'The fire is expected to burn out within a week.'  "}, {'frame': 'Location_of_light', 'tfidf': 1.4150618314743042, 'lexical_unit': 'glow.v / glisten.v / glimmer.v / twinkle.v / shimmer.v / glint.v / flash.v / sparkle.v / gleam.v / glitter.v / shine.v / flicker.v / coruscate.v / flame.v / scintillate.v / flare.v / glint.n / gleam.n / glimmer.n / flicker.n / coruscation.n / scintillation.n / glitter.n / glow.n / twinkle.n / flashing.a / gleaming.a / glittering.a / flash.n / glistening.a / shining.a / shine.n / sheen.n / lustre.n / lambent.a / refulgent.a / lambency.n / refulgence.n / bright.a / brilliant.a / glossy.a / shiny.a / glister.v / glister.n / light.n / light up.v / illuminate.v', 'definition': 'A perceptible Figure shows up against a Ground location due to Light shining on/from it, its salience possibly dependent on a Cause_of_shine.  \'The grass glistened with dew.\' \'Still glowing from the forge...\' \'The oily mud gleamed wetly under his feet.\' \'Something was shimmering on the shore.\' \'The quartz glowed with a fitful, internal light.\' \'The walls glowed in the sun.\'  \'\'   Note that in this last example, the PP \'in the sun\' is both the Ground on the primary FE layer and Light on the secondary layer.   \'\' This frame is similar to the frame Light_movement; however, in Location_of_light, Light is conceived as stationary, while in Light_movement, light is conceived as traveling linearly outward from a light source, via a path, to whatever objects are illuminated. \'\'  In both of these light-related frames, there is a very consistent metaphorical conception of emotions as shining in eyes or forth from eyes, including the associated pattern of eyes shining with an emotion.  The sense in such cases is that the eyes (or the muscles and features around the eyes) are in such a configuration as to saliently convey an emotion.  In this metaphor, emotion is conceived as a light-source, with the amount of emotion described as amount of light, temporal patterns of intensity of emotion are patterns of light intensity, properties of the Figure which produce the emotion are described in terms of properties of light-producing objects--thus "glinting", associated literally with light on hard, smooth, cold objects like stones, is used to describe the eyes of someone expreriencing a "hard cold" emotion like hatred, while "sparkling", associated with beauty, is used to describe the eyes of someone experiencing a "beautiful" emotion like amusement or excitement.  In both frames, such sentences should be tagged with the metaphor tag to differentiate them from literal sentences like "His eyes glistened with tears."  \'Her eyes glinted with hatred.\' \'I saw a light in her eyes at the mention of cookies.\' '}, {'frame': 'Dead_or_alive', 'tfidf': 1.3884282112121582, 'lexical_unit': 'deceased.a / lifeless.a / dead.a / alive.a / undead.a / undead.n / living.n / dead.n / living.a / nonliving.a / live.v / life.n / late.a / dirt nap.n', 'definition': "A Protagonist is in the dynamic, maintained state of being alive or has exited this state.  'Frank's dead body was apalling.'"}, {'frame': 'Rescuing', 'tfidf': 1.375739336013794, 'lexical_unit': 'rescue.v / save.v', 'definition': "An Agent saves a Patient or an Asset from a Harmful_situation.   'Israeli commandos rescued the hostages and left.'   'His German shepherd saved him from drowing once.'  'She saved my life on the bridge yesterday.'"}, {'frame': 'Beat_opponent', 'tfidf': 1.3640567064285278, 'lexical_unit': 'defeat.v / beat.v / demolish.v / prevail.v / defeat.n / trounce.v / upend.v / rout.n / rout.v', 'definition': "A Winner has victory over an Loser.  'He always beats me at chess.'"}, {'frame': 'Documents', 'tfidf': 1.3094627857208252, 'lexical_unit': 'visa.n / passport.n / subpoena.n / warrant.n / certificate.n / papers.n / license.n / summons.n / diploma.n / deed.n / lease.n / agreement.n / treaty.n / charter.n / authorization.n / deposition.n / brief.n / writ.n / affidavit.n / will.n / testimony.n / testament.n / ruling.n / finding.n / opinion.n / title.n / orders.n / contract.n / permit.n / document.n / contractual.a / accord.n / confirmation.n / identification.n / business card.n', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Killing', 'tfidf': 1.3072553873062134, 'lexical_unit': "kill.v / annihilate.v / assassinate.v / behead.v / eliminate.v / exterminate.v / drown.v / liquidate.v / murder.v / slay.v / terminate.v / suffocate.v / smother.v / starve.v / asphyxiate.v / suicide.v / homicide.n / suicide.n / euthanize.v / euthanasia.n / dispatch.v / lethal.a / annihilation.n / liquidation.n / crucify.v / crucifixion.n / decapitate.v / massacre.v / slaughter.v / lynch.v / liquidator.n / killing.n / murder.n / slaughter.n / killer.n / massacre.n / infanticide.n / smothering.n / slaying.n / regicide.n / pogrom.n / shooting.n / holocaust.n / matricide.n / genocide.n / butcher.v / beheading.n / assassination.n / butchery.n / carnage.n / suffocation.n / assassin.n / blood-bath.n / decapitation.n / extermination.n / fratricide.n / garrotte.v / murderer.n / slaughterer.n / slayer.n / immolation.n / patricide.n / silence.v / deadly.a / fatal.a / fatality.n / destroy.v / take out.v / bloodshed.n / do in.v / take (someone's) life.idio", 'definition': "A Killer or Cause causes the death of the Victim. 'John drowned Martha.'"}, {'frame': 'Judgment_communication', 'tfidf': 1.2928169965744019, 'lexical_unit': 'gibe.v / excoriate.v / excoriation.n / denigrative.a / denunciatory.a / denunciative.a / kudos.n / deprecatory.a / deprecation.n / deprecative.a / execrate.v / execration.n / execrative.a / laudable.a / laudatory.a / commendable.a / commendatory.a / malediction.n / maledictory.a / reprehend.v / reprehension.n / belittlement.n / belittling.n / recrimination.n / recriminate.v / critic.n / critique.n / critique.v / harangue.n / acclaim.v / acclaim.n / accusation.n / accuse.v / belittle.v / blast.v / censure.v / censure.n / charge.v / commend.v / commendation.n / condemn.v / condemnation.n / criticism.n / criticize.v / damn.v / decry.v / denigrate.v / denigration.n / denounce.v / denouncement.n / denunciation.n / deprecate.v / deride.v / derision.n / disparage.v / disparagement.n / disparaging.a / extol.v / laud.v / mocking.a / praise.n / praise.v / remonstrance.n / remonstrate.v / ridicule.v / ridicule.n / scathing.a / scoff.v / mock.v / cite.v / castigate.v / slam.v / harangue.v / dump.v / critical.a / blame.v / tout.v / charge.n / pin.v / rave.v / hail.v / rip.v / attack.v / attack.n', 'definition': "A Communicator communicates a judgment of an Evaluee to an Addressee.  The judgment may be positive (e.g. praise) or negative (e.g. criticize), and this is indicated by the semantic types Positive and Negative attached to the lexical units.  This frame does not contain words where Evaluee and the Addressee are necessarily the same .  'I commended his handling of the crisis.' 'Gaston denounced him to the committee.' This is distinct from the Judgment frame in that it involves the communication of an evaluation, rather than merely forming and holding a particular evaluation."}];
+        var frame_list_2 = [{'frame': 'Protecting', 'tfidf': 1.6904851564674088, 'lexical_unit': 'protect.v / shield.v / safeguard.v / insulate.v / secure.v / protection [event].n / protection [entity].n / safeguard.n / shield.n / bulwark.n / guard.v / shelter.n / shelter.v / cover.n', 'definition': "Some Protection prevents a Danger from harming an Asset.  'The rubber on her sneakers protected her from the mud.'  'The coral reefs shielded the coastline from the worst of the waves.'  'A growing number of sustainable farmers are preserving agricultural variety and protecting biodiversity by raising ?heritage? or ?heirloom? varieties.'  'The man responsible for this entire ordeal cowardly shielded himself from justice with the little boy's struggling body.'"}, {'frame': 'Friendly_or_hostile', 'tfidf': 1.2093522287375156, 'lexical_unit': 'friendly.a / hostile.a / friendly.n / hostile.n / enemy.n', 'definition': "Two parties or individuals are on the same side or on different sides of a (typically military) conflict. The two sides may be expressed jointly as the Sides, or separately as Side_1 and Side_2.  'We received a tip from a friendly local about a possible attack. DNI'  'Infiltration from hostile forces is a constant threat. DNI'  In many cases only Side_1 is mentioned, leaving Side_2 as the perspective from whom the description is being given (typically the speaker/writer)."}, {'frame': 'Electricity', 'tfidf': 1.2053516730260039, 'lexical_unit': 'electricity.n / electric.a / power.n / electric power.n / juice.n / electrical.a / hydroelectric.a / hydroelectricity.n / photoelectric.a / photoelectricity.n / energy.n / electrical power.n / current.n', 'definition': "Lexical units in this frame refer to Electricity, in particular as a form of energy harnessed for particular uses (such as powering machines).  The Source of the Electricity may also be expressed, or incorporated in the meaning of the LUs.  'A compound to generate wind electricity was built on the other side of those mountains.'  'China's hydroelectric dam is being built primarily for flood control and energy production.'"}, {'frame': 'Gizmo', 'tfidf': 1.196472971989553, 'lexical_unit': 'tool.n / implement.n / apparatus.n / device.n / utensil.n / instrument.n / equipment.n / gadget.n / appliance.n / contraption.n / machine.n / mechanical.a / centrifuge.n / technology.n / system.n / gear.n / core.n / player.n / range.n / level.n', 'definition': "This frame contains general words denoting equipment where the Use or purpose is not specified by the lexeme but (typically) by a separate expression. The words are described with respect to the Use for which the item is used or its typical User.  'coffee machine' 'dentist's equipment'"}, {'frame': 'Death', 'tfidf': 1.1573420532394076, 'lexical_unit': 'death.n / demise.n / die.v / perish.v / terminator.n / croak.v / decease.v / starve.v / starvation.n / expire.v / pass away.v / kick the bucket.v / drown.v / croak it.v / asphyxiate.v / suffocate.v / suffocation.n / mortality.n / end.n / mortal.a', 'definition': "The words in this frame describe the death of a Protagonist.  A Cause of death may also be expressed obliquely. '' 'The machine was not switched off, but Mr. Lavelle died of natural causes, police said.'  'To avenge the death of a son is not hasty work, if he is to be honored.'"}, {'frame': 'Rescuing', 'tfidf': 1.1219781784764673, 'lexical_unit': 'rescue.v / save.v', 'definition': "An Agent saves a Patient or an Asset from a Harmful_situation.   'Israeli commandos rescued the hostages and left.'   'His German shepherd saved him from drowing once.'  'She saved my life on the bridge yesterday.'"}, {'frame': 'Ground_up', 'tfidf': 1.1053759623810908, 'lexical_unit': 'pulverized.a / ground.a / crushed.a / milled.a / grated.a / flaked.a / powdered.a / shredded.a / crumbled.a / granulated.a', 'definition': "In this frame a Patient is in a state of having been broken into smaller pieces.  ' We enjoy eating ground beef . '"}, {'frame': 'Fire_going_out', 'tfidf': 1.0835940117845366, 'lexical_unit': 'die.v / burn out.v / go out.v / gutter out.v', 'definition': "A Fire goes out.  'The fire is expected to burn out within a week.'  "}, {'frame': 'Hostile_encounter', 'tfidf': 1.0764831465313913, 'lexical_unit': 'battle.n / fight.n / scuffle.n / spat.n / altercation.n / duel.n / clash.n / confrontation.n / row.n / fighting.n / bout.n / struggle.n / hostility.n / skirmish.n / combat.n / squabble.n / stalemate.n / brawl.n / strife.n / fight.v / battle.v / duel.v / clash.v / brawl.v / skirmish.v / scuffle.v / confront.v / war.n / war.v / gunfight.n / shootout.n / standoff.n / showdown.n / wrangling.n / tiff.n / fistfight.n / firefight.n / conflict.n / dust-up.n / warfare.n / cw.n / bw.n / tussle.n / struggle.v / infighting.n / engage.v / engagement.n', 'definition': "This frame consists of words that describe a hostile encounter between opposing forces (Side_1 and Side_2, collectively conceptualizable as Sides) over a disputed Issue and/or in order to reach a specific  Purpose. '' 'He still wants to fight Mike Tyson in about 8 months.'  'Dennis Andries's European cruiserweight title clash against Akim Tafer of France in Beausoleil last February has been voted as the EBU's fight of the year.'"}, {'frame': 'Firefighting', 'tfidf': 1.012839310612803, 'lexical_unit': 'fight.v / gain ground.idio / battle.n / control.v / tackle.v / attack.v / battle.v / fire fighting.n', 'definition': 'This frame characterizes the situation or state of affairs in which someone acts to prevent a Fire_disaster from occurring, accelerating, or affecting any area not identified as a Controlled_area. The named Burn_area, targeted by the Fire_disaster, is more salient than "fire" itself and is often used for reference instead. The organizational methods for Firefighting are of utmost importance in this frame.'}, {'frame': 'Project', 'tfidf': 0.9918710655693189, 'lexical_unit': 'project.n / program.n / plan.n / scheme.n', 'definition': "An Agent, which may be an individual or group, is engaged in a complex Activity.  A larger Goal which motivates the Agent carrying out the Activity may be indicated. Instead of a particular  Activity, a Field of endeavor may be indicated. The project may also have a Name and the Time when as well as the Place where it is ongoing may be specified.  'The New Car Assessment Program (NCAP) is dedicated to helping the public buy a safer car.'  'The school will continue with its project to end all violence related to racism, xenophobia and intolerance.'"}, {'frame': 'Capability', 'tfidf': 0.9308288879785813, 'lexical_unit': 'able.a / unable.a / can.v / capable.a / ability.n / potential.n / capability.n / capacity.n / potential.a / power.n / power [statistical].n / powerless.a / powerlessness.n / inability.n / incapable.a / incapacity.n / powerful.a', 'definition': "An Entity meets the pre-conditions for participating in an Event.  A Degree modifier may be included to indicate by how much the Entity exceeds or falls short of the minimum requirements.  'Conductor software gives us the hands-on capability to provide updates immediately'  'The GOP is afraid that it might not be capable of keeping the seat vacated by Dunn.'  'NASA is unable to communicate with Mars rover.'  'He can fly a kite.'"}, {'frame': 'Attack', 'tfidf': 0.9215078929462721, 'lexical_unit': 'attack.v / assault.v / assault.n / attack.n / fall (upon).v / incursion.n / offensive.n / onset.n / strike.n / onslaught.n / charge.v / charge.n / lay (into).v / set (upon).v / storm.v / strike.v / ambush.v / ambush.n / jump.v / assail.v / raid.v / bomb.v / bombing.n / raid.n / attacker.n / offensive.a / infiltrate.v / infiltration.n / hit.v / fire.n / small arms fire.n / SAF.n / safire.n / drive-by.n / airstrike.n / assailant.n / bombardment.n / bombard.v', 'definition': "An Assailant physically attacks a Victim (which is usually but not always sentient), causing or intending to cause the Victim physical damage.   A Weapon used by the Assailant may also be mentioned, in addition to the usual Place, Time, Purpose, Explanation, etc.  Sometimes a location is used metonymically to stand for the Assailant or the Victim, and in such cases the Place FE will be annotated on a second FE layer.  'As soon as he stepped out of the bar he was set upon by four men in ski-masks.' 'Is he invading Iraq just to cover other shortcomings?' 'Then Jon-O's forces ambushed them on the left flank from a line of low hills.'"}, {'frame': 'Dynamism', 'tfidf': 0.9200105982350345, 'lexical_unit': 'dynamic.a / dynamism.n / energetic.a / energy.n / intense.a / intensity.n / lazy.a / laziness.n / lethargic.a / lethargy.n / sluggish.a / sluggishness.n / stamina.n / vibrant.a / vigorous.a / vigor.n', 'definition': 'A physical Exerter, Action, or Force exerts energy at a level specified by the target. This frame covers both individual-level/static uses ("an INTENSE person") as well as stage-level/dynamic uses ("an INTENSE look"), although the individual-level meaning seems more basic.   \'Although an energetic and able warrior, Charlemagne tended to direct battles rather than fight in person.\' \'She dumped a mug on the bedside table with such vigor that steaming coffee spashed out.\' \'Swing the racket with dynamic force.\'   \'I felt particularly sluggish at work that day.\' Exerter, Action, and Force belong to a Core set.  \'\' This frame also covers several productive metaphor cases. In the first one, movement or change caused by a social entity is conveyed as energy exerted by a physical entity. \'Social\' here encompasses entities that are economic, political, technological, historical, cultural, and intimate: \'The private sector is so much more dynamic.\' \'Singh had been under intense political pressure.\' \'Economies are still sluggish.\' Relatedly, the influential effect of an psychological entity is described in terms of energy exertion by a physical entity. \'Psychological\' includes the intellectual, emotional, and creative: \'Sinead\'s emotional intensity permeates every nuance of every lyric.\' \'He finds the Poet Laureate\'s theory about Shakespeare to be more energetic than persuasive.\' Both metaphors appear to involve a third metaphor, which is the anthropomorphization of processes (see examples directly above) or inhuman entities (e.g. in nature): \'The lazy creak of sails\' \'The energetic waves\' \'A broad, lethargic river\'  Further, there is a metonymy wherein energy exerted by people carrying out an activity characterizes instead a central object or other component of the activity: \'Lucker plays lazy games.\' \'She thought the lazy days in France would never end.\'  \'\' Compare to: Level_of_force_exertion. '}, {'frame': 'Weapon', 'tfidf': 0.8953346854331367, 'lexical_unit': 'rifle.n / pistol.n / six-shooter.n / firearm.n / gun.n / cannon.n / bomb.n / warhead.n / sword.n / knife.n / gat.n / AK-47.n / grenade.n / crossbow.n / machine-gun.n / shotgun.n / shooter.n / flame-thrower.n / weapon.n / handgun.n / club.n / twenty-two.n / forty-four.n / missile.n / garrotte.n / revolver.n / weaponry.n / Scud-B missile.n / arsenal.n / chemical weapon.n / ballistic missile.n / biological weapon.n / nuclear weapon.n / mustard gas.n / CW.n / BW.n / WMD.n / weapon of mass destruction.n / mine.n / spear.n / bow.n / explosive.a / explosive.n / plastic explosive.n / dynamite.n / nuclear.a / Scud-B.n / Scud-C missile.n / atomic weapon.n / ordnance.n / arms.n / artillery.n / shell.n / atomic bomb.n / biological.a / chemical.a / nerve gas.n / strategic.a / strategic nuclear weapon.n / ICBM.n / RPG.n / rocket.n / small arms.n / EFP.n / assault rifle.n / mortar.n / automatic weapon.n / C4.n / phosgene.n', 'definition': "A Weapon is an artifact created specifically to cause harm or damage.  In some cases, a Use, Material of construction, Part or Type may be more narrowly specified.  'Did you, or did you not, fire this gun with intent to harm my client?'  'Cyra tried to swing her sword to parry, but it was to heavy.'  'I investigated a specialist precious metal firearms manufacturer.'  'My neighbor, a member of the NRA since birth, has got an AK-47 fully automatic assault rifle.'  'Let 's just say that he 's the kind of guy who likes guns with hair triggers.' "}, {'frame': 'Building', 'tfidf': 0.883431875331553, 'lexical_unit': 'assemble.v / glue.v / build.v / weld.v / put together.v / construct.v / assembly.n / construction.n / make.v / fit together.v / piece together.v / erect.v / raise.v / fashion.v / construction [entity].n', 'definition': "This frame describes assembly or construction actions, where an Agent joins Components together to form a Created_entity, which is profiled, and hence the object of the verb.  'Jack built a new house out of bricks.' 'We glued the airplanes together.'"}, {'frame': 'Authority', 'tfidf': 0.8395924536668111, 'lexical_unit': 'power.n / authority.n / jurisdiction.n / sway.n / dominion.n', 'definition': "An Agent has the means to affect a Theme along the lines of a certain Domain. There is an imbalance of influence or power within a certain Domain that favors the Agent (often due to some Source) over the Theme.   'His authority over his subjects was given to him by God.' 'Congress has the power to enact laws.' 'Only the King has the authority to declare war.'"}, {'frame': 'Objective_influence', 'tfidf': 0.8288413188708234, 'lexical_unit': 'influence.v / impact.v / effect.n / influence.n / affect.v / impact.n / power.n', 'definition': "An Influencing_entity, an Influencing_situation, or an Influencing_variable has an influence on a Dependent_entity, Dependent_situation,  or a Dependent_variable.  ''  Compare to Subjective_influence. Words in Objective_influence are used to make claims about correlations in the world, where words in Subjective_influence are used to explain emotional impacts made on cognizers.   'More and more doctors realise that diet can influence disease.'  'Our subject is the body clock; how it influences our physiology and behaviour and how it interacts with the rhythms in our environment.'  'But it is more likely that a physical restraint influenced the swirling liquids.'  'It claimed, perhaps hollowly, that NT had yet to impact its business.'  'This kind of elementary boo-boo would certainly impact video speed.'"}, {'frame': 'Color', 'tfidf': 0.8165301911671893, 'lexical_unit': 'red.a / green.a / color.n / vermilion.a / ebony.a / purple.a / blue.a / orange.a / yellow.a / violet.a / brown.a / gray.a / black.a / white.a / pink.a / crimson.a / maroon.a / turquoise.a / azure.a / beige.a / mauve.a / tan.a / buff.a / scarlet.a / pitchblack.a / colored.a / indigo.a / puce.a', 'definition': "A Color serves as a landmark in color-space, either a point-like landmark (e.g. burnt sienna) or a broader region (e.g. blue).  Especially when the Color designates a broad region in color-space, it may be defined with a specific Type, further specified by comparison to the color of a Comparand, modified by a Color_qualifier, or evaluated with a Descriptor.  All color words are generally used to specify the color of some (physical) Entity. 'I really like that shade of blue.' 'The welts on his side had already turned an angry red.' 'The room was bathed in a soft pink light.' 'They promptly set up a zillion bright vermilion pavilions.' 'His face and hands were brown from a life spent in the bright sun of the fields.' "}, {'frame': 'Sensation', 'tfidf': 0.814341611394982, 'lexical_unit': 'aroma.n / bouquet.n / feel.n / feeling.n / flavour.n / fragrance.n / incense.n / noise.n / odor.n / perception.n / perfume.n / reek.n / savour.n / scent.n / sensation.n / sense.n / sight.n / smell.n / sound.n / stink.n / taste.n / whiff.n / scene.n / image.n', 'definition': "This frame contains nouns that refer to sensations in different modalities. The FE Source is used for the phenomenon that gives rise to the sensation in question. The FE Percept is used for the characteristic quality of the sensation. In cases of veridical perception these are not typically distinguished from one another; we use the FE Percept as the default in these cases. With some nouns in this frame it is possible to express the being who experiences the sensation, or the part of the body of such a being. We mark such expressions with the FEs Perceiver_passive and Body_part, respectively. (The -passive part of this label serves to distinguish this FE from the Perceiver-Agentive FE used in other frames.)  '' 'The huge sand dunes, perpetually changing, make for a surreal sight.'  'Endill heard the noise of glass smashing, plaster crumbling and furniture being broken.'  'The feel of his strong fingers enclosing her small palm came as something of a shock to her system.'"}, {'frame': 'Level_of_force_exertion', 'tfidf': 0.7526959179855992, 'lexical_unit': 'strong.a / weak.a / mighty.a / power.n / might.n / forceful.a / force.n / strength.n / weakness.n / powerful.a / powerless.a', 'definition': 'An Exerter, Action, or Force is capable of exerting or does exert a physical force at a level specified by the target. That physical force may cause deformation or breakage of, or simply motion in the receiving entity. The receiving entity is conceptually present (even if remotely), but is usually not lexically explicit. This frame covers both individual-level/static uses ("a STRONG person") as well as stage-level/dynamic uses ("a STRONG push"). However, the durative, individual-level meaning appears more frequently in the data and seems more basic.   \'Eugenie loved the sea and was a strong swimmer.\'  \'Spartacus dealt the Roman soldier a mighty blow.\'  \'A powerful force tore off the tree\'s branches.\'  Exerter, Action, and Force belong to a Core set. \'\'  There are several productive metaphors covered by this frame. The first and most common is one in which social influence or control is conceptualized as the physical exertion of force. The social influence/control is more specifically a propensity to cause change in social realms such as the economic, political, militaristic, cultural, or intimate: \'There were theoretical limits to the power of the king.\' \'Voters in the South have a strong incentive to keep such Democrats in office.\'  Another similar metaphor is one in which psychological influence or control is understood as the physical exertion of force. The psychological influence/control includes the emotional as well: \'Poetic words in a text can be given more emotive power by using melisma.\' \'He was a forceful speaker.\'  A third metaphor involves the amount of an entity construed as the physical force exertion of said entity. Depending on context, amount could be volume, etc. (“STRONGEST critics”; “MIGHTY uproar”).  \'\'  Two related physical force dynamic frames are Level_of_force_resistance and Dynamism.  This frame is distinguished from the Level_of_force_resistance frame in that it describes the level of force exertion instead of the level of resistance, and also in that there are three categories of Core FE available to the target (i.e Exerter, Action, or Force), whereas in Level_of_force_resistance there are only two Core FEs (i.e. Resisting_entity and Opposing_force). Of the latter frame\'s FEs, Opposing_force specifies the thing that the main entity resists to a level desginated by the target. Its parallel in Level_of_force_exertion is implied but backgrounded to the extent that it rarely appears as explicit lexical material; thus there is no corresponding Core FE.   This frame differs from Dynamism with regard to individual-level cases; targets here express the FE\'s capability. In contrast, Dynamism targets express the FE\'s tendency. For example, "a STRONG person" is generally construed as a person who is capable of strength, while "an ENERGETIC person" (energetic.a from the Dynamism frame) is construed as a person who tends to be energetic.   However, there is overlap between the two frames in stage-level cases - "a STRONG push" and "an ENERGETIC push" seem rather comparable. '}, {'frame': 'Operate_vehicle', 'tfidf': 0.7488886698031674, 'lexical_unit': 'balloon.v / bicycle.v / bike.v / boat.v / canoe.v / caravan.v / cycle.v / motor.v / paddle.v / parachute.v / pedal.v / punt.v / raft.v / row.v / skate.v / sledge.v / tack.v / taxi.v / toboggan.v / cruise.v / drive.v / ride.v / sail.v / fly.v', 'definition': "The words in this frame describe motion involving a Vehicle and someone who controls it, the Driver. Some words normally allow the Vehicle to be expressed as a separate constituent. 'Tim drove his car all the way across North America.' 'Tom paddled my canoe across the Canadian border.'  Other words in this domain are based on the names of vehicles, and do not normally allow the Vehicle to be expressed as a separate constituent. 'The group biked all the way across the country.'  However, a separate Vehicle constituent can occur if it adds information not included in the verb. 'Tim biked across the country on an old 10-speed.'"}, {'frame': 'Process_start', 'tfidf': 0.7443065958425441, 'lexical_unit': 'start.v / begin.v / commence.v / erupt.v / break out.v / commencement.n / incipient.a / onset.n / nascent.a / eruption.n', 'definition': "An Event begins at a certain Time and Place. Reason may also be indicated.  NB:  Refer to Event frame.  'The project began.'"}, {'frame': 'Architectural_part', 'tfidf': 0.7438370052779331, 'lexical_unit': 'fireplace.n / floor.n / ceiling.n / mantel.n / roof.n / rail.n / wall.n / counter.n / facade.n / foundation.n / flight.n / landing.n / window.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  'We need new counters for the kitchen'  'The storm ripped off the bathroom's roof'  "}, {'frame': 'Dead_or_alive', 'tfidf': 0.7409277243616568, 'lexical_unit': 'deceased.a / lifeless.a / dead.a / alive.a / undead.a / undead.n / living.n / dead.n / living.a / nonliving.a / live.v / life.n / late.a / dirt nap.n', 'definition': "A Protagonist is in the dynamic, maintained state of being alive or has exited this state.  'Frank's dead body was apalling.'"}, {'frame': 'Expressing_publicly', 'tfidf': 0.708303712616614, 'lexical_unit': 'vent.v / air.v / express.v / voice.v / give voice.v / expression.n / articulate.v / put into words.v', 'definition': "A Communicator publically communicates some difficult-to-express Content which they (or a social group of which they are a member) have had for some time. The Content may not have been previously communicated due to inability or social stricture.  In cases where the individuals addressed are a smaller group than the public at large, a separate Addressee may be expressed.  'Those grievances can be aired during Board meetings. CNI'  'Saddam voiced his joy when he was told Spain's new government had left the US-led military coalition in Iraq.'   "}, {'frame': 'Natural_features', 'tfidf': 0.6919837813373021, 'lexical_unit': 'rill.n / hill.n / mountain.n / knoll.n / cordillera.n / lake.n / pond.n / tarn.n / creek.n / vale.n / crevasse.n / sound.n / strait.n / valley.n / river.n / sea.n / ocean.n / pool.n / peninsula.n / fjord.n / outcrop.n / island.n / archipelago.n / crag.n / glacier.n / canyon.n / mount.n / cove.n / bay.n / inlet.n / cliff.n / channel.n / headland.n / isthmus.n / cave.n / cavern.n / iceberg.n / berg.n / waterfall.n / falls.n / spring.n / cataract.n / stream.n / brook.n / atoll.n / floe.n / dune.n / massif.n / loch.n / butte.n / fell.n / hillock.n / mesa.n / isle.n / islet.n / cay.n / sandbar.n / coombe.n / key.n / crater.n / bar.n / sandbank.n / sandspit.n / reef.n / clough.n / dale.n / defile.n / dell.n / depression.n / range.n / dingle.n / gap.n / pass.n / glen.n / graben.n / gulch.n / gully.n / hollow.n / ravine.n / beck.n / hummock.n / moraine.n / burn.n / shelf.n / shoal.n / lagoon.n / slough.n / bayou.n / tor.n / eyot.n / plateau.n / seamount.n / guyot.n / volcano.n / declivity.n / corrie.n / ridge.n / skerry.n / rapids.n / watershed.n / height.n / cirque.n / beach.n / continent.n / continental.a / peak.n / coastal.a / wash.n / strand.n / rugged.a / gulf.n / cascade.n / land.n / water.n / range [grazing].n', 'definition': "The Locale is a geographical location as defined by shape.  This frame includes natural geographic features, including land/ice forms and bodies of water.  ' We climbed up the rock cliff.' "}, {'frame': 'Becoming', 'tfidf': 0.6767582580083508, 'lexical_unit': 'become.v / turn.v', 'definition': "An Entity ends up with some Final_quality--a new fact about the Entity. Alternatively, based on a cluster of changes of characteristics, the Entitynewly meets the conditions for being a member of a Final_category.  'The weather turned cold .' 'You can become a firefighter today !'  This frame should be compared with the Transition_to_state frame, which is more general in allowing arbitrary descriptions of a final situation:  'We ended up telling him to leave .'  There is no way to effectively paraphrase such a sentence in the Becoming frame.  "}, {'frame': 'Sending', 'tfidf': 0.668726586953741, 'lexical_unit': 'send.v / mail.v / ship.v / post.v / export.v / forward.v / route.v / dispatch.v / fax.v / telex.v / shipment [items].n / shipment [act].n / express.v / barge.v / wire.v / refer.v / shipping.n', 'definition': "A Sender plans the Path (along with Source and Goal) of a Theme and places it in circumstances such that it travels along this Path under the power of some entity other than the Sender.  This frame also has a Recipient distinct from the Goal, as both can be present: 'I sent the manuscript to England to Bill.' 'I forwarded the grain to a dealer in Frankfurt.'  This frame contains verbs that participate in the ditransitive construction, with a recipient as the direct object, as in the following: 'I sent Bill the manuscript.' Certain Verbs in this Frame focus on the initial sending act, while others do not.  For example, I sent it rapidly can either mean the act of sending was initiated quickly or that it moved quickly. However, the in following sentence: I exported/dispatched it rapidly, meaning that the act was begun quickly, both types of verbs are included."}, {'frame': 'Cause_harm', 'tfidf': 0.6648155420357802, 'lexical_unit': 'bayonet.v / beat.v / boil.v / burn.v / bludgeon.v / club.v / crush.v / cut.v / slice.v / hammer.v / hit.v / kick.v / knife.v / punch.v / smash.v / stab.v / spear.v / stone.v / hurt.v / whip.v / batter.v / break.v / butt.v / chop.v / claw.v / clout.v / crack.v / cudgel.v / cuff.v / fracture.v / gash.v / injure.v / jab.v / bruise.v / knock.v / lash.v / maul.v / pelt.v / strike.v / thwack.v / bash.v / belt.v / buffet.v / horsewhip.v / smack.v / squash.v / slap.v / knee.v / wound.v / pummel.v / electrocute.v / electrocution.n / poisoning.n / beat up.v / torture.v / maim.v / flog.v / impale.v / biff.v / cane.v / flagellate.v / poison.v / transfix.v / welt.v / mutilate.v / elbow.v / sting.v / swipe.v / strike.n / drug.v / twist.v / run through.v', 'definition': "The words in this frame describe situations in which an Agent or a Cause injures a Victim. The Body_part of the Victim which is most directly affected may also be mentioned in the place of the Victim.  In such cases, the Victim is often indicated as a genitive modifier of the Body_part, in which case the Victim FE is indicated on a second FE layer. '' 'Rod saw his father beating his mother.'  'In the end Wormtongue is fed up with being beaten so he cuts Saruman's throat to free himself.'  'A mother stabbed to death by her husband made a secret will stating that he must never be allowed to care for their son.'"}];
+    </script>
+    <script type="text/javascript" src="word_cloud_prediction.js"></script>
+    <script type="text/javascript" src="../mturk.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 150px;
+            padding-right: 150px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel_1 canvas, #word_cloud_panel_2 canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+        .word_cloud_box {
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 3px rgba(70, 70, 70, 1) solid;
+            padding: 20px;
+            margin-bottom: 20px; 
+        }
+        .word_cloud_box:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+        }
+        .selected_story_block {
+            border-color: #7BDFF2;
+            border-width: 3px;
+            box-shadow: 0 0 10px 10px rgba(123, 223, 242, 0.3);
+            background-color: rgba(239, 247, 246, 0.8);
+        }
+        .indicator {
+            /*font-family: Courier;
+            font-weight: bold;*/
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px black solid;
+            border-radius: 20px;
+        }
+
+        .selected_story_block .indicator {
+            background-color: rgb(123, 223, 242);
+        }
+
+        #story_content {
+            max-height: 600px;
+        }
+        .not_qualified {
+            color: red;
+            font-weight: 900;
+        }
+        .qualified {
+            color: black;
+            font-weight: 900;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Which word-cloud best represents the story snippet?</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that a computer automatically 
+            generated to characterize a story snippet. 
+            These words can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            A <strong>word-cloud representation with nouns</strong> is a group of nouns a computer automatically 
+            generated to characterize a story snippet. 
+            These nouns can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            In this HIT, you will see a story snippet. <span class="highlight">Please read the it carefully.</span>
+            The story is long so we have a 3 minutes time lock for submission.
+            <br/><br/>
+
+            At the bottom of the HIT, you will see two sets of word-cloud representations, 
+            where each consists of nouns, verbs, and adjectives. 
+            <span class="highlight">Please select the word-cloud representation that best represents the story.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following story snippet carefully!</h3>
+            You will need to select the word-cloud representation that best represents this story. 
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story</h4>
+                        <h5>(An excerpt from the book <span style="font-weight:bold;">"Bitch Heiress X Samurai Butler"</span>.)</h5>
+                        <span class="not_qualified" id="read_lock">Please read all the story.</span>
+                        <br/><br/>
+                        <pre id="story_content">
+Ranmaru thought sadly as he raised his sword.
+Forgive me Nagi...
+Kenmaru let out a battle cry as he swung his sword forward and unleashed the powerful Black Fire attack upon Ranmaru- Ranmaru let out a battle cry of his own and swung his own sword forward to unleash a red fiery attack- "Black Fire Attack!"
+"Fire Blast Attack!"
+The two attacks clashed in midair but it was just as Ranmaru had known all along.
+The Black Fire pushed back on his attack and consumed it almost instantly.
+And now the Black Fire attack was headed his way, ready to consume him.
+Goodbye Nagi...I'm sorry I failed to protect you...
+"Ranmaru!"
+It was Nagi's beautiful melodious voice, which sounded like the temple bell from her village.
+Ranmaru opened his eyes to see that Nagi was standing in front of him, and she was...glowing.
+A beautiful, white-tinged aura of immense purity surrounded her body and she had her hand outstretched before her while using her power to shield Ranmaru and herself from the Black Fire!
+His miko love was fighting to protect him!
+Nagi...Ranmaru's heart clenched in his chest as he watched her.
+She really was beautiful.
+She was wearing her usual miko robes - a white haori shirt and red hakama pants.
+She was the complete opposite of himself.
+A fragile, dark, pale beauty.
+Nagi was delicate, refined, with long silky black hair, small hands, peridot-colored eyes, and skin as pale and fragile as porcelain.
+In fact she reminded him of a porcelain doll.
+She had always looked like a single touch from him would cause her to shatter.
+But he had always been very gentle with her for that reason...something he would never have done for anyone else...
+Such incredible power!
+Ranmaru couldn't help but be impressed by Nagi's display.
+As the fire pushed against the shield Nagi had created, she struggled to use more of her power to keep the fire at bay and then managed to dispel the attack entirely with one final push of her power.
+Nagi had conquered the Black Fire attack!
+However, blood trickled out of the corner of her mouth.
+Her body was trembling from the aftereffects of using such an immense amount of her power in one go, and she sunk to her knees from utter exhaustion.
+"Nagi!"
+Ranmaru rushed over to her side.
+"Ranmaru..."
+Nagi smiled weakly.
+"I'm so glad you're safe."
+Nagi's eyes flickered somewhere directly behind Ranmaru.
+"Oh thank goodness.
+It's gone..."
+Upon seeing his miko love weakened and looking even frailer than usual Ranmaru became blinded by the sudden rush of hate he felt for Kenmaru.
+"Nagi, do not worry.
+I will make him pay for hurting you.
+I will defeat Kenmaru.
+And protect you."
+Ranmaru stood and turned his attention back towards Kenmaru spotting him a ways away.
+"Wait...don't go Ranmaru..."
+Nagi reached out her hand to stop him, but he didn't hear her, so blinded by hate and rage was he.
+"No...wait...please, there's something I need-" But her voice was too low, too weak, for Ranmaru to hear, and her hand fell when she realized that she would not be able to reach him in his current state.
+She watched Ranmaru raise his sword and charge Kenmaru and willed her eyes to stay open so that she could watch the rest, but her eyelids felt heavy and she fell forward onto the ground collapsing in a faint, her energy finally leaving her.
+Kenmaru was in bad shape and coughed up a large amount of blood, which dribbled down his chin, and stained the ground in front of him.
+The Black Fire had destroyed and damaged several of his internal organs, and until they regenerated he could not use the Black Fire again without causing his immediate death.
+He turned to see that Ranmaru was completely unharmed, and had transformed into his nine-tailed fox form due to being consumed by his bloodlust and losing what was left of his humanity.
+"Stubborn bastard...let's end this..."
+More blood trickled down his chin and he wiped it away with the back of his hand, a grim expression on his face as he smiled lopsidedly.
+"I'll show him how much I've changed...that I don't need him to protect me anymore..."
+Ranmaru growled fiercely revealing his sharp teeth, and placed one of his clawed paws in front of him as he prepared himself to attack.
+Kenmaru transformed into his own two-tailed fox form - a fox that had snowy-white hair and pink eyes.
+An albino fox.
+He too mimicked Ranmaru and snarling while revealing his own long, sharp fangs moved one paw forward as he prepared to attack his foe.
+They stood off like this - facing each other - appraising their enemy.
+And then the two foxes rushed at each other, using their yokai speed and power, and they attacked each other leaping up into the air and slamming into each other.
+As their speed increased to the naked eye they became nothing more than two bright lights slamming into each other in the air - like two angry fireworks, sparking and exploding as they collided.
+The air was filled with the powerful shockwaves from the force of the attacks that they were using on each other and the ground around them began to explode and crumble...
+Finally, Ranmaru and Kenmaru passed each other as both of them used their final and most deadly attacks, putting an end to their fierce battle.
+Blood spurted out from a wound on Ranmaru's shoulder and he turned to face Kenmaru.
+Kenmaru leered victoriously revealing his white teeth, and was seemingly unharmed before he frowned suddenly and collapsed - blood spraying into the air from a deadly wound on his neck.
+Ranmaru leapt onto Kenmaru's prone body, still in his fox form, and was prepared to rip his throat out when- An amused, trilling laughter filled the air.
+Ranmaru recognized that laugh.
+It was her.
+He turned to see Nagi's twin sister and the sight of Nagi with that twisted smile on her face caused him to shiver.
+Kagura was standing not too far away from him, with a pleased expression on her face.
+There was also this cat that ate the canary smile upon her blood-red painted lips.
+She was hiding something...Ranmaru realized.
+Kagura was twirling a single leaf in her hand, a fox magic talisman that Kenmaru had gifted her with in order for her to be able to transform into the mirror image of Nagi.
+This would have been so that Kagura could have approached Ranmaru while pretending to be her sister, but now that her sister was dead the spell Kenmaru had gifted her with was no longer needed.
+A pity.
+Kagura tossed the leaf away and approached Ranmaru.
+"Darling Ranmaru..."
+She purred, "I see you've won your little battle.
+Did you have fun?
+I bet you did.
+I know how much you love to fight.
+Love the heat of battle - that feeling of not knowing whether or not you'll live or die.
+It's orgasmic isn't it?
+A warrior, no a beast, like you doesn't feel truly alive unless he is in the midst of a battle to the death.
+You love fighting more than anything Ranmaru, do you not?
+Apparently even more than my very own sister..."
+Ranmaru's eyes widened as he suddenly remembered about Nagi.
+Where was she?
+His eyes frantically searched the scorched battlefield in search of her.
+And then he caught sight of her - There!
+Lying face first on the ground was the prone, bloody, broken, and unmoving form of his miko love. Nagi...
+There, lying in a pool of her own blood...
+--Nagi!
+Ranmaru quickly transformed back into his human form and rushed towards her, "Nagi!"
+He bent over her and took her limp body protectively into his arms and looked down into her lifeless face.
+"Nagi?
+Nagi!
+Speak to me!
+Wake up Nagi!
+Open your eyes!"
+He began to shake her vigorously, her head snapped back and forth in a chilling manner.
+Ranmaru looked down at her shocked, eyes full of disbelief.
+Her eyes weren't opening...This can't be happening...
+"She won't wake."
+Kagura began in a singsong voice, "And do you want to know why?
+Because she'd dead!
+You killed her Ranmaru!"
+She burst out, her voice taking on a sudden hateful and angry tinge.
+But then her tone suddenly turned mocking.
+"Just kidding, like I care!"
+"No..."
+Ranmaru shook his head and murmured to himself.
+No...it can't be.
+I didn't...no...
+"You knew my sister was weak, sickly, and yet you used your full yokai power while in her presence and this is what has killed her.
+Foolish yokai beast."
+She sneered.
+"You really are so pathetic.
+You couldn't even protect the woman you loved.
+All you know how to do, all you're good at is - killing."
+Kagura's words were like knives.
+Ranmaru shook his head, "No...no...no...NAGI!"
+He raised his head and looked up at the sky in despair and howled while he clutched her broken body to his chest, tears were streaming down his face.
+Tears that hadn't fallen for centuries.
+"I didn't mean to...my love..."
+Kagura came up behind Ranmaru, "Yes, you did.
+After all, you're just a beast that loves fighting.
+A tool for killing.
+But perhaps in that respect you could become useful to me somehow.
+There are so many who stand in my way.
+And I can have you get rid of them for me.
+And so you shall become mine!"
+Kagura reached down and placed the enchanted Control Collar that Kenmaru had gifted her with around Ranmaru's neck.
+"Embrace."
+She spoke the word of subjugation, the word of 'punishment', just to try it out and make sure that Ranmaru was truly in her clutches now.
+Ranmaru cried out in pain as the collar constricted tightly around his neck and sent painful electric shocks coursing through his body.
+"That's for killing my sister, darling Ranmaru."
+An evil and triumphant smile formed on Kagura's face.
+"I'm going to have fun breaking you as punishment for loving my sister.
+I wonder how many centuries that will take...No matter, I'm immortal now too."
+She laughed gleefully.
+Ranmaru hung his head. This...this is only what I deserve...
+END OF FLASHBACK...
+"What I fight for...?"
+Flashes of memories he had long tried to bury and repress had begun to surface within his mind.
+And he had begun to remember bits and pieces of how he had failed to protect his miko love...how he had caused her death.
+He suddenly felt like throwing up.
+"You do have someone to protect, Ranmaru.
+Don't lose sight of what's important.
+This will sound funny for a robot to be saying but don't lose sight of your sense of self.
+You aren't just a warrior.
+You unlike me, truly have a heart.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+
+        <h3>Select the word-cloud representation that best represents the above story.</h3>
+        Below, there are two word-cloud representations. Read them carefully and select the one that best represent the above story.
+        <br/><br/>
+
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_1" value="1">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 1</h3>
+                The following three word clouds jointly represent the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_2" value="2">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 2</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_2">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_2">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_2">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_2-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="68">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input name="note" type="hidden" value="BERT, LGBM">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+    </div>
+
+</body>
+</html>

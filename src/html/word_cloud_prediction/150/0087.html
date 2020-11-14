@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="text/javascript">
+        var frame_list_1 = [{'frame': 'Ineffability', 'tfidf': 11.58220009472544, 'lexical_unit': 'magic.n / magic.a / magical.a / ineffable.a / ineffability.n / je ne sais quoi.n / magicalness.n', 'definition': "A Stimulus inspires a feeling of awe and interest in a (generally implicit or generic) Experiencer due to desirable qualities which are difficult to explain.  Alternatively, the Attribute of the Stimulus may be described instead.  'There is a certain je-ne-sais-quoi about that city .'"}, {'frame': 'Biological_area', 'tfidf': 2.655948484913908, 'lexical_unit': 'woodland.n / mudflat.n / swamp.n / prairie.n / desert.n / forest.n / bog.n / wood.n / jungle.n / swampland.n / rainforest.n / plain.n / meadowland.n / heathland.n / copse.n / glade.n / tundra.n / taiga.n / marsh.n / marshland.n / fen.n / moor.n / grassland.n / mead.n / lea.n / veld.n / wold.n / thicket.n / savanna.n / mire.n / bush.n / greenwood.n / spinney.n / scrub.n / oasis.n / shrubbery.n', 'definition': " This frame contains words that denote large ecological areas as well as smaller locations characterized by the type of life present--in other words, geography locations as defined by biota.  'I've spent a long time in the rugged prairies of northern Llorwyn.'"}, {'frame': 'Fugitive', 'tfidf': 2.1527628570033577, 'lexical_unit': 'fugitive.n / on the lam.a / on the run.a / lamster.n / on the loose.a', 'definition': "A Fugitive avoids recapture by or on the authority of Authorities in relation to a Crime which the Fugitive has committed or is suspected of having committed.  'He is in fact a fugitive of the law and you must inform the police if you see him.'  'Only two years earlier she had been on the lam from charges of embezzlement.'"}, {'frame': 'Directional_locative_relation', 'tfidf': 1.836315897197192, 'lexical_unit': 'above.prep / below.prep / east.adv / east.n / north.adv / north.n / northeast.adv / northeast.n / northwest.adv / northwest.n / south.adv / south.n / southeast.adv / southeast.n / southwest.adv / southwest.n / west.adv / west.n', 'definition': "A Figure is located relative to a (presumably more easily located) Ground, asserting that the Figure lies (approximately) on line from the Ground whose direction is established by semantic types of the particular LUs.  'The plane landed 10 miles due north of Lake Travis in an empty field .' "}, {'frame': 'Size', 'tfidf': 1.8108000611560573, 'lexical_unit': 'large.a / big.a / huge.a / small.a / tiny.a / little.a / enormous.a / great.a / infinitesimal.a / gigantic.a / giant.a / miniature.a / grand.a / immense.a / miniscule.a / massive.a / sizable.a / substantial.a / ample.a / bulky.a / capacious.a / colossal.a / humongous.a / immeasurable.a / voluminous.a / jumbo.a / mini.a / petite.a / wee.a / bitty.a / puny.a / Brobdingnagian.a / Lilliputian.a / medium.a / mid-size.a / medium-sized.a', 'definition': 'The size of an Entity is assessed in terms of the Degree by which it deviates from the norm. The size generally refers to the amount of three-dimensional space that is occupied by the Entity, not primarily to its weight, density, or length, which is why it is peculiar to refer to a bullet as "large", even if it is heavy, unless it actually has larger dimensions than usual, or to a rope as "big", even if it is long, unless its other, cross-sectional dimensions are also significant.  \'I own a very small home.\' \'Where is my little notebook?\' \'That dog is huge!\' \'\'  There are an enormous number of productive metaphors that involve this frame as the source domain; two of the most frequent metaphors come from the target domains of quantity/amount and importance.    \'He gave me a small sum of money.\' \'The novel was a substantial achievement.\' \'\'  Subcases of the quantity/amount and importance metaphors are also prominent. These involve cases describing the extent of an action\'s, event\'s, or person\'s effect ("his influence on her work was massive"), as well as those related to events ("big party"), similarity ("gigantic difference"), communication ("giant misunderstanding"), and emotions ("great joy", "little joys").  Other productive metaphors include those dealing with groups (in terms of their number of members, net worth, importance to the economy, i.e. "giant electronics company") and those describing sound volume ("in a tiny voice", "the enormous thundering of her heart").  \'\'  The target domain of fame, by contrast, occurs in a non-productive metaphor, found especially with big.a and huge.a. Maturity and age also occur in non-productive metaphors ("big boy", "little baby").'}, {'frame': 'Plants', 'tfidf': 1.6746794001491532, 'lexical_unit': 'tree.n / weed.n', 'definition': 'The LUs in this frame refer to biological entities other than human beings and animals, which are labeled by the FE Plant.'}, {'frame': 'Appellations', 'tfidf': 1.65857922987559, 'lexical_unit': 'officer.n / general.n / captain.n / president.n / bishop.n / chairman.n / chairperson.n / chief.n / commander.n / commissioner.n / congressman.n / congresswoman.n / director.n / duchess.n / emperor.n / empress.n / executive.n / governor.n / headmaster.n / imam.n / kaiser.n / king.n / leader.n / legislator.n / maharaja.n / mayor.n / minister.n / mogul.n / monarch.n / official.n / premier.n / prince.n / principal.n / queen.n / representative.n / secretary.n / shah.n / sheik.n / sultan.n / superintendent.n / supervisor.n / tsar.n / mother.n / father.n / doctor.n / dr.n / mr.n / mrs.n / ms.n / miss.n / child.n / aunt.n / uncle.n / sister.n / brother.n / cousin.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Natural_features', 'tfidf': 1.6264420022163726, 'lexical_unit': 'rill.n / hill.n / mountain.n / knoll.n / cordillera.n / lake.n / pond.n / tarn.n / creek.n / vale.n / crevasse.n / sound.n / strait.n / valley.n / river.n / sea.n / ocean.n / pool.n / peninsula.n / fjord.n / outcrop.n / island.n / archipelago.n / crag.n / glacier.n / canyon.n / mount.n / cove.n / bay.n / inlet.n / cliff.n / channel.n / headland.n / isthmus.n / cave.n / cavern.n / iceberg.n / berg.n / waterfall.n / falls.n / spring.n / cataract.n / stream.n / brook.n / atoll.n / floe.n / dune.n / massif.n / loch.n / butte.n / fell.n / hillock.n / mesa.n / isle.n / islet.n / cay.n / sandbar.n / coombe.n / key.n / crater.n / bar.n / sandbank.n / sandspit.n / reef.n / clough.n / dale.n / defile.n / dell.n / depression.n / range.n / dingle.n / gap.n / pass.n / glen.n / graben.n / gulch.n / gully.n / hollow.n / ravine.n / beck.n / hummock.n / moraine.n / burn.n / shelf.n / shoal.n / lagoon.n / slough.n / bayou.n / tor.n / eyot.n / plateau.n / seamount.n / guyot.n / volcano.n / declivity.n / corrie.n / ridge.n / skerry.n / rapids.n / watershed.n / height.n / cirque.n / beach.n / continent.n / continental.a / peak.n / coastal.a / wash.n / strand.n / rugged.a / gulf.n / cascade.n / land.n / water.n / range [grazing].n', 'definition': "The Locale is a geographical location as defined by shape.  This frame includes natural geographic features, including land/ice forms and bodies of water.  ' We climbed up the rock cliff.' "}, {'frame': 'Substance', 'tfidf': 1.499133356564115, 'lexical_unit': 'gas.n / sand.n / oil.n / liquid.n / methane.n / chemical.n / iron.n / material.n / uranium.n / aluminum.n / plutonium.n / atropine.n / yellowcake.n / solid.n / ore.n / petroleum.n / water.n / juice.n / metal.n / glass.n / paper.n / mud.n / cement.n / calcium.n / oxygen.n / fertilizer.n', 'definition': 'This frame concerns internally undifferentiated Substances.   \'As their gut bacteria ferment cellulose , they generate methane gas , which escapes from the rear ends of the insects.\'  \' The pipes are leaking noxious gas.\'  \'Some CH-47 "Bombers" were equipped to roll-out riot control gas or napalm onto Viet Cong bunker complexes from the rear cargo ramp.\''}, {'frame': 'Food', 'tfidf': 1.4051043493547553, 'lexical_unit': 'fruit.n / apple.n / banana.n / vegetable.n / carrot.n / potato.n / pea.n / meat.n / beef.n / lamb.n / veal.n / poultry.n / chicken.n / turkey.n / fish.n / salmon.n / tuna.n / shellfish.n / shrimp.n / lobster.n / milk.n / cheese.n / egg.n / butter.n / nut.n / almond.n / peanut.n / pasta.n / noodle.n / herb.n / spice.n / pepper.n / basil.n / cereal.n / lettuce.n / berry.n / bread.n / roll.n / cracker.n / cake.n / pancake.n / cheesecake.n / pastry.n / croissant.n / cookie.n / biscuit.n / sweet.n / chocolate.n / sweetener.n / sugar.n / honey.n / fat.n / oil.n / vinegar.n / coffee.n / juice.n / soup.n / stew.n / sauce.n / dressing.n / vinaigrette.n / ketchup.n / mayonnaise.n / lasagne.n / food.n / tea.n / water.n / date.n / cabbage.n / MRE.n / beer.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Hostile_encounter', 'tfidf': 1.3685653254763375, 'lexical_unit': 'battle.n / fight.n / scuffle.n / spat.n / altercation.n / duel.n / clash.n / confrontation.n / row.n / fighting.n / bout.n / struggle.n / hostility.n / skirmish.n / combat.n / squabble.n / stalemate.n / brawl.n / strife.n / fight.v / battle.v / duel.v / clash.v / brawl.v / skirmish.v / scuffle.v / confront.v / war.n / war.v / gunfight.n / shootout.n / standoff.n / showdown.n / wrangling.n / tiff.n / fistfight.n / firefight.n / conflict.n / dust-up.n / warfare.n / cw.n / bw.n / tussle.n / struggle.v / infighting.n / engage.v / engagement.n', 'definition': "This frame consists of words that describe a hostile encounter between opposing forces (Side_1 and Side_2, collectively conceptualizable as Sides) over a disputed Issue and/or in order to reach a specific  Purpose. '' 'He still wants to fight Mike Tyson in about 8 months.'  'Dennis Andries's European cruiserweight title clash against Akim Tafer of France in Beausoleil last February has been voted as the EBU's fight of the year.'"}, {'frame': 'Weapon', 'tfidf': 1.3509466053912689, 'lexical_unit': 'rifle.n / pistol.n / six-shooter.n / firearm.n / gun.n / cannon.n / bomb.n / warhead.n / sword.n / knife.n / gat.n / AK-47.n / grenade.n / crossbow.n / machine-gun.n / shotgun.n / shooter.n / flame-thrower.n / weapon.n / handgun.n / club.n / twenty-two.n / forty-four.n / missile.n / garrotte.n / revolver.n / weaponry.n / Scud-B missile.n / arsenal.n / chemical weapon.n / ballistic missile.n / biological weapon.n / nuclear weapon.n / mustard gas.n / CW.n / BW.n / WMD.n / weapon of mass destruction.n / mine.n / spear.n / bow.n / explosive.a / explosive.n / plastic explosive.n / dynamite.n / nuclear.a / Scud-B.n / Scud-C missile.n / atomic weapon.n / ordnance.n / arms.n / artillery.n / shell.n / atomic bomb.n / biological.a / chemical.a / nerve gas.n / strategic.a / strategic nuclear weapon.n / ICBM.n / RPG.n / rocket.n / small arms.n / EFP.n / assault rifle.n / mortar.n / automatic weapon.n / C4.n / phosgene.n', 'definition': "A Weapon is an artifact created specifically to cause harm or damage.  In some cases, a Use, Material of construction, Part or Type may be more narrowly specified.  'Did you, or did you not, fire this gun with intent to harm my client?'  'Cyra tried to swing her sword to parry, but it was to heavy.'  'I investigated a specialist precious metal firearms manufacturer.'  'My neighbor, a member of the NRA since birth, has got an AK-47 fully automatic assault rifle.'  'Let 's just say that he 's the kind of guy who likes guns with hair triggers.' "}, {'frame': 'Gizmo', 'tfidf': 1.2666154385756374, 'lexical_unit': 'tool.n / implement.n / apparatus.n / device.n / utensil.n / instrument.n / equipment.n / gadget.n / appliance.n / contraption.n / machine.n / mechanical.a / centrifuge.n / technology.n / system.n / gear.n / core.n / player.n / range.n / level.n', 'definition': "This frame contains general words denoting equipment where the Use or purpose is not specified by the lexeme but (typically) by a separate expression. The words are described with respect to the Use for which the item is used or its typical User.  'coffee machine' 'dentist's equipment'"}, {'frame': 'Political_locales', 'tfidf': 1.2520235881127544, 'lexical_unit': 'barony.n / territory.n / country.n / province.n / duchy.n / viscountcy.n / county.n / state [sovereign].n / principality.n / borough.n / town.n / realm.n / kingdom.n / municipality.n / metropolis.n / megalopolis.n / city.n / world.n / federal.a / global.a / parish.n / diocese.n / international.a / local.a / locality.n / municipal.a / national.a / empire.n / village.n / nation.n / commonwealth.n / internationally.adv / multinational.a / city-state.n / district.n / fiefdom.n / jurisdiction.n / land.n / state [internal].n / provincial.a / territorial.a / township.n', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'Color', 'tfidf': 1.2344460403561728, 'lexical_unit': 'red.a / green.a / color.n / vermilion.a / ebony.a / purple.a / blue.a / orange.a / yellow.a / violet.a / brown.a / gray.a / black.a / white.a / pink.a / crimson.a / maroon.a / turquoise.a / azure.a / beige.a / mauve.a / tan.a / buff.a / scarlet.a / pitchblack.a / colored.a / indigo.a / puce.a', 'definition': "A Color serves as a landmark in color-space, either a point-like landmark (e.g. burnt sienna) or a broader region (e.g. blue).  Especially when the Color designates a broad region in color-space, it may be defined with a specific Type, further specified by comparison to the color of a Comparand, modified by a Color_qualifier, or evaluated with a Descriptor.  All color words are generally used to specify the color of some (physical) Entity. 'I really like that shade of blue.' 'The welts on his side had already turned an angry red.' 'The room was bathed in a soft pink light.' 'They promptly set up a zillion bright vermilion pavilions.' 'His face and hands were brown from a life spent in the bright sun of the fields.' "}, {'frame': 'Sending', 'tfidf': 1.185458179075414, 'lexical_unit': 'send.v / mail.v / ship.v / post.v / export.v / forward.v / route.v / dispatch.v / fax.v / telex.v / shipment [items].n / shipment [act].n / express.v / barge.v / wire.v / refer.v / shipping.n', 'definition': "A Sender plans the Path (along with Source and Goal) of a Theme and places it in circumstances such that it travels along this Path under the power of some entity other than the Sender.  This frame also has a Recipient distinct from the Goal, as both can be present: 'I sent the manuscript to England to Bill.' 'I forwarded the grain to a dealer in Frankfurt.'  This frame contains verbs that participate in the ditransitive construction, with a recipient as the direct object, as in the following: 'I sent Bill the manuscript.' Certain Verbs in this Frame focus on the initial sending act, while others do not.  For example, I sent it rapidly can either mean the act of sending was initiated quickly or that it moved quickly. However, the in following sentence: I exported/dispatched it rapidly, meaning that the act was begun quickly, both types of verbs are included."}, {'frame': 'Ground_up', 'tfidf': 1.1726734682380564, 'lexical_unit': 'pulverized.a / ground.a / crushed.a / milled.a / grated.a / flaked.a / powdered.a / shredded.a / crumbled.a / granulated.a', 'definition': "In this frame a Patient is in a state of having been broken into smaller pieces.  ' We enjoy eating ground beef . '"}, {'frame': 'Organization', 'tfidf': 1.1374349185377972, 'lexical_unit': 'cartel.n / club.n / government.n / organization.n / association.n / league.n / intelligence.n / agency.n / union.n / brotherhood.n / delegation.n / committee.n / group.n / board.n / order.n / society.n / parliament.n / news outlet.n', 'definition': "This frame describes intentionally formed human social groups (here termed Organizations) with some definite structure and Members.  They may be relatively informal, consisting only of a group of individuals who are aware of who is and who is not a fellow member, or they may be complex and long-lasting, such as the Roman Catholic Church or the Conservative Party.   'Lucien is in the brotherhood.'"}, {'frame': 'Emptying', 'tfidf': 1.1241718232354472, 'lexical_unit': 'clear.v / drain.v / empty.v / purge.v / strip.v / divest.v / rid.v / disembowel.v / skin.v / core.v / peel.v / gut.v / bone.v / debug.v / deforest.v / degrease.v / descale.v / scalp.v / defrost.v / delouse.v / eviscerate.v / denude.v / unload.v / emptying.n / expurgate.v / void.v / evacuate.v / debone.v / devein.v / disarm.v / disarmament.n / decontaminate.v / decontamination.n / cleanse.v / pit.v / seed.v / stone.v / stalk.v / flush.v / expunge.v / weed.v', 'definition': "These are words relating to emptying containers and clearing areas of some substance or items. The area or container can appear as the direct object with all these verbs, and is designated  Source because it is the source of motion of the Theme. Corresponding to its nuclear argument status, it is also affected in some crucial way, unlike Source in other frames. Some words in this frame, such as empty, may also occur with Path or Goal expressions, e.g.  'The players emptied the bucket over his head. '"}, {'frame': 'Locale', 'tfidf': 1.1229292995424371, 'lexical_unit': 'area.n / zone.n / region.n / place.n / spot.n / location.n / locale.n / pocket.n / regional.a / site.n / point.n / grounds.n / earth.n', 'definition': "This frame contains general locale words, and is mostly a place-holder in the hierarchy. Words in this frame designate relatively stable bounded ares of the world which have permanent Relative_locations with respect to other locales, and thus are useful as permanent landmarks.  It is inherited by Locale_by_use, which has to do with places that are named according to their intended use, or some habitual use, such as factory.n, dance floor.n, village.n, field.n.  It is also inherited by Locale_by_event, which covers places that are names according to some event which took place there, such as concerts, battles, and meteor impacts.  'This is a pleasant area.'"}, {'frame': 'Part_inner_outer', 'tfidf': 1.0990140121253853, 'lexical_unit': 'outside.a / outer.a / inside.a / exterior.a / inner.a / outside.n / skin.n / lining.n / perimeter.n / center.n / exterior.n / inside.n / interior.n / interior.a / middle.n / shell.n / surface.n / central.a', 'definition': 'This frame concerns Parts of objects that are defined relative to the center or edge of the object.  The Part is a part of the Whole and the Part_prop describes a property of the Part.  \'She discarded the exterior of the walnut.\' \' She preferred a sparse church interior . \'  In cases where the Target is an adjective, it has a special relationship with the noun that it modifies such that a phrase which is a syntactic argument of the noun is semantically available to fill the argument structure of the adjective, as in "the outside row of the class"\'The inner shelf of the bookcase was lying on the floor.\'  '}, {'frame': 'Part_piece', 'tfidf': 1.0922686225863085, 'lexical_unit': 'scrap.n / sliver.n / shred.n / snippet.n / hunk.n / chunk.n / smidgen.n / chip.n / shard.n / morsel.n / piece.n / slice.n / lump.n / flake.n / fragment.n / clump.n / clod.n / board [computer].n', 'definition': "This frame is concerned with transparent nouns denoting a Piece of a Substance. Also present is Piece_prop which is a property of the Piece, e.g. relating to its size.  'Kim ate a tiny morsel of cake '.  "}, {'frame': 'Ammunition', 'tfidf': 1.0709972915037531, 'lexical_unit': 'ammunition.n / ammo.n / ordnance.n / round.n / munitions.n / bullet.n / shell.n', 'definition': "A piece of Ammunition is a disposable artifact to be fired as a projectile in a weapon with the purpose of causing harm or damage.    'The octagenarian inventor's vest repels armor-piercing bullets. '  'It is armed with a automatic loaded 105 mm gun firing anti-tank rounds'  'Depleted uranium munitions are primarily used by the US and the UK.'"}, {'frame': 'Sign', 'tfidf': 1.061866118315232, 'lexical_unit': 'sign.n / indication.n / symptom.n / symptomatic.a / indicative.a / indicate.v / signify.v / mark.v / usher in.v', 'definition': "A phenomenon, the Indicator, exists as an indication of another phenomenon, the Indicated. The relationship is asymmetric: the Indicated is not necessarily a sign for the existence or presence of an Indicator. The Indicated can be a past, present, or future entity or eventuality. The relationship between Indicator and Indicated is not one of symbolization or iconicity. Rather the Indicator is an index of the Indicated.  'This is a sign of things to come.'"}, {'frame': 'Capability', 'tfidf': 1.0562063010450018, 'lexical_unit': 'able.a / unable.a / can.v / capable.a / ability.n / potential.n / capability.n / capacity.n / potential.a / power.n / power [statistical].n / powerless.a / powerlessness.n / inability.n / incapable.a / incapacity.n / powerful.a', 'definition': "An Entity meets the pre-conditions for participating in an Event.  A Degree modifier may be included to indicate by how much the Entity exceeds or falls short of the minimum requirements.  'Conductor software gives us the hands-on capability to provide updates immediately'  'The GOP is afraid that it might not be capable of keeping the seat vacated by Dunn.'  'NASA is unable to communicate with Mars rover.'  'He can fly a kite.'"}, {'frame': 'Businesses', 'tfidf': 1.0331654405055104, 'lexical_unit': 'business.n / shop.n / establishment.n / mill.n / practice.n / firm.n / operation.n / company.n / chain.n / corporation.n / paper.n / store.n / bank.n / boutique.n', 'definition': "A Proprietor owns or runs a Business which provides a Product (which may be goods or services).  'The consumer electronics company Apple has exploded with popularity in recent years.'"}, {'frame': 'Animals', 'tfidf': 1.0224991746790997, 'lexical_unit': 'dog.n / cat.n / pig.n / cow.n / sheep.n / animal.n', 'definition': "The LUs in this frame refer to biological entities other than human beings and plants, which are labeled by the FE Animal.  ''  'My husband and I adopted a really sweet dog last year.'  'The cows that live on the farm down the road are always mooing loudly.'"}, {'frame': 'Killing', 'tfidf': 1.00035713887342, 'lexical_unit': "kill.v / annihilate.v / assassinate.v / behead.v / eliminate.v / exterminate.v / drown.v / liquidate.v / murder.v / slay.v / terminate.v / suffocate.v / smother.v / starve.v / asphyxiate.v / suicide.v / homicide.n / suicide.n / euthanize.v / euthanasia.n / dispatch.v / lethal.a / annihilation.n / liquidation.n / crucify.v / crucifixion.n / decapitate.v / massacre.v / slaughter.v / lynch.v / liquidator.n / killing.n / murder.n / slaughter.n / killer.n / massacre.n / infanticide.n / smothering.n / slaying.n / regicide.n / pogrom.n / shooting.n / holocaust.n / matricide.n / genocide.n / butcher.v / beheading.n / assassination.n / butchery.n / carnage.n / suffocation.n / assassin.n / blood-bath.n / decapitation.n / extermination.n / fratricide.n / garrotte.v / murderer.n / slaughterer.n / slayer.n / immolation.n / patricide.n / silence.v / deadly.a / fatal.a / fatality.n / destroy.v / take out.v / bloodshed.n / do in.v / take (someone's) life.idio", 'definition': "A Killer or Cause causes the death of the Victim. 'John drowned Martha.'"}, {'frame': 'People_by_vocation', 'tfidf': 0.9984874245463569, 'lexical_unit': 'politician.n / farmer.n / attendant.n / clerk.n / consultant.n / gardener.n / lawyer.n / maid.n / manager.n / professor.n / receptionist.n / salesman.n / servant.n / waiter.n / carpenter.n / scientist.n / private eye.n / actress.n / waitress.n / technician.n / toxicologist.n / engineer.n / double agent.n / researcher.n / archaeologist.n / professional.a / agent.n / journalist.n / judge.n / mechanic.n / oilman.n / reporter.n / scholar.n / veterinarian.n / trader.n / mole.n / spy.n / businessperson.n / speculator.n / architect.n / plain-clothes man.n / magistrate.n / officer.n / police officer.n / spokesperson.n / spokesman.n / spokeswoman.n / policeman.n / bodyguard.n / police.n / tailor.n / correspondent.n / cook.n / manservant.n / senator.n / attorney.n / athlete.n / chef.n / bartender.n / teacher.n / pilot.n / flight attendant.n / server.n / software developer.n / web developer.n / saleswoman.n / salesperson.n / homemaker.n / student.n / artist.n / musician.n / singer.n / painter.n / dancer.n / writer.n / editor.n / actor.n / producer.n / director.n / designer.n / neuroscientist.n / biologist.n / chemist.n / physicist.n / anthropologist.n / linguist.n / psychologist.n / psychiatrist.n / mathematician.n / sociologist.n / fire fighter.n / firefighter.n / programmer.n / driver.n', 'definition': "This frame contains  words for Individuals as viewed in terms of their vocation.   The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'Humphrey Bogart was a great actor.'"}, {'frame': 'Architectural_part', 'tfidf': 0.9981358857621582, 'lexical_unit': 'fireplace.n / floor.n / ceiling.n / mantel.n / roof.n / rail.n / wall.n / counter.n / facade.n / foundation.n / flight.n / landing.n / window.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  'We need new counters for the kitchen'  'The storm ripped off the bathroom's roof'  "}];
+        var frame_list_2 = [{'frame': 'Ineffability', 'tfidf': 6.882043838500977, 'lexical_unit': 'magic.n / magic.a / magical.a / ineffable.a / ineffability.n / je ne sais quoi.n / magicalness.n', 'definition': "A Stimulus inspires a feeling of awe and interest in a (generally implicit or generic) Experiencer due to desirable qualities which are difficult to explain.  Alternatively, the Attribute of the Stimulus may be described instead.  'There is a certain je-ne-sais-quoi about that city .'"}, {'frame': 'Sign', 'tfidf': 2.6547489166259766, 'lexical_unit': 'sign.n / indication.n / symptom.n / symptomatic.a / indicative.a / indicate.v / signify.v / mark.v / usher in.v', 'definition': "A phenomenon, the Indicator, exists as an indication of another phenomenon, the Indicated. The relationship is asymmetric: the Indicated is not necessarily a sign for the existence or presence of an Indicator. The Indicated can be a past, present, or future entity or eventuality. The relationship between Indicator and Indicated is not one of symbolization or iconicity. Rather the Indicator is an index of the Indicated.  'This is a sign of things to come.'"}, {'frame': 'Hostile_encounter', 'tfidf': 2.014028549194336, 'lexical_unit': 'battle.n / fight.n / scuffle.n / spat.n / altercation.n / duel.n / clash.n / confrontation.n / row.n / fighting.n / bout.n / struggle.n / hostility.n / skirmish.n / combat.n / squabble.n / stalemate.n / brawl.n / strife.n / fight.v / battle.v / duel.v / clash.v / brawl.v / skirmish.v / scuffle.v / confront.v / war.n / war.v / gunfight.n / shootout.n / standoff.n / showdown.n / wrangling.n / tiff.n / fistfight.n / firefight.n / conflict.n / dust-up.n / warfare.n / cw.n / bw.n / tussle.n / struggle.v / infighting.n / engage.v / engagement.n', 'definition': "This frame consists of words that describe a hostile encounter between opposing forces (Side_1 and Side_2, collectively conceptualizable as Sides) over a disputed Issue and/or in order to reach a specific  Purpose. '' 'He still wants to fight Mike Tyson in about 8 months.'  'Dennis Andries's European cruiserweight title clash against Akim Tafer of France in Beausoleil last February has been voted as the EBU's fight of the year.'"}, {'frame': 'Biological_area', 'tfidf': 1.9744666814804077, 'lexical_unit': 'woodland.n / mudflat.n / swamp.n / prairie.n / desert.n / forest.n / bog.n / wood.n / jungle.n / swampland.n / rainforest.n / plain.n / meadowland.n / heathland.n / copse.n / glade.n / tundra.n / taiga.n / marsh.n / marshland.n / fen.n / moor.n / grassland.n / mead.n / lea.n / veld.n / wold.n / thicket.n / savanna.n / mire.n / bush.n / greenwood.n / spinney.n / scrub.n / oasis.n / shrubbery.n', 'definition': " This frame contains words that denote large ecological areas as well as smaller locations characterized by the type of life present--in other words, geography locations as defined by biota.  'I've spent a long time in the rugged prairies of northern Llorwyn.'"}, {'frame': 'Firefighting', 'tfidf': 1.7921147346496582, 'lexical_unit': 'fight.v / gain ground.idio / battle.n / control.v / tackle.v / attack.v / battle.v / fire fighting.n', 'definition': 'This frame characterizes the situation or state of affairs in which someone acts to prevent a Fire_disaster from occurring, accelerating, or affecting any area not identified as a Controlled_area. The named Burn_area, targeted by the Fire_disaster, is more salient than "fire" itself and is often used for reference instead. The organizational methods for Firefighting are of utmost importance in this frame.'}, {'frame': 'Color', 'tfidf': 1.7450402975082397, 'lexical_unit': 'red.a / green.a / color.n / vermilion.a / ebony.a / purple.a / blue.a / orange.a / yellow.a / violet.a / brown.a / gray.a / black.a / white.a / pink.a / crimson.a / maroon.a / turquoise.a / azure.a / beige.a / mauve.a / tan.a / buff.a / scarlet.a / pitchblack.a / colored.a / indigo.a / puce.a', 'definition': "A Color serves as a landmark in color-space, either a point-like landmark (e.g. burnt sienna) or a broader region (e.g. blue).  Especially when the Color designates a broad region in color-space, it may be defined with a specific Type, further specified by comparison to the color of a Comparand, modified by a Color_qualifier, or evaluated with a Descriptor.  All color words are generally used to specify the color of some (physical) Entity. 'I really like that shade of blue.' 'The welts on his side had already turned an angry red.' 'The room was bathed in a soft pink light.' 'They promptly set up a zillion bright vermilion pavilions.' 'His face and hands were brown from a life spent in the bright sun of the fields.' "}, {'frame': 'Body_description_holistic', 'tfidf': 1.6565375328063965, 'lexical_unit': 'lanky.a / chubby.a / flabby.a / corpulent.a / obese.a / portly.a / svelte.a / stocky.a / dumpy.a / gaunt.a / skinny.a / beefy.a / short.a / brawny.a / paunchy.a / fat.a / thin.a / spindly.a / slim.a / slender.a / puny.a / scrawny.a / heavy-set.a / stout.a / stubby.a / tall.a / muscular.a / lean.a / angular.a / bony.a / rangy.a / squat.a / thickset.a / lithe.a / plump.a / pudgy.a / wiry.a / hefty.a / medium-build.a / big-boned.a / male.a / female.a', 'definition': "This frame covers descriptions of an entire human body, viewed as a gestalt (as opposed to descriptions based on salient body parts).  The Frame Elements are Individual and Figure.    'Chuck is muscular.'  'Chuck has a muscular body.' "}, {'frame': 'Political_locales', 'tfidf': 1.5447932481765747, 'lexical_unit': 'barony.n / territory.n / country.n / province.n / duchy.n / viscountcy.n / county.n / state [sovereign].n / principality.n / borough.n / town.n / realm.n / kingdom.n / municipality.n / metropolis.n / megalopolis.n / city.n / world.n / federal.a / global.a / parish.n / diocese.n / international.a / local.a / locality.n / municipal.a / national.a / empire.n / village.n / nation.n / commonwealth.n / internationally.adv / multinational.a / city-state.n / district.n / fiefdom.n / jurisdiction.n / land.n / state [internal].n / provincial.a / territorial.a / township.n', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'Electricity', 'tfidf': 1.5249266624450684, 'lexical_unit': 'electricity.n / electric.a / power.n / electric power.n / juice.n / electrical.a / hydroelectric.a / hydroelectricity.n / photoelectric.a / photoelectricity.n / energy.n / electrical power.n / current.n', 'definition': "Lexical units in this frame refer to Electricity, in particular as a form of energy harnessed for particular uses (such as powering machines).  The Source of the Electricity may also be expressed, or incorporated in the meaning of the LUs.  'A compound to generate wind electricity was built on the other side of those mountains.'  'China's hydroelectric dam is being built primarily for flood control and energy production.'"}, {'frame': 'Capability', 'tfidf': 1.400619626045227, 'lexical_unit': 'able.a / unable.a / can.v / capable.a / ability.n / potential.n / capability.n / capacity.n / potential.a / power.n / power [statistical].n / powerless.a / powerlessness.n / inability.n / incapable.a / incapacity.n / powerful.a', 'definition': "An Entity meets the pre-conditions for participating in an Event.  A Degree modifier may be included to indicate by how much the Entity exceeds or falls short of the minimum requirements.  'Conductor software gives us the hands-on capability to provide updates immediately'  'The GOP is afraid that it might not be capable of keeping the seat vacated by Dunn.'  'NASA is unable to communicate with Mars rover.'  'He can fly a kite.'"}, {'frame': 'Ground_up', 'tfidf': 1.3973872661590576, 'lexical_unit': 'pulverized.a / ground.a / crushed.a / milled.a / grated.a / flaked.a / powdered.a / shredded.a / crumbled.a / granulated.a', 'definition': "In this frame a Patient is in a state of having been broken into smaller pieces.  ' We enjoy eating ground beef . '"}, {'frame': 'Education_teaching', 'tfidf': 1.3238964080810547, 'lexical_unit': 'student.n / pupil.n / teacher.n / professor.n / tutor.n / lecturer.n / tutee.n / schoolmaster.n / schoolmistress.n / schoolteacher.n / study.v / tutor.v / coach.v / educate.v / learn.v / school.v / train.v / training.n / instruct.v / teach.v / instruction.n / education.n / master.v / educational.a / graduate.n / protege.n / cram.v', 'definition': 'This frame contains words referring to teaching and the participants in teaching.  A Student comes to learn either about a Subject; a Skill; a Precept; or a Fact as a result of instruction by a Teacher.  Some of the nouns (schoolmaster, -mistress) in this frame refer to administrative positions and do not take relevant frame elements; these will be moved.    \'Dad taught <fex name="">me that if you work hard, you will be OK - no matter what happens. \'  \'What Our Cat  taught Me  About Marketing!\'  \'For two years she taught me French\'  \'Mom and Dad taught me not to bullshit, because it always came back to bite me in the ass, without fail. \'  \'A young swiss girl up in a swiss chalet taught me how to yodel.\'  \'Young Murdock later met a blind martial arts master known as Stick, who taught him how to use his augmented senses and trained him as a fighter.\'  \' Maria, a woman studying to be a nun is sent from her convent to be the governess of the seven children of a widowed naval captain \'  Frame-Element relations:  Several Frame element relations hold in this frame. There is a core-set {Material, Teacher} (possibly also including Institution); these FE\'s can fill the subject slot of the teach-type verbs. There is another core-set  {Precept, Subject, Skill, Fact, Role} to do with what is learnt. In addition, the FE Qualification may occur with Subject and Role  \'My sister is studying for a maths degree    to be a teacher \' \'She\'s studying maths to be a teacher .\'  Phrases expressing Qualification also very often include information about the Subject (see below), which is to be annotated on the second layer.  \'Bill is studying for a BS in physics/a maths degree.\' \'Bill is studying for a BS in physics/a maths degree.\'  '}, {'frame': 'Objective_influence', 'tfidf': 1.267850399017334, 'lexical_unit': 'influence.v / impact.v / effect.n / influence.n / affect.v / impact.n / power.n', 'definition': "An Influencing_entity, an Influencing_situation, or an Influencing_variable has an influence on a Dependent_entity, Dependent_situation,  or a Dependent_variable.  ''  Compare to Subjective_influence. Words in Objective_influence are used to make claims about correlations in the world, where words in Subjective_influence are used to explain emotional impacts made on cognizers.   'More and more doctors realise that diet can influence disease.'  'Our subject is the body clock; how it influences our physiology and behaviour and how it interacts with the rhythms in our environment.'  'But it is more likely that a physical restraint influenced the swirling liquids.'  'It claimed, perhaps hollowly, that NT had yet to impact its business.'  'This kind of elementary boo-boo would certainly impact video speed.'"}, {'frame': 'Level_of_force_exertion', 'tfidf': 1.2650662660598755, 'lexical_unit': 'strong.a / weak.a / mighty.a / power.n / might.n / forceful.a / force.n / strength.n / weakness.n / powerful.a / powerless.a', 'definition': 'An Exerter, Action, or Force is capable of exerting or does exert a physical force at a level specified by the target. That physical force may cause deformation or breakage of, or simply motion in the receiving entity. The receiving entity is conceptually present (even if remotely), but is usually not lexically explicit. This frame covers both individual-level/static uses ("a STRONG person") as well as stage-level/dynamic uses ("a STRONG push"). However, the durative, individual-level meaning appears more frequently in the data and seems more basic.   \'Eugenie loved the sea and was a strong swimmer.\'  \'Spartacus dealt the Roman soldier a mighty blow.\'  \'A powerful force tore off the tree\'s branches.\'  Exerter, Action, and Force belong to a Core set. \'\'  There are several productive metaphors covered by this frame. The first and most common is one in which social influence or control is conceptualized as the physical exertion of force. The social influence/control is more specifically a propensity to cause change in social realms such as the economic, political, militaristic, cultural, or intimate: \'There were theoretical limits to the power of the king.\' \'Voters in the South have a strong incentive to keep such Democrats in office.\'  Another similar metaphor is one in which psychological influence or control is understood as the physical exertion of force. The psychological influence/control includes the emotional as well: \'Poetic words in a text can be given more emotive power by using melisma.\' \'He was a forceful speaker.\'  A third metaphor involves the amount of an entity construed as the physical force exertion of said entity. Depending on context, amount could be volume, etc. (“STRONGEST critics”; “MIGHTY uproar”).  \'\'  Two related physical force dynamic frames are Level_of_force_resistance and Dynamism.  This frame is distinguished from the Level_of_force_resistance frame in that it describes the level of force exertion instead of the level of resistance, and also in that there are three categories of Core FE available to the target (i.e Exerter, Action, or Force), whereas in Level_of_force_resistance there are only two Core FEs (i.e. Resisting_entity and Opposing_force). Of the latter frame\'s FEs, Opposing_force specifies the thing that the main entity resists to a level desginated by the target. Its parallel in Level_of_force_exertion is implied but backgrounded to the extent that it rarely appears as explicit lexical material; thus there is no corresponding Core FE.   This frame differs from Dynamism with regard to individual-level cases; targets here express the FE\'s capability. In contrast, Dynamism targets express the FE\'s tendency. For example, "a STRONG person" is generally construed as a person who is capable of strength, while "an ENERGETIC person" (energetic.a from the Dynamism frame) is construed as a person who tends to be energetic.   However, there is overlap between the two frames in stage-level cases - "a STRONG push" and "an ENERGETIC push" seem rather comparable. '}, {'frame': 'Plants', 'tfidf': 1.2597492933273315, 'lexical_unit': 'tree.n / weed.n', 'definition': 'The LUs in this frame refer to biological entities other than human beings and animals, which are labeled by the FE Plant.'}, {'frame': 'Attack', 'tfidf': 1.256777048110962, 'lexical_unit': 'attack.v / assault.v / assault.n / attack.n / fall (upon).v / incursion.n / offensive.n / onset.n / strike.n / onslaught.n / charge.v / charge.n / lay (into).v / set (upon).v / storm.v / strike.v / ambush.v / ambush.n / jump.v / assail.v / raid.v / bomb.v / bombing.n / raid.n / attacker.n / offensive.a / infiltrate.v / infiltration.n / hit.v / fire.n / small arms fire.n / SAF.n / safire.n / drive-by.n / airstrike.n / assailant.n / bombardment.n / bombard.v', 'definition': "An Assailant physically attacks a Victim (which is usually but not always sentient), causing or intending to cause the Victim physical damage.   A Weapon used by the Assailant may also be mentioned, in addition to the usual Place, Time, Purpose, Explanation, etc.  Sometimes a location is used metonymically to stand for the Assailant or the Victim, and in such cases the Place FE will be annotated on a second FE layer.  'As soon as he stepped out of the bar he was set upon by four men in ski-masks.' 'Is he invading Iraq just to cover other shortcomings?' 'Then Jon-O's forces ambushed them on the left flank from a line of low hills.'"}, {'frame': 'Animals', 'tfidf': 1.245635986328125, 'lexical_unit': 'dog.n / cat.n / pig.n / cow.n / sheep.n / animal.n', 'definition': "The LUs in this frame refer to biological entities other than human beings and plants, which are labeled by the FE Animal.  ''  'My husband and I adopted a really sweet dog last year.'  'The cows that live on the farm down the road are always mooing loudly.'"}, {'frame': 'Friendly_or_hostile', 'tfidf': 1.2303439378738403, 'lexical_unit': 'friendly.a / hostile.a / friendly.n / hostile.n / enemy.n', 'definition': "Two parties or individuals are on the same side or on different sides of a (typically military) conflict. The two sides may be expressed jointly as the Sides, or separately as Side_1 and Side_2.  'We received a tip from a friendly local about a possible attack. DNI'  'Infiltration from hostile forces is a constant threat. DNI'  In many cases only Side_1 is mentioned, leaving Side_2 as the perspective from whom the description is being given (typically the speaker/writer)."}, {'frame': 'Authority', 'tfidf': 1.1362276077270508, 'lexical_unit': 'power.n / authority.n / jurisdiction.n / sway.n / dominion.n', 'definition': "An Agent has the means to affect a Theme along the lines of a certain Domain. There is an imbalance of influence or power within a certain Domain that favors the Agent (often due to some Source) over the Theme.   'His authority over his subjects was given to him by God.' 'Congress has the power to enact laws.' 'Only the King has the authority to declare war.'"}, {'frame': 'Race_descriptor', 'tfidf': 1.126103162765503, 'lexical_unit': 'white.a / black.a / color.n / yellow.a / asian.a / hispanic.a', 'definition': "This frame covers LUs that describe the race of a Person.  'Carlos is hispanic, or so he says.'"}, {'frame': 'Documents', 'tfidf': 1.10812246799469, 'lexical_unit': 'visa.n / passport.n / subpoena.n / warrant.n / certificate.n / papers.n / license.n / summons.n / diploma.n / deed.n / lease.n / agreement.n / treaty.n / charter.n / authorization.n / deposition.n / brief.n / writ.n / affidavit.n / will.n / testimony.n / testament.n / ruling.n / finding.n / opinion.n / title.n / orders.n / contract.n / permit.n / document.n / contractual.a / accord.n / confirmation.n / identification.n / business card.n', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Biological_entity', 'tfidf': 1.107295036315918, 'lexical_unit': 'life.n / lifeform.n / organism.n / human.a', 'definition': "The LUs in this frame refer to biological entities labeled by the FE Organism. An Organism is described as something that can be alive, or have naturally occuring biological processes and functions; however the concept of life is often used metaphorically for non-organic entities which resemble or act as if they have organic life.  'NASA may someday discover a new lifeform from another planet.'"}, {'frame': 'Military', 'tfidf': 1.0849326848983765, 'lexical_unit': 'military.n / force.n / navy.n / air force.n / army.n / naval.a / armed forces.n / military.a / military forces.n / militia.n / national guard.n / marines.n / coast guard.n', 'definition': 'Some Possessor, either a nation, institution, or private individual, controls a Force whose primary functions to defend the Possessor (or, in the case of an institution or individual, some area of land significant to them) and to carry out offensive actions for the Possessor.  The Domain of operation of the Force may be expressed.'}, {'frame': 'Protecting', 'tfidf': 1.062585711479187, 'lexical_unit': 'protect.v / shield.v / safeguard.v / insulate.v / secure.v / protection [event].n / protection [entity].n / safeguard.n / shield.n / bulwark.n / guard.v / shelter.n / shelter.v / cover.n', 'definition': "Some Protection prevents a Danger from harming an Asset.  'The rubber on her sneakers protected her from the mud.'  'The coral reefs shielded the coastline from the worst of the waves.'  'A growing number of sustainable farmers are preserving agricultural variety and protecting biodiversity by raising ?heritage? or ?heirloom? varieties.'  'The man responsible for this entire ordeal cowardly shielded himself from justice with the little boy's struggling body.'"}, {'frame': 'Weapon', 'tfidf': 1.009525179862976, 'lexical_unit': 'rifle.n / pistol.n / six-shooter.n / firearm.n / gun.n / cannon.n / bomb.n / warhead.n / sword.n / knife.n / gat.n / AK-47.n / grenade.n / crossbow.n / machine-gun.n / shotgun.n / shooter.n / flame-thrower.n / weapon.n / handgun.n / club.n / twenty-two.n / forty-four.n / missile.n / garrotte.n / revolver.n / weaponry.n / Scud-B missile.n / arsenal.n / chemical weapon.n / ballistic missile.n / biological weapon.n / nuclear weapon.n / mustard gas.n / CW.n / BW.n / WMD.n / weapon of mass destruction.n / mine.n / spear.n / bow.n / explosive.a / explosive.n / plastic explosive.n / dynamite.n / nuclear.a / Scud-B.n / Scud-C missile.n / atomic weapon.n / ordnance.n / arms.n / artillery.n / shell.n / atomic bomb.n / biological.a / chemical.a / nerve gas.n / strategic.a / strategic nuclear weapon.n / ICBM.n / RPG.n / rocket.n / small arms.n / EFP.n / assault rifle.n / mortar.n / automatic weapon.n / C4.n / phosgene.n', 'definition': "A Weapon is an artifact created specifically to cause harm or damage.  In some cases, a Use, Material of construction, Part or Type may be more narrowly specified.  'Did you, or did you not, fire this gun with intent to harm my client?'  'Cyra tried to swing her sword to parry, but it was to heavy.'  'I investigated a specialist precious metal firearms manufacturer.'  'My neighbor, a member of the NRA since birth, has got an AK-47 fully automatic assault rifle.'  'Let 's just say that he 's the kind of guy who likes guns with hair triggers.' "}, {'frame': 'Beat_opponent', 'tfidf': 0.9953107237815857, 'lexical_unit': 'defeat.v / beat.v / demolish.v / prevail.v / defeat.n / trounce.v / upend.v / rout.n / rout.v', 'definition': "A Winner has victory over an Loser.  'He always beats me at chess.'"}, {'frame': 'Finish_competition', 'tfidf': 0.9772956967353821, 'lexical_unit': 'win.n / victorious.a / winner.n / victory.n / lose.v / loss.n / tie.v / tie.n / victor.n / draw.n / show.v / win.v / fold.v', 'definition': "A Competition comes to an end, with a Competitor tying, winning, or losing against an Opponent (or opponents) according to their Score.  (In the symmetrical situation of a tie, the Competitor and Opponent may be jointly mentioned as Competitors.)  According to the Score that the Competitor and Opponent have achieved, they may receive a Rank or a Prize.  The Margin may also be mentioned.  'Unbelievable--he lost the gold medal by just .02 points!' 'Looks like it will came to a draw between Woods and Stephenson.'"}, {'frame': 'Coming_to_be', 'tfidf': 0.9413514733314514, 'lexical_unit': 'form.v / come to be.v / appear.v / arise.v / emerge.v / take shape.v / develop.v / coalesce.v / materialize.v / spring up.v / come into existence.v / evolve.v / development.n / evolution.n', 'definition': "An Entity comes into existence at a particular Place and Time which may take a certain Duration_of_endstate, have a Cause, or be formed from Components.  'Problems may arise whenever an S1 sophont enters the game.' 'Mountains sometimes form in as little as a million years.' 'A new paradigm emerged from the discussion of nuclear weapons.' 'New Plants form from the cut veins in two weeks.'"}, {'frame': 'Gizmo', 'tfidf': 0.9182802438735962, 'lexical_unit': 'tool.n / implement.n / apparatus.n / device.n / utensil.n / instrument.n / equipment.n / gadget.n / appliance.n / contraption.n / machine.n / mechanical.a / centrifuge.n / technology.n / system.n / gear.n / core.n / player.n / range.n / level.n', 'definition': "This frame contains general words denoting equipment where the Use or purpose is not specified by the lexeme but (typically) by a separate expression. The words are described with respect to the Use for which the item is used or its typical User.  'coffee machine' 'dentist's equipment'"}, {'frame': 'Organization', 'tfidf': 0.9149659872055054, 'lexical_unit': 'cartel.n / club.n / government.n / organization.n / association.n / league.n / intelligence.n / agency.n / union.n / brotherhood.n / delegation.n / committee.n / group.n / board.n / order.n / society.n / parliament.n / news outlet.n', 'definition': "This frame describes intentionally formed human social groups (here termed Organizations) with some definite structure and Members.  They may be relatively informal, consisting only of a group of individuals who are aware of who is and who is not a fellow member, or they may be complex and long-lasting, such as the Roman Catholic Church or the Conservative Party.   'Lucien is in the brotherhood.'"}];
+    </script>
+    <script type="text/javascript" src="word_cloud_prediction.js"></script>
+    <script type="text/javascript" src="../mturk.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 150px;
+            padding-right: 150px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel_1 canvas, #word_cloud_panel_2 canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+        .word_cloud_box {
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 3px rgba(70, 70, 70, 1) solid;
+            padding: 20px;
+            margin-bottom: 20px; 
+        }
+        .word_cloud_box:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+        }
+        .selected_story_block {
+            border-color: #7BDFF2;
+            border-width: 3px;
+            box-shadow: 0 0 10px 10px rgba(123, 223, 242, 0.3);
+            background-color: rgba(239, 247, 246, 0.8);
+        }
+        .indicator {
+            /*font-family: Courier;
+            font-weight: bold;*/
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px black solid;
+            border-radius: 20px;
+        }
+
+        .selected_story_block .indicator {
+            background-color: rgb(123, 223, 242);
+        }
+
+        #story_content {
+            max-height: 600px;
+        }
+        .not_qualified {
+            color: red;
+            font-weight: 900;
+        }
+        .qualified {
+            color: black;
+            font-weight: 900;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Which word-cloud best represents the story snippet?</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that a computer automatically 
+            generated to characterize a story snippet. 
+            These words can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            A <strong>word-cloud representation with nouns</strong> is a group of nouns a computer automatically 
+            generated to characterize a story snippet. 
+            These nouns can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            In this HIT, you will see a story snippet. <span class="highlight">Please read the it carefully.</span>
+            The story is long so we have a 3 minutes time lock for submission.
+            <br/><br/>
+
+            At the bottom of the HIT, you will see two sets of word-cloud representations, 
+            where each consists of nouns, verbs, and adjectives. 
+            <span class="highlight">Please select the word-cloud representation that best represents the story.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following story snippet carefully!</h3>
+            You will need to select the word-cloud representation that best represents this story. 
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story</h4>
+                        <h5>(An excerpt from the book <span style="font-weight:bold;">"Adventure Pack One Free Rpg Adventures"</span>.)</h5>
+                        <span class="not_qualified" id="read_lock">Please read all the story.</span>
+                        <br/><br/>
+                        <pre id="story_content">
+If she flanks anyone she deals an extra +3 damage to them automatically each round.
+She has 2 free dodges of any attack per day.
+Speed: 2 Gold: 2,000 and love potion mental save to resist.
+She screams, "Die, die, die!"
+in battle.
+XP: 2,000 Mike and Pig "Pixies."
+Both of these flying little pixies are RR 15 HP 15 Damage 1d6+2 Speed: 6 fly Gold: 1 and a tiny diamond worth 100 gp.
+They have a strange magical bond that keeps one alive while the other remains.
+Any damage dealt to one takes no effect on it until equal damage is dealt to the other at which point they both take the damage.
+First line in battle when hit, "Yeah, that's right invincible, pigs!"
+XP 1,000 each.
+If the PCs defeat them all and roll at least RR 15 intimidate or equivalent the Brady Bunch tells them they were hijacked by orcs who stole their Demon Skull and a Blue Dragon came and took their Princess and the magical sledge they use to haul their loot.
+They can provide directions to the Dragon's Cave at Area 10 Area 10 Blue Dragon's Cave Deeper within the jungle you find a huge volcano with a gigantic hole in the side.
+A giant's skeleton is suspended on a chain over the entry.
+Written into the giant's skull are the words "Go away or end up like me."
+A short dark tunnel leads to the dragon who is sitting on his hoard with the princess in her badly beaten-up wedding dress behind him tied to a stake in the ground.
+The dragon's sitting on a huge pile of gold, jewels, and plenty of magical items.
+The Blue dragon is wiling to negotiate and trade the Princess for the buried pirate treasure in its entirety which the dragon's heard about but never found.
+Otherwise he'll have to be fought if the Princess is to be free.
+Dragon hide is also the strongest armor available in the game if anyone can manage to make some.
+Blue Dragon RR 20 HP 60 Damage 2d6 to all PCs or 3d6 to one.
+Electrical or fire breath weapon, dragon's choice.
+Speed: 24 fly 12 land Gold: 100,000 gp hoard XP: 6,000.
+See invisible, saves 95%, grab +10 opposed by escape artist or Reflex save, free action eat whole for 1d6+8 damage.
+If the PCs are victorious they get the girl, grab a load of treasure, and clear their names.
+The dragon hoard has a load of mundane loot and the following magical items: Potions of healing 1d6 (full round to drink) x20, Staff of Magic 1 reuse of a spell per adventure, Animated Lock Picks +4 to pick lock attempts, Oil of immaterial (1 minute of insubstantial and can walk through walls), 10 Teleport tablets (can anchor to 1 area and teleport there when tablet smashed as a full round action) break another to get back, and a set of bag pipes which controls the weather.
+Lightning 1d6 attack when playing in a storm.
+Victory!
+The farmer is so pleased when you bring his daughter home that he sheds a tear and pays you 1 copper coin.
+"Thank you so much, fine sirs.
+My daughter, Susan, means everything to me."
+The PCs earn 10,000 bonus xp each for successfully completing the adventure and the king takes the bounty off their heads.
+For torching the monsters the King also grants each of the PCs the title of Lord of Sileeria and their very own castle strongholds to defend and administer to.
+See: High Level Characters Strongholds in the full Challenger book.
+Chapter Five: Killer Dungeon Having tended to your great kingdoms for several months you find yourselves growing antsy about the lack of adventures, loot, princesses, dragons, and monsters to kill.
+You all meet up at your old pub and start to talk about old times until you can't resist it anymore and go looking for an adventure.
+You soon find a trail of inscrutable rumors that lead you to a far off land where a Kingdom known as Eastmark has been completely swallowed by a rogue dungeon by the name of "The Terminator".
+The tales bards have spun lead you to believe that all those 'eaten' by the dungeon may yet be freed if you complete your quest within the week before they're digested by the dungeon and it moves on to another kingdom, naturally, this would mean saving a princess.
+The dungeon, it is said, can only be killed by finding its 'heart' and stabbing it with the sword of Sebarath.
+If no one has the sword of Sebarath from the previous adventure you can allow them to go on a minor side quest to retrieve it.
+The Three Witches Before you can reach the fabled maw and entry of the Dungeon "Terminator" you stumble into the camp of three witches: one fat, one small, and one tall.
+They all snicker and cast dire portents about you growing old, fat, and arthritic all of which are obvious lies, you all having been smart enough to drink from the Holy Grail, right?
+If the PCs don't have the sword of Sebarath the witches hand it to them.
+It's a longsword +2 which glows bright blue and once per day can blow through solid stone for +1d6 damage.
+The Entry to The Dungeon The morning mists part before you on a desolate field where a thriving kingdom once stood.
+A shiver runs down your spine as you see a tall beam sticking out of the ground where a pub like your own once stood.
+Someone's leg juts up at an odd angle, and then you spot the entry to the Dungeon known as "Terminator".
+It appears to be a wide gaping maw looking up at the sky with non-existent eyes.
+Its long teeth are made of solid stone and between each row of razor-sharp incisors is a smooth stairway leading down and within invitingly.
+Anyone foolish enough to enter is eaten in short order.
+RR 20 to escape or evade.
+Damage 4d6 per round if eaten until trapped with the other occupants of the kingdom (out of the game).
+After the first few non-important henchmen die, the witches return with a new warning.
+You see the witches drifting over the moors toward you with some concern.
+"Not that way, you fools, you must attack it and somehow anger it into revealing its true entry."
+Anyone may attack the front of the beast without entering within, but doing so is extremely risky as the mouth can thrash around and eat people.
+Dungeon Mouth RR 17 HP 40 Damage 4d6 and if killed eaten and trapped within RR 22 to break out.
+Speed: 3 (one area) Gold: 0 XP: 0 Using ranged attacks and magic on the mouth deals damage to it, but at 0 hp the mouth simply collapses and then regenerates at full hp in 1 round and laughs.
+You should let the PCs try all manner of stuff on the mouth.
+They must perform at least 5 of the following tasks to get the beast angry enough to fully surface and present its true entry: Set fire to it, laugh at it or otherwise taunt it, use frost on it, use acid on it, strike it for at least 15 damage in one blow, spit on it, kick it, call it a son of a piece of rock or similar, blow it's mouth to pieces, seduce it, bluff it, trick it, give it a riddle it can't solve, or pay it 1,000 gp or more.
+The Angered Beast With a huge roar the ground shifts and with a massive earthquake the beast surfaces, momentarily exposing its soft underbelly and thus a way inside.
+The dungeon resembles a huge crocodile made of stone and cannot be killed in this form no matter how hard the PCs try and what they do to it.
+Smashing into its soft underbelly requires at least 10 points of damage and a RR 14 speed check to get inside before the beast tries to step on you.
+RR 15 or take 2d6 crushing damage.
+The Dungeon Once again you should doodle out a little map and assign the encounter areas as you see fit.
+The tunnels are narrow, uncomfortable, and hot and moist as if the PCs are inside a living breathing beast.
+Encounter 1 The Corridor As you walk down a very long corridor the beast that is the dungeon shakes with mirth and the back walls closes in until you can see nothing.
+The front of the cave starts to narrow and contract until you are being crushed between the walls.
+Hacking madly away at the walls for at least 25 damage in 2 rounds will prevent automatic death (1/2 hp first round, all other hp second round).
+Teleporting, causing the beast to sneeze, or other tricks may also work.
+Encounter 2 Endless Fall Corridor As you merrily march down a tight passage the floor suddenly opens up without warning into a million foot pit into molten magma.
+Everyone screams and falls.
+RR 16 Acrobatics may grab a ledge or part of the wall.
+RR 16 may climb out of the wall, flying and teleporting are naturally useful, and being immune to magma may help but the fall still deals 6d6 damage.
+Encounter 3 Diamond Room You wander through a huge maze of shifting corridors and passages until you get lucky and find a room full of diamonds growing out of the walls.
+If the diamonds are snapped off more grow back in their place.
+Any henchmen of the PCs immediately start cackling and filling their packs with the loot unless a PC rolls RR 17 intimidation or similar to order them not to.
+The diamonds appear to be real, but further probing may reveal they have a magical aura. 3 minutes after taken the diamonds turn to molten acid dealing 2d6 damage each to anyone who took them and melting their gear.
+Naturally, people who took loads of diamonds take a lot of damage.
+Encounter 4 Magma Storm As you bumble around a series of passages you feel a fell wind on your face and a red glow approaches from up the corridor.
+Next second a wall of magma is rushing towards you!
+The magma is real and quite lethal.
+Even if it is avoided the dungeon will start spitting walls of acid, frost, and whatever else it can think of until the PCs hack into the wall and carve a passage to the beast's lungs.
+There they must carve flying discusses and fling themselves into its esophagus before they hit the stomach acid and down those passages they find Encounter Area 5 if they hadn't already in which case they go to the next highest number and so forth.
+Encounter 5 The Beast's Stomach Tunneling through the belly of the beast you reach a large waste chamber where you find the remnants of a hundred kingdoms groaning and lying in the dust of destroyed empires.
+Magical lights in the shape of the beast's eyeballs swivel around and watch your progress as you comfort the survivors.
+Behind you the route you took seals up.
+The survivors aren't terribly helpful.
+They just tell the PCs every day a load of them are vaporized as they are consumed by the terrible dungeon beast.
+There appears to be no way out of the beast's waste chamber and the vaporizing beam randomly hits people as they wander and lie about.
+Hacking their way out is the only way for the PCs to free themselves.
+Hacking HP 15 per round to make progress.
+Must strike 3 consecutive rounds to escape or re-seals up.
+If the PCs manage to hack an escape route everyone cheers and starts running away.
+It is likely no one will make it out alive unless the PCs can find the heart and stab it with the sword.
+The beast shudders as you strike through it's waste chamber walls and the people scream in victory and flee in droves, probably only to fall in the stomach again and come straight back here.
+You must find the heart and stab it with the sword before it's too late and the beast decides no one's worth the trouble anymore and kills you all.
+Encounter 6 The Crunch Room On your way to the heart you pass through a chamber full of goblins shoveling gold into a giant furnace which, apparently, powers the creature in some way.
+The goblins have no objection to the PCs stealing as much gold as they can carry and smashing the furnace which causes the beast to howl with fury and leap up onto land, it shakes all the corridors and rooms as it lurches for the PCs homeland intending to eat it all and lay it completely to waste and ruin.
+If they don't arrive in time their favourite pub and their castles may lie in ruins.
+Encounter 7 The Sneeze You burst past the lungs and see the heart of the beast lying on a pedestal, ripe for the stabbing.
+Before you can reach it with your lightning reflexes the beast sneezes and you fly topsy turvy out of its mouth and land on the ground in a heap.
+The PCs see the beast storming off over the countryside, smashing down forests, and heading for their home kingdom while trailing out magma blood from all the wounds it's sustained in battle with them.
+They must somehow catch up and cut through its underbelly, then find their way back to the heart again.
+Encounter 8 Magma Men You come back to the chamber with the heart and before you can reach it a dozen magma men materialize before you and shoot beams of fire at you.
+An energy bubble springs to existence before the heart blocking any teleportation within and the magma men bar entry to the heart stone.
+Magma Man RR 19 HP 15 Damage 1d6+7 See Invisible Speed: 3 Gold: 50 XP: 1,000 each.
+There are 10 of them.
+A hit sets the PC on fire 1d6 damage per round unless you spend a whole round to roll out the flames.
+Frost deals x2 damage to the magma men and they melt non-magical weapons which hit them.
+Encounter 9 The Heart You finally stand before the heart and raise the sword on high to strike the death blow.
+If the PCs haven't fought the magma men yet proceed to Encounter 8, otherwise they can stab the heart and the beast flings them and the survivors of the massacred kingdoms out onto the ground.
+It's just reached the PCs own kingdom and everyone is running around and screaming and shooting at it.
+It appears the beast isn't dead yet.
+Without the heart it is now vulnerable to normal damage, but it's enraged and ripping apart your home kingdom with a vengeance.
+Dungeon Beast (colossal) RR 20 HP 60 Damage 3d6 Speed: 5 Gold: 10,000 XP: 7,000 Eat Whole as per the Old Dragon in the Challenger Book.
+There should be a huge battle, the Sword of Sebarath hits on RR 15 and deals x2 damage against the beast.
+If the PCs slay the beast they are the heroes of the survivors and of their kingdom who names a pub, babies, and several streets after them; and the king even personally throws a feast in their honor and bestows knighthood or some similar privileges on them.
+Any surviving PCs gain 3,000 xp apiece for their heroic efforts and being foolish enough to go after the Dungeon Terminator in the first place.
+Chapter Six: Wrath of the Gods Your renown is now such that few foes trouble you, you are hailed in the streets as celebrities, you never want for food, gold, or women; and you command the undying loyalty of your many valorous henchmen.
+You're just starting to think maybe you can retire in peace, when one final challenge besets you.
+Ioth, the God of secrets, summons you to a secret council meeting.
+You can refuse of course, but then he'll probably curse you with something fairly nasty as uber beings are wont to do.
+Using mighty magical portals, their own abilities, or whatever nutty things you can come up with (such as jumping to the moon or entering a volcanic frost gate) all of the PCs manage to attend the meeting should they so wish.
+It's on an alternate dimension where Ioth has ultimate power so they won't be able to challenge him unless they can find a way to become Gods themselves.
+Ioth You find yourself on a vast open field of dark energy.
+A huge table materializes before you and a giant, one-eyed Cyclops wrapped in the ancient clothes of a mummy appears before you.
+This is Ioth.
+He says nothing but visions fill your head, terrible visions of Gods at war and universes splitting apart in the mayhem.
+In the brief second he touches your mind you know what you must do.
+You must descend into the underworld and capture Hades who, as always, is responsible for this mess.
+Next, you must travel to Mount Olympus where the Norse Gods happen to be visiting and beat the crap out of all the famous deities to distract them long enough for Hades' curse to wear off so they don't start a God-war that will rip apart many universes killing trillions of innocent dragons and your home plane of existence.
+Your reward?
+Ioth apparently has promised you the honeyed nectar of immortality but you inform him you've already got that mate, so he offers to make one of you a God, sort of a lotto 649 sort of thing, as it were.
+Naturally, you accept, because of the prospect of saving zillions of innocent lives, not Godhood which has no appeal to you whatsoever.
+When the PCs are done bargaining with, fighting, and generally badgering Ioth he waves his hand and banishes them to the underworld (once they're suitably prepared of course).
+If anyone asks how they're supposed to fight Gods, he also gives them a map to a treasure store of magical god-whooping weaponry hidden on their prime material plane.
+If nobody asks he just lets them go without it in the well-founded belief they know what they're doing and will find their own way to battle the Gods.
+Apparently, Hades has brainwashed the other Gods into temporarily believing they're at war so they'll fight and let him seize control of the Godly government and a lot of loot.
+The Underworld Ioth waves his hand bidding you good luck in your minds and you appear in the underworld next to the boatman of the river Styx.
+If you're history lessons are correct, you'll probably need to pay him at least 1 gp to cross and furthermore run into a giant 3-headed dog named Cerberus.
+The dog is no trouble, but you find yourself saddened at the prospect of giving up one of your beloved gold coins.
+The boatman will indeed take people on for one gold coin, but if they make it clear they have a lot of money, he'll be sure to up the price.
+Anyone attempting to swim in the river of death or fight the boatman will more than likely instantly die with no saving throw.
+Cerebus In the gloom of the waters ahead you see a bright light and hear a load of snarling.
+As you round the bend in the passage you see a huge 3-headed dog snarling at you.
+He appears to be the nastiest, biggest monster you've ever faced in your career, including the dragons.
+Anyone who fights Cerebus will probably die, but those calling him, "Such a good boy" or throwing him meat become his eternal friends.
+Cerebus HP 1,000 RR 20 Damage 1d6x10 Speed: 5 Gold: 0 XP: 1,000 (2,000 for bypassing).
+Hades You climb a massive 300 mile high mountain made of bones but don't get tired for some reason.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+
+        <h3>Select the word-cloud representation that best represents the above story.</h3>
+        Below, there are two word-cloud representations. Read them carefully and select the one that best represent the above story.
+        <br/><br/>
+
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_1" value="1">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 1</h3>
+                The following three word clouds jointly represent the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_2" value="2">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 2</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_2">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_2">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_2">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_2-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="87">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input name="note" type="hidden" value="LGBM, BERT">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+    </div>
+
+</body>
+</html>

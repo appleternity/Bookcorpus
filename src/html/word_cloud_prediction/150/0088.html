@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="text/javascript">
+        var frame_list_1 = [{'frame': 'Attention_getting', 'tfidf': 1.4553090254120697, 'lexical_unit': "pal.n / sir.n / ma'am.n / buddy.n / kid.n / dude.n / boy.n / guy.n / miss.n / bro.n / homes.n / yoohoo.intj / hello there.intj / excuse me.intj / hey.intj / officer.n", 'definition': "This frame covers terms used to get someone's attention, including Interjections (e.g. hey, yo) and certain terms of address (Address_term), the latter of which may serve the function of attention getting.    'Hey.' 'Hey, boy.' 'Hey, boy, come over here now!'  "}, {'frame': 'Communication', 'tfidf': 1.239526198116249, 'lexical_unit': 'communicate.v / speech.n / indicate.v / signal.v / communication [act].n / communication [entity].n / contact.n / codeword.n / password.n / convey.v / say.v / share.v', 'definition': "A Communicator conveys a Message to an Addressee; the Topic and Medium of the communication also may be expressed.  This frame includes no specification of the method of communication (speech, writing, gesture, etc.).  This frame and the frames that inherit the general Communication frame can add elaboration to the Medium in a variety of ways (in French, on the radio program, in a letter) or to the Manner of communication (babble, rant, shout, whisper). There are also frames related to Communication that either do not inherit all of the FEs of this frame or do not inherit them in a straightforward manner (such as Conversation, in which Communicator and Addressee alternate roles, and are often expressed by a single, plural NP).  'Let's hope it did n't have time to communicate any of its findings to its overlords.'  NB:  For many words in this domain (those which do not inherently ascribe cognitive/social processes to a Communicator, position a statement within a conversation, or specify Medium in detail), there is a metaphorical usage which maps Communication onto an alternate POV of Becoming_aware, with corresponding maps for frames related to Communication.  This metaphor is most felicitous with Means or Medium subjects, which are mapped onto the Evidence FE of Becoming_aware.  In many cases this metaphor maps Communication onto the Evidence frame, but not always.  Some words from the Communication domain are listed in the Evidence frame since they are deemed to be lexicalized.  'A flick of his gaze toward the doorway told me what he really wanted. (METAPHOR)' 'This painting really speaks to me. INI (MET) ' 'Putting his arm around her protectively achieved nothing but announcing to their captors their vulnerability. (MET)' 'It says a lot that he did n't come back. INI (MET) '"}, {'frame': 'Spelling_and_pronouncing', 'tfidf': 1.2360174866514144, 'lexical_unit': 'spell.v / misspell.v / pronounce.v / mispronounce.v / say.v / write.v / sound.n', 'definition': 'A Speaker realizes a Sign, usually a linguistic one, in some Formal_realization. The Formal_realization may be described as correct or incorrect in a Judgment expression, or it may be partially indicated as a Part_of_form.  Manner may be used as a more general indication of the Formal_realization  \'A person doesn\'t always pronounce a word the way they say  it in context\'  \'I can\'t spell. INI INI\'  \'Stephanopolous spells his name with a "ph".\'  \'On page 87465, you spelled the name of my dog incorrectly as "Checquers".\'  \'In German, the word for \'peace\' is written "Friede" CNI\''}, {'frame': 'Food', 'tfidf': 1.1205498259915354, 'lexical_unit': 'fruit.n / apple.n / banana.n / vegetable.n / carrot.n / potato.n / pea.n / meat.n / beef.n / lamb.n / veal.n / poultry.n / chicken.n / turkey.n / fish.n / salmon.n / tuna.n / shellfish.n / shrimp.n / lobster.n / milk.n / cheese.n / egg.n / butter.n / nut.n / almond.n / peanut.n / pasta.n / noodle.n / herb.n / spice.n / pepper.n / basil.n / cereal.n / lettuce.n / berry.n / bread.n / roll.n / cracker.n / cake.n / pancake.n / cheesecake.n / pastry.n / croissant.n / cookie.n / biscuit.n / sweet.n / chocolate.n / sweetener.n / sugar.n / honey.n / fat.n / oil.n / vinegar.n / coffee.n / juice.n / soup.n / stew.n / sauce.n / dressing.n / vinaigrette.n / ketchup.n / mayonnaise.n / lasagne.n / food.n / tea.n / water.n / date.n / cabbage.n / MRE.n / beer.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Text_creation', 'tfidf': 1.1196622190164724, 'lexical_unit': 'pen.v / author.v / write.v / compose.v / draft.v / jot down.v / jot.v / speak.v / say.v / utter.v / write up.v / write down.v / write in.v / write out.v / print.v / type.v / type out.v / type up.v / type in.v / print out.v / print up.v / get down.v / chronicle.v / sign.v / dash off.v / list.v', 'definition': "An Author creates a Text, either written, such as a letter, or spoken, such as a speech,  that contains meaningful linguistic tokens, and may have a particular Addressee in mind.  The Text may include information about its topic, although the latter is not an FE in this frame.  'I penned a letter concerning racism  to Congress.' 'The brothers said not two words to each other.' 'Jot any notes you need below the line in red pen only.'"}, {'frame': 'Electricity', 'tfidf': 0.9984215570555848, 'lexical_unit': 'electricity.n / electric.a / power.n / electric power.n / juice.n / electrical.a / hydroelectric.a / hydroelectricity.n / photoelectric.a / photoelectricity.n / energy.n / electrical power.n / current.n', 'definition': "Lexical units in this frame refer to Electricity, in particular as a form of energy harnessed for particular uses (such as powering machines).  The Source of the Electricity may also be expressed, or incorporated in the meaning of the LUs.  'A compound to generate wind electricity was built on the other side of those mountains.'  'China's hydroelectric dam is being built primarily for flood control and energy production.'"}, {'frame': 'People_by_age', 'tfidf': 0.9287170450827925, 'lexical_unit': 'geezer.n / coot.n / spring chicken.n / adolescent.n / adult.n / baby.n / boy.n / child.n / infant.n / neonate.n / teenager.n / kid.n / youth.n / youngster.n / elderly.n / newborn.n', 'definition': "This frame contains words for individuals as viewed in terms of their age. The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'He is a 12-year-old kid.'"}, {'frame': 'Connectors', 'tfidf': 0.8469583268350503, 'lexical_unit': 'ribbon.n / rope.n / thread.n / string.n / cord.n / chain.n / bond.n / adhesive.n / tape.n / glue.n / bolt.n / nut.n / nail.n / peg.n / strap.n / tack.n / staple.n / withy.n / tie.n / lace.n / shoelace.n / wire.n / screw.n / link.n / connector.n / trace.n', 'definition': "The Connector is an artifact created to affix a Connected_item or to bind onto a Fixed_location and is primarily so used.  A more specific Use may also be specified.  Certain words in this frame (e.g. bond, chain in the phrase in chains) indicate specifically that the Connector is being used to immobilize something.  Connectors have a wide variety of physical forms:  long, thin, and flexible for tying (ropes, bonds, withies); solid, with a shape corresponding to holes in the entities to be connected (bolts, nails, pegs); and liquid (glues, adhesives, pastes). 'A waterproof adhesive should be used for this exterior job.' 'His bonds had to be loosened before they could be cut.' 'She jerked on His neck rope again, to keep his attention.' 'I think they cut his bike chain with bolt cutters.'"}, {'frame': 'Personal_relationship', 'tfidf': 0.8366758856057104, 'lexical_unit': 'husband.n / wife.n / widow.n / widower.n / widowed.a / spouse.n / couple.n / companion.n / divorcee.n / married.a / betrothed.n / bachelor.n / engaged.a / engagement.n / marriage.n / boyfriend.n / girlfriend.n / single.a / date.v / break-up.n / lover.n / partner.n / mistress.n / suitor.n / court.v / spinster.n / estranged.a / friend.n / betrothed.a / cohabit.v / cohabitation.n / seeing.v / widow.v / divorced.a / buddy.n / moll.n / paramour.n / inamorata.n / beau.n / sugar daddy.n / significant other.n / chum.n / pal.n / cobber.n / mate.n / crush.n / affair.n / adultery.n / amigo.n / sleep (together/with).v / spousal.a / marital.a / affianced.a / friendship.n / romance.n / befriend.v / familiar.a / fiancée.n / fiancé.n / relationship.n / chummy.a', 'definition': "The words in this frame have to do with people and the personal Relationships they are or can be a part of.  Some of the words denote people engaged in a particular kind of Relationship, others denote the Relationship, yet others the events bringing about or ending the Relationships. Many of the words presuppose an understanding of states and events that must have occurred before another event takes place or before a person can be classified in a certain way. '' 'And of course that drippy boyfriend of hers backed her up.'  'As the happy couple took their places there was a stir and a rising babble behind them.'  'Pattie is living proof that if you live with a man, you discover a lot you didn't know when you were just dating him.'"}, {'frame': 'Breathing', 'tfidf': 0.8226668330966366, 'lexical_unit': 'breathe.v / inhale.v / breath.n / exhale.v / gasp.v / sigh.n / exhalation.n / exhalation [act].n / inhalation.n / inhalation [breath].n / huff.v / puff.v / sigh.v / blow.v / expire.v / inspire.v / insufflate.v / pant.v / respire.v / suspire.v', 'definition': "An Agent causes Air to move in a direction, usually specifying either in or out of the body.  'Lee breathed the hot desert air.'"}, {'frame': 'Color', 'tfidf': 0.7572514131538206, 'lexical_unit': 'red.a / green.a / color.n / vermilion.a / ebony.a / purple.a / blue.a / orange.a / yellow.a / violet.a / brown.a / gray.a / black.a / white.a / pink.a / crimson.a / maroon.a / turquoise.a / azure.a / beige.a / mauve.a / tan.a / buff.a / scarlet.a / pitchblack.a / colored.a / indigo.a / puce.a', 'definition': "A Color serves as a landmark in color-space, either a point-like landmark (e.g. burnt sienna) or a broader region (e.g. blue).  Especially when the Color designates a broad region in color-space, it may be defined with a specific Type, further specified by comparison to the color of a Comparand, modified by a Color_qualifier, or evaluated with a Descriptor.  All color words are generally used to specify the color of some (physical) Entity. 'I really like that shade of blue.' 'The welts on his side had already turned an angry red.' 'The room was bathed in a soft pink light.' 'They promptly set up a zillion bright vermilion pavilions.' 'His face and hands were brown from a life spent in the bright sun of the fields.' "}, {'frame': 'Make_noise', 'tfidf': 0.7359359955408945, 'lexical_unit': 'babble.v / bark.v / bellow.v / blare.v / blast.v / bleat.v / bray.v / burble.v / cackle.v / caterwaul.v / caw.v / chatter.v / cheep.v / chirp.v / chuckle.v / clang.v / clash.v / clatter.v / click.v / coo.v / cough.v / creak.v / croak.v / croon.v / crunch.v / drone.v / fizzle.v / gasp.v / giggle.v / gobble.v / growl.v / grunt.v / guffaw.v / gurgle.v / hawk.v / hiss.v / hoot.v / howl.v / hum.v / keen.v / mew.v / mewl.v / moan.v / moo.v / neigh.v / patter.v / peal.v / peep.v / plash.v / plonk.v / plop.v / purr.v / quack.v / rasp.v / rattle.v / roar.v / rustle.v / scrape.v / screech.v / scrunch.v / sizzle.v / snarl.v / snicker.v / snigger.v / snore.v / snort.v / sob.v / sough.v / squawk.v / squeak.v / squeal.v / thump.v / thunder.v / tinkle.v / titter.v / toll.v / trumpet.v / tweet.v / twitter.v / ululate.v / wail.v / whimper.v / whine.v / whinny.v / whisper.v / whistle.v / yammer.v / yap.v / yelp.v / yodel.v / yowl.v / crepitate.v / laugh.v / clack.v / sploosh.v / scream.v / ring.v / beep.v / hem and haw.v / boom.v / cry.v / sound.v / honk.v / play.v / toot.v', 'definition': "A physical entity, construed as a point-Sound_source, emits a Sound.  This includes animals and people making noise with their vocal tracts. Sometimes the sound itself is referred to with a nominal expression, in which case it is called the Sound. Manner expressions may also be relevant in this frame, if they describe properties of the sound as such.  A path-schema can be overlaid on the simple noise-making scene, adding a Location_of_source and/or a Path.   This frame does not cover scenarios where objects create sound by coming into forceful contact with one another or rubbing against each other. Such scenarios are covered by the Impact and Friction frames. The current frame also does not cover cases where an animate Agent or a natural Force or Cause causes a single Source or several Sources (moving or rubbing against each other) to make noise. Such scenarios are  covered by the Cause_to_make_noise, Cause_impact and Cause_friction frames (the latter of which is not yet existent). Cases where the major emphasis of the portrayed scene is on the motion of a Theme, with sound emission only an accompaniment, are covered by the Motion_noise frame. Likewise, cases where the Sound itself is portrayed as moving through space are not covered in this frame but rather in Sound_movement. Finally, all nouns used to evoke Sounds have been placed in the Sounds frame. We have done this because these nouns do  not denote sound emission/production events but only the Sound itself (*The siren's blare occurred right on time)."}, {'frame': 'Vehicle', 'tfidf': 0.7348175593476849, 'lexical_unit': 'car.n / bus.n / truck.n / bike.n / taxi.n / plane.n / ferry.n / boat.n / bicycle.n / ship.n / tram.n / automobile.n / tricycle.n / airplane.n / scooter.n / schooner.n / train.n / carriage.n / cab.n / coach.n / vehicle.n / lorry.n / submarine.n / tank.n / cart.n / toboggan.n / pick-up.n / van.n / limousine.n / convertible.n / helicopter.n / canoe.n / kayak.n / buggy.n / liner.n / sedan.n / vessel.n / tank car.n / warplane.n / yacht.n / chopper.n / helo.n / bird.n / minivan.n / ambulance.n / aircraft.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'Expressing_publicly', 'tfidf': 0.7168788483614451, 'lexical_unit': 'vent.v / air.v / express.v / voice.v / give voice.v / expression.n / articulate.v / put into words.v', 'definition': "A Communicator publically communicates some difficult-to-express Content which they (or a social group of which they are a member) have had for some time. The Content may not have been previously communicated due to inability or social stricture.  In cases where the individuals addressed are a smaller group than the public at large, a separate Addressee may be expressed.  'Those grievances can be aired during Board meetings. CNI'  'Saddam voiced his joy when he was told Spain's new government had left the US-led military coalition in Iraq.'   "}, {'frame': 'Political_locales', 'tfidf': 0.6917346440674075, 'lexical_unit': 'barony.n / territory.n / country.n / province.n / duchy.n / viscountcy.n / county.n / state [sovereign].n / principality.n / borough.n / town.n / realm.n / kingdom.n / municipality.n / metropolis.n / megalopolis.n / city.n / world.n / federal.a / global.a / parish.n / diocese.n / international.a / local.a / locality.n / municipal.a / national.a / empire.n / village.n / nation.n / commonwealth.n / internationally.adv / multinational.a / city-state.n / district.n / fiefdom.n / jurisdiction.n / land.n / state [internal].n / provincial.a / territorial.a / township.n', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'Level_of_force_exertion', 'tfidf': 0.6468800556411433, 'lexical_unit': 'strong.a / weak.a / mighty.a / power.n / might.n / forceful.a / force.n / strength.n / weakness.n / powerful.a / powerless.a', 'definition': 'An Exerter, Action, or Force is capable of exerting or does exert a physical force at a level specified by the target. That physical force may cause deformation or breakage of, or simply motion in the receiving entity. The receiving entity is conceptually present (even if remotely), but is usually not lexically explicit. This frame covers both individual-level/static uses ("a STRONG person") as well as stage-level/dynamic uses ("a STRONG push"). However, the durative, individual-level meaning appears more frequently in the data and seems more basic.   \'Eugenie loved the sea and was a strong swimmer.\'  \'Spartacus dealt the Roman soldier a mighty blow.\'  \'A powerful force tore off the tree\'s branches.\'  Exerter, Action, and Force belong to a Core set. \'\'  There are several productive metaphors covered by this frame. The first and most common is one in which social influence or control is conceptualized as the physical exertion of force. The social influence/control is more specifically a propensity to cause change in social realms such as the economic, political, militaristic, cultural, or intimate: \'There were theoretical limits to the power of the king.\' \'Voters in the South have a strong incentive to keep such Democrats in office.\'  Another similar metaphor is one in which psychological influence or control is understood as the physical exertion of force. The psychological influence/control includes the emotional as well: \'Poetic words in a text can be given more emotive power by using melisma.\' \'He was a forceful speaker.\'  A third metaphor involves the amount of an entity construed as the physical force exertion of said entity. Depending on context, amount could be volume, etc. (“STRONGEST critics”; “MIGHTY uproar”).  \'\'  Two related physical force dynamic frames are Level_of_force_resistance and Dynamism.  This frame is distinguished from the Level_of_force_resistance frame in that it describes the level of force exertion instead of the level of resistance, and also in that there are three categories of Core FE available to the target (i.e Exerter, Action, or Force), whereas in Level_of_force_resistance there are only two Core FEs (i.e. Resisting_entity and Opposing_force). Of the latter frame\'s FEs, Opposing_force specifies the thing that the main entity resists to a level desginated by the target. Its parallel in Level_of_force_exertion is implied but backgrounded to the extent that it rarely appears as explicit lexical material; thus there is no corresponding Core FE.   This frame differs from Dynamism with regard to individual-level cases; targets here express the FE\'s capability. In contrast, Dynamism targets express the FE\'s tendency. For example, "a STRONG person" is generally construed as a person who is capable of strength, while "an ENERGETIC person" (energetic.a from the Dynamism frame) is construed as a person who tends to be energetic.   However, there is overlap between the two frames in stage-level cases - "a STRONG push" and "an ENERGETIC push" seem rather comparable. '}, {'frame': 'Request', 'tfidf': 0.6282132845507263, 'lexical_unit': 'appeal.n / ask.v / beg.v / beseech.v / command.n / command.v / demand.n / demand.v / entreat.v / entreaty.n / implore.v / order.n / order.v / petition.n / plea.n / plead.v / request.n / request.v / summon.v / tell.v / urge.v / call.v / invite.v / call.n / instruct.v / invitation.n', 'definition': "In this frame a Speaker asks an Addressee for something, or to carry out some action.  'The customer demanded a refund.' 'I begged my parents to let me stay up late.' "}, {'frame': 'Natural_features', 'tfidf': 0.6246823421784531, 'lexical_unit': 'rill.n / hill.n / mountain.n / knoll.n / cordillera.n / lake.n / pond.n / tarn.n / creek.n / vale.n / crevasse.n / sound.n / strait.n / valley.n / river.n / sea.n / ocean.n / pool.n / peninsula.n / fjord.n / outcrop.n / island.n / archipelago.n / crag.n / glacier.n / canyon.n / mount.n / cove.n / bay.n / inlet.n / cliff.n / channel.n / headland.n / isthmus.n / cave.n / cavern.n / iceberg.n / berg.n / waterfall.n / falls.n / spring.n / cataract.n / stream.n / brook.n / atoll.n / floe.n / dune.n / massif.n / loch.n / butte.n / fell.n / hillock.n / mesa.n / isle.n / islet.n / cay.n / sandbar.n / coombe.n / key.n / crater.n / bar.n / sandbank.n / sandspit.n / reef.n / clough.n / dale.n / defile.n / dell.n / depression.n / range.n / dingle.n / gap.n / pass.n / glen.n / graben.n / gulch.n / gully.n / hollow.n / ravine.n / beck.n / hummock.n / moraine.n / burn.n / shelf.n / shoal.n / lagoon.n / slough.n / bayou.n / tor.n / eyot.n / plateau.n / seamount.n / guyot.n / volcano.n / declivity.n / corrie.n / ridge.n / skerry.n / rapids.n / watershed.n / height.n / cirque.n / beach.n / continent.n / continental.a / peak.n / coastal.a / wash.n / strand.n / rugged.a / gulf.n / cascade.n / land.n / water.n / range [grazing].n', 'definition': "The Locale is a geographical location as defined by shape.  This frame includes natural geographic features, including land/ice forms and bodies of water.  ' We climbed up the rock cliff.' "}, {'frame': 'Substance', 'tfidf': 0.6232455280134658, 'lexical_unit': 'gas.n / sand.n / oil.n / liquid.n / methane.n / chemical.n / iron.n / material.n / uranium.n / aluminum.n / plutonium.n / atropine.n / yellowcake.n / solid.n / ore.n / petroleum.n / water.n / juice.n / metal.n / glass.n / paper.n / mud.n / cement.n / calcium.n / oxygen.n / fertilizer.n', 'definition': 'This frame concerns internally undifferentiated Substances.   \'As their gut bacteria ferment cellulose , they generate methane gas , which escapes from the rear ends of the insects.\'  \' The pipes are leaking noxious gas.\'  \'Some CH-47 "Bombers" were equipped to roll-out riot control gas or napalm onto Viet Cong bunker complexes from the rear cargo ramp.\''}, {'frame': 'Making_faces', 'tfidf': 0.6172867658877834, 'lexical_unit': 'frown.v / grimace.v / grin.v / pout.v / scowl.v / smile.v / smirk.v', 'definition': "An Agent makes a particular facial expression, generally in response to some Internal_cause (generally an emotional state).  Sometimes the Body_part involved in the expression is mentioned in lieu of the Agent.  'His eyes smile, but his lips do not.'"}, {'frame': 'Level_of_light', 'tfidf': 0.6122337076026024, 'lexical_unit': 'dark.a / dim.a / black.a / unlighted.a / lightless.a / light.a / bright.a / sunny.a / lighted.a / sunless.a / moonless.a / shady.a', 'definition': "There is a gradable amount of light in a particular Location.  In some cases the Source of light may be indicated instead of the Location. '' 'The small print was bearly readable by the light of the very dim torch.' '' 'Tal flew over the barrier and into the dark tunnel.' ''  The negetive LUs in this frame can be used metaphorically to describe time periods which can be characterized as bad or lacking in awareness, as shown in the following examples: '' 'The custody of the era brought about a dark period during which the written word was forgotten and art had disappeared.' '' 'Clinton is shrewd to solidify political support during these dark days.'"}, {'frame': 'Capability', 'tfidf': 0.6031628475967222, 'lexical_unit': 'able.a / unable.a / can.v / capable.a / ability.n / potential.n / capability.n / capacity.n / potential.a / power.n / power [statistical].n / powerless.a / powerlessness.n / inability.n / incapable.a / incapacity.n / powerful.a', 'definition': "An Entity meets the pre-conditions for participating in an Event.  A Degree modifier may be included to indicate by how much the Entity exceeds or falls short of the minimum requirements.  'Conductor software gives us the hands-on capability to provide updates immediately'  'The GOP is afraid that it might not be capable of keeping the seat vacated by Dunn.'  'NASA is unable to communicate with Mars rover.'  'He can fly a kite.'"}, {'frame': 'Color_qualities', 'tfidf': 0.600848722846143, 'lexical_unit': 'warm.a / vivid.a / dull.a / pale.a / light.a / dark.a / bright.a', 'definition': "This frame contains words that describe specific aspects of a Color. The Degree to which the Color being discussed deviates from the prototype may be marked. The description may also target a specific Aspect of color.  'I love really pale yellows.'"}, {'frame': 'Measurable_attributes', 'tfidf': 0.5996383714047456, 'lexical_unit': 'long.a / deep.a / high.a / tall.a / thick.a / heavy.a / big around.a / low.a / broad.a / thin.a / light [weight].a / narrow.a / short.a', 'definition': "An Entity has a particular scalar Attribute with a value exceeding a contextually-specified or generally-understood standard. Except where there is a difference in FEs, we place all adjectives related to measurable quantities in this frame. Note that when an adjective appears with a quantity expression (e.g., 6 feet long), it belongs to the Dimension frame.  'That ladder is really tall.'  'After his back injury, he won't lift heavy boxes.'"}, {'frame': 'Questioning', 'tfidf': 0.5964858944714608, 'lexical_unit': 'grill.v / inquire.v / inquiry.n / interrogate.v / interrogation.n / query.n / query.v / question.n / question.v / questioning.n / quiz.v / ask.v', 'definition': "The words in this frame have to do with a Speaker asking an Addressee a question which calls for a reply (as opposed to making a request which calls for an action on the part of the Addressee).  '' 'We asked Ruby what kind of food they ate.'  'Yeats was able to interrogate the spirit world about his relationship with Maude.'"}, {'frame': 'Process_start', 'tfidf': 0.5840667935610788, 'lexical_unit': 'start.v / begin.v / commence.v / erupt.v / break out.v / commencement.n / incipient.a / onset.n / nascent.a / eruption.n', 'definition': "An Event begins at a certain Time and Place. Reason may also be indicated.  NB:  Refer to Event frame.  'The project began.'"}, {'frame': 'Prevarication', 'tfidf': 0.5760154756609231, 'lexical_unit': "lie.v / prevaricate.v / lie.n / mislead.v / kid.v / misrepresent.v / deception.n / misrepresentation.n / prevarication.n / shit.v / joke.v / equivocate.v / fool.v / equivocation.n / fib.n / bullshit.v / pull (someone's) leg.idio / deceive.v / fib.v / pull the wool over (someone's) eyes.idio / hoodwink.v / bullshit artist.n / dissemble.v / dissembler.n / deceptive.a / tell.v", 'definition': "A Speaker communicates about a Topic in such a way as to mislead an Addressee, either by telling outright lies or by presenting a message in a misleading form.  'I lied to you about your Christmas present.'"}, {'frame': 'Manipulation', 'tfidf': 0.5708194153168614, 'lexical_unit': 'clasp.v / claw.v / clutch.v / finger.v / grab.v / grasp.v / grip.v / knead.v / massage.v / nip.v / nudge.v / paw.v / pinch.v / pull.v / push.v / seize.v / squeeze.v / tug.v / tweak.v / wring.v / yank.v / fumble.v / grope.v / stroke.n / rub.v / grab hold.v / pull.n / lick.v / touch.v / kiss.v / caress.v / caress.n / stroke.v / diddle.v / hold.v / tickle.v / handle.v / kiss.n / poke.v', 'definition': "The words in this frame describe the manipulation of an Entity by an Agent.  Generally, this implies that the Entity is not deeply or permanently physically affected, nor is it overall moved from one place to another.  'Ian squeezed Mara's hand.' ''  A number of lexemes listed in this frame also occur in the Cause_motion frame (for example, push, yank).  Only the non-motion uses of these words belong in this frame, e.g., combinations such as push at, push on, yank at. "}, {'frame': 'Location_of_light', 'tfidf': 0.5638049176054961, 'lexical_unit': 'glow.v / glisten.v / glimmer.v / twinkle.v / shimmer.v / glint.v / flash.v / sparkle.v / gleam.v / glitter.v / shine.v / flicker.v / coruscate.v / flame.v / scintillate.v / flare.v / glint.n / gleam.n / glimmer.n / flicker.n / coruscation.n / scintillation.n / glitter.n / glow.n / twinkle.n / flashing.a / gleaming.a / glittering.a / flash.n / glistening.a / shining.a / shine.n / sheen.n / lustre.n / lambent.a / refulgent.a / lambency.n / refulgence.n / bright.a / brilliant.a / glossy.a / shiny.a / glister.v / glister.n / light.n / light up.v / illuminate.v', 'definition': 'A perceptible Figure shows up against a Ground location due to Light shining on/from it, its salience possibly dependent on a Cause_of_shine.  \'The grass glistened with dew.\' \'Still glowing from the forge...\' \'The oily mud gleamed wetly under his feet.\' \'Something was shimmering on the shore.\' \'The quartz glowed with a fitful, internal light.\' \'The walls glowed in the sun.\'  \'\'   Note that in this last example, the PP \'in the sun\' is both the Ground on the primary FE layer and Light on the secondary layer.   \'\' This frame is similar to the frame Light_movement; however, in Location_of_light, Light is conceived as stationary, while in Light_movement, light is conceived as traveling linearly outward from a light source, via a path, to whatever objects are illuminated. \'\'  In both of these light-related frames, there is a very consistent metaphorical conception of emotions as shining in eyes or forth from eyes, including the associated pattern of eyes shining with an emotion.  The sense in such cases is that the eyes (or the muscles and features around the eyes) are in such a configuration as to saliently convey an emotion.  In this metaphor, emotion is conceived as a light-source, with the amount of emotion described as amount of light, temporal patterns of intensity of emotion are patterns of light intensity, properties of the Figure which produce the emotion are described in terms of properties of light-producing objects--thus "glinting", associated literally with light on hard, smooth, cold objects like stones, is used to describe the eyes of someone expreriencing a "hard cold" emotion like hatred, while "sparkling", associated with beauty, is used to describe the eyes of someone experiencing a "beautiful" emotion like amusement or excitement.  In both frames, such sentences should be tagged with the metaphor tag to differentiate them from literal sentences like "His eyes glistened with tears."  \'Her eyes glinted with hatred.\' \'I saw a light in her eyes at the mention of cookies.\' '}, {'frame': 'Shaped_part', 'tfidf': 0.5607351759870515, 'lexical_unit': 'arm.n / mouth.n / leg.n / rind.n / brim.n / handle.n', 'definition': "An entity is a shaped Part of a larger Whole. The Part may correspond in form and  function  to a part of another entity. For instance, the leg of a table supports the weight of a table like the leg of an animal or person supports their weight. The Orientation of the Part relative to the Whole may be expressed.  'I removed the brim of the hat'  'Bill likes to chew the waxy rind of the cheese'"}];
+        var frame_list_2 = [{'frame': 'Spelling_and_pronouncing', 'tfidf': 2.48366117477417, 'lexical_unit': 'spell.v / misspell.v / pronounce.v / mispronounce.v / say.v / write.v / sound.n', 'definition': 'A Speaker realizes a Sign, usually a linguistic one, in some Formal_realization. The Formal_realization may be described as correct or incorrect in a Judgment expression, or it may be partially indicated as a Part_of_form.  Manner may be used as a more general indication of the Formal_realization  \'A person doesn\'t always pronounce a word the way they say  it in context\'  \'I can\'t spell. INI INI\'  \'Stephanopolous spells his name with a "ph".\'  \'On page 87465, you spelled the name of my dog incorrectly as "Checquers".\'  \'In German, the word for \'peace\' is written "Friede" CNI\''}, {'frame': 'Communication', 'tfidf': 2.2675161361694336, 'lexical_unit': 'communicate.v / speech.n / indicate.v / signal.v / communication [act].n / communication [entity].n / contact.n / codeword.n / password.n / convey.v / say.v / share.v', 'definition': "A Communicator conveys a Message to an Addressee; the Topic and Medium of the communication also may be expressed.  This frame includes no specification of the method of communication (speech, writing, gesture, etc.).  This frame and the frames that inherit the general Communication frame can add elaboration to the Medium in a variety of ways (in French, on the radio program, in a letter) or to the Manner of communication (babble, rant, shout, whisper). There are also frames related to Communication that either do not inherit all of the FEs of this frame or do not inherit them in a straightforward manner (such as Conversation, in which Communicator and Addressee alternate roles, and are often expressed by a single, plural NP).  'Let's hope it did n't have time to communicate any of its findings to its overlords.'  NB:  For many words in this domain (those which do not inherently ascribe cognitive/social processes to a Communicator, position a statement within a conversation, or specify Medium in detail), there is a metaphorical usage which maps Communication onto an alternate POV of Becoming_aware, with corresponding maps for frames related to Communication.  This metaphor is most felicitous with Means or Medium subjects, which are mapped onto the Evidence FE of Becoming_aware.  In many cases this metaphor maps Communication onto the Evidence frame, but not always.  Some words from the Communication domain are listed in the Evidence frame since they are deemed to be lexicalized.  'A flick of his gaze toward the doorway told me what he really wanted. (METAPHOR)' 'This painting really speaks to me. INI (MET) ' 'Putting his arm around her protectively achieved nothing but announcing to their captors their vulnerability. (MET)' 'It says a lot that he did n't come back. INI (MET) '"}, {'frame': 'Animals', 'tfidf': 2.247976064682007, 'lexical_unit': 'dog.n / cat.n / pig.n / cow.n / sheep.n / animal.n', 'definition': "The LUs in this frame refer to biological entities other than human beings and plants, which are labeled by the FE Animal.  ''  'My husband and I adopted a really sweet dog last year.'  'The cows that live on the farm down the road are always mooing loudly.'"}, {'frame': 'Color', 'tfidf': 2.173438310623169, 'lexical_unit': 'red.a / green.a / color.n / vermilion.a / ebony.a / purple.a / blue.a / orange.a / yellow.a / violet.a / brown.a / gray.a / black.a / white.a / pink.a / crimson.a / maroon.a / turquoise.a / azure.a / beige.a / mauve.a / tan.a / buff.a / scarlet.a / pitchblack.a / colored.a / indigo.a / puce.a', 'definition': "A Color serves as a landmark in color-space, either a point-like landmark (e.g. burnt sienna) or a broader region (e.g. blue).  Especially when the Color designates a broad region in color-space, it may be defined with a specific Type, further specified by comparison to the color of a Comparand, modified by a Color_qualifier, or evaluated with a Descriptor.  All color words are generally used to specify the color of some (physical) Entity. 'I really like that shade of blue.' 'The welts on his side had already turned an angry red.' 'The room was bathed in a soft pink light.' 'They promptly set up a zillion bright vermilion pavilions.' 'His face and hands were brown from a life spent in the bright sun of the fields.' "}, {'frame': 'Text_creation', 'tfidf': 2.1351232528686523, 'lexical_unit': 'pen.v / author.v / write.v / compose.v / draft.v / jot down.v / jot.v / speak.v / say.v / utter.v / write up.v / write down.v / write in.v / write out.v / print.v / type.v / type out.v / type up.v / type in.v / print out.v / print up.v / get down.v / chronicle.v / sign.v / dash off.v / list.v', 'definition': "An Author creates a Text, either written, such as a letter, or spoken, such as a speech,  that contains meaningful linguistic tokens, and may have a particular Addressee in mind.  The Text may include information about its topic, although the latter is not an FE in this frame.  'I penned a letter concerning racism  to Congress.' 'The brothers said not two words to each other.' 'Jot any notes you need below the line in red pen only.'"}, {'frame': 'Food', 'tfidf': 2.107926845550537, 'lexical_unit': 'fruit.n / apple.n / banana.n / vegetable.n / carrot.n / potato.n / pea.n / meat.n / beef.n / lamb.n / veal.n / poultry.n / chicken.n / turkey.n / fish.n / salmon.n / tuna.n / shellfish.n / shrimp.n / lobster.n / milk.n / cheese.n / egg.n / butter.n / nut.n / almond.n / peanut.n / pasta.n / noodle.n / herb.n / spice.n / pepper.n / basil.n / cereal.n / lettuce.n / berry.n / bread.n / roll.n / cracker.n / cake.n / pancake.n / cheesecake.n / pastry.n / croissant.n / cookie.n / biscuit.n / sweet.n / chocolate.n / sweetener.n / sugar.n / honey.n / fat.n / oil.n / vinegar.n / coffee.n / juice.n / soup.n / stew.n / sauce.n / dressing.n / vinaigrette.n / ketchup.n / mayonnaise.n / lasagne.n / food.n / tea.n / water.n / date.n / cabbage.n / MRE.n / beer.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Architectural_part', 'tfidf': 1.8430190086364746, 'lexical_unit': 'fireplace.n / floor.n / ceiling.n / mantel.n / roof.n / rail.n / wall.n / counter.n / facade.n / foundation.n / flight.n / landing.n / window.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  'We need new counters for the kitchen'  'The storm ripped off the bathroom's roof'  "}, {'frame': 'Connecting_architecture', 'tfidf': 1.8084841966629028, 'lexical_unit': 'door.n / elevator.n / lift.n / escalator.n / corridor.n / hallway.n / window.n / staircase.n / stairs.n / step.n / gate.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  The Part itself connects locations within the building to each other, Connected_locations. If a particular point of view is adopted in the context of real or imagined motion, then one of the locations can be construed as Goal and the other as Source.   'It was of great interest to me to see the star signs of Taurus the Bull and Leo the Lion on the staircase to the upper Palace.'  'All visitors may use the elevator between the Main Level and the Upper Level instead of the main staircase'  'The window into the garden was open.'"}, {'frame': 'Building_subparts', 'tfidf': 1.737290859222412, 'lexical_unit': 'room.n / antechamber.n / anteroom.n / atelier.n / attic.n / ballroom.n / basement.n / bathroom.n / bedroom.n / ben.n / boudoir.n / buttery.n / catacomb.n / cell.n / cellar.n / chamber.n / chancellery.n / chapel.n / checkroom.n / cloakroom.n / closet.n / corridor.n / den.n / foyer.n / garret.n / hallway.n / kitchen.n / kitchenette.n / larder.n / laundry.n / lift.n / elevator.n / lobby.n / loft.n / nursery.n / office.n / pantry.n / parlor.n / playroom.n / porch.n / refectory.n / repository.n / sacristy.n / salon.n / scullery.n / solarium.n / stoop.n / storeroom.n / studio.n / study.n / veranda.n / vestibule.n / ward.n / wing.n / workroom.n / workshop.n / banquet room.n / dining room.n / dressing room.n / family room.n / guest room.n / living room.n / master bedroom.n / powder room.n / rest room.n / rumpus room.n / sitting room.n / utility room.n / wine cellar.n / apartment.n / flat.n / lavatory.n / TV room.n / belfry.n / tower.n / altar.n / laundry room.n / level.n / floor.n / deck.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}, {'frame': 'Vehicle_subpart', 'tfidf': 1.638582468032837, 'lexical_unit': 'door.n / window.n / seat.n / seatbelt.n / tire.n / wheel.n / brake.n / engine.n / hood.n / trunk.n / part.n / windshield.n', 'definition': "An entity is integrated into a vehicle as a Part of a (possibly unexpressed) Whole which may refer to the whole vehicle or merely to a sub-part of the vehicle.  '' 'The car's engine started smoking so we pulled over.' 'Put the bags in the trunk.' 'One should always wear a seatbelt while driving.' "}, {'frame': 'Substance', 'tfidf': 1.5825910568237305, 'lexical_unit': 'gas.n / sand.n / oil.n / liquid.n / methane.n / chemical.n / iron.n / material.n / uranium.n / aluminum.n / plutonium.n / atropine.n / yellowcake.n / solid.n / ore.n / petroleum.n / water.n / juice.n / metal.n / glass.n / paper.n / mud.n / cement.n / calcium.n / oxygen.n / fertilizer.n', 'definition': 'This frame concerns internally undifferentiated Substances.   \'As their gut bacteria ferment cellulose , they generate methane gas , which escapes from the rear ends of the insects.\'  \' The pipes are leaking noxious gas.\'  \'Some CH-47 "Bombers" were equipped to roll-out riot control gas or napalm onto Viet Cong bunker complexes from the rear cargo ramp.\''}, {'frame': 'Vehicle', 'tfidf': 1.5621495246887207, 'lexical_unit': 'car.n / bus.n / truck.n / bike.n / taxi.n / plane.n / ferry.n / boat.n / bicycle.n / ship.n / tram.n / automobile.n / tricycle.n / airplane.n / scooter.n / schooner.n / train.n / carriage.n / cab.n / coach.n / vehicle.n / lorry.n / submarine.n / tank.n / cart.n / toboggan.n / pick-up.n / van.n / limousine.n / convertible.n / helicopter.n / canoe.n / kayak.n / buggy.n / liner.n / sedan.n / vessel.n / tank car.n / warplane.n / yacht.n / chopper.n / helo.n / bird.n / minivan.n / ambulance.n / aircraft.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'Cotheme', 'tfidf': 1.4584863185882568, 'lexical_unit': "accompany.v / chase.v / conduct.v / escort.v / follow.v / guide.v / hound.v / lead.v / pursue.v / shadow.v / shepherd.v / tail.v / track.v / trail.v / pursuit.n / pursuer.n / usher.v / stalk.v / tag along.v / walk.v / guided.a / dog.v / dog (someone's) steps.idio / show.v / lead the way.v", 'definition': "This frame contains words that necessarily indicate the motion of two distinct objects. The Theme is typically animate and is expressed the same way a Self-mover is expressed in the Self-motion frame--i.e. as the subject of a target verb. The Cotheme may or may not be animate and is typically expressed as a direct object or an oblique. Source, Path, Goal, and the other frame elements common to motion words also regularly occur with the words in this frame.  '' 'She accompanied him in the ambulance to Hollywood Memorial Hospital.'  'Police persue teenage joyrider across three counties.'  'My pursuit of academic superiority shows that I was still striving to be the person my parents wanted me to be.'"}, {'frame': 'Questioning', 'tfidf': 1.426821231842041, 'lexical_unit': 'grill.v / inquire.v / inquiry.n / interrogate.v / interrogation.n / query.n / query.v / question.n / question.v / questioning.n / quiz.v / ask.v', 'definition': "The words in this frame have to do with a Speaker asking an Addressee a question which calls for a reply (as opposed to making a request which calls for an action on the part of the Addressee).  '' 'We asked Ruby what kind of food they ate.'  'Yeats was able to interrogate the spirit world about his relationship with Maude.'"}, {'frame': 'Roadways', 'tfidf': 1.4134567975997925, 'lexical_unit': 'road.n / path.n / way.n / street.n / avenue.n / artery.n / highway.n / expressway.n / motorway.n / sidewalk.n / pavement.n / underpass.n / overpass.n / railway.n / railroad.n / route.n / line.n / crosswalk.n / bridge.n / tunnel.n / autobahn.n / lane.n / track.n / trail.n / boulevard.n / course.n / freeway.n / pathway.n / roadway.n / thoroughfare.n / byway.n / cul-de-sac.n / driveway.n / parkway.n / runway.n / bypass.n / flyover.n / rail.n', 'definition': "This frame involves stable Roadways which connect two stable Endpoints, the Source and the Goal.  Being physical objects, these Roadways may have Names and Characteristics; they are also made of a Material.  They also cover ground, so they may have a Path or a Relative_location that the travel occurs in.  ' We crossed the brick road.' ' I prefer to travel on highway I-80.'  'This is the only highway between Lodi and Sonoma.' ' She dreaded turning onto the busy street.'"}, {'frame': 'Request', 'tfidf': 1.376129388809204, 'lexical_unit': 'appeal.n / ask.v / beg.v / beseech.v / command.n / command.v / demand.n / demand.v / entreat.v / entreaty.n / implore.v / order.n / order.v / petition.n / plea.n / plead.v / request.n / request.v / summon.v / tell.v / urge.v / call.v / invite.v / call.n / instruct.v / invitation.n', 'definition': "In this frame a Speaker asks an Addressee for something, or to carry out some action.  'The customer demanded a refund.' 'I begged my parents to let me stay up late.' "}, {'frame': 'Expressing_publicly', 'tfidf': 1.3704091310501099, 'lexical_unit': 'vent.v / air.v / express.v / voice.v / give voice.v / expression.n / articulate.v / put into words.v', 'definition': "A Communicator publically communicates some difficult-to-express Content which they (or a social group of which they are a member) have had for some time. The Content may not have been previously communicated due to inability or social stricture.  In cases where the individuals addressed are a smaller group than the public at large, a separate Addressee may be expressed.  'Those grievances can be aired during Board meetings. CNI'  'Saddam voiced his joy when he was told Spain's new government had left the US-led military coalition in Iraq.'   "}, {'frame': 'Size', 'tfidf': 1.346679449081421, 'lexical_unit': 'large.a / big.a / huge.a / small.a / tiny.a / little.a / enormous.a / great.a / infinitesimal.a / gigantic.a / giant.a / miniature.a / grand.a / immense.a / miniscule.a / massive.a / sizable.a / substantial.a / ample.a / bulky.a / capacious.a / colossal.a / humongous.a / immeasurable.a / voluminous.a / jumbo.a / mini.a / petite.a / wee.a / bitty.a / puny.a / Brobdingnagian.a / Lilliputian.a / medium.a / mid-size.a / medium-sized.a', 'definition': 'The size of an Entity is assessed in terms of the Degree by which it deviates from the norm. The size generally refers to the amount of three-dimensional space that is occupied by the Entity, not primarily to its weight, density, or length, which is why it is peculiar to refer to a bullet as "large", even if it is heavy, unless it actually has larger dimensions than usual, or to a rope as "big", even if it is long, unless its other, cross-sectional dimensions are also significant.  \'I own a very small home.\' \'Where is my little notebook?\' \'That dog is huge!\' \'\'  There are an enormous number of productive metaphors that involve this frame as the source domain; two of the most frequent metaphors come from the target domains of quantity/amount and importance.    \'He gave me a small sum of money.\' \'The novel was a substantial achievement.\' \'\'  Subcases of the quantity/amount and importance metaphors are also prominent. These involve cases describing the extent of an action\'s, event\'s, or person\'s effect ("his influence on her work was massive"), as well as those related to events ("big party"), similarity ("gigantic difference"), communication ("giant misunderstanding"), and emotions ("great joy", "little joys").  Other productive metaphors include those dealing with groups (in terms of their number of members, net worth, importance to the economy, i.e. "giant electronics company") and those describing sound volume ("in a tiny voice", "the enormous thundering of her heart").  \'\'  The target domain of fame, by contrast, occurs in a non-productive metaphor, found especially with big.a and huge.a. Maturity and age also occur in non-productive metaphors ("big boy", "little baby").'}, {'frame': 'Containers', 'tfidf': 1.345845103263855, 'lexical_unit': 'amphora.n / backpack.n / can.n / cart.n / casket.n / chest.n / envelope.n / flask.n / glass.n / handbag.n / jar.n / knapsack.n / ladle.n / locker.n / mug.n / pot [cooking].n / purse.n / reservoir.n / sack.n / satchel.n / spoon.n / suitcase.n / tin.n / wallet.n / teaspoon.n / ampule.n / ashtray.n / bag.n / barrel.n / basin.n / basket.n / beaker.n / bin.n / bottle.n / bowl.n / box.n / briefcase.n / bucket.n / canister.n / canteen.n / carafe.n / carton.n / cartridge.n / case.n / coffer.n / coffin.n / container.n / cooler.n / crate.n / crock.n / crucible.n / cruet.n / cup.n / cuspidor.n / cylinder.n / cask.n / carryall.n / censer.n / chalice.n / creamer.n / decanter.n / dish.n / dispenser.n / drum.n / duffel bag.n / flagon.n / empty.n / etui.n / goblet.n / grail.n / hamper.n / haversack.n / hopper.n / jeroboam.n / jigger.n / jug.n / keg.n / magnum.n / mailer.n / overnighter.n / pack.n / sarcophagus.n / tun.n / stein.n / spittoon.n / pannier.n / ramekin.n / reticule.n / salver.n / samovar.n / snifter.n / thermos.n / tureen.n / valise.n / cauldron.n / casserole.n / folder.n / rucksack.n / pouch.n / vial.n / vase.n / pail.n / pipette.n / tumbler.n / vat.n / vivarium.n / punch bowl.n / toilet bowl.n / wine bottle.n / chest of drawers.n / hot-water bottle.n / urn.n / tank.n / safe.n / planter.n / pot.n / drawer.n / goldfish bowl.a / tub.n', 'definition': "This frame covers entities which are prototypically conceived of and created to fulfill the function of containing--i.e. Containers  that contain objects or substances, the Contents.  This can be expressed as a complement , and includes potential or intended contents.   A Container may also have an Owner, a current Relative_location, Material from which it is constructed, a method of Construction, and a Type.  Note the connection between words in this frame and those in the Filling, Emptying, and Fullness frames. 'a bag of popcorn' 'underwear drawer' 'Chuck's suitcase' 'the suitcase in Chuck's office' 'straw basket' 'woven basket' 'Erlenmeyer flask'"}, {'frame': 'Clothing', 'tfidf': 1.3343653678894043, 'lexical_unit': 'dress.n / frock.n / petticoat.n / ballgown.n / culottes.n / chemise.n / jodhpurs.n / sock.n / stocking.n / leggings.n / tunic.n / slip.n / gown.n / skirt.n / shorts.n / pants.n / trousers.n / wrap.n / shirt.n / blouse.n / cloak.n / cape.n / coat.n / greatcoat.n / overcoat.n / jacket.n / vest.n / tie.n / hose.n / hosiery.n / clothing.n / clothes.n / finery.n / suit.n / necktie.n / neckwear.n / cummerbund.n / scarf.n / shawl.n / bow-tie.n / pantyhose.n / garter.n / panties.n / knickers.n / sweater.n / jumper.n / cardigan.n / pullover.n / blazer.n / kilt.n / swimsuit.n / bikini.n / robe.n / bathrobe.n / apron.n / miniskirt.n / fishnet.n / legwarmers.n / regalia.n / raiment.n / apparel.n / attire.n / vestment.n / livery.n / outfit.n / garment.n / undergarment.n / underclothing.n / underclothes.n / underwear.n / togs.n / undies.n / shift.n / pinafore.n / mitten.n / mitt.n / glove.n / bodice.n / corset.n / parka.n / windbreaker.n / windcheater.n / raincoat.n / pyjama.n / nightie.n / nightdress.n / nightgown.n / nightwear.n / lingerie.n / camisole.n / waistcoat.n / jeans.n / overall.n / coverall.n / garb.n / smock.n / sundress.n / bra.n / brassiere.n / teddy.n / tights.n / jumpsuit.n / kimono.n / kaftan.n / uniform.n / costume.n / motley.n / get-up.n / ensemble.n / surplice.n / galosh.n / welly.n / wellington.n / slipper.n / sandal.n / sneaker.n / stiletto.n / boot.n / shoe.n / gumboot.n / clog.n / footwear.n / sari.n / sarong.n / poncho.n / abaya.n / jerkin.n / crinoline.n / muff.n / cowl.n / tutu.n / t-shirt.n / polo-neck.n / g-string.n / flip-flops.n / one-piece.n / two-piece.n / flannels.n / rags.n / silks.n / satins.n / cottons.n / tweeds.n / ermines.n / muslins.n / tippet.n / doublet.n / tatters.n / neckerchief.n / breeches.n / sweatshirt.n / sweatpants.n / tracksuit.n / alb.n / stole.n / chasuble.n / cope.n / buskin.n / pallium.n / gauntlet.n / cravat.n / briefs.n / cossie.n', 'definition': "This frame refers to clothing and its characteristics,  including anything that people conventionally wear.  The Wearer wears a Garment that has a certain Style, is made of a certain Material, and can be otherwise characterized by a Descriptor.  In some cases, the Body_location (where the garment is worn) and Subregion of the clothing may also be specified.  'Claudia dressed in a dark green cotton DRESS clasped round her slender waist with a broad yellow belt , drank a cup of coffee and opened her neglected post .'"}, {'frame': 'Buildings', 'tfidf': 1.333494782447815, 'lexical_unit': 'house.n / houseboat.n / church.n / tower.n / bungalow.n / cabin.n / castle.n / condominium.n / cottage.n / dacha.n / dormitory.n / dwelling.n / farmhouse.n / home.n / hospital.n / hostel.n / hotel.n / igloo.n / lodge.n / mansion.n / monastery.n / motel.n / palace.n / pension.n / pueblo.n / residence.n / shack.n / shanty.n / shelter.n / tenement.n / tent.n / villa.n / acropolis.n / arena.n / auditorium.n / barn.n / barracks.n / basilica.n / blockhouse.n / campanile.n / caravan.n / caravanserai.n / chalet.n / chateau.n / conservatory.n / garage.n / gazebo.n / greenhouse.n / hall.n / hangar.n / hippodrome.n / hovel.n / inn.n / kennel.n / kiosk.n / lighthouse.n / maisonette.n / mall.n / manor.n / manse.n / mosque.n / outbuilding.n / outhouse.n / pagoda.n / palazzo.n / pavilion.n / penthouse.n / pyramid.n / rotunda.n / shebang.n / shed.n / skyscraper.n / stable.n / stadium.n / supermarket.n / synagogue.n / tabernacle.n / tavern.n / tepee.n / terminal.n / triplex.n / warehouse.n / wigwam.n / hacienda.n / homestead.n / bunker.n / theater.n / bar.n / city hall.n / disco.n / discotheque.n / library.n / temple.n / building.n / structure.n / housing.n / fortress.n / fortification.n / citadel.n / fort.n / airport.n / pub.n / high-rise.n / quarters.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Artistic_style', 'tfidf': 1.321146011352539, 'lexical_unit': 'style.n / sound.n / look.n / order.n', 'definition': "This frame contains LUs that express the Form which a piece of Artwork represents. The Form may also represent the entire body  of an Artist's work. The Form may be further characterized by the Time of some Artwork's creation or other Descriptors.  'Her style of painting is an excellent blend of traditional and modern.' 'The whimsical style of this piece is very effective.'"}, {'frame': 'Temporary_stay', 'tfidf': 1.3098512887954712, 'lexical_unit': 'stay.v / stay.n / lodge.v / room.v / guest.v / overnight.v / sleep over.v / stay over.v / board.v / quarter.v', 'definition': "A Guest stays for a time at a Location, which is not his or her permanent residence, for some Duration. The Location is often the permanent residence of a Host.  'I usually stay with my aunt at her summer house when I go to Seville.'  'For a few days my father lodged at a hotel with a buddy who was a biology student.'"}, {'frame': 'Make_noise', 'tfidf': 1.3083505630493164, 'lexical_unit': 'babble.v / bark.v / bellow.v / blare.v / blast.v / bleat.v / bray.v / burble.v / cackle.v / caterwaul.v / caw.v / chatter.v / cheep.v / chirp.v / chuckle.v / clang.v / clash.v / clatter.v / click.v / coo.v / cough.v / creak.v / croak.v / croon.v / crunch.v / drone.v / fizzle.v / gasp.v / giggle.v / gobble.v / growl.v / grunt.v / guffaw.v / gurgle.v / hawk.v / hiss.v / hoot.v / howl.v / hum.v / keen.v / mew.v / mewl.v / moan.v / moo.v / neigh.v / patter.v / peal.v / peep.v / plash.v / plonk.v / plop.v / purr.v / quack.v / rasp.v / rattle.v / roar.v / rustle.v / scrape.v / screech.v / scrunch.v / sizzle.v / snarl.v / snicker.v / snigger.v / snore.v / snort.v / sob.v / sough.v / squawk.v / squeak.v / squeal.v / thump.v / thunder.v / tinkle.v / titter.v / toll.v / trumpet.v / tweet.v / twitter.v / ululate.v / wail.v / whimper.v / whine.v / whinny.v / whisper.v / whistle.v / yammer.v / yap.v / yelp.v / yodel.v / yowl.v / crepitate.v / laugh.v / clack.v / sploosh.v / scream.v / ring.v / beep.v / hem and haw.v / boom.v / cry.v / sound.v / honk.v / play.v / toot.v', 'definition': "A physical entity, construed as a point-Sound_source, emits a Sound.  This includes animals and people making noise with their vocal tracts. Sometimes the sound itself is referred to with a nominal expression, in which case it is called the Sound. Manner expressions may also be relevant in this frame, if they describe properties of the sound as such.  A path-schema can be overlaid on the simple noise-making scene, adding a Location_of_source and/or a Path.   This frame does not cover scenarios where objects create sound by coming into forceful contact with one another or rubbing against each other. Such scenarios are covered by the Impact and Friction frames. The current frame also does not cover cases where an animate Agent or a natural Force or Cause causes a single Source or several Sources (moving or rubbing against each other) to make noise. Such scenarios are  covered by the Cause_to_make_noise, Cause_impact and Cause_friction frames (the latter of which is not yet existent). Cases where the major emphasis of the portrayed scene is on the motion of a Theme, with sound emission only an accompaniment, are covered by the Motion_noise frame. Likewise, cases where the Sound itself is portrayed as moving through space are not covered in this frame but rather in Sound_movement. Finally, all nouns used to evoke Sounds have been placed in the Sounds frame. We have done this because these nouns do  not denote sound emission/production events but only the Sound itself (*The siren's blare occurred right on time)."}, {'frame': 'Candidness', 'tfidf': 1.2820438146591187, 'lexical_unit': 'blunt.a / candid.a / coy.a / discreet.a / explicit.a / forthcoming.a / forthright.a / frank.a / honest.a / open.a / outspoken.a / secretive.a / sincere.a / straightforward.a / truthful.a / disingenuous.a / evasive.a / circumspect.a / honesty.n / ingenuous.a / bluntness.n / candour.n / forthrightness.n / straight.a / earnest.a / earnestness.n / dishonest.a / devious.a / true.a', 'definition': "This frame contains adjectives and nouns that describe the truth or sincerity of communication. These words, analogously to behaver-evaluating words, can apply either to Speakers or to the Messages they produce. They can occur with about-PPs expressing Topic.   'Evelyn was candid with me about the party.'"}, {'frame': 'Transition_to_state', 'tfidf': 1.2747615575790405, 'lexical_unit': 'grow.v / get.v / end up.v', 'definition': "An Entity ends up in a Final_category, Final_situation, or Final_quality which it was not in before.  Some members of the frame (e.g. grow.v) tend to emphasize a gradual change, while most members of the frame do not indicate whether a change is gradual or not.    'Why I became an Emacs user'  'I left the ministry and became an atheist.'  'Surprisingly, various veteran organizations also turned vehemently antiwar.'  ' Over the years she grew to hate him.'  This frame should be compared to Undergoing_change.  Undergoing_change is different in that it much more emphasizes the difference between the pre- and post-states of the Entity.  This shows up both in Undergoing_change's increased occurrence with Initial_category and Initial_state (change from red to blue) and in its increased occurrence with Final_category (changed into a toad) rather than Final_situation or Final_quality (?changed to red vs. became/turned red).  In addition, when Undergoing_change occurs with the Final_category frame element, it presents a deep difference between the Initial_category and the Final_category, so that it is humorous to say 'she turned into a Republican', because it presents this as a fundamental change of identity; compare to 'she became a Republican', which is quite normal.  In a less humorous example, someone can 'turn into a Mac user', strongly implying that they no longer use their former operating system, while if they 'become a Mac user', this is either as a replacement of other OS's or potentially as an addition to the use of other OS's."}, {'frame': 'Locale', 'tfidf': 1.2647788524627686, 'lexical_unit': 'area.n / zone.n / region.n / place.n / spot.n / location.n / locale.n / pocket.n / regional.a / site.n / point.n / grounds.n / earth.n', 'definition': "This frame contains general locale words, and is mostly a place-holder in the hierarchy. Words in this frame designate relatively stable bounded ares of the world which have permanent Relative_locations with respect to other locales, and thus are useful as permanent landmarks.  It is inherited by Locale_by_use, which has to do with places that are named according to their intended use, or some habitual use, such as factory.n, dance floor.n, village.n, field.n.  It is also inherited by Locale_by_event, which covers places that are names according to some event which took place there, such as concerts, battles, and meteor impacts.  'This is a pleasant area.'"}, {'frame': 'Color_qualities', 'tfidf': 1.2610670328140259, 'lexical_unit': 'warm.a / vivid.a / dull.a / pale.a / light.a / dark.a / bright.a', 'definition': "This frame contains words that describe specific aspects of a Color. The Degree to which the Color being discussed deviates from the prototype may be marked. The description may also target a specific Aspect of color.  'I love really pale yellows.'"}, {'frame': 'Race_descriptor', 'tfidf': 1.259417176246643, 'lexical_unit': 'white.a / black.a / color.n / yellow.a / asian.a / hispanic.a', 'definition': "This frame covers LUs that describe the race of a Person.  'Carlos is hispanic, or so he says.'"}, {'frame': 'Trendiness', 'tfidf': 1.2571896314620972, 'lexical_unit': 'fashionable.a / trendy.a / hip.a / style.n / fashion.n / chic.a / cool.a / big.a', 'definition': "A Behavior, attributed to an Evaluee, conforms with or is heavily influenced by a popular trend or practice, often in the realm of fashion, design, though extending social and interactional behavior in general. Trendiness differs from Popularity in adding a factor of aesthetic or other judgment to behaviors and individuals, and judging these with respect to social behavior; Popularity is about amount of acceptability or utilization based on general (often non-aesthetic) desirability.  'Wearing flowered brocaded silks was fashionable in the first few years of the decade.'"}];
+    </script>
+    <script type="text/javascript" src="word_cloud_prediction.js"></script>
+    <script type="text/javascript" src="../mturk.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 150px;
+            padding-right: 150px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel_1 canvas, #word_cloud_panel_2 canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+        .word_cloud_box {
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 3px rgba(70, 70, 70, 1) solid;
+            padding: 20px;
+            margin-bottom: 20px; 
+        }
+        .word_cloud_box:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+        }
+        .selected_story_block {
+            border-color: #7BDFF2;
+            border-width: 3px;
+            box-shadow: 0 0 10px 10px rgba(123, 223, 242, 0.3);
+            background-color: rgba(239, 247, 246, 0.8);
+        }
+        .indicator {
+            /*font-family: Courier;
+            font-weight: bold;*/
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px black solid;
+            border-radius: 20px;
+        }
+
+        .selected_story_block .indicator {
+            background-color: rgb(123, 223, 242);
+        }
+
+        #story_content {
+            max-height: 600px;
+        }
+        .not_qualified {
+            color: red;
+            font-weight: 900;
+        }
+        .qualified {
+            color: black;
+            font-weight: 900;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Which word-cloud best represents the story snippet?</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that a computer automatically 
+            generated to characterize a story snippet. 
+            These words can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            A <strong>word-cloud representation with nouns</strong> is a group of nouns a computer automatically 
+            generated to characterize a story snippet. 
+            These nouns can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            In this HIT, you will see a story snippet. <span class="highlight">Please read the it carefully.</span>
+            The story is long so we have a 3 minutes time lock for submission.
+            <br/><br/>
+
+            At the bottom of the HIT, you will see two sets of word-cloud representations, 
+            where each consists of nouns, verbs, and adjectives. 
+            <span class="highlight">Please select the word-cloud representation that best represents the story.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following story snippet carefully!</h3>
+            You will need to select the word-cloud representation that best represents this story. 
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story</h4>
+                        <h5>(An excerpt from the book <span style="font-weight:bold;">"Nikki Powergloves And The Power Council"</span>.)</h5>
+                        <span class="not_qualified" id="read_lock">Please read all the story.</span>
+                        <br/><br/>
+                        <pre id="story_content">
+Nikki could tell it was Chilly.
+Nikki sprang up and ran to the door to open it.
+When she pulled it open, there was no one there.
+"Huh?"
+she said.
+Mike said, "They like to surprise us."
+"Oh," Nikki said, shrugging.
+This time, Mike led the group down a short tunnel lined with bees' nests.
+The buzzing insects swirled around them, but didn't touch or sting them.
+Samantha said it was called the honeycomb tunnel and that the bees were not dangerous.
+Nikki was glad to hear it.
+She had been stung twice and she hated the way her skin puffed up!
+After the honeycomb tunnel was the diamond tunnel.
+Brilliant diamonds of all shapes and sizes sparkled on the walls and ceiling.
+Nikki didn't know much about diamonds, but knew that they had to be worth lots of money.
+A lot more money than she had in her piggy bank, that's for sure.
+They reached The Lab, and Mike turned around and said to Nikki, "Want to do the honors?"
+Excitedly, Nikki reached for the door and pulled.
+Nothing happened.
+She pulled harder, straining against whatever force was holding the door closed.
+Thinking the door must require a push rather than a pull, Nikki leaned on it with both hands.
+Still no movement.
+It wouldn't budge.
+"I think it's locked," Nikki said.
+Samantha smiled at her.
+She looked at Mike--he was smiling too.
+In her peripheral vision she could see Freddy's lip curled into a grin.
+Then she heard familiar humming further down the hall.
+Humming she had heard many times before.
+Spencer!
+Her friend came around the bend and into view.
+He was humming to himself, the way he always did when he was thinking.
+"Need some help?"
+he asked Nikki.
+Nikki shrugged.
+"Door's locked, so unless you have the key ..."
+Nikki said.
+"It's not locked," Spencer said.
+"Watch and learn, amigo."
+Spencer raised his hand and Nikki noticed he was holding a canister of some sort.
+It looked like air freshener or bug spray or something.
+With a puff of awful-smelling fumes, he sprayed all around the doorframe, being careful to get into all of the cracks.
+Finished, he motioned to Nikki to try the door again.
+She sighed, not wanting to look stupid again when she couldn't open a simple door.
+How could spraying the door with stinky gas help to open it?
+Gripping the handle firmly, she pulled as hard as she could and was shocked when her arm shot back and the door flew open.
+She almost fell over when the door collided with her hip, but Samantha was there to steady her.
+"What the heck!"
+she said.
+"It was a trick, right?
+Someone unlocked it right before I opened it, didn't they?"
+"Guess again, Tickle-Me-Nikki," Spencer said.
+"You have just witnessed the first thing I wanted to show you.
+I call it Sticky Situation Glue.
+I used it to seal the door.
+That's why you couldn't open it.
+The spray is the antidote, so to speak.
+It reverses the stickiness."
+Chilly and Dexter popped out from behind a giant silver pot that had steam coming from its lid.
+"Surprise!"
+they said to together.
+Then Chilly said, "The glue is Spencer's first invention.
+He came up with the idea on his own, and me and Dex helped him to create it and the spray."
+Nikki turned to look at Spencer.
+He was beaming proudly.
+"What do you think?"
+he said.
+"It's amazing, Spence.
+I wouldn't have any idea how to create anything, much less super-sticky glue!
+It should come in handy against the villains."
+"That's what sidekicks are for!
+Cockadoodledoo!"
+Spencer yelled.
+"What's in the cauldron?"
+Nikki asked, pointing to the steaming pot.
+Chilly laughed.
+"You make it sound like we are witches brewing up potions!"
+Nikki giggled as she pictured Spencer wearing a pointy, black hat, chanting strange words as he stirred a boiling pot of bat wings, salamander tails, and hair from a unicorn's tail.
+Spencer said, "The 'cauldron', as you put it, contains a big batch of Sticky Situation Glue.
+We'll give you a bottle of it to put in your utility belt, along with the spray."
+"Utility belt?"
+Nikki said.
+"Yeah," Spencer said.
+"All the other power kids wear them, right guys?"
+Samantha, Freddy and Mike all nodded.
+"Strapped to your belt will be all the gadgets that I make for you to help you fight the bad guys."
+"Cool!"
+Nikki exclaimed.
+Suddenly, she was anxious to see what else Spencer had cooked up for her.
+"What else do you have so far?"
+Spencer pumped his fist.
+"I was hoping you would ask that!"
+He reached in his pocket and extracted a smooth object.
+It was about the size of an egg and shaped like one, too.
+The only difference was that it was green and had a hoop sticking off of one of the ends.
+Nikki's eyes widened as she realized what it looked like.
+"Is that a....grenade?"
+she asked.
+Instead of answering, to Nikki's horror, he stuck a finger through the hoop and pulled the pin out and yelled, "Fire in the hole!"
+and then dropped the grenade.
+Nikki knew it was too late to run, so instead she just watched the grenade clank off the floor and bounce twice before settling at their feet.
+While she waited to be blown to bits she wondered why Spencer had done it.
+Then the grenade exploded.
+It flared brightly for a moment and began spouting green and red and yellow mist from one end.
+It swirled around her ankles, up her torso, and finally around her head.
+Soon she couldn't see anything as the colorful gas covered the entire room.
+Reaching her arms in front of her like a zombie, she tried to find the door.
+"Ouch!"
+she exclaimed when she bumped into someone.
+She heard scuffling in at least four different directions as the power kids and their sidekicks tried to find the door.
+She heard Chilly's exuberant voice say, "Got it!"
+and then a felt a whoosh of fresh air across her face.
+The mist was still heavy, but was not as thick as before.
+Nikki thought she could make out the outline of the door.
+She moved toward it and then broke through the fog, out of The Lab and into the tunnel.
+She could see again.
+Chilly was already out there, but Nikki was the second.
+Behind her, Spencer galloped out, laughing hard.
+The rest of the kids followed shortly after.
+Soon they were all laughing.
+Nikki said, "You scared me, Spence!
+I thought you were going to blow us all up!"
+Still grinning, Spencer said, "Now why would I do that, Cowgirl!
+Don't you trust me?"
+Nikki felt silly.
+Of course she trusted him.
+She had known him her whole life.
+She said, "Of course I do, Spence, but after what happened with the Weebles last night..."
+Spencer chuckled.
+"Oh yeah, I almost forgot about that!"
+They all laughed again.
+They all had a case of the giggles.
+"What was that stuff, laughing gas?"
+Nikki asked.
+"No," Spencer said.
+"Just a colorful smokescreen.
+I call it Rainbow Fog.
+I don't know why we are all laughing."
+"Cool, we can definitely use Rainbow Fog against Jimmy and his friends."
+"I have one more gadget to show you," Spencer said, "but we will need to wait for the Rainbow Fog to go away before we can use The Lab." Dexter said, "No problem, watch this."
+The short Asian boy reached up and pressed a button on the wall outside of the room.
+Nikki hadn't noticed it before.
+There was a loud whoosh! and the colorful mist in The Lab began to clear.
+It was like a huge vacuum had sucked it all up.
+"Great!"
+Spencer exclaimed.
+"Let's go!
+Wakka wakka!"
+He led them back into the room.
+Once inside, he said, "I've saved the best for last, Nikki.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+
+        <h3>Select the word-cloud representation that best represents the above story.</h3>
+        Below, there are two word-cloud representations. Read them carefully and select the one that best represent the above story.
+        <br/><br/>
+
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_1" value="1">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 1</h3>
+                The following three word clouds jointly represent the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_2" value="2">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 2</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_2">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_2">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_2">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_2-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="88">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input name="note" type="hidden" value="LGBM, BERT">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="text/javascript">
+        var frame_list_1 = [{'frame': 'Ineffability', 'tfidf': 3.5583423109349037, 'lexical_unit': 'magic.n / magic.a / magical.a / ineffable.a / ineffability.n / je ne sais quoi.n / magicalness.n', 'definition': "A Stimulus inspires a feeling of awe and interest in a (generally implicit or generic) Experiencer due to desirable qualities which are difficult to explain.  Alternatively, the Attribute of the Stimulus may be described instead.  'There is a certain je-ne-sais-quoi about that city .'"}, {'frame': 'Weapon', 'tfidf': 3.0521894121534925, 'lexical_unit': 'rifle.n / pistol.n / six-shooter.n / firearm.n / gun.n / cannon.n / bomb.n / warhead.n / sword.n / knife.n / gat.n / AK-47.n / grenade.n / crossbow.n / machine-gun.n / shotgun.n / shooter.n / flame-thrower.n / weapon.n / handgun.n / club.n / twenty-two.n / forty-four.n / missile.n / garrotte.n / revolver.n / weaponry.n / Scud-B missile.n / arsenal.n / chemical weapon.n / ballistic missile.n / biological weapon.n / nuclear weapon.n / mustard gas.n / CW.n / BW.n / WMD.n / weapon of mass destruction.n / mine.n / spear.n / bow.n / explosive.a / explosive.n / plastic explosive.n / dynamite.n / nuclear.a / Scud-B.n / Scud-C missile.n / atomic weapon.n / ordnance.n / arms.n / artillery.n / shell.n / atomic bomb.n / biological.a / chemical.a / nerve gas.n / strategic.a / strategic nuclear weapon.n / ICBM.n / RPG.n / rocket.n / small arms.n / EFP.n / assault rifle.n / mortar.n / automatic weapon.n / C4.n / phosgene.n', 'definition': "A Weapon is an artifact created specifically to cause harm or damage.  In some cases, a Use, Material of construction, Part or Type may be more narrowly specified.  'Did you, or did you not, fire this gun with intent to harm my client?'  'Cyra tried to swing her sword to parry, but it was to heavy.'  'I investigated a specialist precious metal firearms manufacturer.'  'My neighbor, a member of the NRA since birth, has got an AK-47 fully automatic assault rifle.'  'Let 's just say that he 's the kind of guy who likes guns with hair triggers.' "}, {'frame': 'People_by_age', 'tfidf': 1.8326741078363462, 'lexical_unit': 'geezer.n / coot.n / spring chicken.n / adolescent.n / adult.n / baby.n / boy.n / child.n / infant.n / neonate.n / teenager.n / kid.n / youth.n / youngster.n / elderly.n / newborn.n', 'definition': "This frame contains words for individuals as viewed in terms of their age. The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'He is a 12-year-old kid.'"}, {'frame': 'Working_a_post', 'tfidf': 1.2945582317766362, 'lexical_unit': 'man.v / staff.v / work.v', 'definition': "The Agent is assigned to a Post where he or she performs a task associated with that Post. Alternatively, the Agent is expressed as acting with respect to a Salient_entity associated with the task. In most cases the Salient_entity is located at the Post.  'Volunteers were staffing the telephones.'  'Man your stations! CNI'"}, {'frame': 'Directional_locative_relation', 'tfidf': 1.0926343705563057, 'lexical_unit': 'above.prep / below.prep / east.adv / east.n / north.adv / north.n / northeast.adv / northeast.n / northwest.adv / northwest.n / south.adv / south.n / southeast.adv / southeast.n / southwest.adv / southwest.n / west.adv / west.n', 'definition': "A Figure is located relative to a (presumably more easily located) Ground, asserting that the Figure lies (approximately) on line from the Ground whose direction is established by semantic types of the particular LUs.  'The plane landed 10 miles due north of Lake Travis in an empty field .' "}, {'frame': 'Color', 'tfidf': 1.0657756297266945, 'lexical_unit': 'red.a / green.a / color.n / vermilion.a / ebony.a / purple.a / blue.a / orange.a / yellow.a / violet.a / brown.a / gray.a / black.a / white.a / pink.a / crimson.a / maroon.a / turquoise.a / azure.a / beige.a / mauve.a / tan.a / buff.a / scarlet.a / pitchblack.a / colored.a / indigo.a / puce.a', 'definition': "A Color serves as a landmark in color-space, either a point-like landmark (e.g. burnt sienna) or a broader region (e.g. blue).  Especially when the Color designates a broad region in color-space, it may be defined with a specific Type, further specified by comparison to the color of a Comparand, modified by a Color_qualifier, or evaluated with a Descriptor.  All color words are generally used to specify the color of some (physical) Entity. 'I really like that shade of blue.' 'The welts on his side had already turned an angry red.' 'The room was bathed in a soft pink light.' 'They promptly set up a zillion bright vermilion pavilions.' 'His face and hands were brown from a life spent in the bright sun of the fields.' "}, {'frame': 'People_by_vocation', 'tfidf': 1.0459790807077425, 'lexical_unit': 'politician.n / farmer.n / attendant.n / clerk.n / consultant.n / gardener.n / lawyer.n / maid.n / manager.n / professor.n / receptionist.n / salesman.n / servant.n / waiter.n / carpenter.n / scientist.n / private eye.n / actress.n / waitress.n / technician.n / toxicologist.n / engineer.n / double agent.n / researcher.n / archaeologist.n / professional.a / agent.n / journalist.n / judge.n / mechanic.n / oilman.n / reporter.n / scholar.n / veterinarian.n / trader.n / mole.n / spy.n / businessperson.n / speculator.n / architect.n / plain-clothes man.n / magistrate.n / officer.n / police officer.n / spokesperson.n / spokesman.n / spokeswoman.n / policeman.n / bodyguard.n / police.n / tailor.n / correspondent.n / cook.n / manservant.n / senator.n / attorney.n / athlete.n / chef.n / bartender.n / teacher.n / pilot.n / flight attendant.n / server.n / software developer.n / web developer.n / saleswoman.n / salesperson.n / homemaker.n / student.n / artist.n / musician.n / singer.n / painter.n / dancer.n / writer.n / editor.n / actor.n / producer.n / director.n / designer.n / neuroscientist.n / biologist.n / chemist.n / physicist.n / anthropologist.n / linguist.n / psychologist.n / psychiatrist.n / mathematician.n / sociologist.n / fire fighter.n / firefighter.n / programmer.n / driver.n', 'definition': "This frame contains  words for Individuals as viewed in terms of their vocation.   The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'Humphrey Bogart was a great actor.'"}, {'frame': 'Protecting', 'tfidf': 0.996980484627768, 'lexical_unit': 'protect.v / shield.v / safeguard.v / insulate.v / secure.v / protection [event].n / protection [entity].n / safeguard.n / shield.n / bulwark.n / guard.v / shelter.n / shelter.v / cover.n', 'definition': "Some Protection prevents a Danger from harming an Asset.  'The rubber on her sneakers protected her from the mud.'  'The coral reefs shielded the coastline from the worst of the waves.'  'A growing number of sustainable farmers are preserving agricultural variety and protecting biodiversity by raising ?heritage? or ?heirloom? varieties.'  'The man responsible for this entire ordeal cowardly shielded himself from justice with the little boy's struggling body.'"}, {'frame': 'Education_teaching', 'tfidf': 0.9807574539480051, 'lexical_unit': 'student.n / pupil.n / teacher.n / professor.n / tutor.n / lecturer.n / tutee.n / schoolmaster.n / schoolmistress.n / schoolteacher.n / study.v / tutor.v / coach.v / educate.v / learn.v / school.v / train.v / training.n / instruct.v / teach.v / instruction.n / education.n / master.v / educational.a / graduate.n / protege.n / cram.v', 'definition': 'This frame contains words referring to teaching and the participants in teaching.  A Student comes to learn either about a Subject; a Skill; a Precept; or a Fact as a result of instruction by a Teacher.  Some of the nouns (schoolmaster, -mistress) in this frame refer to administrative positions and do not take relevant frame elements; these will be moved.    \'Dad taught <fex name="">me that if you work hard, you will be OK - no matter what happens. \'  \'What Our Cat  taught Me  About Marketing!\'  \'For two years she taught me French\'  \'Mom and Dad taught me not to bullshit, because it always came back to bite me in the ass, without fail. \'  \'A young swiss girl up in a swiss chalet taught me how to yodel.\'  \'Young Murdock later met a blind martial arts master known as Stick, who taught him how to use his augmented senses and trained him as a fighter.\'  \' Maria, a woman studying to be a nun is sent from her convent to be the governess of the seven children of a widowed naval captain \'  Frame-Element relations:  Several Frame element relations hold in this frame. There is a core-set {Material, Teacher} (possibly also including Institution); these FE\'s can fill the subject slot of the teach-type verbs. There is another core-set  {Precept, Subject, Skill, Fact, Role} to do with what is learnt. In addition, the FE Qualification may occur with Subject and Role  \'My sister is studying for a maths degree    to be a teacher \' \'She\'s studying maths to be a teacher .\'  Phrases expressing Qualification also very often include information about the Subject (see below), which is to be annotated on the second layer.  \'Bill is studying for a BS in physics/a maths degree.\' \'Bill is studying for a BS in physics/a maths degree.\'  '}, {'frame': 'Natural_features', 'tfidf': 0.9542671371975687, 'lexical_unit': 'rill.n / hill.n / mountain.n / knoll.n / cordillera.n / lake.n / pond.n / tarn.n / creek.n / vale.n / crevasse.n / sound.n / strait.n / valley.n / river.n / sea.n / ocean.n / pool.n / peninsula.n / fjord.n / outcrop.n / island.n / archipelago.n / crag.n / glacier.n / canyon.n / mount.n / cove.n / bay.n / inlet.n / cliff.n / channel.n / headland.n / isthmus.n / cave.n / cavern.n / iceberg.n / berg.n / waterfall.n / falls.n / spring.n / cataract.n / stream.n / brook.n / atoll.n / floe.n / dune.n / massif.n / loch.n / butte.n / fell.n / hillock.n / mesa.n / isle.n / islet.n / cay.n / sandbar.n / coombe.n / key.n / crater.n / bar.n / sandbank.n / sandspit.n / reef.n / clough.n / dale.n / defile.n / dell.n / depression.n / range.n / dingle.n / gap.n / pass.n / glen.n / graben.n / gulch.n / gully.n / hollow.n / ravine.n / beck.n / hummock.n / moraine.n / burn.n / shelf.n / shoal.n / lagoon.n / slough.n / bayou.n / tor.n / eyot.n / plateau.n / seamount.n / guyot.n / volcano.n / declivity.n / corrie.n / ridge.n / skerry.n / rapids.n / watershed.n / height.n / cirque.n / beach.n / continent.n / continental.a / peak.n / coastal.a / wash.n / strand.n / rugged.a / gulf.n / cascade.n / land.n / water.n / range [grazing].n', 'definition': "The Locale is a geographical location as defined by shape.  This frame includes natural geographic features, including land/ice forms and bodies of water.  ' We climbed up the rock cliff.' "}, {'frame': 'Employing', 'tfidf': 0.9183996389612156, 'lexical_unit': 'employ.v / employer.n / employee.n / commission.v / personnel.n / staff.n / employment.n / worker.n', 'definition': "An Employer employs an Employee whose Position entails that the Employee perform certain Tasks in exchange for Compensation.  'I employed him as Chief Gardener for ten years.'"}, {'frame': 'Personal_relationship', 'tfidf': 0.9163088860478323, 'lexical_unit': 'husband.n / wife.n / widow.n / widower.n / widowed.a / spouse.n / couple.n / companion.n / divorcee.n / married.a / betrothed.n / bachelor.n / engaged.a / engagement.n / marriage.n / boyfriend.n / girlfriend.n / single.a / date.v / break-up.n / lover.n / partner.n / mistress.n / suitor.n / court.v / spinster.n / estranged.a / friend.n / betrothed.a / cohabit.v / cohabitation.n / seeing.v / widow.v / divorced.a / buddy.n / moll.n / paramour.n / inamorata.n / beau.n / sugar daddy.n / significant other.n / chum.n / pal.n / cobber.n / mate.n / crush.n / affair.n / adultery.n / amigo.n / sleep (together/with).v / spousal.a / marital.a / affianced.a / friendship.n / romance.n / befriend.v / familiar.a / fiancée.n / fiancé.n / relationship.n / chummy.a', 'definition': "The words in this frame have to do with people and the personal Relationships they are or can be a part of.  Some of the words denote people engaged in a particular kind of Relationship, others denote the Relationship, yet others the events bringing about or ending the Relationships. Many of the words presuppose an understanding of states and events that must have occurred before another event takes place or before a person can be classified in a certain way. '' 'And of course that drippy boyfriend of hers backed her up.'  'As the happy couple took their places there was a stir and a rising babble behind them.'  'Pattie is living proof that if you live with a man, you discover a lot you didn't know when you were just dating him.'"}, {'frame': 'Clothing', 'tfidf': 0.8896309564604515, 'lexical_unit': 'dress.n / frock.n / petticoat.n / ballgown.n / culottes.n / chemise.n / jodhpurs.n / sock.n / stocking.n / leggings.n / tunic.n / slip.n / gown.n / skirt.n / shorts.n / pants.n / trousers.n / wrap.n / shirt.n / blouse.n / cloak.n / cape.n / coat.n / greatcoat.n / overcoat.n / jacket.n / vest.n / tie.n / hose.n / hosiery.n / clothing.n / clothes.n / finery.n / suit.n / necktie.n / neckwear.n / cummerbund.n / scarf.n / shawl.n / bow-tie.n / pantyhose.n / garter.n / panties.n / knickers.n / sweater.n / jumper.n / cardigan.n / pullover.n / blazer.n / kilt.n / swimsuit.n / bikini.n / robe.n / bathrobe.n / apron.n / miniskirt.n / fishnet.n / legwarmers.n / regalia.n / raiment.n / apparel.n / attire.n / vestment.n / livery.n / outfit.n / garment.n / undergarment.n / underclothing.n / underclothes.n / underwear.n / togs.n / undies.n / shift.n / pinafore.n / mitten.n / mitt.n / glove.n / bodice.n / corset.n / parka.n / windbreaker.n / windcheater.n / raincoat.n / pyjama.n / nightie.n / nightdress.n / nightgown.n / nightwear.n / lingerie.n / camisole.n / waistcoat.n / jeans.n / overall.n / coverall.n / garb.n / smock.n / sundress.n / bra.n / brassiere.n / teddy.n / tights.n / jumpsuit.n / kimono.n / kaftan.n / uniform.n / costume.n / motley.n / get-up.n / ensemble.n / surplice.n / galosh.n / welly.n / wellington.n / slipper.n / sandal.n / sneaker.n / stiletto.n / boot.n / shoe.n / gumboot.n / clog.n / footwear.n / sari.n / sarong.n / poncho.n / abaya.n / jerkin.n / crinoline.n / muff.n / cowl.n / tutu.n / t-shirt.n / polo-neck.n / g-string.n / flip-flops.n / one-piece.n / two-piece.n / flannels.n / rags.n / silks.n / satins.n / cottons.n / tweeds.n / ermines.n / muslins.n / tippet.n / doublet.n / tatters.n / neckerchief.n / breeches.n / sweatshirt.n / sweatpants.n / tracksuit.n / alb.n / stole.n / chasuble.n / cope.n / buskin.n / pallium.n / gauntlet.n / cravat.n / briefs.n / cossie.n', 'definition': "This frame refers to clothing and its characteristics,  including anything that people conventionally wear.  The Wearer wears a Garment that has a certain Style, is made of a certain Material, and can be otherwise characterized by a Descriptor.  In some cases, the Body_location (where the garment is worn) and Subregion of the clothing may also be specified.  'Claudia dressed in a dark green cotton DRESS clasped round her slender waist with a broad yellow belt , drank a cup of coffee and opened her neglected post .'"}, {'frame': 'Accoutrements', 'tfidf': 0.8781862802022979, 'lexical_unit': 'regalia.n / anklet.n / ring.n / earring.n / jewellery.n / necklace.n / bangle.n / bracelet.n / coronet.n / crown.n / brooch.n / tiara.n / circlet.n / diadem.n / chain.n / locket.n / pendant.n / wig.n / toupee.n / cufflink.n / glasses.n / spectacles.n / hat.n / hat-pin.n / cap.n / bonnet.n / mask.n / bandanna.n / headband.n / hairpiece.n / fez.n / skullcap.n / top-hat.n / accoutrement.n / yarmulkah.n / balaclava.n / beret.n / biretta.n / boater.n / bowler.n / nightcap.n / panama.n / sombrero.n / trilby.n / turban.n / shako.n / veil.n / headdress.n / headpiece.n / belt.n / trinket.n / choker.n / sporran.n / snood.n / hairnet.n / hairslide.n / hairpin.n / hairband.n / hairgrip.n / sash.n / watch.n / medal.n / medallion.n / ribbon.n / badge.n / armband.n / armlet.n / goggles.n / mitre.n / helm.n / helmet.n / gorget.n / greaves.n / coif.n / hauberk.n / mantle.n / gas mask.n', 'definition': "A Wearer wears accessories, which are made of  some Material and may have a Style.  Most of the accessories are non-essential (clothing) items. 'She wore a black velvet hat on her head.'"}, {'frame': 'Risky_situation', 'tfidf': 0.8781531213555092, 'lexical_unit': 'safe.a / unsafe.a / dangerous.a / risky.a / risk.n / threat.n / danger.n / riskily.adv / safely.adv / warm.a', 'definition': "A particular Situation is likely (or unlikely) to result in a harmful event befalling an Asset. The Situation may be a state, an activity, or some focal entity that must be inferred to be part of some larger Situation involving both it and the Asset. Although the idea of a harmful event is crucial to the understanding of this frame, it is not expressible as an argument of the LUs in this frame.  'Is climate change dangerous for mankind?' 'Customers can make complaints about unsafe products.' 'The primary risk is to our infrastructure.'   See the Run_risk frame for discussion on differentiation regarding the noun risk."}, {'frame': 'Be_on_alert', 'tfidf': 0.8614525036467318, 'lexical_unit': 'alert.n / guard.n', 'definition': "A Protagonist has become aware of a possible Danger (a dangerous event or a Dangerous_entity that might participate in an event harmful to the Protagonist) and is ready to engage in an Activity in response to that Danger.  'All tropps are on high alert for possible intruders following an attack on a nearby compound.'  'we're on alert to stop anyone trying to sneak in.'  'we're on guard for possible sabotage.'"}, {'frame': 'Attention_getting', 'tfidf': 0.8298049152445697, 'lexical_unit': "pal.n / sir.n / ma'am.n / buddy.n / kid.n / dude.n / boy.n / guy.n / miss.n / bro.n / homes.n / yoohoo.intj / hello there.intj / excuse me.intj / hey.intj / officer.n", 'definition': "This frame covers terms used to get someone's attention, including Interjections (e.g. hey, yo) and certain terms of address (Address_term), the latter of which may serve the function of attention getting.    'Hey.' 'Hey, boy.' 'Hey, boy, come over here now!'  "}, {'frame': 'Cause_harm', 'tfidf': 0.8210445350108386, 'lexical_unit': 'bayonet.v / beat.v / boil.v / burn.v / bludgeon.v / club.v / crush.v / cut.v / slice.v / hammer.v / hit.v / kick.v / knife.v / punch.v / smash.v / stab.v / spear.v / stone.v / hurt.v / whip.v / batter.v / break.v / butt.v / chop.v / claw.v / clout.v / crack.v / cudgel.v / cuff.v / fracture.v / gash.v / injure.v / jab.v / bruise.v / knock.v / lash.v / maul.v / pelt.v / strike.v / thwack.v / bash.v / belt.v / buffet.v / horsewhip.v / smack.v / squash.v / slap.v / knee.v / wound.v / pummel.v / electrocute.v / electrocution.n / poisoning.n / beat up.v / torture.v / maim.v / flog.v / impale.v / biff.v / cane.v / flagellate.v / poison.v / transfix.v / welt.v / mutilate.v / elbow.v / sting.v / swipe.v / strike.n / drug.v / twist.v / run through.v', 'definition': "The words in this frame describe situations in which an Agent or a Cause injures a Victim. The Body_part of the Victim which is most directly affected may also be mentioned in the place of the Victim.  In such cases, the Victim is often indicated as a genitive modifier of the Body_part, in which case the Victim FE is indicated on a second FE layer. '' 'Rod saw his father beating his mother.'  'In the end Wormtongue is fed up with being beaten so he cuts Saruman's throat to free himself.'  'A mother stabbed to death by her husband made a secret will stating that he must never be allowed to care for their son.'"}, {'frame': 'Building_subparts', 'tfidf': 0.8207585341418331, 'lexical_unit': 'room.n / antechamber.n / anteroom.n / atelier.n / attic.n / ballroom.n / basement.n / bathroom.n / bedroom.n / ben.n / boudoir.n / buttery.n / catacomb.n / cell.n / cellar.n / chamber.n / chancellery.n / chapel.n / checkroom.n / cloakroom.n / closet.n / corridor.n / den.n / foyer.n / garret.n / hallway.n / kitchen.n / kitchenette.n / larder.n / laundry.n / lift.n / elevator.n / lobby.n / loft.n / nursery.n / office.n / pantry.n / parlor.n / playroom.n / porch.n / refectory.n / repository.n / sacristy.n / salon.n / scullery.n / solarium.n / stoop.n / storeroom.n / studio.n / study.n / veranda.n / vestibule.n / ward.n / wing.n / workroom.n / workshop.n / banquet room.n / dining room.n / dressing room.n / family room.n / guest room.n / living room.n / master bedroom.n / powder room.n / rest room.n / rumpus room.n / sitting room.n / utility room.n / wine cellar.n / apartment.n / flat.n / lavatory.n / TV room.n / belfry.n / tower.n / altar.n / laundry room.n / level.n / floor.n / deck.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}, {'frame': 'Measure_linear_extent', 'tfidf': 0.8168409879601768, 'lexical_unit': 'inch.n / mile.n / yard.n / foot.n / meter.n / kilometer.n / centimeter.n / millimeter.n / furlong.n / light-year.n / block.n', 'definition': "This frame is concerned with nouns that denote Units of measurement for linear extent. The Frame Elements are Unit, Count,  and Stuff.'The shirt is made from 12 miles of pure cotton.''81 miles of dyke are still visible from this point.'"}, {'frame': 'Ground_up', 'tfidf': 0.7895060565209798, 'lexical_unit': 'pulverized.a / ground.a / crushed.a / milled.a / grated.a / flaked.a / powdered.a / shredded.a / crumbled.a / granulated.a', 'definition': "In this frame a Patient is in a state of having been broken into smaller pieces.  ' We enjoy eating ground beef . '"}, {'frame': 'Level_of_force_exertion', 'tfidf': 0.7817193500210128, 'lexical_unit': 'strong.a / weak.a / mighty.a / power.n / might.n / forceful.a / force.n / strength.n / weakness.n / powerful.a / powerless.a', 'definition': 'An Exerter, Action, or Force is capable of exerting or does exert a physical force at a level specified by the target. That physical force may cause deformation or breakage of, or simply motion in the receiving entity. The receiving entity is conceptually present (even if remotely), but is usually not lexically explicit. This frame covers both individual-level/static uses ("a STRONG person") as well as stage-level/dynamic uses ("a STRONG push"). However, the durative, individual-level meaning appears more frequently in the data and seems more basic.   \'Eugenie loved the sea and was a strong swimmer.\'  \'Spartacus dealt the Roman soldier a mighty blow.\'  \'A powerful force tore off the tree\'s branches.\'  Exerter, Action, and Force belong to a Core set. \'\'  There are several productive metaphors covered by this frame. The first and most common is one in which social influence or control is conceptualized as the physical exertion of force. The social influence/control is more specifically a propensity to cause change in social realms such as the economic, political, militaristic, cultural, or intimate: \'There were theoretical limits to the power of the king.\' \'Voters in the South have a strong incentive to keep such Democrats in office.\'  Another similar metaphor is one in which psychological influence or control is understood as the physical exertion of force. The psychological influence/control includes the emotional as well: \'Poetic words in a text can be given more emotive power by using melisma.\' \'He was a forceful speaker.\'  A third metaphor involves the amount of an entity construed as the physical force exertion of said entity. Depending on context, amount could be volume, etc. (“STRONGEST critics”; “MIGHTY uproar”).  \'\'  Two related physical force dynamic frames are Level_of_force_resistance and Dynamism.  This frame is distinguished from the Level_of_force_resistance frame in that it describes the level of force exertion instead of the level of resistance, and also in that there are three categories of Core FE available to the target (i.e Exerter, Action, or Force), whereas in Level_of_force_resistance there are only two Core FEs (i.e. Resisting_entity and Opposing_force). Of the latter frame\'s FEs, Opposing_force specifies the thing that the main entity resists to a level desginated by the target. Its parallel in Level_of_force_exertion is implied but backgrounded to the extent that it rarely appears as explicit lexical material; thus there is no corresponding Core FE.   This frame differs from Dynamism with regard to individual-level cases; targets here express the FE\'s capability. In contrast, Dynamism targets express the FE\'s tendency. For example, "a STRONG person" is generally construed as a person who is capable of strength, while "an ENERGETIC person" (energetic.a from the Dynamism frame) is construed as a person who tends to be energetic.   However, there is overlap between the two frames in stage-level cases - "a STRONG push" and "an ENERGETIC push" seem rather comparable. '}, {'frame': 'Architectural_part', 'tfidf': 0.7732976856649232, 'lexical_unit': 'fireplace.n / floor.n / ceiling.n / mantel.n / roof.n / rail.n / wall.n / counter.n / facade.n / foundation.n / flight.n / landing.n / window.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  'We need new counters for the kitchen'  'The storm ripped off the bathroom's roof'  "}, {'frame': 'System_complexity', 'tfidf': 0.7666235219120122, 'lexical_unit': 'complex.a / simple.a / byzantine.a', 'definition': "A System is perceived as complex depending on the intricacy of the interconnectivty of its parts or components. These individual parts or components do not function as frame elements in this frame, even though they are implied by its definition. A Dimension may also be defined which situates the System within a certain domain.  '' 'San Diego freeways are a complex array of poorly maintained roads.' ' Childrens' toys are simple to assemble.' 'The hierarchy is complexin structure.' 'The newly-discovered humanoid spoke a syntactically complex language.'"}, {'frame': 'Political_locales', 'tfidf': 0.7654977116422362, 'lexical_unit': 'barony.n / territory.n / country.n / province.n / duchy.n / viscountcy.n / county.n / state [sovereign].n / principality.n / borough.n / town.n / realm.n / kingdom.n / municipality.n / metropolis.n / megalopolis.n / city.n / world.n / federal.a / global.a / parish.n / diocese.n / international.a / local.a / locality.n / municipal.a / national.a / empire.n / village.n / nation.n / commonwealth.n / internationally.adv / multinational.a / city-state.n / district.n / fiefdom.n / jurisdiction.n / land.n / state [internal].n / provincial.a / territorial.a / township.n', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'Buildings', 'tfidf': 0.7606553437398035, 'lexical_unit': 'house.n / houseboat.n / church.n / tower.n / bungalow.n / cabin.n / castle.n / condominium.n / cottage.n / dacha.n / dormitory.n / dwelling.n / farmhouse.n / home.n / hospital.n / hostel.n / hotel.n / igloo.n / lodge.n / mansion.n / monastery.n / motel.n / palace.n / pension.n / pueblo.n / residence.n / shack.n / shanty.n / shelter.n / tenement.n / tent.n / villa.n / acropolis.n / arena.n / auditorium.n / barn.n / barracks.n / basilica.n / blockhouse.n / campanile.n / caravan.n / caravanserai.n / chalet.n / chateau.n / conservatory.n / garage.n / gazebo.n / greenhouse.n / hall.n / hangar.n / hippodrome.n / hovel.n / inn.n / kennel.n / kiosk.n / lighthouse.n / maisonette.n / mall.n / manor.n / manse.n / mosque.n / outbuilding.n / outhouse.n / pagoda.n / palazzo.n / pavilion.n / penthouse.n / pyramid.n / rotunda.n / shebang.n / shed.n / skyscraper.n / stable.n / stadium.n / supermarket.n / synagogue.n / tabernacle.n / tavern.n / tepee.n / terminal.n / triplex.n / warehouse.n / wigwam.n / hacienda.n / homestead.n / bunker.n / theater.n / bar.n / city hall.n / disco.n / discotheque.n / library.n / temple.n / building.n / structure.n / housing.n / fortress.n / fortification.n / citadel.n / fort.n / airport.n / pub.n / high-rise.n / quarters.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Connecting_architecture', 'tfidf': 0.7434907783173583, 'lexical_unit': 'door.n / elevator.n / lift.n / escalator.n / corridor.n / hallway.n / window.n / staircase.n / stairs.n / step.n / gate.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  The Part itself connects locations within the building to each other, Connected_locations. If a particular point of view is adopted in the context of real or imagined motion, then one of the locations can be construed as Goal and the other as Source.   'It was of great interest to me to see the star signs of Taurus the Bull and Leo the Lion on the staircase to the upper Palace.'  'All visitors may use the elevator between the Main Level and the Upper Level instead of the main staircase'  'The window into the garden was open.'"}, {'frame': 'Hostile_encounter', 'tfidf': 0.7241878543188146, 'lexical_unit': 'battle.n / fight.n / scuffle.n / spat.n / altercation.n / duel.n / clash.n / confrontation.n / row.n / fighting.n / bout.n / struggle.n / hostility.n / skirmish.n / combat.n / squabble.n / stalemate.n / brawl.n / strife.n / fight.v / battle.v / duel.v / clash.v / brawl.v / skirmish.v / scuffle.v / confront.v / war.n / war.v / gunfight.n / shootout.n / standoff.n / showdown.n / wrangling.n / tiff.n / fistfight.n / firefight.n / conflict.n / dust-up.n / warfare.n / cw.n / bw.n / tussle.n / struggle.v / infighting.n / engage.v / engagement.n', 'definition': "This frame consists of words that describe a hostile encounter between opposing forces (Side_1 and Side_2, collectively conceptualizable as Sides) over a disputed Issue and/or in order to reach a specific  Purpose. '' 'He still wants to fight Mike Tyson in about 8 months.'  'Dennis Andries's European cruiserweight title clash against Akim Tafer of France in Beausoleil last February has been voted as the EBU's fight of the year.'"}, {'frame': 'Being_at_risk', 'tfidf': 0.7235899307607336, 'lexical_unit': 'secure.a / security.n / safe.a / insecure.a / unsafe.a / safety.n / risk.n / vulnerable.a / vulnerability.n / danger.n / threatened.a / susceptibility.n / susceptible.a', 'definition': 'An Asset is in a state where it is exposed to or otherwise liable to be affected by a Harmful_event, which may be metonymically evoked by reference to a Dangerous_entity. Words expressing relative safety (i.e., lack of risk) are also in this frame.  \'If you are a farmer, you are at risk for hearing loss caused by noise exposure in your work.\'  \'No child is secure from the temptation to do what "my friends" are doing.\'  \'Our nation is making a disastrous mistake thinking that we can have security from people: There is only security with people. \'  \'You don\'t have security against impersonation unless you have security against eavesdropping.\''}, {'frame': 'Vehicle_subpart', 'tfidf': 0.7084290223046532, 'lexical_unit': 'door.n / window.n / seat.n / seatbelt.n / tire.n / wheel.n / brake.n / engine.n / hood.n / trunk.n / part.n / windshield.n', 'definition': "An entity is integrated into a vehicle as a Part of a (possibly unexpressed) Whole which may refer to the whole vehicle or merely to a sub-part of the vehicle.  '' 'The car's engine started smoking so we pulled over.' 'Put the bags in the trunk.' 'One should always wear a seatbelt while driving.' "}];
+        var frame_list_2 = [{'frame': 'People_by_age', 'tfidf': 3.2084426879882812, 'lexical_unit': 'geezer.n / coot.n / spring chicken.n / adolescent.n / adult.n / baby.n / boy.n / child.n / infant.n / neonate.n / teenager.n / kid.n / youth.n / youngster.n / elderly.n / newborn.n', 'definition': "This frame contains words for individuals as viewed in terms of their age. The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'He is a 12-year-old kid.'"}, {'frame': 'Attention_getting', 'tfidf': 2.2486608028411865, 'lexical_unit': "pal.n / sir.n / ma'am.n / buddy.n / kid.n / dude.n / boy.n / guy.n / miss.n / bro.n / homes.n / yoohoo.intj / hello there.intj / excuse me.intj / hey.intj / officer.n", 'definition': "This frame covers terms used to get someone's attention, including Interjections (e.g. hey, yo) and certain terms of address (Address_term), the latter of which may serve the function of attention getting.    'Hey.' 'Hey, boy.' 'Hey, boy, come over here now!'  "}, {'frame': 'Member_of_military', 'tfidf': 2.222221851348877, 'lexical_unit': 'soldier.n / marine.n / sailor.n / airman.n / troop.n / service member.n / commando.n', 'definition': "A Person is a member of an organized military organization belonging to a nation-state or similar body. The military membership may be part-time, but is considered a job. This is in opposition to combatants who may be loyal to a particular cause but are not part of the military arm of a government.  'The British at one point had an occupying army of over a million well-trained soldiers.'  'After 9/11 she decided to become a full-time airman'.  'US soldiers have fought in the region for the past twenty years with no end in sight.'"}, {'frame': 'Appellations', 'tfidf': 2.050450563430786, 'lexical_unit': 'officer.n / general.n / captain.n / president.n / bishop.n / chairman.n / chairperson.n / chief.n / commander.n / commissioner.n / congressman.n / congresswoman.n / director.n / duchess.n / emperor.n / empress.n / executive.n / governor.n / headmaster.n / imam.n / kaiser.n / king.n / leader.n / legislator.n / maharaja.n / mayor.n / minister.n / mogul.n / monarch.n / official.n / premier.n / prince.n / principal.n / queen.n / representative.n / secretary.n / shah.n / sheik.n / sultan.n / superintendent.n / supervisor.n / tsar.n / mother.n / father.n / doctor.n / dr.n / mr.n / mrs.n / ms.n / miss.n / child.n / aunt.n / uncle.n / sister.n / brother.n / cousin.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Kinship', 'tfidf': 1.834067463874817, 'lexical_unit': 'father.n / mother.n / son.n / daughter.n / uncle.n / aunt.n / auntie.n / dad.n / daddy.n / grandson.n / granddaughter.n / niece.n / nephew.n / brother.n / sister.n / grandfather.n / grandmother.n / mother-in-law.n / father-in-law.n / son-in-law.n / daughter-in-law.n / stepson.n / stepdaughter.n / stepmother.n / stepfather.n / stepbrother.n / stepsister.n / brother-in-law.n / sister-in-law.n / cousin.n / mom.n / great-grandson.n / great-granddaughter.n / parent.n / child.n / in-law.n / family.n / sibling.n / ancestor.n / descendant.n / forebear.n / forefather.n / kinsman.n / kinsfolk.n / kinswoman.n / relative.n / kin.n / maternal.a / paternal.a / parental.a / filial.a / ancestral.a / scion.n / kid.n / offspring.n / clan.n / people.n / name.n / kinship.n', 'definition': "This frame contains words that denote Kinship relations. In annotating the directional uses of these words, we use the standard terms from anthropology, Ego and Alter.  'Matilde is Gilberto's cousin once removed' Compare to: Appellations."}, {'frame': 'Biological_area', 'tfidf': 1.8184638023376465, 'lexical_unit': 'woodland.n / mudflat.n / swamp.n / prairie.n / desert.n / forest.n / bog.n / wood.n / jungle.n / swampland.n / rainforest.n / plain.n / meadowland.n / heathland.n / copse.n / glade.n / tundra.n / taiga.n / marsh.n / marshland.n / fen.n / moor.n / grassland.n / mead.n / lea.n / veld.n / wold.n / thicket.n / savanna.n / mire.n / bush.n / greenwood.n / spinney.n / scrub.n / oasis.n / shrubbery.n', 'definition': " This frame contains words that denote large ecological areas as well as smaller locations characterized by the type of life present--in other words, geography locations as defined by biota.  'I've spent a long time in the rugged prairies of northern Llorwyn.'"}, {'frame': 'Plants', 'tfidf': 1.758170485496521, 'lexical_unit': 'tree.n / weed.n', 'definition': 'The LUs in this frame refer to biological entities other than human beings and animals, which are labeled by the FE Plant.'}, {'frame': 'Be_on_alert', 'tfidf': 1.7049602270126343, 'lexical_unit': 'alert.n / guard.n', 'definition': "A Protagonist has become aware of a possible Danger (a dangerous event or a Dangerous_entity that might participate in an event harmful to the Protagonist) and is ready to engage in an Activity in response to that Danger.  'All tropps are on high alert for possible intruders following an attack on a nearby compound.'  'we're on alert to stop anyone trying to sneak in.'  'we're on guard for possible sabotage.'"}, {'frame': 'Protecting', 'tfidf': 1.5929983854293823, 'lexical_unit': 'protect.v / shield.v / safeguard.v / insulate.v / secure.v / protection [event].n / protection [entity].n / safeguard.n / shield.n / bulwark.n / guard.v / shelter.n / shelter.v / cover.n', 'definition': "Some Protection prevents a Danger from harming an Asset.  'The rubber on her sneakers protected her from the mud.'  'The coral reefs shielded the coastline from the worst of the waves.'  'A growing number of sustainable farmers are preserving agricultural variety and protecting biodiversity by raising ?heritage? or ?heirloom? varieties.'  'The man responsible for this entire ordeal cowardly shielded himself from justice with the little boy's struggling body.'"}, {'frame': 'Natural_features', 'tfidf': 1.5889496803283691, 'lexical_unit': 'rill.n / hill.n / mountain.n / knoll.n / cordillera.n / lake.n / pond.n / tarn.n / creek.n / vale.n / crevasse.n / sound.n / strait.n / valley.n / river.n / sea.n / ocean.n / pool.n / peninsula.n / fjord.n / outcrop.n / island.n / archipelago.n / crag.n / glacier.n / canyon.n / mount.n / cove.n / bay.n / inlet.n / cliff.n / channel.n / headland.n / isthmus.n / cave.n / cavern.n / iceberg.n / berg.n / waterfall.n / falls.n / spring.n / cataract.n / stream.n / brook.n / atoll.n / floe.n / dune.n / massif.n / loch.n / butte.n / fell.n / hillock.n / mesa.n / isle.n / islet.n / cay.n / sandbar.n / coombe.n / key.n / crater.n / bar.n / sandbank.n / sandspit.n / reef.n / clough.n / dale.n / defile.n / dell.n / depression.n / range.n / dingle.n / gap.n / pass.n / glen.n / graben.n / gulch.n / gully.n / hollow.n / ravine.n / beck.n / hummock.n / moraine.n / burn.n / shelf.n / shoal.n / lagoon.n / slough.n / bayou.n / tor.n / eyot.n / plateau.n / seamount.n / guyot.n / volcano.n / declivity.n / corrie.n / ridge.n / skerry.n / rapids.n / watershed.n / height.n / cirque.n / beach.n / continent.n / continental.a / peak.n / coastal.a / wash.n / strand.n / rugged.a / gulf.n / cascade.n / land.n / water.n / range [grazing].n', 'definition': "The Locale is a geographical location as defined by shape.  This frame includes natural geographic features, including land/ice forms and bodies of water.  ' We climbed up the rock cliff.' "}, {'frame': 'Connecting_architecture', 'tfidf': 1.5511215925216675, 'lexical_unit': 'door.n / elevator.n / lift.n / escalator.n / corridor.n / hallway.n / window.n / staircase.n / stairs.n / step.n / gate.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  The Part itself connects locations within the building to each other, Connected_locations. If a particular point of view is adopted in the context of real or imagined motion, then one of the locations can be construed as Goal and the other as Source.   'It was of great interest to me to see the star signs of Taurus the Bull and Leo the Lion on the staircase to the upper Palace.'  'All visitors may use the elevator between the Main Level and the Upper Level instead of the main staircase'  'The window into the garden was open.'"}, {'frame': 'Buildings', 'tfidf': 1.5405681133270264, 'lexical_unit': 'house.n / houseboat.n / church.n / tower.n / bungalow.n / cabin.n / castle.n / condominium.n / cottage.n / dacha.n / dormitory.n / dwelling.n / farmhouse.n / home.n / hospital.n / hostel.n / hotel.n / igloo.n / lodge.n / mansion.n / monastery.n / motel.n / palace.n / pension.n / pueblo.n / residence.n / shack.n / shanty.n / shelter.n / tenement.n / tent.n / villa.n / acropolis.n / arena.n / auditorium.n / barn.n / barracks.n / basilica.n / blockhouse.n / campanile.n / caravan.n / caravanserai.n / chalet.n / chateau.n / conservatory.n / garage.n / gazebo.n / greenhouse.n / hall.n / hangar.n / hippodrome.n / hovel.n / inn.n / kennel.n / kiosk.n / lighthouse.n / maisonette.n / mall.n / manor.n / manse.n / mosque.n / outbuilding.n / outhouse.n / pagoda.n / palazzo.n / pavilion.n / penthouse.n / pyramid.n / rotunda.n / shebang.n / shed.n / skyscraper.n / stable.n / stadium.n / supermarket.n / synagogue.n / tabernacle.n / tavern.n / tepee.n / terminal.n / triplex.n / warehouse.n / wigwam.n / hacienda.n / homestead.n / bunker.n / theater.n / bar.n / city hall.n / disco.n / discotheque.n / library.n / temple.n / building.n / structure.n / housing.n / fortress.n / fortification.n / citadel.n / fort.n / airport.n / pub.n / high-rise.n / quarters.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Food', 'tfidf': 1.5026030540466309, 'lexical_unit': 'fruit.n / apple.n / banana.n / vegetable.n / carrot.n / potato.n / pea.n / meat.n / beef.n / lamb.n / veal.n / poultry.n / chicken.n / turkey.n / fish.n / salmon.n / tuna.n / shellfish.n / shrimp.n / lobster.n / milk.n / cheese.n / egg.n / butter.n / nut.n / almond.n / peanut.n / pasta.n / noodle.n / herb.n / spice.n / pepper.n / basil.n / cereal.n / lettuce.n / berry.n / bread.n / roll.n / cracker.n / cake.n / pancake.n / cheesecake.n / pastry.n / croissant.n / cookie.n / biscuit.n / sweet.n / chocolate.n / sweetener.n / sugar.n / honey.n / fat.n / oil.n / vinegar.n / coffee.n / juice.n / soup.n / stew.n / sauce.n / dressing.n / vinaigrette.n / ketchup.n / mayonnaise.n / lasagne.n / food.n / tea.n / water.n / date.n / cabbage.n / MRE.n / beer.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Animals', 'tfidf': 1.4632173776626587, 'lexical_unit': 'dog.n / cat.n / pig.n / cow.n / sheep.n / animal.n', 'definition': "The LUs in this frame refer to biological entities other than human beings and plants, which are labeled by the FE Animal.  ''  'My husband and I adopted a really sweet dog last year.'  'The cows that live on the farm down the road are always mooing loudly.'"}, {'frame': 'Architectural_part', 'tfidf': 1.4417223930358887, 'lexical_unit': 'fireplace.n / floor.n / ceiling.n / mantel.n / roof.n / rail.n / wall.n / counter.n / facade.n / foundation.n / flight.n / landing.n / window.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  'We need new counters for the kitchen'  'The storm ripped off the bathroom's roof'  "}, {'frame': 'Political_locales', 'tfidf': 1.437098503112793, 'lexical_unit': 'barony.n / territory.n / country.n / province.n / duchy.n / viscountcy.n / county.n / state [sovereign].n / principality.n / borough.n / town.n / realm.n / kingdom.n / municipality.n / metropolis.n / megalopolis.n / city.n / world.n / federal.a / global.a / parish.n / diocese.n / international.a / local.a / locality.n / municipal.a / national.a / empire.n / village.n / nation.n / commonwealth.n / internationally.adv / multinational.a / city-state.n / district.n / fiefdom.n / jurisdiction.n / land.n / state [internal].n / provincial.a / territorial.a / township.n', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'Color', 'tfidf': 1.399056315422058, 'lexical_unit': 'red.a / green.a / color.n / vermilion.a / ebony.a / purple.a / blue.a / orange.a / yellow.a / violet.a / brown.a / gray.a / black.a / white.a / pink.a / crimson.a / maroon.a / turquoise.a / azure.a / beige.a / mauve.a / tan.a / buff.a / scarlet.a / pitchblack.a / colored.a / indigo.a / puce.a', 'definition': "A Color serves as a landmark in color-space, either a point-like landmark (e.g. burnt sienna) or a broader region (e.g. blue).  Especially when the Color designates a broad region in color-space, it may be defined with a specific Type, further specified by comparison to the color of a Comparand, modified by a Color_qualifier, or evaluated with a Descriptor.  All color words are generally used to specify the color of some (physical) Entity. 'I really like that shade of blue.' 'The welts on his side had already turned an angry red.' 'The room was bathed in a soft pink light.' 'They promptly set up a zillion bright vermilion pavilions.' 'His face and hands were brown from a life spent in the bright sun of the fields.' "}, {'frame': 'Roadways', 'tfidf': 1.3728772401809692, 'lexical_unit': 'road.n / path.n / way.n / street.n / avenue.n / artery.n / highway.n / expressway.n / motorway.n / sidewalk.n / pavement.n / underpass.n / overpass.n / railway.n / railroad.n / route.n / line.n / crosswalk.n / bridge.n / tunnel.n / autobahn.n / lane.n / track.n / trail.n / boulevard.n / course.n / freeway.n / pathway.n / roadway.n / thoroughfare.n / byway.n / cul-de-sac.n / driveway.n / parkway.n / runway.n / bypass.n / flyover.n / rail.n', 'definition': "This frame involves stable Roadways which connect two stable Endpoints, the Source and the Goal.  Being physical objects, these Roadways may have Names and Characteristics; they are also made of a Material.  They also cover ground, so they may have a Path or a Relative_location that the travel occurs in.  ' We crossed the brick road.' ' I prefer to travel on highway I-80.'  'This is the only highway between Lodi and Sonoma.' ' She dreaded turning onto the busy street.'"}, {'frame': 'Working_a_post', 'tfidf': 1.3159120082855225, 'lexical_unit': 'man.v / staff.v / work.v', 'definition': "The Agent is assigned to a Post where he or she performs a task associated with that Post. Alternatively, the Agent is expressed as acting with respect to a Salient_entity associated with the task. In most cases the Salient_entity is located at the Post.  'Volunteers were staffing the telephones.'  'Man your stations! CNI'"}, {'frame': 'Clothing', 'tfidf': 1.162983775138855, 'lexical_unit': 'dress.n / frock.n / petticoat.n / ballgown.n / culottes.n / chemise.n / jodhpurs.n / sock.n / stocking.n / leggings.n / tunic.n / slip.n / gown.n / skirt.n / shorts.n / pants.n / trousers.n / wrap.n / shirt.n / blouse.n / cloak.n / cape.n / coat.n / greatcoat.n / overcoat.n / jacket.n / vest.n / tie.n / hose.n / hosiery.n / clothing.n / clothes.n / finery.n / suit.n / necktie.n / neckwear.n / cummerbund.n / scarf.n / shawl.n / bow-tie.n / pantyhose.n / garter.n / panties.n / knickers.n / sweater.n / jumper.n / cardigan.n / pullover.n / blazer.n / kilt.n / swimsuit.n / bikini.n / robe.n / bathrobe.n / apron.n / miniskirt.n / fishnet.n / legwarmers.n / regalia.n / raiment.n / apparel.n / attire.n / vestment.n / livery.n / outfit.n / garment.n / undergarment.n / underclothing.n / underclothes.n / underwear.n / togs.n / undies.n / shift.n / pinafore.n / mitten.n / mitt.n / glove.n / bodice.n / corset.n / parka.n / windbreaker.n / windcheater.n / raincoat.n / pyjama.n / nightie.n / nightdress.n / nightgown.n / nightwear.n / lingerie.n / camisole.n / waistcoat.n / jeans.n / overall.n / coverall.n / garb.n / smock.n / sundress.n / bra.n / brassiere.n / teddy.n / tights.n / jumpsuit.n / kimono.n / kaftan.n / uniform.n / costume.n / motley.n / get-up.n / ensemble.n / surplice.n / galosh.n / welly.n / wellington.n / slipper.n / sandal.n / sneaker.n / stiletto.n / boot.n / shoe.n / gumboot.n / clog.n / footwear.n / sari.n / sarong.n / poncho.n / abaya.n / jerkin.n / crinoline.n / muff.n / cowl.n / tutu.n / t-shirt.n / polo-neck.n / g-string.n / flip-flops.n / one-piece.n / two-piece.n / flannels.n / rags.n / silks.n / satins.n / cottons.n / tweeds.n / ermines.n / muslins.n / tippet.n / doublet.n / tatters.n / neckerchief.n / breeches.n / sweatshirt.n / sweatpants.n / tracksuit.n / alb.n / stole.n / chasuble.n / cope.n / buskin.n / pallium.n / gauntlet.n / cravat.n / briefs.n / cossie.n', 'definition': "This frame refers to clothing and its characteristics,  including anything that people conventionally wear.  The Wearer wears a Garment that has a certain Style, is made of a certain Material, and can be otherwise characterized by a Descriptor.  In some cases, the Body_location (where the garment is worn) and Subregion of the clothing may also be specified.  'Claudia dressed in a dark green cotton DRESS clasped round her slender waist with a broad yellow belt , drank a cup of coffee and opened her neglected post .'"}, {'frame': 'Leadership', 'tfidf': 1.1602801084518433, 'lexical_unit': 'bishop.n / boss.n / captain.n / chairman.n / chairperson.n / chief.n / chieftain.n / command.v / commandant.n / commander.n / director.n / emperor.n / general.n / govern.v / governor.n / head.n / head.v / imam.n / king.n / lead.v / leader.n / mayor.n / minister.n / monarch.n / premier.n / preside.v / president [political].n / principal.n / queen.n / reign.v / rule.v / ruler.n / run.v / shah.n / sovereign.n / sultan.n / vice-captain.n / vice-chairman.n / vice-president [political].n / vice-principal.n / viceroy.n / caliph.n / suzerain.n / satrap.n / rector.n / headmaster.n / doyen.n / doyenne.n / empress.n / maharaja.n / tsar.n / tsarina.n / sheik.n / vizier.n / duchess.n / khan.n / khedive.n / kaiser.n / pasha.n / overlord.n / baron.n / dictator.n / official.n / prime minister.n / authority.n / drug lord.n / government.n / power [govt].n / presidential.a / regime.n / director general.n / command.n / charge.n / power [rule].n / rule.n / high-priest.n / diplomat.n / legislature.n / congressman.n / leadership.n / senate.n / mogul.n / prince.n / administration.n / major general.a / representative.n / executive.n / crown prince.n / legislator.n / administer.v / secretary.n / lawmaker.n / spearhead.v / CEO.n / chief executive officer.n / officer.n / state.n / despot.n / tyrant.n / chair.v / superintendent.n / commissioner.n / supervisor.n / congresswoman.n / president [non-political].n / vice-president [non-political].n', 'definition': "These are words referring to control by a Leader over a particular entity  or group (the Governed) or an Activity. The frame contains both nouns referring to a title or position (e.g. director, king, president), and verbs describing the action of leadership (e.g. rule, reign). With verbs, it is possible to mention the Role played by the Leader (often a name of a leading position, e.g., king)  'Sebek em hat was a Leader of Priests. ca. 1780 BC' 'In 1789 Fletcher Christian led the mutiny on HMS Bounty' 'Louis XIV ruled over his people as king for the longest period of any European monarch.' Compare to: Appellations. "}, {'frame': 'Residence', 'tfidf': 1.1513043642044067, 'lexical_unit': 'reside.v / resident.n / dwell.v / stay.v / lodge.v / inhabit.v / inhabitant.n / live.v / camp.v / squat.v / camp.n / camped.a / room-mate.n / squatter.n / occupy.v / dweller.n / camper.n / occupant.n / room.v / shack up.v / bivouac.v / bivouac.n / tenant.n', 'definition': "This frame has to do with people (the Residents) residing in Locations, sometimes with a Co-resident.  'Peter lives in New York.' 'Sue is an inhabitant of Los Angeles.'"}, {'frame': 'Ground_up', 'tfidf': 1.146698236465454, 'lexical_unit': 'pulverized.a / ground.a / crushed.a / milled.a / grated.a / flaked.a / powdered.a / shredded.a / crumbled.a / granulated.a', 'definition': "In this frame a Patient is in a state of having been broken into smaller pieces.  ' We enjoy eating ground beef . '"}, {'frame': 'Emptying', 'tfidf': 1.1329432725906372, 'lexical_unit': 'clear.v / drain.v / empty.v / purge.v / strip.v / divest.v / rid.v / disembowel.v / skin.v / core.v / peel.v / gut.v / bone.v / debug.v / deforest.v / degrease.v / descale.v / scalp.v / defrost.v / delouse.v / eviscerate.v / denude.v / unload.v / emptying.n / expurgate.v / void.v / evacuate.v / debone.v / devein.v / disarm.v / disarmament.n / decontaminate.v / decontamination.n / cleanse.v / pit.v / seed.v / stone.v / stalk.v / flush.v / expunge.v / weed.v', 'definition': "These are words relating to emptying containers and clearing areas of some substance or items. The area or container can appear as the direct object with all these verbs, and is designated  Source because it is the source of motion of the Theme. Corresponding to its nuclear argument status, it is also affected in some crucial way, unlike Source in other frames. Some words in this frame, such as empty, may also occur with Path or Goal expressions, e.g.  'The players emptied the bucket over his head. '"}, {'frame': 'Vehicle_subpart', 'tfidf': 1.1209238767623901, 'lexical_unit': 'door.n / window.n / seat.n / seatbelt.n / tire.n / wheel.n / brake.n / engine.n / hood.n / trunk.n / part.n / windshield.n', 'definition': "An entity is integrated into a vehicle as a Part of a (possibly unexpressed) Whole which may refer to the whole vehicle or merely to a sub-part of the vehicle.  '' 'The car's engine started smoking so we pulled over.' 'Put the bags in the trunk.' 'One should always wear a seatbelt while driving.' "}, {'frame': 'Locale_by_use', 'tfidf': 1.1148505210876465, 'lexical_unit': 'farm.n / hedge.n / mine.n / field.n / airfield.n / cemetery.n / rural.a / country.n / countryside.n / urban.a / city.n / village.n / center.n / facility.n / complex.n / installation.n / reactor.n / harbor.n / lab.n / plant.n / laboratory.n / depot.n / site.n / school.n / university.n / factory.n / silo.n / parking lot.n / base.n / settlement.n / courtyard.n / institute.n / pub.n / restaurant.n / museum.n / gallery.n / garden.n / park.n / square.n / theater.n / shop.n / college.n / open space.a / post office.n / canal.n / green.n / park[2].n / ranch.n / headquarters.n / downtown.n / campus.n / zoo.n / port.n / work.n / court.n / range.n / compound.n / station.n / firehouse.n / bathhouse.n / development.n / plantation.n / safe house.n / boutique.n', 'definition': "Geography as defined by its use.   'You must land in the next airfield, as this one is currently having difficulties.' 'The new sports complex was the tallest building on campus, oddly enough.' 'Cities of the Northeast tend to be dingier.'"}, {'frame': 'Cotheme', 'tfidf': 1.0977582931518555, 'lexical_unit': "accompany.v / chase.v / conduct.v / escort.v / follow.v / guide.v / hound.v / lead.v / pursue.v / shadow.v / shepherd.v / tail.v / track.v / trail.v / pursuit.n / pursuer.n / usher.v / stalk.v / tag along.v / walk.v / guided.a / dog.v / dog (someone's) steps.idio / show.v / lead the way.v", 'definition': "This frame contains words that necessarily indicate the motion of two distinct objects. The Theme is typically animate and is expressed the same way a Self-mover is expressed in the Self-motion frame--i.e. as the subject of a target verb. The Cotheme may or may not be animate and is typically expressed as a direct object or an oblique. Source, Path, Goal, and the other frame elements common to motion words also regularly occur with the words in this frame.  '' 'She accompanied him in the ambulance to Hollywood Memorial Hospital.'  'Police persue teenage joyrider across three counties.'  'My pursuit of academic superiority shows that I was still striving to be the person my parents wanted me to be.'"}, {'frame': 'Directional_locative_relation', 'tfidf': 1.064568281173706, 'lexical_unit': 'above.prep / below.prep / east.adv / east.n / north.adv / north.n / northeast.adv / northeast.n / northwest.adv / northwest.n / south.adv / south.n / southeast.adv / southeast.n / southwest.adv / southwest.n / west.adv / west.n', 'definition': "A Figure is located relative to a (presumably more easily located) Ground, asserting that the Figure lies (approximately) on line from the Ground whose direction is established by semantic types of the particular LUs.  'The plane landed 10 miles due north of Lake Travis in an empty field .' "}, {'frame': 'Building_subparts', 'tfidf': 1.0605907440185547, 'lexical_unit': 'room.n / antechamber.n / anteroom.n / atelier.n / attic.n / ballroom.n / basement.n / bathroom.n / bedroom.n / ben.n / boudoir.n / buttery.n / catacomb.n / cell.n / cellar.n / chamber.n / chancellery.n / chapel.n / checkroom.n / cloakroom.n / closet.n / corridor.n / den.n / foyer.n / garret.n / hallway.n / kitchen.n / kitchenette.n / larder.n / laundry.n / lift.n / elevator.n / lobby.n / loft.n / nursery.n / office.n / pantry.n / parlor.n / playroom.n / porch.n / refectory.n / repository.n / sacristy.n / salon.n / scullery.n / solarium.n / stoop.n / storeroom.n / studio.n / study.n / veranda.n / vestibule.n / ward.n / wing.n / workroom.n / workshop.n / banquet room.n / dining room.n / dressing room.n / family room.n / guest room.n / living room.n / master bedroom.n / powder room.n / rest room.n / rumpus room.n / sitting room.n / utility room.n / wine cellar.n / apartment.n / flat.n / lavatory.n / TV room.n / belfry.n / tower.n / altar.n / laundry room.n / level.n / floor.n / deck.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}, {'frame': 'Education_teaching', 'tfidf': 1.0498886108398438, 'lexical_unit': 'student.n / pupil.n / teacher.n / professor.n / tutor.n / lecturer.n / tutee.n / schoolmaster.n / schoolmistress.n / schoolteacher.n / study.v / tutor.v / coach.v / educate.v / learn.v / school.v / train.v / training.n / instruct.v / teach.v / instruction.n / education.n / master.v / educational.a / graduate.n / protege.n / cram.v', 'definition': 'This frame contains words referring to teaching and the participants in teaching.  A Student comes to learn either about a Subject; a Skill; a Precept; or a Fact as a result of instruction by a Teacher.  Some of the nouns (schoolmaster, -mistress) in this frame refer to administrative positions and do not take relevant frame elements; these will be moved.    \'Dad taught <fex name="">me that if you work hard, you will be OK - no matter what happens. \'  \'What Our Cat  taught Me  About Marketing!\'  \'For two years she taught me French\'  \'Mom and Dad taught me not to bullshit, because it always came back to bite me in the ass, without fail. \'  \'A young swiss girl up in a swiss chalet taught me how to yodel.\'  \'Young Murdock later met a blind martial arts master known as Stick, who taught him how to use his augmented senses and trained him as a fighter.\'  \' Maria, a woman studying to be a nun is sent from her convent to be the governess of the seven children of a widowed naval captain \'  Frame-Element relations:  Several Frame element relations hold in this frame. There is a core-set {Material, Teacher} (possibly also including Institution); these FE\'s can fill the subject slot of the teach-type verbs. There is another core-set  {Precept, Subject, Skill, Fact, Role} to do with what is learnt. In addition, the FE Qualification may occur with Subject and Role  \'My sister is studying for a maths degree    to be a teacher \' \'She\'s studying maths to be a teacher .\'  Phrases expressing Qualification also very often include information about the Subject (see below), which is to be annotated on the second layer.  \'Bill is studying for a BS in physics/a maths degree.\' \'Bill is studying for a BS in physics/a maths degree.\'  '}];
+    </script>
+    <script type="text/javascript" src="word_cloud_prediction.js"></script>
+    <script type="text/javascript" src="../mturk.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 150px;
+            padding-right: 150px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel_1 canvas, #word_cloud_panel_2 canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+        .word_cloud_box {
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 3px rgba(70, 70, 70, 1) solid;
+            padding: 20px;
+            margin-bottom: 20px; 
+        }
+        .word_cloud_box:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+        }
+        .selected_story_block {
+            border-color: #7BDFF2;
+            border-width: 3px;
+            box-shadow: 0 0 10px 10px rgba(123, 223, 242, 0.3);
+            background-color: rgba(239, 247, 246, 0.8);
+        }
+        .indicator {
+            /*font-family: Courier;
+            font-weight: bold;*/
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px black solid;
+            border-radius: 20px;
+        }
+
+        .selected_story_block .indicator {
+            background-color: rgb(123, 223, 242);
+        }
+
+        #story_content {
+            max-height: 600px;
+        }
+        .not_qualified {
+            color: red;
+            font-weight: 900;
+        }
+        .qualified {
+            color: black;
+            font-weight: 900;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Which word-cloud best represents the story snippet?</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that a computer automatically 
+            generated to characterize a story snippet. 
+            These words can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            A <strong>word-cloud representation with nouns</strong> is a group of nouns a computer automatically 
+            generated to characterize a story snippet. 
+            These nouns can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            In this HIT, you will see a story snippet. <span class="highlight">Please read the it carefully.</span>
+            The story is long so we have a 3 minutes time lock for submission.
+            <br/><br/>
+
+            At the bottom of the HIT, you will see two sets of word-cloud representations, 
+            where each consists of nouns, verbs, and adjectives. 
+            <span class="highlight">Please select the word-cloud representation that best represents the story.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following story snippet carefully!</h3>
+            You will need to select the word-cloud representation that best represents this story. 
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story</h4>
+                        <h5>(An excerpt from the book <span style="font-weight:bold;">"City Of Rogues Book I Of The Kobalos Trilogy"</span>.)</h5>
+                        <span class="not_qualified" id="read_lock">Please read all the story.</span>
+                        <br/><br/>
+                        <pre id="story_content">
+"I think I would have seen signs of the pope's army along the borders."
+A new look of respect came into the boy's eyes.
+"You came from the Prisonlands?"
+Lucius nodded and continued his walk, following the dirt road to Frist Bridge.
+Wyck followed.
+"Were you an exile?"
+Lucius glared at his companion.
+"Just asking," the boy said, falling in beside the Asylum guard.
+"I know they say Belgad is the only exile to ever leave the Lands, but if it could happen once it could happen again."
+"Not likely."
+Lucius grimaced.
+"That was before my time, but I've heard Belgad had plenty of gold to buy his way out of the Lands."
+"You were a guard, then?"
+"A border warden," Lucius corrected as they passed through the open flood gates and crossed the bridge of stone, passing other denizens of the city about their morning tasks, "and aren't you supposed to be telling me information?"
+"Oh, yeah, sorry.
+Since you mentioned Belgad --" "You brought him up."
+"Well, since Belgad was mentioned," Wyck gave Lucius an irritated look, "I heard some news this morning outside the healing tower in the Swamps."
+"Go on," Lucius said as they left the bridge behind and followed a curve between rows of brick buildings that led to Beggars Row.
+"There's going to be a street war."
+"Who would be brave enough to take on Belgad?"
+"Don't know," Wyck said, struggling to keep up with his fast-walking companion, "but it sounds nasty.
+One of Belgad's informers was roughed up and a few of his soldiers killed.
+They say there's sure to be blood in the streets, but I don't know.
+There hasn't been a street war since I was little."
+"Is it a guild taking on Belgad?"
+"I said I don't know."
+Wyck shrugged.
+"I'm not even sure Belgad knows.
+But it's got to be somebody powerful if they think they can bring Belgad down.
+Even the city guard won't touch him."
+"That's only because of his considerable political might."
+"Yeah, why doesn't Belgad just run for Chief Councilor or something?
+I bet he'd win."
+"He can't.
+He's nobility technically, even if it is only a knighthood."
+"That's how he got out of the Prisonlands!"
+"Yes."
+Lucius nodded agreement.
+Under terms of the peace treaty signed between East and West Ursia after the war, it was unlawful to exile a noble to the Prisonlands, which was how Belgad had escaped his exile.
+The Western Church, the only power in Western Ursia with the ability to knight a commoner, had been in dire need of funds.
+Belgad had provided those funds, and he had been given a knighthood and property within West Ursia.
+He was the only man to have left the Prisonlands still alive.
+Belgad's story had riled the border wardens of the time, Lucius had been told by his late uncle, but rules were rules, and there was little the wardens could do.
+"Can't be a guild that's trying to take over the streets," Wyck went on as they continued to walk.
+"Belgad already controls all of them."
+"What about an assassin's guild, or thieves' guild?"
+Lucius asked.
+He was curious on this point.
+Bond was one of the largest cities in the known world, and one of the most free.
+Thieves' guilds were known to operate publicly in some towns, as occasionally were gatherings of assassins, but Lucius had not seen signs of such since he had returned to his home city.
+"Belgad wiped them out years ago.
+I think he just wanted to control everything himself."
+"Any other news?"
+"There was a fire the other night."
+Once more the youth was forced to jog to stay apace of his friend.
+"A wizard's house burnt down up on Mages Way.
+And this wizard worked for Belgad, too.
+That's why word on the street is there might be another street war.
+Something's going on."
+"It sounds so."
+Lucius halted.
+Wyck quit his march and looked ahead to the tall, dark walls that were the Asylum.
+The place, gloomy and covered in dull vines, seemed to suck any cheer from the boy's bones.
+"We're here."
+Lucius drew forth another three coins.
+The boy's hand was already outstretched.
+"You've done well."
+Lucius dropped the coins into the lad's hand.
+"Keep your ears open and there'll be more silver for you."
+Wyck's fingers closed over the coins.
+"Where can I find you?"
+Lucius straightened the floppy hat atop his head.
+"Not that I don't trust you, but there may be a time when I'll need your services before you'll need my coins."
+Wyck's look was sheepish.
+"The Frog's Bottom."
+Lucius blanched.
+The place was a den of prostitution in the west end of the Swamps.
+"The madam lets me sleep in the basement in the winter," Wyck said with a nervous grin, "but I rent one of the servants' rooms when I've got the coin."
+***
+Lucius' interview for a guard's position had been brief, a perfunctory questioning about his experience and background.
+He had been hired on the spot.
+Apparently the Asylum had a difficult time keeping help.
+Chief Guard Shaltros had told Lucius the mad stares of the inmates often wore at a man to the point he could no longer perform his duties without breaking into tears or pounding one of the inmates in the face with a club.
+At the Asylum during the interview, Lucius had seen very little of the place.
+It set on ten acres, most of which was taken up by the building proper, a black fortress three stories tall with a tower in its southwest corner.
+The few windows were on the ground level and shuttered and barred.
+Adding to the brooding surroundings was a high wall around the grounds.
+Lucius knocked at the front of the Asylum and watched as a wooden slat in the door slid aside to reveal a peephole.
+"State your business."
+It was a gruff voice from beyond the portal.
+"Guard Lucius Tallerus reporting for duty."
+The slat banged closed and Lucius could hear the clankings of inner bolts being turned.
+The door opened to reveal an old, stooped man dressed in the dark colors of an Asylum guard.
+"You're supposed to come around back when you report for duty."
+Lucius stood there nonplussed.
+"My apologies.
+The chief guard did not inform me."
+The old man motioned for Lucius to move forward.
+"Don't fret it this time.
+Besides, you'll have to have a tour of the place before taking over for me at lunch."
+Lucius entered the Asylum for the second time and found himself in the small entrance apartment that was a ten-foot square cage of iron bands.
+He stared through the bars at the giant vault of the front room of the Asylum.
+The wall across from the cage rose to the ceiling and housed three levels of walkways with handrails.
+Behind the walkways were barred rooms by the dozens.
+To the new guard's ear, each of those cells seemed filled with hatred, anger and insanity.
+The screams and hollers explained why few guards remained long in this place.
+It reminded Lucius of the Prisonlands.
+It reminded him of home.
+"You'll get used to it," the old guard said as he bolted the entrance and removed a skeleton key from a pocket, "or you'll join them in one of the solitary cells in the basement."
+He chuckled while using the key to open the cage's inner door.
+Lucius and the old fellow exited the cage and entered the Asylum proper.
+Other guards, orderlies and healers in white robes rushed from one barred cell to another in attempts to calm or subdue one inmate or another.
+Lucius could only stare at the chaos.
+"Is it always this bustling?"
+"Not always."
+The old man grinned, showing several teeth missing.
+"It's morning feeding, and the nuts are well rested."
+The aged guard cackled as he motioned for Lucius to follow.
+"The jailing rooms is here," he said, pointing at the three stories of cells, "but one of the healers will go over what you're supposed to do there.
+Just don't trust the healers too much."
+"Why is that?"
+Lucius followed the man down a stone hallway lit by torches.
+"They'll get you killed."
+The old man plodded along.
+"They're all about saving these nuts.
+Just let your club do your talking for you."
+The words were harsh, but made a certain sense to Lucius.
+In the Prisonlands,he had dealt with any number of dangerous men who were not mentally stable, and he had seen more than a few border wardens mutilated or killed because they had tried to deal in a logical fashion with such a prisoner.
+"I didn't get your name," Lucius said as they turned to the right down another hallway.
+"Vitman."
+The old man stopped at the end of the hall before a heavy oak door covered in bands of iron.
+Using his skeleton key, he unlocked the door and grunted as he pushed it forward.
+Lucius followed into another dark hallway.
+The old man pointed ahead.
+"At the end of this hall is the back entrance for servants and the like.
+This is where you would come in every day.
+It's locked, but just knock and announce yourself and somebody'll let you in." Vitman led Lucius along another side hall, then down a lengthy flight of stone steps.
+"I'll show you the basement next.
+The most dangerous nuts are down here locked away in solitary.
+They're tied up pretty well, but every once in a while one of them chews his way out of his bonds."
+As they reached the bottom of the steps, Lucius noticed a narrow black hallway to their right, but Vitman took a lit hall to their left.
+"What is this place?"
+Lucius pointed at the dark side passage.
+Vitman stopped in his tracks and turned to see what the younger fellow was asking about.
+"That goes to the river shore."
+Vitman pointed into the blackness.
+"Don't worry, though.
+It's locked up pretty tight.
+We use it to dispose of bodies from time to time.
+Most of these nutters don't have family that wants anything to do with them, so when they pass on we dump them in the North River."
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+
+        <h3>Select the word-cloud representation that best represents the above story.</h3>
+        Below, there are two word-cloud representations. Read them carefully and select the one that best represent the above story.
+        <br/><br/>
+
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_1" value="1">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 1</h3>
+                The following three word clouds jointly represent the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_2" value="2">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 2</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_2">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_2">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_2">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_2-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="90">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input name="note" type="hidden" value="LGBM, BERT">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+    </div>
+
+</body>
+</html>

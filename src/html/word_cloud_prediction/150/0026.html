@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="text/javascript">
+        var frame_list_1 = [{'frame': 'Ride_vehicle', 'tfidf': 1.0759174201974424, 'lexical_unit': 'ride.v / sail.v / fly.v / taxi.v / take.v / cruise.v / coast.v / jet.v / hitchhike.v / ride.n / cruise.n / flight.n / bus.v', 'definition': "In this frame a Theme is moved by a Vehicle which is not directly under their power. The Source, Path, Goal, or Area of the motion may be indicated. The Distance traveled or the Speed of motion may also be indicated. A Route or Roadmay be present and the Manner in which the Theme moves may be given. 'Mrs. Smith rode on the train.' 'Sally flew 3000 miles from San Francisco to New York.' 'Every day, Martin rode the bus on highway 880.' 'Mr. Bigglesworth rides route 51.'  There is shared vocabulary between this frame and Carrying and Operate_vehicle. It is differentiated from Operate_vehicle in that the vehicle is not under the subject's control. It is differentiated from Carrying because the vehicle is not being used to transport goods."}, {'frame': 'Building_subparts', 'tfidf': 0.7195845015695698, 'lexical_unit': 'room.n / antechamber.n / anteroom.n / atelier.n / attic.n / ballroom.n / basement.n / bathroom.n / bedroom.n / ben.n / boudoir.n / buttery.n / catacomb.n / cell.n / cellar.n / chamber.n / chancellery.n / chapel.n / checkroom.n / cloakroom.n / closet.n / corridor.n / den.n / foyer.n / garret.n / hallway.n / kitchen.n / kitchenette.n / larder.n / laundry.n / lift.n / elevator.n / lobby.n / loft.n / nursery.n / office.n / pantry.n / parlor.n / playroom.n / porch.n / refectory.n / repository.n / sacristy.n / salon.n / scullery.n / solarium.n / stoop.n / storeroom.n / studio.n / study.n / veranda.n / vestibule.n / ward.n / wing.n / workroom.n / workshop.n / banquet room.n / dining room.n / dressing room.n / family room.n / guest room.n / living room.n / master bedroom.n / powder room.n / rest room.n / rumpus room.n / sitting room.n / utility room.n / wine cellar.n / apartment.n / flat.n / lavatory.n / TV room.n / belfry.n / tower.n / altar.n / laundry room.n / level.n / floor.n / deck.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}, {'frame': 'Choosing', 'tfidf': 0.7061643230018522, 'lexical_unit': 'select.v / choose.v / pick.v / settle on.v / elect.v / choice.n / selection.n / opt.v / pick.n', 'definition': "A Cognizer decides upon the Chosen (either an item or a course of action) out of a set of  Possibilities .  The Cognizer may have an Inherent_purpose or a Larger_purpose for the Chosen.  Often an Explanation, which serves as the basis of the choice, is given.  'The council picked you out of all the pilots available to head this mission.' 'No one would choose to live in such squalor.' 'If no judge was unanimously selected in the previous round, play rock-paper-scissors pairwise. CNI' "}, {'frame': 'Contacting', 'tfidf': 0.7049327138353679, 'lexical_unit': 'reach.v / contact.v / contact.n / write in.v / write.v / e-mail.v / call.v / call up.v / phone.v / phone in.v / ring.v / ring up.v / get in touch.v / telephone.v / call.n / mail.v / telex.v / fax.v / cable.v / page.v / radio.v / telegraph.v / call in.v / get through.v', 'definition': "A Communicator (whose Location may be indicated) directs a Communication to an Addressee at a particular Address.  Note that no actual successful communicative act is implied, only the successful completion of acts which would establish the communication.  (In other words, Mari can e-mail Jon without Jon ever reading it.) NB:  The Address or Location_of_communicator may be a virtual address, such as an e-mail or telephone number.'Disgruntled voters phoned Congressman Neil at his Washington residence with complaints about the recent increases in corporate welfare.''She tried to call from the payphone down the street.' "}, {'frame': 'People_by_vocation', 'tfidf': 0.6836748600435538, 'lexical_unit': 'politician.n / farmer.n / attendant.n / clerk.n / consultant.n / gardener.n / lawyer.n / maid.n / manager.n / professor.n / receptionist.n / salesman.n / servant.n / waiter.n / carpenter.n / scientist.n / private eye.n / actress.n / waitress.n / technician.n / toxicologist.n / engineer.n / double agent.n / researcher.n / archaeologist.n / professional.a / agent.n / journalist.n / judge.n / mechanic.n / oilman.n / reporter.n / scholar.n / veterinarian.n / trader.n / mole.n / spy.n / businessperson.n / speculator.n / architect.n / plain-clothes man.n / magistrate.n / officer.n / police officer.n / spokesperson.n / spokesman.n / spokeswoman.n / policeman.n / bodyguard.n / police.n / tailor.n / correspondent.n / cook.n / manservant.n / senator.n / attorney.n / athlete.n / chef.n / bartender.n / teacher.n / pilot.n / flight attendant.n / server.n / software developer.n / web developer.n / saleswoman.n / salesperson.n / homemaker.n / student.n / artist.n / musician.n / singer.n / painter.n / dancer.n / writer.n / editor.n / actor.n / producer.n / director.n / designer.n / neuroscientist.n / biologist.n / chemist.n / physicist.n / anthropologist.n / linguist.n / psychologist.n / psychiatrist.n / mathematician.n / sociologist.n / fire fighter.n / firefighter.n / programmer.n / driver.n', 'definition': "This frame contains  words for Individuals as viewed in terms of their vocation.   The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'Humphrey Bogart was a great actor.'"}, {'frame': 'Appellations', 'tfidf': 0.6707159788606355, 'lexical_unit': 'officer.n / general.n / captain.n / president.n / bishop.n / chairman.n / chairperson.n / chief.n / commander.n / commissioner.n / congressman.n / congresswoman.n / director.n / duchess.n / emperor.n / empress.n / executive.n / governor.n / headmaster.n / imam.n / kaiser.n / king.n / leader.n / legislator.n / maharaja.n / mayor.n / minister.n / mogul.n / monarch.n / official.n / premier.n / prince.n / principal.n / queen.n / representative.n / secretary.n / shah.n / sheik.n / sultan.n / superintendent.n / supervisor.n / tsar.n / mother.n / father.n / doctor.n / dr.n / mr.n / mrs.n / ms.n / miss.n / child.n / aunt.n / uncle.n / sister.n / brother.n / cousin.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Communication_means', 'tfidf': 0.6607839012198917, 'lexical_unit': 'cable.v / wire.v / phone.v / semaphore.v / telegraph.v / telex.v / radio.v / telephone.v / fax.v / call.v / pdf.v', 'definition': "This frame concerns Communicators communicating with each other with the aid of a Means of communication such as a telephone.  'I faxed him a resume.'"}, {'frame': 'Vehicle', 'tfidf': 0.63836271573292, 'lexical_unit': 'car.n / bus.n / truck.n / bike.n / taxi.n / plane.n / ferry.n / boat.n / bicycle.n / ship.n / tram.n / automobile.n / tricycle.n / airplane.n / scooter.n / schooner.n / train.n / carriage.n / cab.n / coach.n / vehicle.n / lorry.n / submarine.n / tank.n / cart.n / toboggan.n / pick-up.n / van.n / limousine.n / convertible.n / helicopter.n / canoe.n / kayak.n / buggy.n / liner.n / sedan.n / vessel.n / tank car.n / warplane.n / yacht.n / chopper.n / helo.n / bird.n / minivan.n / ambulance.n / aircraft.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'Personal_relationship', 'tfidf': 0.6347231357786304, 'lexical_unit': 'husband.n / wife.n / widow.n / widower.n / widowed.a / spouse.n / couple.n / companion.n / divorcee.n / married.a / betrothed.n / bachelor.n / engaged.a / engagement.n / marriage.n / boyfriend.n / girlfriend.n / single.a / date.v / break-up.n / lover.n / partner.n / mistress.n / suitor.n / court.v / spinster.n / estranged.a / friend.n / betrothed.a / cohabit.v / cohabitation.n / seeing.v / widow.v / divorced.a / buddy.n / moll.n / paramour.n / inamorata.n / beau.n / sugar daddy.n / significant other.n / chum.n / pal.n / cobber.n / mate.n / crush.n / affair.n / adultery.n / amigo.n / sleep (together/with).v / spousal.a / marital.a / affianced.a / friendship.n / romance.n / befriend.v / familiar.a / fiancée.n / fiancé.n / relationship.n / chummy.a', 'definition': "The words in this frame have to do with people and the personal Relationships they are or can be a part of.  Some of the words denote people engaged in a particular kind of Relationship, others denote the Relationship, yet others the events bringing about or ending the Relationships. Many of the words presuppose an understanding of states and events that must have occurred before another event takes place or before a person can be classified in a certain way. '' 'And of course that drippy boyfriend of hers backed her up.'  'As the happy couple took their places there was a stir and a rising babble behind them.'  'Pattie is living proof that if you live with a man, you discover a lot you didn't know when you were just dating him.'"}, {'frame': 'Attention_getting', 'tfidf': 0.6164056843134796, 'lexical_unit': "pal.n / sir.n / ma'am.n / buddy.n / kid.n / dude.n / boy.n / guy.n / miss.n / bro.n / homes.n / yoohoo.intj / hello there.intj / excuse me.intj / hey.intj / officer.n", 'definition': "This frame covers terms used to get someone's attention, including Interjections (e.g. hey, yo) and certain terms of address (Address_term), the latter of which may serve the function of attention getting.    'Hey.' 'Hey, boy.' 'Hey, boy, come over here now!'  "}, {'frame': 'Process_start', 'tfidf': 0.5965721446158577, 'lexical_unit': 'start.v / begin.v / commence.v / erupt.v / break out.v / commencement.n / incipient.a / onset.n / nascent.a / eruption.n', 'definition': "An Event begins at a certain Time and Place. Reason may also be indicated.  NB:  Refer to Event frame.  'The project began.'"}, {'frame': 'Cause_harm', 'tfidf': 0.5882463430353749, 'lexical_unit': 'bayonet.v / beat.v / boil.v / burn.v / bludgeon.v / club.v / crush.v / cut.v / slice.v / hammer.v / hit.v / kick.v / knife.v / punch.v / smash.v / stab.v / spear.v / stone.v / hurt.v / whip.v / batter.v / break.v / butt.v / chop.v / claw.v / clout.v / crack.v / cudgel.v / cuff.v / fracture.v / gash.v / injure.v / jab.v / bruise.v / knock.v / lash.v / maul.v / pelt.v / strike.v / thwack.v / bash.v / belt.v / buffet.v / horsewhip.v / smack.v / squash.v / slap.v / knee.v / wound.v / pummel.v / electrocute.v / electrocution.n / poisoning.n / beat up.v / torture.v / maim.v / flog.v / impale.v / biff.v / cane.v / flagellate.v / poison.v / transfix.v / welt.v / mutilate.v / elbow.v / sting.v / swipe.v / strike.n / drug.v / twist.v / run through.v', 'definition': "The words in this frame describe situations in which an Agent or a Cause injures a Victim. The Body_part of the Victim which is most directly affected may also be mentioned in the place of the Victim.  In such cases, the Victim is often indicated as a genitive modifier of the Body_part, in which case the Victim FE is indicated on a second FE layer. '' 'Rod saw his father beating his mother.'  'In the end Wormtongue is fed up with being beaten so he cuts Saruman's throat to free himself.'  'A mother stabbed to death by her husband made a secret will stating that he must never be allowed to care for their son.'"}, {'frame': 'Prevarication', 'tfidf': 0.5807479787028743, 'lexical_unit': "lie.v / prevaricate.v / lie.n / mislead.v / kid.v / misrepresent.v / deception.n / misrepresentation.n / prevarication.n / shit.v / joke.v / equivocate.v / fool.v / equivocation.n / fib.n / bullshit.v / pull (someone's) leg.idio / deceive.v / fib.v / pull the wool over (someone's) eyes.idio / hoodwink.v / bullshit artist.n / dissemble.v / dissembler.n / deceptive.a / tell.v", 'definition': "A Speaker communicates about a Topic in such a way as to mislead an Addressee, either by telling outright lies or by presenting a message in a misleading form.  'I lied to you about your Christmas present.'"}, {'frame': 'Vehicle_subpart', 'tfidf': 0.5767704548482918, 'lexical_unit': 'door.n / window.n / seat.n / seatbelt.n / tire.n / wheel.n / brake.n / engine.n / hood.n / trunk.n / part.n / windshield.n', 'definition': "An entity is integrated into a vehicle as a Part of a (possibly unexpressed) Whole which may refer to the whole vehicle or merely to a sub-part of the vehicle.  '' 'The car's engine started smoking so we pulled over.' 'Put the bags in the trunk.' 'One should always wear a seatbelt while driving.' "}, {'frame': 'Connecting_architecture', 'tfidf': 0.5709086058509227, 'lexical_unit': 'door.n / elevator.n / lift.n / escalator.n / corridor.n / hallway.n / window.n / staircase.n / stairs.n / step.n / gate.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  The Part itself connects locations within the building to each other, Connected_locations. If a particular point of view is adopted in the context of real or imagined motion, then one of the locations can be construed as Goal and the other as Source.   'It was of great interest to me to see the star signs of Taurus the Bull and Leo the Lion on the staircase to the upper Palace.'  'All visitors may use the elevator between the Main Level and the Upper Level instead of the main staircase'  'The window into the garden was open.'"}, {'frame': 'Usefulness', 'tfidf': 0.5636668900371378, 'lexical_unit': 'good.a / effective.a / excellent.a / outstanding.a / superb.a / wonderful.a / fantastic.a / fine.a / tremendous.a / terrific.a / marvellous.a / great.a / super.a / splendid.a / useful.a / utility.n / value.n / valuable.a / perfect.a / ideal.a / ineffective.a / work.v / strong.a', 'definition': "An Entity aids in the successful completion of a Purpose.  Its Degree of utility may also be expressed. Some of the lexical units  in this frame (e.g. great, good) can only express permanent, generic states of the Entity.  'A box is an ideal storage device.'"}, {'frame': 'Measure_duration', 'tfidf': 0.5586313987760094, 'lexical_unit': 'hour.n / minute.n / second.n / day.n / week.n / month.n / year.n / decade.n / century.n / millennium.n / fortnight.n / a while.n / nanosecond.n / time.n', 'definition': 'This frame contains (transparent ) nouns that are Units of measurement for time. The frame elements are Count, Unit and Process.  \'The final total was 606, scored in only 10 hours of excellent batsmanship.\'  In this frame, we will NOT annotate deictic, calendric uses of nouns like week, month, etc. as in "next week, this month, in the 21st century".'}, {'frame': 'Speak_on_topic', 'tfidf': 0.5546036876458564, 'lexical_unit': 'lecture.v / sermonize.v / expound.v / preach.v / hold forth.v / expatiate.v / ramble.v / go on.v / discuss.v / address.v / address.n / lecture.n / pontificate.v / tell.v', 'definition': "A Speaker addresses an Audience on a particular Topic.  The Audience is generally passive, although for many types of address (including academic talks and press conferences), a discussion or question-answer period is virtually always required.  'McNamara addressed congress on the state of affairs of the Department of Defense.'"}, {'frame': 'Talking_into', 'tfidf': 0.5542169631601905, 'lexical_unit': 'incite.v / induce.v / influence.v / lead.v / talk.v', 'definition': 'A Speaker expresses through language his wish to get the Addressee to act.  The Addressee forms an intention to act and does so. \'\' \'You think I talked Peter into giving me those earrings, don\'t you?\'  \'Don\'t let a shop assistant talk you into buying a so-called "orthopaedic" bed -- there\'s no such thing.\''}, {'frame': 'Frequency', 'tfidf': 0.5396772095515644, 'lexical_unit': 'annual.a / bi-annual.a / bi-monthly.a / biennial.a / daily.a / fortnightly.a / frequent.a / infrequent.a / intermittent.a / monthly.a / nightly.a / occasional.a / periodic.a / recurrent.a / recurring.a / sporadic.a / weekly.a / yearly.a / interval.n / period.n / sometime.a / on and off.adv / off and on.adv / frequency.n / always.adv / time to time.adv / never.adv / often.adv / frequently.adv / infrequently.adv / occasionally.adv / sometimes.adv / every.prep / all the time.adv / once in a while.adv / every once in a while.adv / at times.adv / constantly.adv / rare.a / regularly.adv / daily.adv / seldom.adv / usually.adv / normally.adv / in general.adv / generally.adv / ordinarily.adv / every so often.adv / now and then.adv / common.a / recurrence.n', 'definition': "This frame has to do with the repetition (and especially the frequency of repetition) of an event. Many of the adjectives and adverbs in this frame are based on nouns in the Calendric_unit frame.   'China will have to face a high frequency of sand storms in the years to come.' "}, {'frame': 'Ordinal_numbers', 'tfidf': 0.5395837020919274, 'lexical_unit': 'first.a / second.a / third.a / fourth.a / fifth.a / thirteenth.a / nineteenth.a / last.a / eighth.a / tenth.a / ninth.a / seventeenth.a / sixteenth.a / final.a', 'definition': "An Item is picked out either by the order in which the members of a set would be encountered by an implicit cognizer, or by the order in which the members of a set participate in an event or state which serves as the Basis_of_order. The former case usually involves a Starting_point for going through the set, while the latter involves a Basis_of_order, which is normally an event that the Item along with other members of its Comparison_set has participated in.  Note that Item should be annotated on a second layer, except in cases when the noun structure the ordinal participates in is predicative.  'The first car from the left is a Magosix.' 'The first car from the left is a Magosix.' 'Barney was only the second Asian student at my college.' 'Felix was the first of my cats to realize that human food was tastier.' 'Felix was the first of my cats to realize that human food was tastier.'"}, {'frame': 'Artifact', 'tfidf': 0.5357643854701201, 'lexical_unit': 'wheel.n / technology.n / biotechnology.n / artifact.n / control panel.n / board.n / board [game].n / spatula.n / whisk.n / tub.n / timer.n / oven.n / phone.n', 'definition': "An Artifact is deliberately made or modified by an intelligent entity to be put to a certain kind of Use.  Various properties of the Artifact may be specified, such as its Creator, Time_of_creation, Name, Type, and the Material of which it is composed.  The Artifact may or may not be a physical entity.  'There are reports that Kim Il Sung asked China to share its nuclear weapons technology.'"}, {'frame': 'Social_interaction_evaluation', 'tfidf': 0.5211271171386268, 'lexical_unit': 'inconsiderate.a / kind.a / considerate.a / mean.a / insensitive.a / thoughtless.a / thoughtful.a / cruel.a / sweet.a / rude.a / impolite.a / ill-mannered.a / churlish.a / discourteous.a / unkind.a / courteous.a / polite.a / impudent.a / respectful.a / disrespectful.a / boorish.a / compassionate.a / nice.a / friendly.a / unfriendly.a / amiable.a / sociable.a / cordial.a / genial.a / gracious.a / ungracious.a / civil.a / uncivil.a / impertinent.a / tactful.a / diplomatic.a / barbaric.a / spiteful.a / pleasant.a / horrible.a / good.a / good-natured.a / good-humored.a / warm.a / smart.a / mature.a / maturity.n / cruelty.n / thoughtfulness.n / rudeness.n / compassion.n / atrocious.a', 'definition': "In this frame an Evaluee is judged by a (usually implicit) Judge to be of a certain character based on her or his Behavior towards other human beings; a specific Affected_party may be overtly mentioned along with the Degree to which the Evaluee behaves appropriately towards others. TheBehavior alone may be mentioned with the understanding that these behaviors characterize a property of the unmentioned Evaluee. The Evaluee's Behavior may be in the context of a Topic.  ' It was nice of you to send a card. '   ' Jim was thoughtful to email the directions.'   ' For Martha to smoke in the car was extremely inconsiderate.'   ' It was cruel that he continued to call her.'   ' Mary was cruel to her friends.'   ' Samson was a thoughtless person.'   'Mrs. Robinson was always considerate of her students.'   ' The press was always kind about Madonna.'   ' Lee was nice about my car accident.'   ' I appreciated his kind offer of the car.'"}, {'frame': 'Activity_start', 'tfidf': 0.5150599960000095, 'lexical_unit': 'start.v / begin.v / take up.v / beginner.n / neophyte.n / enter.v / swing (into).v / initiate.v / commence.v / launch (into).v / strike up.v / open.v / set about.v / get started.v', 'definition': "An Agent initiates the beginning of an ongoing Activity in which he will be continuously involved. '' 'At the same time, city-states began to grow in influence on the southern Greek mainland.'  'Naturally, I started crying to get out of work.'  "}, {'frame': 'Being_located', 'tfidf': 0.5143124834678933, 'lexical_unit': 'located.a / situated.a / lie.v / stand.v / sit.v / whereabouts.n / twenty.n / find.v', 'definition': "A Theme is in a stable position with respect to a Location.  'Our offices are located about two miles south of I-85 .' "}, {'frame': 'Businesses', 'tfidf': 0.5127237833590764, 'lexical_unit': 'business.n / shop.n / establishment.n / mill.n / practice.n / firm.n / operation.n / company.n / chain.n / corporation.n / paper.n / store.n / bank.n / boutique.n', 'definition': "A Proprietor owns or runs a Business which provides a Product (which may be goods or services).  'The consumer electronics company Apple has exploded with popularity in recent years.'"}, {'frame': 'Compatibility', 'tfidf': 0.5126587176889378, 'lexical_unit': 'compatible.a / incompatible.a / incompatibility.n / compatibility.n / harmonize.v / congruent.a / congruous.a / consonant.a / dovetail.v / jibe.v / square.v / comport.v / rhyme.v / accord.v / agree.v / cohere.v / consistent.a / harmony.n / go.v / clash.v / match.v / biocompatible.a / conflict.v / conflicting.a / at variance.a / fly in the face of.v', 'definition': "Item-1 and Item-2 are compatible with each other if they can exist or function together in some context without problems, conflict, or other undesirable situation.  The set of Item-1 and Item-2 may be expressed jointly as Items. The Degree to which the Items are compatible may also be indicated, as may be a Parameter along whose lines the Items are compatible. ' Make sure your site is compatible with any browser.' 'Our software applications  are compatible. ' "}, {'frame': 'Chatting', 'tfidf': 0.5118878569024032, 'lexical_unit': 'chat.v / badinage.n / banter.n / chat.n / chit-chat.n / colloquy.n / conversation.n / converse.v / speak.v / talk.v / joke.v / gossip.n / gossip.v / gab.v / shoot the breeze.v / yak.v', 'definition': "A group of people (the Interlocutors or Interlocutor_1 and Interlocutor_2 together) have a conversation.  No person is construed as only a speaker or only an addressee. Rather, it is understood that both (or all) participants do some speaking and some listening--the process is understood to be symmetrical or reciprocal.  In this frame, the purpose of the conversation is generally social, rather than specifically to decide something or exchange information, or to quarrel (see Discussion and Quarreling).  'If you ain't got nothin' better to do, I 'd like to shoot the breeze with you for a couple.' 'We used to chat about everything.'"}, {'frame': 'Differentiation', 'tfidf': 0.5102966401773615, 'lexical_unit': 'differentiate.v / discriminate.v / discrimination.n / distinguish.v / sort.v / tell apart.v / separate.v / know.v / tell from.v / distinguishable.a', 'definition': "Words in this frame have to do with a Cognizer being aware (or not being aware) of the difference between two Phenomena, which may be expressed jointly or disjointly.      'It is very difficult for people to visually distinguish between living and non-living things from such a great distance .'  "}, {'frame': 'Undergo_change', 'tfidf': 0.5070014820303689, 'lexical_unit': 'change.v / turn.v / change.n / veer.v / swing.v / plummet.v / changeable.a / shift.n / shift.v / transition.n / go.v', 'definition': "An Entity changes, either in its category membership, its situation, or in terms of the quality of an Attribute. In the first case, where category membership is changing, an Initial_category and a  Final_category may be expressed. In the second case, where a situation as a whole is changing, an Initial_situation and a Final_situation can be present. And in the last case, where some characterization of the Entity is changing, an Initial_quality and a Final_quality can be specified.    'As soon as Tiffany kissed the frog, Tiffany turned into a frog. '  'He chanted and the rock changed shape, becoming a great double bitted axe.'  'The College has changed markedly over the century since it first opened its doors.'  'If I'm understanding you correctly, you want the switchbar color to change whenever the bot says something?'  'My life instantly changed from an empty life, to a life full of joy and purpose.'  'As you can see, the word WALK changed from red to green rather than have a separate lens for each colour.'  'My feet turned to stone.'  'The promise will turn to ashes if progress is not made.'  'The price  changed from $1.26 to $1.27 per pint. DNI'  'At least one relative instruction has changed in size from short to long.'  In some cases, the types of perspective are mixed, so that, e.g., an Initial_quality is mixed with a Final_situation; this is usually considered poor style.  'She went from confused to acting completely confident .'  This frame is often the target domain of motion metaphors, in which the moving Theme corresponds to the  changing Entity, the Source of motion corresponds to the Initial_category, Initial_quality, or Initial_situation and the Goal of motion corresponds to the Final_category, Final_quality, or Final_situation of the Entity.  By correspondence with the complex domain of motion, this metaphor introduces several FEs to the target domain of change, such as an Intermediate_state (etc.) from Path, and Tendency_of_change from Direction.  'The nation was crawling towards oblivion.' 'We were walking past almost reasonable and heading right for what-the-bleep.' "}];
+        var frame_list_2 = [{'frame': 'Manipulation', 'tfidf': 4.037274360656738, 'lexical_unit': 'clasp.v / claw.v / clutch.v / finger.v / grab.v / grasp.v / grip.v / knead.v / massage.v / nip.v / nudge.v / paw.v / pinch.v / pull.v / push.v / seize.v / squeeze.v / tug.v / tweak.v / wring.v / yank.v / fumble.v / grope.v / stroke.n / rub.v / grab hold.v / pull.n / lick.v / touch.v / kiss.v / caress.v / caress.n / stroke.v / diddle.v / hold.v / tickle.v / handle.v / kiss.n / poke.v', 'definition': "The words in this frame describe the manipulation of an Entity by an Agent.  Generally, this implies that the Entity is not deeply or permanently physically affected, nor is it overall moved from one place to another.  'Ian squeezed Mara's hand.' ''  A number of lexemes listed in this frame also occur in the Cause_motion frame (for example, push, yank).  Only the non-motion uses of these words belong in this frame, e.g., combinations such as push at, push on, yank at. "}, {'frame': 'People_by_age', 'tfidf': 3.3565444946289062, 'lexical_unit': 'geezer.n / coot.n / spring chicken.n / adolescent.n / adult.n / baby.n / boy.n / child.n / infant.n / neonate.n / teenager.n / kid.n / youth.n / youngster.n / elderly.n / newborn.n', 'definition': "This frame contains words for individuals as viewed in terms of their age. The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'He is a 12-year-old kid.'"}, {'frame': 'Shaped_part', 'tfidf': 2.1596641540527344, 'lexical_unit': 'arm.n / mouth.n / leg.n / rind.n / brim.n / handle.n', 'definition': "An entity is a shaped Part of a larger Whole. The Part may correspond in form and  function  to a part of another entity. For instance, the leg of a table supports the weight of a table like the leg of an animal or person supports their weight. The Orientation of the Part relative to the Whole may be expressed.  'I removed the brim of the hat'  'Bill likes to chew the waxy rind of the cheese'"}, {'frame': 'Make_noise', 'tfidf': 2.087496519088745, 'lexical_unit': 'babble.v / bark.v / bellow.v / blare.v / blast.v / bleat.v / bray.v / burble.v / cackle.v / caterwaul.v / caw.v / chatter.v / cheep.v / chirp.v / chuckle.v / clang.v / clash.v / clatter.v / click.v / coo.v / cough.v / creak.v / croak.v / croon.v / crunch.v / drone.v / fizzle.v / gasp.v / giggle.v / gobble.v / growl.v / grunt.v / guffaw.v / gurgle.v / hawk.v / hiss.v / hoot.v / howl.v / hum.v / keen.v / mew.v / mewl.v / moan.v / moo.v / neigh.v / patter.v / peal.v / peep.v / plash.v / plonk.v / plop.v / purr.v / quack.v / rasp.v / rattle.v / roar.v / rustle.v / scrape.v / screech.v / scrunch.v / sizzle.v / snarl.v / snicker.v / snigger.v / snore.v / snort.v / sob.v / sough.v / squawk.v / squeak.v / squeal.v / thump.v / thunder.v / tinkle.v / titter.v / toll.v / trumpet.v / tweet.v / twitter.v / ululate.v / wail.v / whimper.v / whine.v / whinny.v / whisper.v / whistle.v / yammer.v / yap.v / yelp.v / yodel.v / yowl.v / crepitate.v / laugh.v / clack.v / sploosh.v / scream.v / ring.v / beep.v / hem and haw.v / boom.v / cry.v / sound.v / honk.v / play.v / toot.v', 'definition': "A physical entity, construed as a point-Sound_source, emits a Sound.  This includes animals and people making noise with their vocal tracts. Sometimes the sound itself is referred to with a nominal expression, in which case it is called the Sound. Manner expressions may also be relevant in this frame, if they describe properties of the sound as such.  A path-schema can be overlaid on the simple noise-making scene, adding a Location_of_source and/or a Path.   This frame does not cover scenarios where objects create sound by coming into forceful contact with one another or rubbing against each other. Such scenarios are covered by the Impact and Friction frames. The current frame also does not cover cases where an animate Agent or a natural Force or Cause causes a single Source or several Sources (moving or rubbing against each other) to make noise. Such scenarios are  covered by the Cause_to_make_noise, Cause_impact and Cause_friction frames (the latter of which is not yet existent). Cases where the major emphasis of the portrayed scene is on the motion of a Theme, with sound emission only an accompaniment, are covered by the Motion_noise frame. Likewise, cases where the Sound itself is portrayed as moving through space are not covered in this frame but rather in Sound_movement. Finally, all nouns used to evoke Sounds have been placed in the Sounds frame. We have done this because these nouns do  not denote sound emission/production events but only the Sound itself (*The siren's blare occurred right on time)."}, {'frame': 'Breathing', 'tfidf': 1.880448579788208, 'lexical_unit': 'breathe.v / inhale.v / breath.n / exhale.v / gasp.v / sigh.n / exhalation.n / exhalation [act].n / inhalation.n / inhalation [breath].n / huff.v / puff.v / sigh.v / blow.v / expire.v / inspire.v / insufflate.v / pant.v / respire.v / suspire.v', 'definition': "An Agent causes Air to move in a direction, usually specifying either in or out of the body.  'Lee breathed the hot desert air.'"}, {'frame': 'Forming_relationships', 'tfidf': 1.8714725971221924, 'lexical_unit': 'befriend.v / woo.v / betrothal.n / betroth.v / divorce.n / divorce.v / leave.v / marriage.n / marry.v / marry (into).v / separate.v / separation.n / tie the knot.v / wed.v / wedding.n / marriage (into).n / engagement.n', 'definition': "Partner_1 interacts with Partner_2 (also collectively expressible as Partners) to change their social relationship.    'I befriended the little pony by giving him a piece of apple.'"}, {'frame': 'Communication_manner', 'tfidf': 1.8503072261810303, 'lexical_unit': 'babble.v / bluster.v / chant.v / chatter.v / drawl.v / gabble.v / gibber.v / jabber.v / lisp.v / mouth.v / mumble.v / mutter.v / natter.v / prattle.v / rant.v / rave.v / shout.v / simper.v / sing.v / slur.v / stammer.v / stutter.v / whisper.v / blabber.v', 'definition': "The words in this frame describe Manners of verbal communication.  All of them can occur with quoted expressions.   'He slurred his confession.'"}, {'frame': 'Building_subparts', 'tfidf': 1.7594773769378662, 'lexical_unit': 'room.n / antechamber.n / anteroom.n / atelier.n / attic.n / ballroom.n / basement.n / bathroom.n / bedroom.n / ben.n / boudoir.n / buttery.n / catacomb.n / cell.n / cellar.n / chamber.n / chancellery.n / chapel.n / checkroom.n / cloakroom.n / closet.n / corridor.n / den.n / foyer.n / garret.n / hallway.n / kitchen.n / kitchenette.n / larder.n / laundry.n / lift.n / elevator.n / lobby.n / loft.n / nursery.n / office.n / pantry.n / parlor.n / playroom.n / porch.n / refectory.n / repository.n / sacristy.n / salon.n / scullery.n / solarium.n / stoop.n / storeroom.n / studio.n / study.n / veranda.n / vestibule.n / ward.n / wing.n / workroom.n / workshop.n / banquet room.n / dining room.n / dressing room.n / family room.n / guest room.n / living room.n / master bedroom.n / powder room.n / rest room.n / rumpus room.n / sitting room.n / utility room.n / wine cellar.n / apartment.n / flat.n / lavatory.n / TV room.n / belfry.n / tower.n / altar.n / laundry room.n / level.n / floor.n / deck.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}, {'frame': 'Clothing', 'tfidf': 1.6842350959777832, 'lexical_unit': 'dress.n / frock.n / petticoat.n / ballgown.n / culottes.n / chemise.n / jodhpurs.n / sock.n / stocking.n / leggings.n / tunic.n / slip.n / gown.n / skirt.n / shorts.n / pants.n / trousers.n / wrap.n / shirt.n / blouse.n / cloak.n / cape.n / coat.n / greatcoat.n / overcoat.n / jacket.n / vest.n / tie.n / hose.n / hosiery.n / clothing.n / clothes.n / finery.n / suit.n / necktie.n / neckwear.n / cummerbund.n / scarf.n / shawl.n / bow-tie.n / pantyhose.n / garter.n / panties.n / knickers.n / sweater.n / jumper.n / cardigan.n / pullover.n / blazer.n / kilt.n / swimsuit.n / bikini.n / robe.n / bathrobe.n / apron.n / miniskirt.n / fishnet.n / legwarmers.n / regalia.n / raiment.n / apparel.n / attire.n / vestment.n / livery.n / outfit.n / garment.n / undergarment.n / underclothing.n / underclothes.n / underwear.n / togs.n / undies.n / shift.n / pinafore.n / mitten.n / mitt.n / glove.n / bodice.n / corset.n / parka.n / windbreaker.n / windcheater.n / raincoat.n / pyjama.n / nightie.n / nightdress.n / nightgown.n / nightwear.n / lingerie.n / camisole.n / waistcoat.n / jeans.n / overall.n / coverall.n / garb.n / smock.n / sundress.n / bra.n / brassiere.n / teddy.n / tights.n / jumpsuit.n / kimono.n / kaftan.n / uniform.n / costume.n / motley.n / get-up.n / ensemble.n / surplice.n / galosh.n / welly.n / wellington.n / slipper.n / sandal.n / sneaker.n / stiletto.n / boot.n / shoe.n / gumboot.n / clog.n / footwear.n / sari.n / sarong.n / poncho.n / abaya.n / jerkin.n / crinoline.n / muff.n / cowl.n / tutu.n / t-shirt.n / polo-neck.n / g-string.n / flip-flops.n / one-piece.n / two-piece.n / flannels.n / rags.n / silks.n / satins.n / cottons.n / tweeds.n / ermines.n / muslins.n / tippet.n / doublet.n / tatters.n / neckerchief.n / breeches.n / sweatshirt.n / sweatpants.n / tracksuit.n / alb.n / stole.n / chasuble.n / cope.n / buskin.n / pallium.n / gauntlet.n / cravat.n / briefs.n / cossie.n', 'definition': "This frame refers to clothing and its characteristics,  including anything that people conventionally wear.  The Wearer wears a Garment that has a certain Style, is made of a certain Material, and can be otherwise characterized by a Descriptor.  In some cases, the Body_location (where the garment is worn) and Subregion of the clothing may also be specified.  'Claudia dressed in a dark green cotton DRESS clasped round her slender waist with a broad yellow belt , drank a cup of coffee and opened her neglected post .'"}, {'frame': 'Aesthetics', 'tfidf': 1.6481293439865112, 'lexical_unit': 'beautiful.a / lovely.a / smart.a / ugly.a / tasty.a / elegant.a / fair.a / handsome.a / hideous.a', 'definition': "An Entity is judged to be sensually pleasing or intellectually interesting to a (generally implicit) Judge.   'We saw this beautiful boat with the red sails several times' 'We camped here on the beach and had an absolutely lovely early morning walk through farm fields' "}, {'frame': 'Have_as_requirement', 'tfidf': 1.619426965713501, 'lexical_unit': 'demand.v / require.v / take.v / need.v', 'definition': "The obtaining of a Requirement state of affairs or the presence of a Required_entity is profiled as a prerequisite for the obtaining or occurring of a Dependent state-of-affairs.  'This game demands great skill.'  'The war on terror requires little sacrifice for most Americans.'  'Glass  art demands great patience from the student.'"}, {'frame': 'Experience_bodily_harm', 'tfidf': 1.577837347984314, 'lexical_unit': 'stub.v / jam.v / hit.v / hurt.v / injure.v / break.v / sprain.v / strain.v / twist.v / pull.v / tear.v / cut.v / burn.v / smack.v / abrade.v / graze.v / bruise.v / scrape.v / sunburn.v / injury.n', 'definition': "An Experiencer is involved in a bodily injury to a Body_part.  (In some cases, no Body_part need be indicated.)  Often an Injuring_entity on which the Experiencer injures themselves is mentioned. 'I think that I hurt myself pretty bad back there.' 'He smacked his head on the mantel getting up from poking at the fire.'"}, {'frame': 'Communication_noise', 'tfidf': 1.570946216583252, 'lexical_unit': 'babble.n / bark.v / bawl.v / bellow.v / bleat.v / bray.v / burble.v / cackle.v / chirp.v / chirrup.v / chuckle.v / cluck.v / coo.v / croak.v / croon.v / crow.v / cry.v / drone.v / gasp.v / grate.v / groan.v / growl.v / grunt.v / gurgle.v / hiss.v / hoot.v / howl.v / moan.v / murmur.v / purr.v / rap.v / rasp.v / rattle.v / roar.v / rumble.v / scream.v / screech.v / shriek.v / shrill.v / snarl.v / snort.v / splutter.v / sputter.v / squawk.v / squeak.v / squeal.v / thunder.v / titter.v / trill.v / trumpet.v / twitter.v / wail.v / warble.v / wheeze.v / whimper.v / whine.v / whoop.v / yell.v / yelp.v', 'definition': 'This frame contains words for types of noise which can be used to characterize verbal communication.  It inherits from Communication (possibly more specifically Communication_manner) and the Sound_emission frame (which simply characterizes basic sounds of whatever source, including those made by animals and inanimate objects).  As such, it involves a Speaker who produces noise and thus communicates a Message to an Addressee. \'\' \'"Don\'t treat me as a child!" she cried scornfully.\'  \'A writer in the Town Planning Review trumpeted that train-sheds were now obsolete.\'  \'You know he yelled at Aunt Lou yesterday, because he slipped on that mat in the hall.\''}, {'frame': 'Measure_volume', 'tfidf': 1.524023175239563, 'lexical_unit': 'pint.n / cup.n / bottle.n / bushel.n / box.n / glass.n / gallon.n / barrel.n / pack.n / bowl.n / teaspoon.n / jug.n / spoon.n / tablespoon.n / bag.n / quart.n / spoonful.n / teaspoonful.n / bagful.n / boxful.n / bucketful.n / tankful.n / sackful.n / packet.n / mug.n / scoop.n / scoopful.n / platter.n / tray.n / busload.n / planeload.n / truckload.n / carload.n / roomful.n / trainload.n / boatload.n / litre.n / can.n / case.n', 'definition': 'This frame is concerned with nouns that denote Units of measurement for volumes. The Frame Elements are Unit, Count,  Stuff, and Size. The frame will be split soon into container-derived volumes (box, bottle etc.) and pure volumes (gallon, quart). For the moment we tag things as follows: \'Greg drank two 2 liter bottles of lemonade.\' \'Sue drank two liters of beer.\' This frame necessitated the introduction of  the GF: Quant and the PT: Num used for expressions such as  the following: \'two cups of coffee\' FE: Count, GF: Quant, PT: Num\'\' Note that we treat cardinal numbers and "a" (= 1) in the same way.  \'a cup of coffee\' FE: Count, GF: Quant, PT: Num\'\' For the present, we prefer not to annotate "many cups of coffee" \'many cups of coffee\' FE: Count, GF: Quant, PT: Adj\'\''}, {'frame': 'Cause_harm', 'tfidf': 1.5061278343200684, 'lexical_unit': 'bayonet.v / beat.v / boil.v / burn.v / bludgeon.v / club.v / crush.v / cut.v / slice.v / hammer.v / hit.v / kick.v / knife.v / punch.v / smash.v / stab.v / spear.v / stone.v / hurt.v / whip.v / batter.v / break.v / butt.v / chop.v / claw.v / clout.v / crack.v / cudgel.v / cuff.v / fracture.v / gash.v / injure.v / jab.v / bruise.v / knock.v / lash.v / maul.v / pelt.v / strike.v / thwack.v / bash.v / belt.v / buffet.v / horsewhip.v / smack.v / squash.v / slap.v / knee.v / wound.v / pummel.v / electrocute.v / electrocution.n / poisoning.n / beat up.v / torture.v / maim.v / flog.v / impale.v / biff.v / cane.v / flagellate.v / poison.v / transfix.v / welt.v / mutilate.v / elbow.v / sting.v / swipe.v / strike.n / drug.v / twist.v / run through.v', 'definition': "The words in this frame describe situations in which an Agent or a Cause injures a Victim. The Body_part of the Victim which is most directly affected may also be mentioned in the place of the Victim.  In such cases, the Victim is often indicated as a genitive modifier of the Body_part, in which case the Victim FE is indicated on a second FE layer. '' 'Rod saw his father beating his mother.'  'In the end Wormtongue is fed up with being beaten so he cuts Saruman's throat to free himself.'  'A mother stabbed to death by her husband made a secret will stating that he must never be allowed to care for their son.'"}, {'frame': 'Kinship', 'tfidf': 1.4846947193145752, 'lexical_unit': 'father.n / mother.n / son.n / daughter.n / uncle.n / aunt.n / auntie.n / dad.n / daddy.n / grandson.n / granddaughter.n / niece.n / nephew.n / brother.n / sister.n / grandfather.n / grandmother.n / mother-in-law.n / father-in-law.n / son-in-law.n / daughter-in-law.n / stepson.n / stepdaughter.n / stepmother.n / stepfather.n / stepbrother.n / stepsister.n / brother-in-law.n / sister-in-law.n / cousin.n / mom.n / great-grandson.n / great-granddaughter.n / parent.n / child.n / in-law.n / family.n / sibling.n / ancestor.n / descendant.n / forebear.n / forefather.n / kinsman.n / kinsfolk.n / kinswoman.n / relative.n / kin.n / maternal.a / paternal.a / parental.a / filial.a / ancestral.a / scion.n / kid.n / offspring.n / clan.n / people.n / name.n / kinship.n', 'definition': "This frame contains words that denote Kinship relations. In annotating the directional uses of these words, we use the standard terms from anthropology, Ego and Alter.  'Matilde is Gilberto's cousin once removed' Compare to: Appellations."}, {'frame': 'Transition_to_a_quality', 'tfidf': 1.4784972667694092, 'lexical_unit': 'go.v', 'definition': "An Entity ends up with a particular new Final_quality.    'The milk has gone sour already .'  There is only one lexical unit, go.v, that evokes this frame directly in English, and it combines only with a limited set of Final_quality types, such as undesirability (bad, sour), insanity (crazy), inability (limp), or posture (prone).  However, the frame itself is intended to cover situations with arbitrary Final_quality types.  As such, frames describing simple state change should inherit from this frame, incorporating the Final_quality FE as part of the background meaning of the frame."}, {'frame': 'Transition_to_state', 'tfidf': 1.4726296663284302, 'lexical_unit': 'grow.v / get.v / end up.v', 'definition': "An Entity ends up in a Final_category, Final_situation, or Final_quality which it was not in before.  Some members of the frame (e.g. grow.v) tend to emphasize a gradual change, while most members of the frame do not indicate whether a change is gradual or not.    'Why I became an Emacs user'  'I left the ministry and became an atheist.'  'Surprisingly, various veteran organizations also turned vehemently antiwar.'  ' Over the years she grew to hate him.'  This frame should be compared to Undergoing_change.  Undergoing_change is different in that it much more emphasizes the difference between the pre- and post-states of the Entity.  This shows up both in Undergoing_change's increased occurrence with Initial_category and Initial_state (change from red to blue) and in its increased occurrence with Final_category (changed into a toad) rather than Final_situation or Final_quality (?changed to red vs. became/turned red).  In addition, when Undergoing_change occurs with the Final_category frame element, it presents a deep difference between the Initial_category and the Final_category, so that it is humorous to say 'she turned into a Republican', because it presents this as a fundamental change of identity; compare to 'she became a Republican', which is quite normal.  In a less humorous example, someone can 'turn into a Mac user', strongly implying that they no longer use their former operating system, while if they 'become a Mac user', this is either as a replacement of other OS's or potentially as an addition to the use of other OS's."}, {'frame': 'Cause_motion', 'tfidf': 1.4654805660247803, 'lexical_unit': 'cast.v / catapult.v / chuck.v / drag.v / fling.v / hurl.v / nudge.v / pitch.v / press.v / push.v / shove.v / throw.v / thrust.v / toss.v / tug.v / yank.v / scoot.v / draw.v / run.v / slide.v / pull.v / drive.v / move.v / force.v / haul.v / attract.v / knock.v / punt.v / roll.v / jerk.v / propel.v / launch.v / stick.v / transfer.v / hit.v / slam.v / drop.v / rake.v / impel.v / wrench.v / wrest.v / lift.v', 'definition': 'An Agent causes a Theme to move from a Source, along a Path, to a Goal.  Different members of the frame emphasize the trajectory to different degrees, and a given instance of the frame will usually leave some of the Source, Path and/or Goal implicit. The completion of motion is not required (unlike the Placing frame, see below), although individual sentences annotated with this frame may emphasize the Goal.   \'\' This frame is very broad and contains several different kinds of words that refer to causing motion.  Some words in this frame do not emphasize the Manner/Means of causing the motion (transfer.v, move.v).  For many of the others (cast.v, throw.v, chuck.v, etc.), the Agent has control of the Theme only at the Source of motion, and does not experience overall motion.  For others (e.g. drag.v, push.v, shove.v, etc.) the Agent has control of the Theme throughout the motion; for these words, the Theme is resistant to motion due to some friction with the surface along which they move.    \'She threw her shoes into the dryer .\' \'The mechanic dragged the jack out from under the car .\' \'We will move the sofa out of the room through the french doors, down the stairs, and onto the sidewalk .\' \'\' \'\'  This frame is used in a very large number of productive metaphors, not all of which can be outlined here.  The most salient types include causing an entity, construed as a Theme, to change state from an initial state (Source) via an intermediate state (Path) to a final state (Goal): \'Hillary was catapulted to stardom and his life has never been the same since . CNI\' \'She felt as though flung from health to illness and back by the day , by the hour .\' \'Once our parents are dead , we are catapulted into becoming the older generation ourselves . CNI\' \'Croquet was pushed out by tennis .\' \'\'  A particularly divergent subtype casts changing someone\'s intentions as changing their location: \'Democratsforced the Senate into a rare closed door session .\' \'He nudged Mrs Thatcher towards acceptance of a unified Germany .\' \'\'  Another subtype is specifically about causing a change in quantity (the Theme) through some sequence of values (Source, Path, and Goal): \'Bonus payments would be handed out for pushing up voting levels CNI .\' \'\'  Another type, with many subtypes, involves causing an action or state (construed as a Theme) to have an effect on another person or location or conceptual domain. In such cases, theGoal is used for the final affected domain, and Source for initial affected domain, Path for an intermediate affected domain, and Distance for degree of difference between original application of the action and final: \'Jake had been hurling these same insults at her now for years\' \'One can not press this argument too far .\' \'She shoved the thought to the very back of her mind .\' \'She flung him a savage little smile .\' All of the foregoing metaphorical uses are annotated in this frame and marked "Metaphor", since they seem to be semantically motivated and not lexically idiosyncratic. \'\' \'\'  This frame contrasts with the following frames which talk about an Agent changing a Theme\'s position with respect to a landmark (either Source or Goal): \'\'  In Placing, the figure (Theme) is profiled as the object, and ends up on the ground (Goal).  The focus is on the final stage of motion, in which the Theme ends up at the Goal, and usually stably remains there. \'Joyce placed the flowers onto the bed.\' \'\'  In Filling, the ground (Goal) is profiled as the object, and the figure (Theme) ends up on the ground (Goal). \'John filled the box with old toys.\' \'\'  In Removing, the figure (Theme) is profiled, and is removed from the ground (Source). \'Jennifer removed the flowers from the bed.\' \'\'  In Emptying, the ground (Source) is profiled and the figure (Theme) is removed from it. \'Jason emptied the box of the old toys .\' \'\'  Words of this frame also differ from the words of the Bringing frame in that they are more general:  either the Agent has a momentary interaction with the Theme that causes its motion, unlike the continuous causation of Bringing, or the Agent continuously acts on the Theme, but there is no supporting object that helps with the motion like the Carrier of the Bringing frame.  '}, {'frame': 'Disembarking', 'tfidf': 1.465146541595459, 'lexical_unit': 'disembark.v / debark.v / deplane.v / detrain.v / dismount.v / alight.v / debus.v / disembarkation.n / get.v', 'definition': "A Traveller leaves from or dismounts a Vehicle.  'The passengers disembarked in Southampton.'  'They then informed the passengers that, if the aircraft were to leave the runway, they would likely be deplaning through the rear cabin doors.'"}, {'frame': 'Needing', 'tfidf': 1.4539783000946045, 'lexical_unit': 'need.v / require.v / need.n', 'definition': "The speaker believes that some state of affairs or entity (the Requirement) must be present in order to cause some other dependent state of affairs to occur (the Dependent).  In the typical case, the Cognizer desires the occurrence of the Dependent and so also desires the obtainment or occurrence of the Requirement.  'I need one more bolt. DNI' 'I need one more nail to finish building the cabinet.' 'In order to complete the treaty, the United States will require several more diplomats.' 'He needs everyone to leave his office to finish his work.'"}, {'frame': 'Prevarication', 'tfidf': 1.447364330291748, 'lexical_unit': "lie.v / prevaricate.v / lie.n / mislead.v / kid.v / misrepresent.v / deception.n / misrepresentation.n / prevarication.n / shit.v / joke.v / equivocate.v / fool.v / equivocation.n / fib.n / bullshit.v / pull (someone's) leg.idio / deceive.v / fib.v / pull the wool over (someone's) eyes.idio / hoodwink.v / bullshit artist.n / dissemble.v / dissembler.n / deceptive.a / tell.v", 'definition': "A Speaker communicates about a Topic in such a way as to mislead an Addressee, either by telling outright lies or by presenting a message in a misleading form.  'I lied to you about your Christmas present.'"}, {'frame': 'Compatibility', 'tfidf': 1.4247492551803589, 'lexical_unit': 'compatible.a / incompatible.a / incompatibility.n / compatibility.n / harmonize.v / congruent.a / congruous.a / consonant.a / dovetail.v / jibe.v / square.v / comport.v / rhyme.v / accord.v / agree.v / cohere.v / consistent.a / harmony.n / go.v / clash.v / match.v / biocompatible.a / conflict.v / conflicting.a / at variance.a / fly in the face of.v', 'definition': "Item-1 and Item-2 are compatible with each other if they can exist or function together in some context without problems, conflict, or other undesirable situation.  The set of Item-1 and Item-2 may be expressed jointly as Items. The Degree to which the Items are compatible may also be indicated, as may be a Parameter along whose lines the Items are compatible. ' Make sure your site is compatible with any browser.' 'Our software applications  are compatible. ' "}, {'frame': 'Experiencer_focus', 'tfidf': 1.4019767045974731, 'lexical_unit': 'abhor.v / abominate.v / adore.v / delight.v / despair.v / despise.v / detest.v / dislike.v / dread.v / envy.v / fear.v / grieve.v / hate.v / like.v / loathe.v / love.v / mourn.v / pity.v / regret.v / resent.v / rue.v / rueful.a / hatred.n / empathy.n / compassion.n / dislike.n / desperation.n / envy.n / loathing.n / pity.n / regret.n / resentment.n / adoration.n / abhorrence.n / relish.n / detestation.n / nettled.a / worried.a / nervous.a / apprehensive.a / fond.a / interested.a / agape.a / fulfilled.a / fulfillment.n / satisfaction.n / satisfied.a / worked up.a / dissatisfied.a / fazed.a / unfazed.a / calm.a / comfort.n / solace.n / pleasure.n / irritated.a / upset.a / antipathy.n / taken.a / fed up.a / intimidated.a / happily.adv / feverish.a / feverishly.adv / cool.a / easy.a / discomfort.n', 'definition': "The words in this frame describe an Experiencer's emotions with respect to some Content. A Reason for the emotion may also be expressed.  Although the Content may refer to an actual, current state of affairs, quite often it refers to a general situation which causes the emotion.    ' My enjoyment of the movie was considerably impaired by the seven-foot guy sitting in front of me. ' ' Smithers takes great pleasure in collecting matchboxes.' ' Sergio derives great pleasure  from  smoking.' ' Smoking gives me extreme pleasure.' With certain verbs, the Circumstances can be expressed in a finite clausal or wh- complement which may optionally be preceded by a Null NP Object: 'I hate it when you do that.' Note: This is not how it is currently tagged. "}, {'frame': 'Cause_bodily_experience', 'tfidf': 1.3931277990341187, 'lexical_unit': 'itch.v / scratch.v / tickle.v / rub.v / massage.v / chafe.v / hurt.v', 'definition': "An Agent or Cause affects a Body_part of an Experiencer so that the quality of the Experiencer's perceptual experience of the Body_part is qualitatively changed.  'Chandra massaged Liliana's wrist because it was injured.' 'Chandra massaged Liliana's wrist because it was injured.'"}, {'frame': 'Capacity', 'tfidf': 1.3901530504226685, 'lexical_unit': 'seat.v / fit.v / take.v / sleep.v / feed.v / serve.v', 'definition': "An Entity has the ability to contain a Theme.  'Our facility seats up to 500 people.'"}, {'frame': 'Temporary_stay', 'tfidf': 1.3846545219421387, 'lexical_unit': 'stay.v / stay.n / lodge.v / room.v / guest.v / overnight.v / sleep over.v / stay over.v / board.v / quarter.v', 'definition': "A Guest stays for a time at a Location, which is not his or her permanent residence, for some Duration. The Location is often the permanent residence of a Host.  'I usually stay with my aunt at her summer house when I go to Seville.'  'For a few days my father lodged at a hotel with a buddy who was a biology student.'"}, {'frame': 'Facial_expression', 'tfidf': 1.3799446821212769, 'lexical_unit': 'smile.n / grimace.n / grin.n / frown.n / expression.n / smirk.n / rictus.n / look.n / scowl.n / face.n / snarl.n / sneer.n / pout.n', 'definition': "The words in this frame refer to facial Expressions and the Possessors of those Expressions.  'His lackluster smile revealed his disappointment.'"}, {'frame': 'Usefulness', 'tfidf': 1.3783557415008545, 'lexical_unit': 'good.a / effective.a / excellent.a / outstanding.a / superb.a / wonderful.a / fantastic.a / fine.a / tremendous.a / terrific.a / marvellous.a / great.a / super.a / splendid.a / useful.a / utility.n / value.n / valuable.a / perfect.a / ideal.a / ineffective.a / work.v / strong.a', 'definition': "An Entity aids in the successful completion of a Purpose.  Its Degree of utility may also be expressed. Some of the lexical units  in this frame (e.g. great, good) can only express permanent, generic states of the Entity.  'A box is an ideal storage device.'"}, {'frame': 'Making_faces', 'tfidf': 1.3737711906433105, 'lexical_unit': 'frown.v / grimace.v / grin.v / pout.v / scowl.v / smile.v / smirk.v', 'definition': "An Agent makes a particular facial expression, generally in response to some Internal_cause (generally an emotional state).  Sometimes the Body_part involved in the expression is mentioned in lieu of the Agent.  'His eyes smile, but his lips do not.'"}];
+    </script>
+    <script type="text/javascript" src="word_cloud_prediction.js"></script>
+    <script type="text/javascript" src="../mturk.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 150px;
+            padding-right: 150px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel_1 canvas, #word_cloud_panel_2 canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+        .word_cloud_box {
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 3px rgba(70, 70, 70, 1) solid;
+            padding: 20px;
+            margin-bottom: 20px; 
+        }
+        .word_cloud_box:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+        }
+        .selected_story_block {
+            border-color: #7BDFF2;
+            border-width: 3px;
+            box-shadow: 0 0 10px 10px rgba(123, 223, 242, 0.3);
+            background-color: rgba(239, 247, 246, 0.8);
+        }
+        .indicator {
+            /*font-family: Courier;
+            font-weight: bold;*/
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px black solid;
+            border-radius: 20px;
+        }
+
+        .selected_story_block .indicator {
+            background-color: rgb(123, 223, 242);
+        }
+
+        #story_content {
+            max-height: 600px;
+        }
+        .not_qualified {
+            color: red;
+            font-weight: 900;
+        }
+        .qualified {
+            color: black;
+            font-weight: 900;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Which word-cloud best represents the story snippet?</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that a computer automatically 
+            generated to characterize a story snippet. 
+            These words can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            A <strong>word-cloud representation with nouns</strong> is a group of nouns a computer automatically 
+            generated to characterize a story snippet. 
+            These nouns can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            In this HIT, you will see a story snippet. <span class="highlight">Please read the it carefully.</span>
+            The story is long so we have a 3 minutes time lock for submission.
+            <br/><br/>
+
+            At the bottom of the HIT, you will see two sets of word-cloud representations, 
+            where each consists of nouns, verbs, and adjectives. 
+            <span class="highlight">Please select the word-cloud representation that best represents the story.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following story snippet carefully!</h3>
+            You will need to select the word-cloud representation that best represents this story. 
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story</h4>
+                        <h5>(An excerpt from the book <span style="font-weight:bold;">"Intense Insane In Love"</span>.)</h5>
+                        <span class="not_qualified" id="read_lock">Please read all the story.</span>
+                        <br/><br/>
+                        <pre id="story_content">
+"Lee, sweetheart, it's just me and you here, no one else.
+Don't think of anything else except for me and you."
+My anger flares.
+"Don't talk to me like that."
+"Like what?"
+"Like I'm some victim, like I'm a mental case.
+I know it's you here Robert and I don't want you to freaking touch me."
+He backs away.
+I see his hurt, and I think it's real - good.
+It's about time someone else feels some pain.
+"That's right I don't want you to touch me.
+As a matter of fact I can't stand even the thought of your hands on me.
+You don't love me.
+I'm not even sure if you like me."
+"Then why am I here?"
+"I don't know, maybe I'm so damn easy to control you just can't give it up.
+You like the power.
+But Kari's not that easy, is she?"
+I laugh.
+"She played you for the fool you are.
+Moron.
+She has you trapped.
+I bet you didn't even see it coming.
+You never had to worry about that with me because the thought of having part of you growing inside me makes me sick to my stomach.
+You're a heartless man Robert Cole.
+You don't know how to love.
+After you leave tomorrow stay the hell away from me, erase me from your memory."
+"I didn't know you felt that way?"
+He's definitely hurt, his eyes are glossy.
+I stand my ground.
+"Now you do."
+"I almost wish I was screwing Kari, at least then I would have warranted such abuse.
+All I've done is love you Leah, unconditionally.
+Don't worry I'll figure out how to stop.
+I'll leave you alone if that's what you want.
+Goodnight."
+He walks off to the guest room.
+Guilt overtakes me.
+I took out my frustration on him.
+He didn't deserve that.
+I wish I can take it all back.
+I want to go apologize but instead I walk to my bedroom and close the door.
+After popping another pill, I go to bed.
+Maybe when I wake up tomorrow, I'll realize this was just a horrible nightmare.
+Or better yet, maybe I won't wake up.
+It's been two weeks since Robert left, and I haven't heard a word from him.
+He is probably trying to make me feel guilty for the things that I told him the night before he left.
+As for Kari she hasn't been returning my calls either.
+I guess she's mad.
+I don't really care.
+These past two weeks I haven't done much.
+Haven't really been out, except for Tuesday when I did that interview for the temporary staff accountant position.
+They called me yesterday to tell me I got the job.
+I'm starting on Monday - unlucky me.
+I'll be working under a twenty-four year old that has a fraction of my experience and education.
+Today I was planning on going to Center City to look around.
+Maybe stake out the United Blue building and run over that bastard Jacob Boyd with my BMW as he crosses the street.
+Instead, this morning I woke up depressed thinking about my new loser job and lost my appetite for murder.
+Jerry Springer is on the television, they just came back from commercial.
+Stephanie, a young woman in her early twenties is there to tell Keshia, her best friend since childhood, that she slept with her boyfriend Kevin.
+"It was in the heat of the moment Jerry.
+It just happened once," Stephanie, the backstabbing slut, tells the host Jerry Springer.
+After Jerry's introduction, Keshia, the clueless victim comes out.
+Of course she doesn't take the news well, but the girl is strong.
+She doesn't break down crying, she immediately begins to beat the daylights out of Stephanie.
+"Beat her down!"
+I scream at the television.
+"I had to deal with that crap for five years.
+She's not a friend.
+Beat her like an enemy.
+Show no mercy."
+Security breaks them up and now it's time for the boyfriend to come out.
+"Baby, it was just that one time.
+It meant nothing to me.
+I was thinking of you the whole time."
+Kevin's frankness hurts Stephanie's feelings so she attacks the guy.
+"Did you think he loved you?
+You dumb slut."
+I shout at the TV.
+Kevin ignores Stephanie's weak punches and focus on telling Keshia more lies in hopes she's dumb enough to forgive him.
+"It'll never happen again," Kevin pleads.
+Slap.
+"That's right, hit him again.
+He deserves it," I yell at the television while slapping my knee with each word.
+The phone rings, but I ignore it.
+Whoever it is, I don't want to talk to them, I rather watch people debase themselves on TV.
+It makes me feel much better about my disastrous life.
+"Good morning Leah this is Denise Kalzowitz from Finance Professionals."
+At the sound of her voice I mute the TV and pick up.
+Maybe she has another job that she wants to submit my resume for.
+"Hi Denise."
+"Hi Leah, I'm glad I got you.
+I have great news."
+The excitement in her voice amps up my mood.
+"What's the news?"
+I ask, almost cheerfully.
+"United Blue called me this morning.
+They want you on board."
+"Excuse me?"
+I know I heard her wrong.
+"They want you on board.
+When should I tell them you can start?"
+"Start?"
+I sneaker, the nerve of these people, "Please tell them I'm no longer interested in the position."
+"You've found a job?"
+Denise sounds confused.
+"I didn't know you were working with another agency."
+"I'm not," I lie.
+"I found this job on my own."
+"Have you started yet?"
+"No."  "United Blue might be able to match whatever they are paying.
+Would you like me to ask?"
+"No.
+I'm not interested.
+I'm in the middle of something.
+I have to go."
+After hanging up with her, I don't give the conversation a second thought.
+Taking the television off of mute I see that Jerry Springer has moved to another segment.
+This woman, I didn't catch her name, just found out that her husband has been cheating on her with a stripper.
+She's crying and asking him why.
+"Why do you think dummy?
+Because you're so damn weak, he knows you'll put up with it."
+I scold my married counterpart on the other end of the television screen.
+The stripper comes out and instead of the wife beating up the stripper the stripper is beating the crap out of the wife.
+Where is the justice in this life?
+Unable to watch the slaughter, I turn the channel.
+Scanning channels I stop on a movie channel.
+There's a movie on about a married woman having an affair.
+About time we women start doing it to them.
+See how they like it.
+Something's vibrating on my bed.
+I lift up my sheets and see that it's my cell phone.
+"Hi Carol," I say after muting the TV.
+Wasting no time she immediately begins to complain, "Why haven't you been returning my calls?"
+"I've been working twelve hours a day trying to catch up and understand the insurance industry?
+It's extremely complex.
+I haven't gotten a chance to socialize."
+"I'll accept that excuse this time.
+How do you like it?"
+"I love it.
+It's just so...Awesome.
+Great.
+Fantastic."
+"Any good looking guys?"
+"I haven't been looking."
+"You need to start.
+How about PA, do you like it?"
+"Love it.
+I'm actually having lunch at Love Park as we speak."
+"Aren't you cold?"
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+
+        <h3>Select the word-cloud representation that best represents the above story.</h3>
+        Below, there are two word-cloud representations. Read them carefully and select the one that best represent the above story.
+        <br/><br/>
+
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_1" value="1">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 1</h3>
+                The following three word clouds jointly represent the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_2" value="2">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 2</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_2">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_2">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_2">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_2-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="26">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input name="note" type="hidden" value="LGBM, BERT">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+    </div>
+
+</body>
+</html>

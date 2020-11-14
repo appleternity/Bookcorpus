@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="text/javascript">
+        var frame_list_1 = [{'frame': 'Ineffability', 'tfidf': 2.792649507522583, 'lexical_unit': 'magic.n / magic.a / magical.a / ineffable.a / ineffability.n / je ne sais quoi.n / magicalness.n', 'definition': "A Stimulus inspires a feeling of awe and interest in a (generally implicit or generic) Experiencer due to desirable qualities which are difficult to explain.  Alternatively, the Attribute of the Stimulus may be described instead.  'There is a certain je-ne-sais-quoi about that city .'"}, {'frame': 'Plants', 'tfidf': 1.9871299266815186, 'lexical_unit': 'tree.n / weed.n', 'definition': 'The LUs in this frame refer to biological entities other than human beings and animals, which are labeled by the FE Plant.'}, {'frame': 'Documents', 'tfidf': 1.892250657081604, 'lexical_unit': 'visa.n / passport.n / subpoena.n / warrant.n / certificate.n / papers.n / license.n / summons.n / diploma.n / deed.n / lease.n / agreement.n / treaty.n / charter.n / authorization.n / deposition.n / brief.n / writ.n / affidavit.n / will.n / testimony.n / testament.n / ruling.n / finding.n / opinion.n / title.n / orders.n / contract.n / permit.n / document.n / contractual.a / accord.n / confirmation.n / identification.n / business card.n', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Capability', 'tfidf': 1.8905283212661743, 'lexical_unit': 'able.a / unable.a / can.v / capable.a / ability.n / potential.n / capability.n / capacity.n / potential.a / power.n / power [statistical].n / powerless.a / powerlessness.n / inability.n / incapable.a / incapacity.n / powerful.a', 'definition': "An Entity meets the pre-conditions for participating in an Event.  A Degree modifier may be included to indicate by how much the Entity exceeds or falls short of the minimum requirements.  'Conductor software gives us the hands-on capability to provide updates immediately'  'The GOP is afraid that it might not be capable of keeping the seat vacated by Dunn.'  'NASA is unable to communicate with Mars rover.'  'He can fly a kite.'"}, {'frame': 'Ground_up', 'tfidf': 1.6582427024841309, 'lexical_unit': 'pulverized.a / ground.a / crushed.a / milled.a / grated.a / flaked.a / powdered.a / shredded.a / crumbled.a / granulated.a', 'definition': "In this frame a Patient is in a state of having been broken into smaller pieces.  ' We enjoy eating ground beef . '"}, {'frame': 'Expressing_publicly', 'tfidf': 1.5867804288864136, 'lexical_unit': 'vent.v / air.v / express.v / voice.v / give voice.v / expression.n / articulate.v / put into words.v', 'definition': "A Communicator publically communicates some difficult-to-express Content which they (or a social group of which they are a member) have had for some time. The Content may not have been previously communicated due to inability or social stricture.  In cases where the individuals addressed are a smaller group than the public at large, a separate Addressee may be expressed.  'Those grievances can be aired during Board meetings. CNI'  'Saddam voiced his joy when he was told Spain's new government had left the US-led military coalition in Iraq.'   "}, {'frame': 'Reason', 'tfidf': 1.5419901609420776, 'lexical_unit': 'reason.n / why.n / motive.n / motivation.n / basis.n', 'definition': "A volitional  Agent is responding to a State_of_affairs by performing some Action.  'And was that your reason for becoming an actor ?' 'But Giles is the reason that I am here .' 'Oh my reason for including it was Section fifty four A.'  "}, {'frame': 'Biological_entity', 'tfidf': 1.5278013944625854, 'lexical_unit': 'life.n / lifeform.n / organism.n / human.a', 'definition': "The LUs in this frame refer to biological entities labeled by the FE Organism. An Organism is described as something that can be alive, or have naturally occuring biological processes and functions; however the concept of life is often used metaphorically for non-organic entities which resemble or act as if they have organic life.  'NASA may someday discover a new lifeform from another planet.'"}, {'frame': 'Color', 'tfidf': 1.5240278244018555, 'lexical_unit': 'red.a / green.a / color.n / vermilion.a / ebony.a / purple.a / blue.a / orange.a / yellow.a / violet.a / brown.a / gray.a / black.a / white.a / pink.a / crimson.a / maroon.a / turquoise.a / azure.a / beige.a / mauve.a / tan.a / buff.a / scarlet.a / pitchblack.a / colored.a / indigo.a / puce.a', 'definition': "A Color serves as a landmark in color-space, either a point-like landmark (e.g. burnt sienna) or a broader region (e.g. blue).  Especially when the Color designates a broad region in color-space, it may be defined with a specific Type, further specified by comparison to the color of a Comparand, modified by a Color_qualifier, or evaluated with a Descriptor.  All color words are generally used to specify the color of some (physical) Entity. 'I really like that shade of blue.' 'The welts on his side had already turned an angry red.' 'The room was bathed in a soft pink light.' 'They promptly set up a zillion bright vermilion pavilions.' 'His face and hands were brown from a life spent in the bright sun of the fields.' "}, {'frame': 'Electricity', 'tfidf': 1.4831888675689697, 'lexical_unit': 'electricity.n / electric.a / power.n / electric power.n / juice.n / electrical.a / hydroelectric.a / hydroelectricity.n / photoelectric.a / photoelectricity.n / energy.n / electrical power.n / current.n', 'definition': "Lexical units in this frame refer to Electricity, in particular as a form of energy harnessed for particular uses (such as powering machines).  The Source of the Electricity may also be expressed, or incorporated in the meaning of the LUs.  'A compound to generate wind electricity was built on the other side of those mountains.'  'China's hydroelectric dam is being built primarily for flood control and energy production.'"}, {'frame': 'Protecting', 'tfidf': 1.4583489894866943, 'lexical_unit': 'protect.v / shield.v / safeguard.v / insulate.v / secure.v / protection [event].n / protection [entity].n / safeguard.n / shield.n / bulwark.n / guard.v / shelter.n / shelter.v / cover.n', 'definition': "Some Protection prevents a Danger from harming an Asset.  'The rubber on her sneakers protected her from the mud.'  'The coral reefs shielded the coastline from the worst of the waves.'  'A growing number of sustainable farmers are preserving agricultural variety and protecting biodiversity by raising ?heritage? or ?heirloom? varieties.'  'The man responsible for this entire ordeal cowardly shielded himself from justice with the little boy's struggling body.'"}, {'frame': 'Assistance', 'tfidf': 1.4423420429229736, 'lexical_unit': 'assist.v / help.v / abet.v / succor.v / helpful.a / assistance.n / aid.v / aid [act].n / help out.v / serve.v / cater.v / help.n / aid [entity].n / aid and abet.v', 'definition': "A Helper benefits a Benefited_party by enabling the culmination of a Goal that the Benefited_party has.  A Focal_entity that is involved in reaching the Goal may stand in for it.  This Frame has unique Frame-to-Frame Relations: it inherits from and uses the Intentionally_act frame. This is atypical of FrameNet's frame relations.  'Will you help the Government find your brother?' 'Maybe Stephen should assist him with the last manuscript.' 'They helped me psychologically to overcome the physical loss I had suffered.' 'You have helped him tremendously by showing him  how to stand up for himself and by being his friend.' 'By bringing assistance to his troops wherever they were in trouble he aided them greatly.'"}, {'frame': 'Firefighting', 'tfidf': 1.4213708639144897, 'lexical_unit': 'fight.v / gain ground.idio / battle.n / control.v / tackle.v / attack.v / battle.v / fire fighting.n', 'definition': 'This frame characterizes the situation or state of affairs in which someone acts to prevent a Fire_disaster from occurring, accelerating, or affecting any area not identified as a Controlled_area. The named Burn_area, targeted by the Fire_disaster, is more salient than "fire" itself and is often used for reference instead. The organizational methods for Firefighting are of utmost importance in this frame.'}, {'frame': 'Perception_experience', 'tfidf': 1.4016817808151245, 'lexical_unit': 'detect.v / feel.v / hear.v / perceive.v / perception.n / see.v / sense.v / smell.v / taste.v / overhear.v / experience.n / witness.v / experience.v', 'definition': "This frame contains perception words whose Perceivers have perceptual experiences that they do not necessarily intend to. For this reason we call the Perceiver role Perceiver_passive. Comparing the Perception_experience frame to the Perception_active frame, we note that for some modalities there are different lexical items in each frame.  For instance, whereas Perception_experience has see, Perception_active has look at. For other sense modalities, we find the same lexical items in both frames.  To illustrate, consider the verb smell where I smell something rotten exemplifies its Perception_experience use and Smell this to see if it's fresh exemplifies its Perception_active sense. This frame also includes words which are not specific to any sense modality, including detect, perceive, perception, sense.  '' 'Abashed, realising that he had overheard her conversation with Victoria, Sheeley didn't try to make excuses.'  'She smelled the wine on Paul's breath, and bade him to sit down.'"}, {'frame': 'Breathing', 'tfidf': 1.4004356861114502, 'lexical_unit': 'breathe.v / inhale.v / breath.n / exhale.v / gasp.v / sigh.n / exhalation.n / exhalation [act].n / inhalation.n / inhalation [breath].n / huff.v / puff.v / sigh.v / blow.v / expire.v / inspire.v / insufflate.v / pant.v / respire.v / suspire.v', 'definition': "An Agent causes Air to move in a direction, usually specifying either in or out of the body.  'Lee breathed the hot desert air.'"}, {'frame': 'Manipulation', 'tfidf': 1.36729097366333, 'lexical_unit': 'clasp.v / claw.v / clutch.v / finger.v / grab.v / grasp.v / grip.v / knead.v / massage.v / nip.v / nudge.v / paw.v / pinch.v / pull.v / push.v / seize.v / squeeze.v / tug.v / tweak.v / wring.v / yank.v / fumble.v / grope.v / stroke.n / rub.v / grab hold.v / pull.n / lick.v / touch.v / kiss.v / caress.v / caress.n / stroke.v / diddle.v / hold.v / tickle.v / handle.v / kiss.n / poke.v', 'definition': "The words in this frame describe the manipulation of an Entity by an Agent.  Generally, this implies that the Entity is not deeply or permanently physically affected, nor is it overall moved from one place to another.  'Ian squeezed Mara's hand.' ''  A number of lexemes listed in this frame also occur in the Cause_motion frame (for example, push, yank).  Only the non-motion uses of these words belong in this frame, e.g., combinations such as push at, push on, yank at. "}, {'frame': 'Trying_out', 'tfidf': 1.3660221099853516, 'lexical_unit': 'try.v / test out.v / try out.v', 'definition': "An Evaluator participates in an Experience (or metonymically, a salient Entity of the Experience), often for the first time, in order to form an opinion about its quality. The aspect of quality that is being judged is often implicit but may be expressed as the Purpose of the Evaluator's participation.   'Have you tried my latest get-rich-quick scheme? INI' 'Don tried out the bike to see if it was the right size.'"}, {'frame': 'Level_of_force_exertion', 'tfidf': 1.364198923110962, 'lexical_unit': 'strong.a / weak.a / mighty.a / power.n / might.n / forceful.a / force.n / strength.n / weakness.n / powerful.a / powerless.a', 'definition': 'An Exerter, Action, or Force is capable of exerting or does exert a physical force at a level specified by the target. That physical force may cause deformation or breakage of, or simply motion in the receiving entity. The receiving entity is conceptually present (even if remotely), but is usually not lexically explicit. This frame covers both individual-level/static uses ("a STRONG person") as well as stage-level/dynamic uses ("a STRONG push"). However, the durative, individual-level meaning appears more frequently in the data and seems more basic.   \'Eugenie loved the sea and was a strong swimmer.\'  \'Spartacus dealt the Roman soldier a mighty blow.\'  \'A powerful force tore off the tree\'s branches.\'  Exerter, Action, and Force belong to a Core set. \'\'  There are several productive metaphors covered by this frame. The first and most common is one in which social influence or control is conceptualized as the physical exertion of force. The social influence/control is more specifically a propensity to cause change in social realms such as the economic, political, militaristic, cultural, or intimate: \'There were theoretical limits to the power of the king.\' \'Voters in the South have a strong incentive to keep such Democrats in office.\'  Another similar metaphor is one in which psychological influence or control is understood as the physical exertion of force. The psychological influence/control includes the emotional as well: \'Poetic words in a text can be given more emotive power by using melisma.\' \'He was a forceful speaker.\'  A third metaphor involves the amount of an entity construed as the physical force exertion of said entity. Depending on context, amount could be volume, etc. (“STRONGEST critics”; “MIGHTY uproar”).  \'\'  Two related physical force dynamic frames are Level_of_force_resistance and Dynamism.  This frame is distinguished from the Level_of_force_resistance frame in that it describes the level of force exertion instead of the level of resistance, and also in that there are three categories of Core FE available to the target (i.e Exerter, Action, or Force), whereas in Level_of_force_resistance there are only two Core FEs (i.e. Resisting_entity and Opposing_force). Of the latter frame\'s FEs, Opposing_force specifies the thing that the main entity resists to a level desginated by the target. Its parallel in Level_of_force_exertion is implied but backgrounded to the extent that it rarely appears as explicit lexical material; thus there is no corresponding Core FE.   This frame differs from Dynamism with regard to individual-level cases; targets here express the FE\'s capability. In contrast, Dynamism targets express the FE\'s tendency. For example, "a STRONG person" is generally construed as a person who is capable of strength, while "an ENERGETIC person" (energetic.a from the Dynamism frame) is construed as a person who tends to be energetic.   However, there is overlap between the two frames in stage-level cases - "a STRONG push" and "an ENERGETIC push" seem rather comparable. '}, {'frame': 'Sensation', 'tfidf': 1.3538551330566406, 'lexical_unit': 'aroma.n / bouquet.n / feel.n / feeling.n / flavour.n / fragrance.n / incense.n / noise.n / odor.n / perception.n / perfume.n / reek.n / savour.n / scent.n / sensation.n / sense.n / sight.n / smell.n / sound.n / stink.n / taste.n / whiff.n / scene.n / image.n', 'definition': "This frame contains nouns that refer to sensations in different modalities. The FE Source is used for the phenomenon that gives rise to the sensation in question. The FE Percept is used for the characteristic quality of the sensation. In cases of veridical perception these are not typically distinguished from one another; we use the FE Percept as the default in these cases. With some nouns in this frame it is possible to express the being who experiences the sensation, or the part of the body of such a being. We mark such expressions with the FEs Perceiver_passive and Body_part, respectively. (The -passive part of this label serves to distinguish this FE from the Perceiver-Agentive FE used in other frames.)  '' 'The huge sand dunes, perpetually changing, make for a surreal sight.'  'Endill heard the noise of glass smashing, plaster crumbling and furniture being broken.'  'The feel of his strong fingers enclosing her small palm came as something of a shock to her system.'"}, {'frame': 'Differentiation', 'tfidf': 1.3485493659973145, 'lexical_unit': 'differentiate.v / discriminate.v / discrimination.n / distinguish.v / sort.v / tell apart.v / separate.v / know.v / tell from.v / distinguishable.a', 'definition': "Words in this frame have to do with a Cognizer being aware (or not being aware) of the difference between two Phenomena, which may be expressed jointly or disjointly.      'It is very difficult for people to visually distinguish between living and non-living things from such a great distance .'  "}, {'frame': 'Political_locales', 'tfidf': 1.3319083452224731, 'lexical_unit': 'barony.n / territory.n / country.n / province.n / duchy.n / viscountcy.n / county.n / state [sovereign].n / principality.n / borough.n / town.n / realm.n / kingdom.n / municipality.n / metropolis.n / megalopolis.n / city.n / world.n / federal.a / global.a / parish.n / diocese.n / international.a / local.a / locality.n / municipal.a / national.a / empire.n / village.n / nation.n / commonwealth.n / internationally.adv / multinational.a / city-state.n / district.n / fiefdom.n / jurisdiction.n / land.n / state [internal].n / provincial.a / territorial.a / township.n', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'Hostile_encounter', 'tfidf': 1.3293447494506836, 'lexical_unit': 'battle.n / fight.n / scuffle.n / spat.n / altercation.n / duel.n / clash.n / confrontation.n / row.n / fighting.n / bout.n / struggle.n / hostility.n / skirmish.n / combat.n / squabble.n / stalemate.n / brawl.n / strife.n / fight.v / battle.v / duel.v / clash.v / brawl.v / skirmish.v / scuffle.v / confront.v / war.n / war.v / gunfight.n / shootout.n / standoff.n / showdown.n / wrangling.n / tiff.n / fistfight.n / firefight.n / conflict.n / dust-up.n / warfare.n / cw.n / bw.n / tussle.n / struggle.v / infighting.n / engage.v / engagement.n', 'definition': "This frame consists of words that describe a hostile encounter between opposing forces (Side_1 and Side_2, collectively conceptualizable as Sides) over a disputed Issue and/or in order to reach a specific  Purpose. '' 'He still wants to fight Mike Tyson in about 8 months.'  'Dennis Andries's European cruiserweight title clash against Akim Tafer of France in Beausoleil last February has been voted as the EBU's fight of the year.'"}, {'frame': 'Coming_to_believe', 'tfidf': 1.322493314743042, 'lexical_unit': 'ascertain.v / conclude.v / conclusion.n / deduce.v / deduction.n / guess.n / guess.v / infer.v / inference.n / learn.v / realization.n / realize.v / surmise.v / figure out.v / find.v / puzzle out.v / work out.v / determine.v / speculate.v / strike.v / gather.v', 'definition': "A person (the Cognizer) comes to believe something (the Content), sometimes after a process of reasoning. This change in belief is usually initiated by a person or piece of Evidence. Occasionally words in this domain are accompanied by phrases expressing Topic, i.e. that which the mental Content is about.   'Based on the most recent census I have concluded that most Americans sleep too much.'     "}, {'frame': 'Eventive_affecting', 'tfidf': 1.3031702041625977, 'lexical_unit': 'happen.v / strike.v / see.v / hit.v / what become (of).v / suffer.v', 'definition': "An Entity undergoes some change (the Event) that is (or is construed as) punctual.  (This frame exists mainly to allow common FEs to be inherited.)  'This happens to me all the time.'  'The area was struck by tragedy in 1996, when an assassin killed 35 people in Port Arthur.'"}, {'frame': 'Make_noise', 'tfidf': 1.2983088493347168, 'lexical_unit': 'babble.v / bark.v / bellow.v / blare.v / blast.v / bleat.v / bray.v / burble.v / cackle.v / caterwaul.v / caw.v / chatter.v / cheep.v / chirp.v / chuckle.v / clang.v / clash.v / clatter.v / click.v / coo.v / cough.v / creak.v / croak.v / croon.v / crunch.v / drone.v / fizzle.v / gasp.v / giggle.v / gobble.v / growl.v / grunt.v / guffaw.v / gurgle.v / hawk.v / hiss.v / hoot.v / howl.v / hum.v / keen.v / mew.v / mewl.v / moan.v / moo.v / neigh.v / patter.v / peal.v / peep.v / plash.v / plonk.v / plop.v / purr.v / quack.v / rasp.v / rattle.v / roar.v / rustle.v / scrape.v / screech.v / scrunch.v / sizzle.v / snarl.v / snicker.v / snigger.v / snore.v / snort.v / sob.v / sough.v / squawk.v / squeak.v / squeal.v / thump.v / thunder.v / tinkle.v / titter.v / toll.v / trumpet.v / tweet.v / twitter.v / ululate.v / wail.v / whimper.v / whine.v / whinny.v / whisper.v / whistle.v / yammer.v / yap.v / yelp.v / yodel.v / yowl.v / crepitate.v / laugh.v / clack.v / sploosh.v / scream.v / ring.v / beep.v / hem and haw.v / boom.v / cry.v / sound.v / honk.v / play.v / toot.v', 'definition': "A physical entity, construed as a point-Sound_source, emits a Sound.  This includes animals and people making noise with their vocal tracts. Sometimes the sound itself is referred to with a nominal expression, in which case it is called the Sound. Manner expressions may also be relevant in this frame, if they describe properties of the sound as such.  A path-schema can be overlaid on the simple noise-making scene, adding a Location_of_source and/or a Path.   This frame does not cover scenarios where objects create sound by coming into forceful contact with one another or rubbing against each other. Such scenarios are covered by the Impact and Friction frames. The current frame also does not cover cases where an animate Agent or a natural Force or Cause causes a single Source or several Sources (moving or rubbing against each other) to make noise. Such scenarios are  covered by the Cause_to_make_noise, Cause_impact and Cause_friction frames (the latter of which is not yet existent). Cases where the major emphasis of the portrayed scene is on the motion of a Theme, with sound emission only an accompaniment, are covered by the Motion_noise frame. Likewise, cases where the Sound itself is portrayed as moving through space are not covered in this frame but rather in Sound_movement. Finally, all nouns used to evoke Sounds have been placed in the Sounds frame. We have done this because these nouns do  not denote sound emission/production events but only the Sound itself (*The siren's blare occurred right on time)."}, {'frame': 'Facial_expression', 'tfidf': 1.2905008792877197, 'lexical_unit': 'smile.n / grimace.n / grin.n / frown.n / expression.n / smirk.n / rictus.n / look.n / scowl.n / face.n / snarl.n / sneer.n / pout.n', 'definition': "The words in this frame refer to facial Expressions and the Possessors of those Expressions.  'His lackluster smile revealed his disappointment.'"}, {'frame': 'Hearsay', 'tfidf': 1.2888422012329102, 'lexical_unit': 'hear.v / read.v', 'definition': "The Hearer receives a Message or communication on a particular Topic. Words in this frame denote events of verbal communication, but express the Hearer rather than the Speaker as an External Argument.   'Teenage fans first heard about the tragedy on a popular radio show.'   'Teenage fans first heard the tragic news on a popular radio show'"}, {'frame': 'Measure_volume', 'tfidf': 1.283262014389038, 'lexical_unit': 'pint.n / cup.n / bottle.n / bushel.n / box.n / glass.n / gallon.n / barrel.n / pack.n / bowl.n / teaspoon.n / jug.n / spoon.n / tablespoon.n / bag.n / quart.n / spoonful.n / teaspoonful.n / bagful.n / boxful.n / bucketful.n / tankful.n / sackful.n / packet.n / mug.n / scoop.n / scoopful.n / platter.n / tray.n / busload.n / planeload.n / truckload.n / carload.n / roomful.n / trainload.n / boatload.n / litre.n / can.n / case.n', 'definition': 'This frame is concerned with nouns that denote Units of measurement for volumes. The Frame Elements are Unit, Count,  Stuff, and Size. The frame will be split soon into container-derived volumes (box, bottle etc.) and pure volumes (gallon, quart). For the moment we tag things as follows: \'Greg drank two 2 liter bottles of lemonade.\' \'Sue drank two liters of beer.\' This frame necessitated the introduction of  the GF: Quant and the PT: Num used for expressions such as  the following: \'two cups of coffee\' FE: Count, GF: Quant, PT: Num\'\' Note that we treat cardinal numbers and "a" (= 1) in the same way.  \'a cup of coffee\' FE: Count, GF: Quant, PT: Num\'\' For the present, we prefer not to annotate "many cups of coffee" \'many cups of coffee\' FE: Count, GF: Quant, PT: Adj\'\''}, {'frame': 'Questioning', 'tfidf': 1.272042155265808, 'lexical_unit': 'grill.v / inquire.v / inquiry.n / interrogate.v / interrogation.n / query.n / query.v / question.n / question.v / questioning.n / quiz.v / ask.v', 'definition': "The words in this frame have to do with a Speaker asking an Addressee a question which calls for a reply (as opposed to making a request which calls for an action on the part of the Addressee).  '' 'We asked Ruby what kind of food they ate.'  'Yeats was able to interrogate the spirit world about his relationship with Maude.'"}, {'frame': 'Identicality', 'tfidf': 1.2714598178863525, 'lexical_unit': 'same.a / different.a / identical.a / distinct.a / identity.n', 'definition': "A Current_instance of a certain Type is under discussion. This instance  is evaluated as being the same instance or a different instance from a Previous_instance encountered in a Previous_context.  'Kim has a different hair color every week' 'Kim has a different hair color every week'  'Is this the same sofa as the one that used to be in the lobby?' 'Is this the same sofa as the one that used to be in the lobby?'   'Dracula and your neighbor are different people' 'Dracula and your neighbor are different people'"}];
+        var frame_list_2 = [{'frame': 'Ineffability', 'tfidf': 2.5795335102643873, 'lexical_unit': 'magic.n / magic.a / magical.a / ineffable.a / ineffability.n / je ne sais quoi.n / magicalness.n', 'definition': "A Stimulus inspires a feeling of awe and interest in a (generally implicit or generic) Experiencer due to desirable qualities which are difficult to explain.  Alternatively, the Attribute of the Stimulus may be described instead.  'There is a certain je-ne-sais-quoi about that city .'"}, {'frame': 'Biological_area', 'tfidf': 1.627802872008299, 'lexical_unit': 'woodland.n / mudflat.n / swamp.n / prairie.n / desert.n / forest.n / bog.n / wood.n / jungle.n / swampland.n / rainforest.n / plain.n / meadowland.n / heathland.n / copse.n / glade.n / tundra.n / taiga.n / marsh.n / marshland.n / fen.n / moor.n / grassland.n / mead.n / lea.n / veld.n / wold.n / thicket.n / savanna.n / mire.n / bush.n / greenwood.n / spinney.n / scrub.n / oasis.n / shrubbery.n', 'definition': " This frame contains words that denote large ecological areas as well as smaller locations characterized by the type of life present--in other words, geography locations as defined by biota.  'I've spent a long time in the rugged prairies of northern Llorwyn.'"}, {'frame': 'Plants', 'tfidf': 1.3410601579897476, 'lexical_unit': 'tree.n / weed.n', 'definition': 'The LUs in this frame refer to biological entities other than human beings and animals, which are labeled by the FE Plant.'}, {'frame': 'Buildings', 'tfidf': 0.865110051751545, 'lexical_unit': 'house.n / houseboat.n / church.n / tower.n / bungalow.n / cabin.n / castle.n / condominium.n / cottage.n / dacha.n / dormitory.n / dwelling.n / farmhouse.n / home.n / hospital.n / hostel.n / hotel.n / igloo.n / lodge.n / mansion.n / monastery.n / motel.n / palace.n / pension.n / pueblo.n / residence.n / shack.n / shanty.n / shelter.n / tenement.n / tent.n / villa.n / acropolis.n / arena.n / auditorium.n / barn.n / barracks.n / basilica.n / blockhouse.n / campanile.n / caravan.n / caravanserai.n / chalet.n / chateau.n / conservatory.n / garage.n / gazebo.n / greenhouse.n / hall.n / hangar.n / hippodrome.n / hovel.n / inn.n / kennel.n / kiosk.n / lighthouse.n / maisonette.n / mall.n / manor.n / manse.n / mosque.n / outbuilding.n / outhouse.n / pagoda.n / palazzo.n / pavilion.n / penthouse.n / pyramid.n / rotunda.n / shebang.n / shed.n / skyscraper.n / stable.n / stadium.n / supermarket.n / synagogue.n / tabernacle.n / tavern.n / tepee.n / terminal.n / triplex.n / warehouse.n / wigwam.n / hacienda.n / homestead.n / bunker.n / theater.n / bar.n / city hall.n / disco.n / discotheque.n / library.n / temple.n / building.n / structure.n / housing.n / fortress.n / fortification.n / citadel.n / fort.n / airport.n / pub.n / high-rise.n / quarters.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Animals', 'tfidf': 0.8602657494024681, 'lexical_unit': 'dog.n / cat.n / pig.n / cow.n / sheep.n / animal.n', 'definition': "The LUs in this frame refer to biological entities other than human beings and plants, which are labeled by the FE Animal.  ''  'My husband and I adopted a really sweet dog last year.'  'The cows that live on the farm down the road are always mooing loudly.'"}, {'frame': 'Protecting', 'tfidf': 0.8472308101688292, 'lexical_unit': 'protect.v / shield.v / safeguard.v / insulate.v / secure.v / protection [event].n / protection [entity].n / safeguard.n / shield.n / bulwark.n / guard.v / shelter.n / shelter.v / cover.n', 'definition': "Some Protection prevents a Danger from harming an Asset.  'The rubber on her sneakers protected her from the mud.'  'The coral reefs shielded the coastline from the worst of the waves.'  'A growing number of sustainable farmers are preserving agricultural variety and protecting biodiversity by raising ?heritage? or ?heirloom? varieties.'  'The man responsible for this entire ordeal cowardly shielded himself from justice with the little boy's struggling body.'"}, {'frame': 'Capability', 'tfidf': 0.8384634617440337, 'lexical_unit': 'able.a / unable.a / can.v / capable.a / ability.n / potential.n / capability.n / capacity.n / potential.a / power.n / power [statistical].n / powerless.a / powerlessness.n / inability.n / incapable.a / incapacity.n / powerful.a', 'definition': "An Entity meets the pre-conditions for participating in an Event.  A Degree modifier may be included to indicate by how much the Entity exceeds or falls short of the minimum requirements.  'Conductor software gives us the hands-on capability to provide updates immediately'  'The GOP is afraid that it might not be capable of keeping the seat vacated by Dunn.'  'NASA is unable to communicate with Mars rover.'  'He can fly a kite.'"}, {'frame': 'Vehicle', 'tfidf': 0.7937356176446307, 'lexical_unit': 'car.n / bus.n / truck.n / bike.n / taxi.n / plane.n / ferry.n / boat.n / bicycle.n / ship.n / tram.n / automobile.n / tricycle.n / airplane.n / scooter.n / schooner.n / train.n / carriage.n / cab.n / coach.n / vehicle.n / lorry.n / submarine.n / tank.n / cart.n / toboggan.n / pick-up.n / van.n / limousine.n / convertible.n / helicopter.n / canoe.n / kayak.n / buggy.n / liner.n / sedan.n / vessel.n / tank car.n / warplane.n / yacht.n / chopper.n / helo.n / bird.n / minivan.n / ambulance.n / aircraft.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'Ground_up', 'tfidf': 0.789900747697333, 'lexical_unit': 'pulverized.a / ground.a / crushed.a / milled.a / grated.a / flaked.a / powdered.a / shredded.a / crumbled.a / granulated.a', 'definition': "In this frame a Patient is in a state of having been broken into smaller pieces.  ' We enjoy eating ground beef . '"}, {'frame': 'Communication_response', 'tfidf': 0.7869069993307637, 'lexical_unit': 'answer.n / answer.v / comeback.n / counter.v / rejoin.v / rejoinder.n / reply.n / reply.v / respond.v / response.n / retort.n / retort.v / riposte.n / come back.v / reaction.n / acknowledge.v', 'definition': 'This frame deals with a Speaker communicating a reply or response, a Message, to some prior communication or action, the Trigger.  \'\' \'The landlord has not yet replied in writing to the tenant objecting the proposed alterations.DNI\'  \'"No, I do not agree with you," responded another officer to the CEO. DNI\''}, {'frame': 'Food', 'tfidf': 0.78298387149616, 'lexical_unit': 'fruit.n / apple.n / banana.n / vegetable.n / carrot.n / potato.n / pea.n / meat.n / beef.n / lamb.n / veal.n / poultry.n / chicken.n / turkey.n / fish.n / salmon.n / tuna.n / shellfish.n / shrimp.n / lobster.n / milk.n / cheese.n / egg.n / butter.n / nut.n / almond.n / peanut.n / pasta.n / noodle.n / herb.n / spice.n / pepper.n / basil.n / cereal.n / lettuce.n / berry.n / bread.n / roll.n / cracker.n / cake.n / pancake.n / cheesecake.n / pastry.n / croissant.n / cookie.n / biscuit.n / sweet.n / chocolate.n / sweetener.n / sugar.n / honey.n / fat.n / oil.n / vinegar.n / coffee.n / juice.n / soup.n / stew.n / sauce.n / dressing.n / vinaigrette.n / ketchup.n / mayonnaise.n / lasagne.n / food.n / tea.n / water.n / date.n / cabbage.n / MRE.n / beer.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Locale', 'tfidf': 0.7428649100708872, 'lexical_unit': 'area.n / zone.n / region.n / place.n / spot.n / location.n / locale.n / pocket.n / regional.a / site.n / point.n / grounds.n / earth.n', 'definition': "This frame contains general locale words, and is mostly a place-holder in the hierarchy. Words in this frame designate relatively stable bounded ares of the world which have permanent Relative_locations with respect to other locales, and thus are useful as permanent landmarks.  It is inherited by Locale_by_use, which has to do with places that are named according to their intended use, or some habitual use, such as factory.n, dance floor.n, village.n, field.n.  It is also inherited by Locale_by_event, which covers places that are names according to some event which took place there, such as concerts, battles, and meteor impacts.  'This is a pleasant area.'"}, {'frame': 'Connecting_architecture', 'tfidf': 0.7401444690844312, 'lexical_unit': 'door.n / elevator.n / lift.n / escalator.n / corridor.n / hallway.n / window.n / staircase.n / stairs.n / step.n / gate.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  The Part itself connects locations within the building to each other, Connected_locations. If a particular point of view is adopted in the context of real or imagined motion, then one of the locations can be construed as Goal and the other as Source.   'It was of great interest to me to see the star signs of Taurus the Bull and Leo the Lion on the staircase to the upper Palace.'  'All visitors may use the elevator between the Main Level and the Upper Level instead of the main staircase'  'The window into the garden was open.'"}, {'frame': 'Businesses', 'tfidf': 0.7348632722096645, 'lexical_unit': 'business.n / shop.n / establishment.n / mill.n / practice.n / firm.n / operation.n / company.n / chain.n / corporation.n / paper.n / store.n / bank.n / boutique.n', 'definition': "A Proprietor owns or runs a Business which provides a Product (which may be goods or services).  'The consumer electronics company Apple has exploded with popularity in recent years.'"}, {'frame': 'Have_as_requirement', 'tfidf': 0.7255475806066232, 'lexical_unit': 'demand.v / require.v / take.v / need.v', 'definition': "The obtaining of a Requirement state of affairs or the presence of a Required_entity is profiled as a prerequisite for the obtaining or occurring of a Dependent state-of-affairs.  'This game demands great skill.'  'The war on terror requires little sacrifice for most Americans.'  'Glass  art demands great patience from the student.'"}, {'frame': 'Electricity', 'tfidf': 0.7148117285870541, 'lexical_unit': 'electricity.n / electric.a / power.n / electric power.n / juice.n / electrical.a / hydroelectric.a / hydroelectricity.n / photoelectric.a / photoelectricity.n / energy.n / electrical power.n / current.n', 'definition': "Lexical units in this frame refer to Electricity, in particular as a form of energy harnessed for particular uses (such as powering machines).  The Source of the Electricity may also be expressed, or incorporated in the meaning of the LUs.  'A compound to generate wind electricity was built on the other side of those mountains.'  'China's hydroelectric dam is being built primarily for flood control and energy production.'"}, {'frame': 'Money', 'tfidf': 0.709893711856729, 'lexical_unit': 'money.n / cash.n / funds.n / dough.n / capital.n / dinero.n / sterling.n / fund.n', 'definition': "Money is a medium used for exchanging goods and services. It is in most cases issued by a government (its Creator) in the form of coins and banknotes. Particular amounts of it may have a designated or planned Use, or may have come from some Origin.  'The money for our daughter's college education is currently earning interest in a savings account.'  'The entire project ended up being funded with Swiss funds.'  'The use of paper money really caught on in Europe in the 1700s'"}, {'frame': 'Building_subparts', 'tfidf': 0.7061341523806836, 'lexical_unit': 'room.n / antechamber.n / anteroom.n / atelier.n / attic.n / ballroom.n / basement.n / bathroom.n / bedroom.n / ben.n / boudoir.n / buttery.n / catacomb.n / cell.n / cellar.n / chamber.n / chancellery.n / chapel.n / checkroom.n / cloakroom.n / closet.n / corridor.n / den.n / foyer.n / garret.n / hallway.n / kitchen.n / kitchenette.n / larder.n / laundry.n / lift.n / elevator.n / lobby.n / loft.n / nursery.n / office.n / pantry.n / parlor.n / playroom.n / porch.n / refectory.n / repository.n / sacristy.n / salon.n / scullery.n / solarium.n / stoop.n / storeroom.n / studio.n / study.n / veranda.n / vestibule.n / ward.n / wing.n / workroom.n / workshop.n / banquet room.n / dining room.n / dressing room.n / family room.n / guest room.n / living room.n / master bedroom.n / powder room.n / rest room.n / rumpus room.n / sitting room.n / utility room.n / wine cellar.n / apartment.n / flat.n / lavatory.n / TV room.n / belfry.n / tower.n / altar.n / laundry room.n / level.n / floor.n / deck.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}, {'frame': 'Vehicle_subpart', 'tfidf': 0.7042928346533568, 'lexical_unit': 'door.n / window.n / seat.n / seatbelt.n / tire.n / wheel.n / brake.n / engine.n / hood.n / trunk.n / part.n / windshield.n', 'definition': "An entity is integrated into a vehicle as a Part of a (possibly unexpressed) Whole which may refer to the whole vehicle or merely to a sub-part of the vehicle.  '' 'The car's engine started smoking so we pulled over.' 'Put the bags in the trunk.' 'One should always wear a seatbelt while driving.' "}, {'frame': 'Needing', 'tfidf': 0.6917216512810724, 'lexical_unit': 'need.v / require.v / need.n', 'definition': "The speaker believes that some state of affairs or entity (the Requirement) must be present in order to cause some other dependent state of affairs to occur (the Dependent).  In the typical case, the Cognizer desires the occurrence of the Dependent and so also desires the obtainment or occurrence of the Requirement.  'I need one more bolt. DNI' 'I need one more nail to finish building the cabinet.' 'In order to complete the treaty, the United States will require several more diplomats.' 'He needs everyone to leave his office to finish his work.'"}, {'frame': 'Cotheme', 'tfidf': 0.6906618566975049, 'lexical_unit': "accompany.v / chase.v / conduct.v / escort.v / follow.v / guide.v / hound.v / lead.v / pursue.v / shadow.v / shepherd.v / tail.v / track.v / trail.v / pursuit.n / pursuer.n / usher.v / stalk.v / tag along.v / walk.v / guided.a / dog.v / dog (someone's) steps.idio / show.v / lead the way.v", 'definition': "This frame contains words that necessarily indicate the motion of two distinct objects. The Theme is typically animate and is expressed the same way a Self-mover is expressed in the Self-motion frame--i.e. as the subject of a target verb. The Cotheme may or may not be animate and is typically expressed as a direct object or an oblique. Source, Path, Goal, and the other frame elements common to motion words also regularly occur with the words in this frame.  '' 'She accompanied him in the ambulance to Hollywood Memorial Hospital.'  'Police persue teenage joyrider across three counties.'  'My pursuit of academic superiority shows that I was still striving to be the person my parents wanted me to be.'"}, {'frame': 'Political_locales', 'tfidf': 0.6725558977698748, 'lexical_unit': 'barony.n / territory.n / country.n / province.n / duchy.n / viscountcy.n / county.n / state [sovereign].n / principality.n / borough.n / town.n / realm.n / kingdom.n / municipality.n / metropolis.n / megalopolis.n / city.n / world.n / federal.a / global.a / parish.n / diocese.n / international.a / local.a / locality.n / municipal.a / national.a / empire.n / village.n / nation.n / commonwealth.n / internationally.adv / multinational.a / city-state.n / district.n / fiefdom.n / jurisdiction.n / land.n / state [internal].n / provincial.a / territorial.a / township.n', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'Fluidic_motion', 'tfidf': 0.6573294073796311, 'lexical_unit': 'drip.v / flow.v / bubble.v / trickle.v / gush.v / cascade.v / dribble.v / splash.v / spew.v / seep.v / ooze.v / percolate.v / leak.v / jet.v / soak.v / run.v / squirt.v / spurt.v / spout.v / rush.v / course.v / purl.v / spill.v / stream.v / hiss.v / pump.v / splatter.v / spray.v', 'definition': "In this frame a Fluid moves from a Source to a Goal along a Path or within an Area.  ' The blood spurted from the wound. ''The water gushed into the house . '"}, {'frame': 'Assistance', 'tfidf': 0.64697285937225, 'lexical_unit': 'assist.v / help.v / abet.v / succor.v / helpful.a / assistance.n / aid.v / aid [act].n / help out.v / serve.v / cater.v / help.n / aid [entity].n / aid and abet.v', 'definition': "A Helper benefits a Benefited_party by enabling the culmination of a Goal that the Benefited_party has.  A Focal_entity that is involved in reaching the Goal may stand in for it.  This Frame has unique Frame-to-Frame Relations: it inherits from and uses the Intentionally_act frame. This is atypical of FrameNet's frame relations.  'Will you help the Government find your brother?' 'Maybe Stephen should assist him with the last manuscript.' 'They helped me psychologically to overcome the physical loss I had suffered.' 'You have helped him tremendously by showing him  how to stand up for himself and by being his friend.' 'By bringing assistance to his troops wherever they were in trouble he aided them greatly.'"}, {'frame': 'Sensation', 'tfidf': 0.6360358140606831, 'lexical_unit': 'aroma.n / bouquet.n / feel.n / feeling.n / flavour.n / fragrance.n / incense.n / noise.n / odor.n / perception.n / perfume.n / reek.n / savour.n / scent.n / sensation.n / sense.n / sight.n / smell.n / sound.n / stink.n / taste.n / whiff.n / scene.n / image.n', 'definition': "This frame contains nouns that refer to sensations in different modalities. The FE Source is used for the phenomenon that gives rise to the sensation in question. The FE Percept is used for the characteristic quality of the sensation. In cases of veridical perception these are not typically distinguished from one another; we use the FE Percept as the default in these cases. With some nouns in this frame it is possible to express the being who experiences the sensation, or the part of the body of such a being. We mark such expressions with the FEs Perceiver_passive and Body_part, respectively. (The -passive part of this label serves to distinguish this FE from the Perceiver-Agentive FE used in other frames.)  '' 'The huge sand dunes, perpetually changing, make for a surreal sight.'  'Endill heard the noise of glass smashing, plaster crumbling and furniture being broken.'  'The feel of his strong fingers enclosing her small palm came as something of a shock to her system.'"}, {'frame': 'Level_of_force_exertion', 'tfidf': 0.622271520385612, 'lexical_unit': 'strong.a / weak.a / mighty.a / power.n / might.n / forceful.a / force.n / strength.n / weakness.n / powerful.a / powerless.a', 'definition': 'An Exerter, Action, or Force is capable of exerting or does exert a physical force at a level specified by the target. That physical force may cause deformation or breakage of, or simply motion in the receiving entity. The receiving entity is conceptually present (even if remotely), but is usually not lexically explicit. This frame covers both individual-level/static uses ("a STRONG person") as well as stage-level/dynamic uses ("a STRONG push"). However, the durative, individual-level meaning appears more frequently in the data and seems more basic.   \'Eugenie loved the sea and was a strong swimmer.\'  \'Spartacus dealt the Roman soldier a mighty blow.\'  \'A powerful force tore off the tree\'s branches.\'  Exerter, Action, and Force belong to a Core set. \'\'  There are several productive metaphors covered by this frame. The first and most common is one in which social influence or control is conceptualized as the physical exertion of force. The social influence/control is more specifically a propensity to cause change in social realms such as the economic, political, militaristic, cultural, or intimate: \'There were theoretical limits to the power of the king.\' \'Voters in the South have a strong incentive to keep such Democrats in office.\'  Another similar metaphor is one in which psychological influence or control is understood as the physical exertion of force. The psychological influence/control includes the emotional as well: \'Poetic words in a text can be given more emotive power by using melisma.\' \'He was a forceful speaker.\'  A third metaphor involves the amount of an entity construed as the physical force exertion of said entity. Depending on context, amount could be volume, etc. (“STRONGEST critics”; “MIGHTY uproar”).  \'\'  Two related physical force dynamic frames are Level_of_force_resistance and Dynamism.  This frame is distinguished from the Level_of_force_resistance frame in that it describes the level of force exertion instead of the level of resistance, and also in that there are three categories of Core FE available to the target (i.e Exerter, Action, or Force), whereas in Level_of_force_resistance there are only two Core FEs (i.e. Resisting_entity and Opposing_force). Of the latter frame\'s FEs, Opposing_force specifies the thing that the main entity resists to a level desginated by the target. Its parallel in Level_of_force_exertion is implied but backgrounded to the extent that it rarely appears as explicit lexical material; thus there is no corresponding Core FE.   This frame differs from Dynamism with regard to individual-level cases; targets here express the FE\'s capability. In contrast, Dynamism targets express the FE\'s tendency. For example, "a STRONG person" is generally construed as a person who is capable of strength, while "an ENERGETIC person" (energetic.a from the Dynamism frame) is construed as a person who tends to be energetic.   However, there is overlap between the two frames in stage-level cases - "a STRONG push" and "an ENERGETIC push" seem rather comparable. '}, {'frame': 'Perception_experience', 'tfidf': 0.6138382315096175, 'lexical_unit': 'detect.v / feel.v / hear.v / perceive.v / perception.n / see.v / sense.v / smell.v / taste.v / overhear.v / experience.n / witness.v / experience.v', 'definition': "This frame contains perception words whose Perceivers have perceptual experiences that they do not necessarily intend to. For this reason we call the Perceiver role Perceiver_passive. Comparing the Perception_experience frame to the Perception_active frame, we note that for some modalities there are different lexical items in each frame.  For instance, whereas Perception_experience has see, Perception_active has look at. For other sense modalities, we find the same lexical items in both frames.  To illustrate, consider the verb smell where I smell something rotten exemplifies its Perception_experience use and Smell this to see if it's fresh exemplifies its Perception_active sense. This frame also includes words which are not specific to any sense modality, including detect, perceive, perception, sense.  '' 'Abashed, realising that he had overheard her conversation with Victoria, Sheeley didn't try to make excuses.'  'She smelled the wine on Paul's breath, and bade him to sit down.'"}, {'frame': 'Containers', 'tfidf': 0.6053634364208482, 'lexical_unit': 'amphora.n / backpack.n / can.n / cart.n / casket.n / chest.n / envelope.n / flask.n / glass.n / handbag.n / jar.n / knapsack.n / ladle.n / locker.n / mug.n / pot [cooking].n / purse.n / reservoir.n / sack.n / satchel.n / spoon.n / suitcase.n / tin.n / wallet.n / teaspoon.n / ampule.n / ashtray.n / bag.n / barrel.n / basin.n / basket.n / beaker.n / bin.n / bottle.n / bowl.n / box.n / briefcase.n / bucket.n / canister.n / canteen.n / carafe.n / carton.n / cartridge.n / case.n / coffer.n / coffin.n / container.n / cooler.n / crate.n / crock.n / crucible.n / cruet.n / cup.n / cuspidor.n / cylinder.n / cask.n / carryall.n / censer.n / chalice.n / creamer.n / decanter.n / dish.n / dispenser.n / drum.n / duffel bag.n / flagon.n / empty.n / etui.n / goblet.n / grail.n / hamper.n / haversack.n / hopper.n / jeroboam.n / jigger.n / jug.n / keg.n / magnum.n / mailer.n / overnighter.n / pack.n / sarcophagus.n / tun.n / stein.n / spittoon.n / pannier.n / ramekin.n / reticule.n / salver.n / samovar.n / snifter.n / thermos.n / tureen.n / valise.n / cauldron.n / casserole.n / folder.n / rucksack.n / pouch.n / vial.n / vase.n / pail.n / pipette.n / tumbler.n / vat.n / vivarium.n / punch bowl.n / toilet bowl.n / wine bottle.n / chest of drawers.n / hot-water bottle.n / urn.n / tank.n / safe.n / planter.n / pot.n / drawer.n / goldfish bowl.a / tub.n', 'definition': "This frame covers entities which are prototypically conceived of and created to fulfill the function of containing--i.e. Containers  that contain objects or substances, the Contents.  This can be expressed as a complement , and includes potential or intended contents.   A Container may also have an Owner, a current Relative_location, Material from which it is constructed, a method of Construction, and a Type.  Note the connection between words in this frame and those in the Filling, Emptying, and Fullness frames. 'a bag of popcorn' 'underwear drawer' 'Chuck's suitcase' 'the suitcase in Chuck's office' 'straw basket' 'woven basket' 'Erlenmeyer flask'"}, {'frame': 'Questioning', 'tfidf': 0.600123622345951, 'lexical_unit': 'grill.v / inquire.v / inquiry.n / interrogate.v / interrogation.n / query.n / query.v / question.n / question.v / questioning.n / quiz.v / ask.v', 'definition': "The words in this frame have to do with a Speaker asking an Addressee a question which calls for a reply (as opposed to making a request which calls for an action on the part of the Addressee).  '' 'We asked Ruby what kind of food they ate.'  'Yeats was able to interrogate the spirit world about his relationship with Maude.'"}, {'frame': 'Manipulation', 'tfidf': 0.598556927671751, 'lexical_unit': 'clasp.v / claw.v / clutch.v / finger.v / grab.v / grasp.v / grip.v / knead.v / massage.v / nip.v / nudge.v / paw.v / pinch.v / pull.v / push.v / seize.v / squeeze.v / tug.v / tweak.v / wring.v / yank.v / fumble.v / grope.v / stroke.n / rub.v / grab hold.v / pull.n / lick.v / touch.v / kiss.v / caress.v / caress.n / stroke.v / diddle.v / hold.v / tickle.v / handle.v / kiss.n / poke.v', 'definition': "The words in this frame describe the manipulation of an Entity by an Agent.  Generally, this implies that the Entity is not deeply or permanently physically affected, nor is it overall moved from one place to another.  'Ian squeezed Mara's hand.' ''  A number of lexemes listed in this frame also occur in the Cause_motion frame (for example, push, yank).  Only the non-motion uses of these words belong in this frame, e.g., combinations such as push at, push on, yank at. "}];
+    </script>
+    <script type="text/javascript" src="word_cloud_prediction.js"></script>
+    <script type="text/javascript" src="../mturk.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 150px;
+            padding-right: 150px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel_1 canvas, #word_cloud_panel_2 canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+        .word_cloud_box {
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 3px rgba(70, 70, 70, 1) solid;
+            padding: 20px;
+            margin-bottom: 20px; 
+        }
+        .word_cloud_box:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+        }
+        .selected_story_block {
+            border-color: #7BDFF2;
+            border-width: 3px;
+            box-shadow: 0 0 10px 10px rgba(123, 223, 242, 0.3);
+            background-color: rgba(239, 247, 246, 0.8);
+        }
+        .indicator {
+            /*font-family: Courier;
+            font-weight: bold;*/
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px black solid;
+            border-radius: 20px;
+        }
+
+        .selected_story_block .indicator {
+            background-color: rgb(123, 223, 242);
+        }
+
+        #story_content {
+            max-height: 600px;
+        }
+        .not_qualified {
+            color: red;
+            font-weight: 900;
+        }
+        .qualified {
+            color: black;
+            font-weight: 900;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Which word-cloud best represents the story snippet?</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that a computer automatically 
+            generated to characterize a story snippet. 
+            These words can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            A <strong>word-cloud representation with nouns</strong> is a group of nouns a computer automatically 
+            generated to characterize a story snippet. 
+            These nouns can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            In this HIT, you will see a story snippet. <span class="highlight">Please read the it carefully.</span>
+            The story is long so we have a 3 minutes time lock for submission.
+            <br/><br/>
+
+            At the bottom of the HIT, you will see two sets of word-cloud representations, 
+            where each consists of nouns, verbs, and adjectives. 
+            <span class="highlight">Please select the word-cloud representation that best represents the story.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following story snippet carefully!</h3>
+            You will need to select the word-cloud representation that best represents this story. 
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story</h4>
+                        <h5>(An excerpt from the book <span style="font-weight:bold;">"Suppliant"</span>.)</h5>
+                        <span class="not_qualified" id="read_lock">Please read all the story.</span>
+                        <br/><br/>
+                        <pre id="story_content">
+He can become anything.
+That's why it gives you the creeps.
+It's more than an animal; it's like a human," he says.
+How does he always know what I'm thinking?
+We must really be connected in a way that I don't understand.
+That train of thought slips from my head as we turn the corner to the stable.
+Two beautiful, shiny horses are neighing and eating hay.
+Damien walks up and strokes the brown horse's back.
+It has a beautiful white mane and tail, and dark brown eyes.
+"This is Bronco," he states, pointing to the brown horse.
+"And this is Silver."
+He points to the other one.
+"She'll be your horse."
+He runs his fingers through Silver's mane.
+She's beautiful, all white with bright blue eyes and a silver mane and tail.
+"She's been waiting on you; she's a Starlight.
+They're special horses that have the ability to find their owner anywhere.
+She's not claimed yet; you will have to claim her."
+Damien grabs my hand, pulls a small knife out of his pocket, and, before I know it, has sliced open my finger.
+Blood trickles down my finger into my palm.
+"Now look into her eyes and call her; say her name.
+Then press your hand to her lips.
+You will know it took when she starts bucking.
+The process will be complete when she stops.
+Then she will be yours and you will be hers."
+Is he serious?
+I have to claim her?
+"You will be able to find each other anywhere, and she will know what you need.
+It takes a few minutes to claim her, so you'll want to get started."
+I'm focusing intently on my finger; when I look up, Damien is leading Bronco out of the stable.
+I turn back around, and Silver is standing too close for comfort.
+I look deeply into her eyes, and my instincts take over.
+I call her name, "Silver."
+I touch her lips with my bloody finger, and she sticks her tongue out to lick it.
+It's an odd sensation.
+Her tongue feels like a cat's tongue, but it's as long as a dog's.
+Suddenly, she's bucking like crazy, like she's in pain.
+I want to help her, but am not sure how.
+I just watch her for what feels like an eternity, but can only have been a few seconds.
+She looks right at me, as if pleading for mercy.
+The longer she looks at me, the worse I feel.
+I'm getting dizzy on my feet, my head is aching, and I feel as if I'm going to collapse.
+I do the only thing I can and reach toward her.
+The second my fingers stroke her silver mane, she calms down.
+It's as if I'm taking some of her pain away.
+I feel a sense of understanding, as if she knows what I want, and I know everything about her.
+My stomach settles.
+She bends down, bowing to me.
+I know, instinctively, that she's accepting me and offering me a ride.
+I have claimed her.
+My heart swells with love for this creature.
+I walk toward her and swing my leg over her back, and she stands.
+I pet her mane, as she walks out of the stable. ...
+"So you did it, and it didn't take long, less than two minutes," Damien says, looking at his watch.
+His surprise and excitement are radiating from him, now atop Bronco.
+"So is Bronco your Starlight?"
+It only seems logical, seeing as I get Silver.
+"No, only Suppliants get Starlights.
+Silver has been waiting for over 600 years for you.
+There was another Suppliant, about fifty years ago, that people thought was the Suppliant from the prophecy.
+It turned out, that she couldn't claim Silver.
+She was killed in the process."
+Damien looks down at his reins, as if this is hard for him to talk about.
+"Did you know she wasn't the right Suppliant?
+Why do people think she was?"
+I think about it for a second, and suck in a breath when I realize.
+"You thought you were her Protector?"
+"Yes, I thought I was her Protector.
+That's why people thought she was the Suppliant from the prophecy."
+Silver stops walking for a moment; I look at Damien.
+"How do you know I'm the Suppliant from the prophecy if you thought she was?"
+I could just be another Suppliant, but not the one that the prophecies spoke of.
+There has to be a way to know.
+"You passed the test; you claimed Silver.
+She was identified by the Light Queen as the Starlight to the Suppliant from the prophecy.
+Whoever claimed Silver was the Suppliant from the prophecy," he says, still looking at the ground.
+"Why didn't you tell me it was dangerous, and the last Suppliant died trying to claim Silver?
+That could have been me," I shout at him.
+I'm not sure why but I feel betrayed.
+I feel like he should have told me that.
+I look at him, and tears well up in my eyes.
+Damien looks at me like there's something he wants to tell me.
+Before I can comment, Damien looks at the ground and pulls back on his reins.
+Bronco starts trotting, and Silver follows.
+My answers will have to wait.
+Chapter 11 Most of the ride is silent, which leaves me with a lot of time to think.
+Still curious, who do I need protection from?
+Who is the Dark Queen?
+How am I supposed to find the Pendant?
+What does the Pendant do anyway?
+Why am I so connected to Damien?
+My mind is spinning in a whirlwind.
+I'm unsure what to think.
+I've too many unanswered questions right now to consider this.
+Yet, I keep getting this nagging feeling that Damien's telling me the truth.
+It may not be the whole truth, but it's the truth that he knows.
+Every time I look at Damien, I feel comforted.
+I know he said we have a connection because he is my Protector, but I wonder where this relationship would lead.
+Are we supposed to be together?
+Could we be together?
+Have Protectors and Suppliants in the past been together romantically?
+How does this fit in with my plans to go to college?
+There is something about Damien that gets to me.
+I glance up at him, and wonder why he has a five o'clock shadow, if we aren't supposed to age in this realm.
+I had figured that meant your hair wouldn't grow either, but I guess it does.
+Maybe he already had the five o'clock shadow before and I never noticed it; that must be it.
+I hear the birds chirping in the background, and it reminds me of the Morphon.
+I wonder what other creatures are out there that I'm unaware of.
+I'm having trouble wrapping my mind around the difference in time.
+It's hard for me to believe that I could be gone for years and only lose minutes on earth.
+What am I supposed to tell my parents and friends?
+I feel Silver tense up under me.
+I'm immediately on high alert.
+Warning bells are going off in my head; there must be a reason she's tense.
+I whisper for Damien, but he's too far away to hear me.
+Out of the corner of my eye, I catch a shadow.
+I glance that way, but there's nothing in sight.
+I can't shake the feeling that something is wrong.
+I decide to trust my instincts and stay on high alert.
+A prickling sensation runs up my spine and down through my shoulders, and out my fingertips.
+My chest tightens, and my breathing becomes labored.
+Panic sets in.
+Why is my body reacting this way?
+It was just a shadow; I shouldn't be this scared.
+"Damien!"
+I shout.
+His head begins to turn when I see it again.
+The same shadow, the same robin.
+This time, it flies so close, I can see every feather.
+It grows in size, from mere inches, to a two--foot wingspan.
+His bright orange beak is more jagged than it should have been.
+His claws become sharp, pointy talons that can rip a person to shreds.
+This transformation happens in a few seconds, completing only when he flies past.
+Instinctively I know it will be back.
+I also know that the next time it will cause damage.
+My heart speeds up again, adrenaline pumping through my system.
+I know that either I trust my instincts or I will get hurt.
+"Go, as fast as you can!
+Silver can take you there," Damien shouts as he circles back, catching a glimpse of the creature.
+I dig my heels into Silver's side as she darts to the north.
+After about twenty feet I decide to take a peek at Damien and see how he's faring.
+As I turn, I catch a glimpse of him wielding two short knives, one in each hand.
+The handles are an emerald green, with big opal stones.
+They have a black intricate design that goes from the blade all the way down the handle.
+He looks like a warrior, a Protector--my Protector.
+For the moment I accept what he has told me as the truth, but that doesn't matter if Damien doesn't survive.
+Silver stops as I watch Damien slicing into thin air, half a second late every time.
+The robin swoops back down, gnashing his talons, and catching Damien's shoulder.
+I can see the pained look on his face.
+Anger wells up inside me; I feel protective.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+
+        <h3>Select the word-cloud representation that best represents the above story.</h3>
+        Below, there are two word-cloud representations. Read them carefully and select the one that best represent the above story.
+        <br/><br/>
+
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_1" value="1">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 1</h3>
+                The following three word clouds jointly represent the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_2" value="2">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 2</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_2">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_2">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_2">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_2-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="27">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input name="note" type="hidden" value="BERT, LGBM">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+    </div>
+
+</body>
+</html>

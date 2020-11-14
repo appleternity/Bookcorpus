@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="text/javascript">
+        var frame_list_1 = [{'frame': 'Sign', 'tfidf': 4.974724769592285, 'lexical_unit': 'sign.n / indication.n / symptom.n / symptomatic.a / indicative.a / indicate.v / signify.v / mark.v / usher in.v', 'definition': "A phenomenon, the Indicator, exists as an indication of another phenomenon, the Indicated. The relationship is asymmetric: the Indicated is not necessarily a sign for the existence or presence of an Indicator. The Indicated can be a past, present, or future entity or eventuality. The relationship between Indicator and Indicated is not one of symbolization or iconicity. Rather the Indicator is an index of the Indicated.  'This is a sign of things to come.'"}, {'frame': 'Vehicle', 'tfidf': 2.772160530090332, 'lexical_unit': 'car.n / bus.n / truck.n / bike.n / taxi.n / plane.n / ferry.n / boat.n / bicycle.n / ship.n / tram.n / automobile.n / tricycle.n / airplane.n / scooter.n / schooner.n / train.n / carriage.n / cab.n / coach.n / vehicle.n / lorry.n / submarine.n / tank.n / cart.n / toboggan.n / pick-up.n / van.n / limousine.n / convertible.n / helicopter.n / canoe.n / kayak.n / buggy.n / liner.n / sedan.n / vessel.n / tank car.n / warplane.n / yacht.n / chopper.n / helo.n / bird.n / minivan.n / ambulance.n / aircraft.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'Roadways', 'tfidf': 1.5670959949493408, 'lexical_unit': 'road.n / path.n / way.n / street.n / avenue.n / artery.n / highway.n / expressway.n / motorway.n / sidewalk.n / pavement.n / underpass.n / overpass.n / railway.n / railroad.n / route.n / line.n / crosswalk.n / bridge.n / tunnel.n / autobahn.n / lane.n / track.n / trail.n / boulevard.n / course.n / freeway.n / pathway.n / roadway.n / thoroughfare.n / byway.n / cul-de-sac.n / driveway.n / parkway.n / runway.n / bypass.n / flyover.n / rail.n', 'definition': "This frame involves stable Roadways which connect two stable Endpoints, the Source and the Goal.  Being physical objects, these Roadways may have Names and Characteristics; they are also made of a Material.  They also cover ground, so they may have a Path or a Relative_location that the travel occurs in.  ' We crossed the brick road.' ' I prefer to travel on highway I-80.'  'This is the only highway between Lodi and Sonoma.' ' She dreaded turning onto the busy street.'"}, {'frame': 'Weapon', 'tfidf': 1.4900039434432983, 'lexical_unit': 'rifle.n / pistol.n / six-shooter.n / firearm.n / gun.n / cannon.n / bomb.n / warhead.n / sword.n / knife.n / gat.n / AK-47.n / grenade.n / crossbow.n / machine-gun.n / shotgun.n / shooter.n / flame-thrower.n / weapon.n / handgun.n / club.n / twenty-two.n / forty-four.n / missile.n / garrotte.n / revolver.n / weaponry.n / Scud-B missile.n / arsenal.n / chemical weapon.n / ballistic missile.n / biological weapon.n / nuclear weapon.n / mustard gas.n / CW.n / BW.n / WMD.n / weapon of mass destruction.n / mine.n / spear.n / bow.n / explosive.a / explosive.n / plastic explosive.n / dynamite.n / nuclear.a / Scud-B.n / Scud-C missile.n / atomic weapon.n / ordnance.n / arms.n / artillery.n / shell.n / atomic bomb.n / biological.a / chemical.a / nerve gas.n / strategic.a / strategic nuclear weapon.n / ICBM.n / RPG.n / rocket.n / small arms.n / EFP.n / assault rifle.n / mortar.n / automatic weapon.n / C4.n / phosgene.n', 'definition': "A Weapon is an artifact created specifically to cause harm or damage.  In some cases, a Use, Material of construction, Part or Type may be more narrowly specified.  'Did you, or did you not, fire this gun with intent to harm my client?'  'Cyra tried to swing her sword to parry, but it was to heavy.'  'I investigated a specialist precious metal firearms manufacturer.'  'My neighbor, a member of the NRA since birth, has got an AK-47 fully automatic assault rifle.'  'Let 's just say that he 's the kind of guy who likes guns with hair triggers.' "}, {'frame': 'Candidness', 'tfidf': 1.4620776176452637, 'lexical_unit': 'blunt.a / candid.a / coy.a / discreet.a / explicit.a / forthcoming.a / forthright.a / frank.a / honest.a / open.a / outspoken.a / secretive.a / sincere.a / straightforward.a / truthful.a / disingenuous.a / evasive.a / circumspect.a / honesty.n / ingenuous.a / bluntness.n / candour.n / forthrightness.n / straight.a / earnest.a / earnestness.n / dishonest.a / devious.a / true.a', 'definition': "This frame contains adjectives and nouns that describe the truth or sincerity of communication. These words, analogously to behaver-evaluating words, can apply either to Speakers or to the Messages they produce. They can occur with about-PPs expressing Topic.   'Evelyn was candid with me about the party.'"}, {'frame': 'Political_locales', 'tfidf': 1.4412611722946167, 'lexical_unit': 'barony.n / territory.n / country.n / province.n / duchy.n / viscountcy.n / county.n / state [sovereign].n / principality.n / borough.n / town.n / realm.n / kingdom.n / municipality.n / metropolis.n / megalopolis.n / city.n / world.n / federal.a / global.a / parish.n / diocese.n / international.a / local.a / locality.n / municipal.a / national.a / empire.n / village.n / nation.n / commonwealth.n / internationally.adv / multinational.a / city-state.n / district.n / fiefdom.n / jurisdiction.n / land.n / state [internal].n / provincial.a / territorial.a / township.n', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'Destiny', 'tfidf': 1.4081847667694092, 'lexical_unit': 'destiny.n / fate.n / lot.n / fortune.n / kismet.n / stars.n / doom.n / the breaks.n / in the cards.adv / predestined.a / destined.a / fated.a / doomed.a', 'definition': "An State_of_affairs will come to hold with respect to a Protagonist at some future time. The Protagonist is not conceived of as having control over whether the State_of_affairs will hold: obscurely related previous actions or circumstances, or some hidden power may have already determined that it will occur.  'Exile was his fate and he triumphantly turned it into the fruit of his life.'  'One could say that it was Indonesia's destiny to initiate the decolonization process.'  'The sun's ultimate fate is as a white dwarf, a dense, cold core the size of the earth.'  'At the time it did not appear that greatness was in her stars.'  'Nine for mortal men , doomed to die .'  'This seemingly predestined meeting between a creator and the model he has pursued all his life suggests a kind of miracle . ' "}, {'frame': 'Bringing', 'tfidf': 1.3548630475997925, 'lexical_unit': 'lug.v / haul.v / wheel.v / cart.v / carry.v / hump.v / fly.v / transport.v / take.v / drive.v / schlep.v / truck.v / tote.v / trundle.v / ferry.v / jet.v / paddle.v / motor.v / row.v / convey.v / bike.v / bring.v / bear.v / fetch.v / get.v / portable.a / mobile.a / transport.n / bus.v / shuttle.v / airlift.v', 'definition': "This frame concerns the movement of a Theme and an Agent and/or Carrier.   The Agent, a person or other sentient entity, controls the shared Path by moving the Theme during the motion. In other words, the Agent has overall motion in directing the motion of the Theme.  The Carrier may be a separate entity, or it may be the Agent's body. The Constant_location may be a subregion of the Agent's body or (a subregion of) a vehicle that the Agent uses.  'Karl carried the books across campus to the library on his head.' 'Karl carried the books across campus to the library in his truck.' 'Karl carried the books across campus to the library by truck.' 'The truck carried the books across campus to the library in specially designed boxes.' The  FEs include Path, Goal, and Source.  Area is an area that contains the motion when the path is understood as irregular.   This frame emphasizes the path of movement as opposed to the FEs Source or Goal as in Filling or Placing. "}, {'frame': 'Disembarking', 'tfidf': 1.3149820566177368, 'lexical_unit': 'disembark.v / debark.v / deplane.v / detrain.v / dismount.v / alight.v / debus.v / disembarkation.n / get.v', 'definition': "A Traveller leaves from or dismounts a Vehicle.  'The passengers disembarked in Southampton.'  'They then informed the passengers that, if the aircraft were to leave the runway, they would likely be deplaning through the rear cabin doors.'"}, {'frame': 'Transition_to_state', 'tfidf': 1.3102214336395264, 'lexical_unit': 'grow.v / get.v / end up.v', 'definition': "An Entity ends up in a Final_category, Final_situation, or Final_quality which it was not in before.  Some members of the frame (e.g. grow.v) tend to emphasize a gradual change, while most members of the frame do not indicate whether a change is gradual or not.    'Why I became an Emacs user'  'I left the ministry and became an atheist.'  'Surprisingly, various veteran organizations also turned vehemently antiwar.'  ' Over the years she grew to hate him.'  This frame should be compared to Undergoing_change.  Undergoing_change is different in that it much more emphasizes the difference between the pre- and post-states of the Entity.  This shows up both in Undergoing_change's increased occurrence with Initial_category and Initial_state (change from red to blue) and in its increased occurrence with Final_category (changed into a toad) rather than Final_situation or Final_quality (?changed to red vs. became/turned red).  In addition, when Undergoing_change occurs with the Final_category frame element, it presents a deep difference between the Initial_category and the Final_category, so that it is humorous to say 'she turned into a Republican', because it presents this as a fundamental change of identity; compare to 'she became a Republican', which is quite normal.  In a less humorous example, someone can 'turn into a Mac user', strongly implying that they no longer use their former operating system, while if they 'become a Mac user', this is either as a replacement of other OS's or potentially as an addition to the use of other OS's."}, {'frame': 'Compatibility', 'tfidf': 1.3015228509902954, 'lexical_unit': 'compatible.a / incompatible.a / incompatibility.n / compatibility.n / harmonize.v / congruent.a / congruous.a / consonant.a / dovetail.v / jibe.v / square.v / comport.v / rhyme.v / accord.v / agree.v / cohere.v / consistent.a / harmony.n / go.v / clash.v / match.v / biocompatible.a / conflict.v / conflicting.a / at variance.a / fly in the face of.v', 'definition': "Item-1 and Item-2 are compatible with each other if they can exist or function together in some context without problems, conflict, or other undesirable situation.  The set of Item-1 and Item-2 may be expressed jointly as Items. The Degree to which the Items are compatible may also be indicated, as may be a Parameter along whose lines the Items are compatible. ' Make sure your site is compatible with any browser.' 'Our software applications  are compatible. ' "}, {'frame': 'Measure_volume', 'tfidf': 1.2831307649612427, 'lexical_unit': 'pint.n / cup.n / bottle.n / bushel.n / box.n / glass.n / gallon.n / barrel.n / pack.n / bowl.n / teaspoon.n / jug.n / spoon.n / tablespoon.n / bag.n / quart.n / spoonful.n / teaspoonful.n / bagful.n / boxful.n / bucketful.n / tankful.n / sackful.n / packet.n / mug.n / scoop.n / scoopful.n / platter.n / tray.n / busload.n / planeload.n / truckload.n / carload.n / roomful.n / trainload.n / boatload.n / litre.n / can.n / case.n', 'definition': 'This frame is concerned with nouns that denote Units of measurement for volumes. The Frame Elements are Unit, Count,  Stuff, and Size. The frame will be split soon into container-derived volumes (box, bottle etc.) and pure volumes (gallon, quart). For the moment we tag things as follows: \'Greg drank two 2 liter bottles of lemonade.\' \'Sue drank two liters of beer.\' This frame necessitated the introduction of  the GF: Quant and the PT: Num used for expressions such as  the following: \'two cups of coffee\' FE: Count, GF: Quant, PT: Num\'\' Note that we treat cardinal numbers and "a" (= 1) in the same way.  \'a cup of coffee\' FE: Count, GF: Quant, PT: Num\'\' For the present, we prefer not to annotate "many cups of coffee" \'many cups of coffee\' FE: Count, GF: Quant, PT: Adj\'\''}, {'frame': 'Contacting', 'tfidf': 1.2769619226455688, 'lexical_unit': 'reach.v / contact.v / contact.n / write in.v / write.v / e-mail.v / call.v / call up.v / phone.v / phone in.v / ring.v / ring up.v / get in touch.v / telephone.v / call.n / mail.v / telex.v / fax.v / cable.v / page.v / radio.v / telegraph.v / call in.v / get through.v', 'definition': "A Communicator (whose Location may be indicated) directs a Communication to an Addressee at a particular Address.  Note that no actual successful communicative act is implied, only the successful completion of acts which would establish the communication.  (In other words, Mari can e-mail Jon without Jon ever reading it.) NB:  The Address or Location_of_communicator may be a virtual address, such as an e-mail or telephone number.'Disgruntled voters phoned Congressman Neil at his Washington residence with complaints about the recent increases in corporate welfare.''She tried to call from the payphone down the street.' "}, {'frame': 'Businesses', 'tfidf': 1.2734295129776, 'lexical_unit': 'business.n / shop.n / establishment.n / mill.n / practice.n / firm.n / operation.n / company.n / chain.n / corporation.n / paper.n / store.n / bank.n / boutique.n', 'definition': "A Proprietor owns or runs a Business which provides a Product (which may be goods or services).  'The consumer electronics company Apple has exploded with popularity in recent years.'"}, {'frame': 'Social_interaction_evaluation', 'tfidf': 1.2500771284103394, 'lexical_unit': 'inconsiderate.a / kind.a / considerate.a / mean.a / insensitive.a / thoughtless.a / thoughtful.a / cruel.a / sweet.a / rude.a / impolite.a / ill-mannered.a / churlish.a / discourteous.a / unkind.a / courteous.a / polite.a / impudent.a / respectful.a / disrespectful.a / boorish.a / compassionate.a / nice.a / friendly.a / unfriendly.a / amiable.a / sociable.a / cordial.a / genial.a / gracious.a / ungracious.a / civil.a / uncivil.a / impertinent.a / tactful.a / diplomatic.a / barbaric.a / spiteful.a / pleasant.a / horrible.a / good.a / good-natured.a / good-humored.a / warm.a / smart.a / mature.a / maturity.n / cruelty.n / thoughtfulness.n / rudeness.n / compassion.n / atrocious.a', 'definition': "In this frame an Evaluee is judged by a (usually implicit) Judge to be of a certain character based on her or his Behavior towards other human beings; a specific Affected_party may be overtly mentioned along with the Degree to which the Evaluee behaves appropriately towards others. TheBehavior alone may be mentioned with the understanding that these behaviors characterize a property of the unmentioned Evaluee. The Evaluee's Behavior may be in the context of a Topic.  ' It was nice of you to send a card. '   ' Jim was thoughtful to email the directions.'   ' For Martha to smoke in the car was extremely inconsiderate.'   ' It was cruel that he continued to call her.'   ' Mary was cruel to her friends.'   ' Samson was a thoughtless person.'   'Mrs. Robinson was always considerate of her students.'   ' The press was always kind about Madonna.'   ' Lee was nice about my car accident.'   ' I appreciated his kind offer of the car.'"}, {'frame': 'Food', 'tfidf': 1.2476905584335327, 'lexical_unit': 'fruit.n / apple.n / banana.n / vegetable.n / carrot.n / potato.n / pea.n / meat.n / beef.n / lamb.n / veal.n / poultry.n / chicken.n / turkey.n / fish.n / salmon.n / tuna.n / shellfish.n / shrimp.n / lobster.n / milk.n / cheese.n / egg.n / butter.n / nut.n / almond.n / peanut.n / pasta.n / noodle.n / herb.n / spice.n / pepper.n / basil.n / cereal.n / lettuce.n / berry.n / bread.n / roll.n / cracker.n / cake.n / pancake.n / cheesecake.n / pastry.n / croissant.n / cookie.n / biscuit.n / sweet.n / chocolate.n / sweetener.n / sugar.n / honey.n / fat.n / oil.n / vinegar.n / coffee.n / juice.n / soup.n / stew.n / sauce.n / dressing.n / vinaigrette.n / ketchup.n / mayonnaise.n / lasagne.n / food.n / tea.n / water.n / date.n / cabbage.n / MRE.n / beer.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Money', 'tfidf': 1.23923921585083, 'lexical_unit': 'money.n / cash.n / funds.n / dough.n / capital.n / dinero.n / sterling.n / fund.n', 'definition': "Money is a medium used for exchanging goods and services. It is in most cases issued by a government (its Creator) in the form of coins and banknotes. Particular amounts of it may have a designated or planned Use, or may have come from some Origin.  'The money for our daughter's college education is currently earning interest in a savings account.'  'The entire project ended up being funded with Swiss funds.'  'The use of paper money really caught on in Europe in the 1700s'"}, {'frame': 'Attention_getting', 'tfidf': 1.2216757535934448, 'lexical_unit': "pal.n / sir.n / ma'am.n / buddy.n / kid.n / dude.n / boy.n / guy.n / miss.n / bro.n / homes.n / yoohoo.intj / hello there.intj / excuse me.intj / hey.intj / officer.n", 'definition': "This frame covers terms used to get someone's attention, including Interjections (e.g. hey, yo) and certain terms of address (Address_term), the latter of which may serve the function of attention getting.    'Hey.' 'Hey, boy.' 'Hey, boy, come over here now!'  "}, {'frame': 'Artifact', 'tfidf': 1.2195359468460083, 'lexical_unit': 'wheel.n / technology.n / biotechnology.n / artifact.n / control panel.n / board.n / board [game].n / spatula.n / whisk.n / tub.n / timer.n / oven.n / phone.n', 'definition': "An Artifact is deliberately made or modified by an intelligent entity to be put to a certain kind of Use.  Various properties of the Artifact may be specified, such as its Creator, Time_of_creation, Name, Type, and the Material of which it is composed.  The Artifact may or may not be a physical entity.  'There are reports that Kim Il Sung asked China to share its nuclear weapons technology.'"}, {'frame': 'Reason', 'tfidf': 1.2166465520858765, 'lexical_unit': 'reason.n / why.n / motive.n / motivation.n / basis.n', 'definition': "A volitional  Agent is responding to a State_of_affairs by performing some Action.  'And was that your reason for becoming an actor ?' 'But Giles is the reason that I am here .' 'Oh my reason for including it was Section fifty four A.'  "}, {'frame': 'Documents', 'tfidf': 1.216604232788086, 'lexical_unit': 'visa.n / passport.n / subpoena.n / warrant.n / certificate.n / papers.n / license.n / summons.n / diploma.n / deed.n / lease.n / agreement.n / treaty.n / charter.n / authorization.n / deposition.n / brief.n / writ.n / affidavit.n / will.n / testimony.n / testament.n / ruling.n / finding.n / opinion.n / title.n / orders.n / contract.n / permit.n / document.n / contractual.a / accord.n / confirmation.n / identification.n / business card.n', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Predicament', 'tfidf': 1.2146869897842407, 'lexical_unit': 'pickle.n / scrape.n / pinch.n / predicament.n / bind.n / fix.n / jam.n / mess.n / plight.n / misfortune.n / problem.n / trouble.n', 'definition': "An Experiencer is in an undesirable Situation, whose Explanation may also be expressed.  'The insurers ended up in the bind of having to pay 15 years' taxes.'  'He was in a bit of a pickle and make no mistake!'  'What a mess we 're in now!'"}, {'frame': 'Locale_by_use', 'tfidf': 1.2043882608413696, 'lexical_unit': 'farm.n / hedge.n / mine.n / field.n / airfield.n / cemetery.n / rural.a / country.n / countryside.n / urban.a / city.n / village.n / center.n / facility.n / complex.n / installation.n / reactor.n / harbor.n / lab.n / plant.n / laboratory.n / depot.n / site.n / school.n / university.n / factory.n / silo.n / parking lot.n / base.n / settlement.n / courtyard.n / institute.n / pub.n / restaurant.n / museum.n / gallery.n / garden.n / park.n / square.n / theater.n / shop.n / college.n / open space.a / post office.n / canal.n / green.n / park[2].n / ranch.n / headquarters.n / downtown.n / campus.n / zoo.n / port.n / work.n / court.n / range.n / compound.n / station.n / firehouse.n / bathhouse.n / development.n / plantation.n / safe house.n / boutique.n', 'definition': "Geography as defined by its use.   'You must land in the next airfield, as this one is currently having difficulties.' 'The new sports complex was the tallest building on campus, oddly enough.' 'Cities of the Northeast tend to be dingier.'"}, {'frame': 'Morality_evaluation', 'tfidf': 1.1942613124847412, 'lexical_unit': 'improper.a / immoral.a / dishonorable.a / low.a / evil.a / right.a / honorable.a / reprobate.a / vile.a / sinful.a / low-minded.a / wicked.a / wrong.a / corrupt.a / bad.a / degenerate.a / depraved.a / iniquitous.a / nefarious.a / unethical.a / ethical.a / moral.a / decent.a / righteous.a / upstanding.a / virtuous.a / high-minded.a / good.a / villainous.a / felonious.a / miscreant.a / heinous.a / depravity.n / base.a / foul.a / insidious.a / stand-up.a / unscrupulous.a / dark.a', 'definition': "In this frame an Evaluee is described by a (usually implicit) Judge with respect to the morality or rightness of his or her Behavior.  'That was very righteous of you to help him.'"}, {'frame': 'Prevarication', 'tfidf': 1.1771972179412842, 'lexical_unit': "lie.v / prevaricate.v / lie.n / mislead.v / kid.v / misrepresent.v / deception.n / misrepresentation.n / prevarication.n / shit.v / joke.v / equivocate.v / fool.v / equivocation.n / fib.n / bullshit.v / pull (someone's) leg.idio / deceive.v / fib.v / pull the wool over (someone's) eyes.idio / hoodwink.v / bullshit artist.n / dissemble.v / dissembler.n / deceptive.a / tell.v", 'definition': "A Speaker communicates about a Topic in such a way as to mislead an Addressee, either by telling outright lies or by presenting a message in a misleading form.  'I lied to you about your Christmas present.'"}, {'frame': 'Buildings', 'tfidf': 1.1716203689575195, 'lexical_unit': 'house.n / houseboat.n / church.n / tower.n / bungalow.n / cabin.n / castle.n / condominium.n / cottage.n / dacha.n / dormitory.n / dwelling.n / farmhouse.n / home.n / hospital.n / hostel.n / hotel.n / igloo.n / lodge.n / mansion.n / monastery.n / motel.n / palace.n / pension.n / pueblo.n / residence.n / shack.n / shanty.n / shelter.n / tenement.n / tent.n / villa.n / acropolis.n / arena.n / auditorium.n / barn.n / barracks.n / basilica.n / blockhouse.n / campanile.n / caravan.n / caravanserai.n / chalet.n / chateau.n / conservatory.n / garage.n / gazebo.n / greenhouse.n / hall.n / hangar.n / hippodrome.n / hovel.n / inn.n / kennel.n / kiosk.n / lighthouse.n / maisonette.n / mall.n / manor.n / manse.n / mosque.n / outbuilding.n / outhouse.n / pagoda.n / palazzo.n / pavilion.n / penthouse.n / pyramid.n / rotunda.n / shebang.n / shed.n / skyscraper.n / stable.n / stadium.n / supermarket.n / synagogue.n / tabernacle.n / tavern.n / tepee.n / terminal.n / triplex.n / warehouse.n / wigwam.n / hacienda.n / homestead.n / bunker.n / theater.n / bar.n / city hall.n / disco.n / discotheque.n / library.n / temple.n / building.n / structure.n / housing.n / fortress.n / fortification.n / citadel.n / fort.n / airport.n / pub.n / high-rise.n / quarters.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Getting', 'tfidf': 1.1426390409469604, 'lexical_unit': 'get.v / obtain.v / acquire.v / acquisition [act].n / gain.v / acquisition [entity].n / secure.v / procure.v / procurement [act].n / score.v / win.v', 'definition': "A Recipient starts off without the Theme in their possession, and then comes to possess it.  Although the Source from which the Theme came is logically necessary, the Recipient and its changing relationship to the Theme is profiled.  'I got two whistles from John.'"}, {'frame': 'Eventive_affecting', 'tfidf': 1.1414023637771606, 'lexical_unit': 'happen.v / strike.v / see.v / hit.v / what become (of).v / suffer.v', 'definition': "An Entity undergoes some change (the Event) that is (or is construed as) punctual.  (This frame exists mainly to allow common FEs to be inherited.)  'This happens to me all the time.'  'The area was struck by tragedy in 1996, when an assassin killed 35 people in Port Arthur.'"}, {'frame': 'Importance', 'tfidf': 1.1364161968231201, 'lexical_unit': 'crucial.a / critical.a / key.a / decisive.a / pivotal.a / important.a / significant.a / importance.n / significance.n / import.n / major.a / instrumental.a / vital.a / considerable.a / fundamental.a / main.a / serious.a / seriously.adv / acute.a / landmark.n / epic.a / count.v / priority.n', 'definition': "A Factor affects the outcome of an Undertaking, which  can be a goal-oriented activity or the maintenance of a desirable state, the work in a Field, or something portrayed as affecting an Interested_party. A Reason may be given for the importance of the Factor. The Degree of importance may also be specified.  'Temperature is the most critical factor in successful storage.' ' Timing will be critical.' 'Heathcliff is more important to me than myself . ' ' 1992 was of great importance to the business community. ' "}, {'frame': 'Gizmo', 'tfidf': 1.1347285509109497, 'lexical_unit': 'tool.n / implement.n / apparatus.n / device.n / utensil.n / instrument.n / equipment.n / gadget.n / appliance.n / contraption.n / machine.n / mechanical.a / centrifuge.n / technology.n / system.n / gear.n / core.n / player.n / range.n / level.n', 'definition': "This frame contains general words denoting equipment where the Use or purpose is not specified by the lexeme but (typically) by a separate expression. The words are described with respect to the Use for which the item is used or its typical User.  'coffee machine' 'dentist's equipment'"}];
+        var frame_list_2 = [{'frame': 'Sign', 'tfidf': 4.859581666176649, 'lexical_unit': 'sign.n / indication.n / symptom.n / symptomatic.a / indicative.a / indicate.v / signify.v / mark.v / usher in.v', 'definition': "A phenomenon, the Indicator, exists as an indication of another phenomenon, the Indicated. The relationship is asymmetric: the Indicated is not necessarily a sign for the existence or presence of an Indicator. The Indicated can be a past, present, or future entity or eventuality. The relationship between Indicator and Indicated is not one of symbolization or iconicity. Rather the Indicator is an index of the Indicated.  'This is a sign of things to come.'"}, {'frame': 'Importance', 'tfidf': 0.8807152036223258, 'lexical_unit': 'crucial.a / critical.a / key.a / decisive.a / pivotal.a / important.a / significant.a / importance.n / significance.n / import.n / major.a / instrumental.a / vital.a / considerable.a / fundamental.a / main.a / serious.a / seriously.adv / acute.a / landmark.n / epic.a / count.v / priority.n', 'definition': "A Factor affects the outcome of an Undertaking, which  can be a goal-oriented activity or the maintenance of a desirable state, the work in a Field, or something portrayed as affecting an Interested_party. A Reason may be given for the importance of the Factor. The Degree of importance may also be specified.  'Temperature is the most critical factor in successful storage.' ' Timing will be critical.' 'Heathcliff is more important to me than myself . ' ' 1992 was of great importance to the business community. ' "}, {'frame': 'Make_noise', 'tfidf': 0.7218990780513032, 'lexical_unit': 'babble.v / bark.v / bellow.v / blare.v / blast.v / bleat.v / bray.v / burble.v / cackle.v / caterwaul.v / caw.v / chatter.v / cheep.v / chirp.v / chuckle.v / clang.v / clash.v / clatter.v / click.v / coo.v / cough.v / creak.v / croak.v / croon.v / crunch.v / drone.v / fizzle.v / gasp.v / giggle.v / gobble.v / growl.v / grunt.v / guffaw.v / gurgle.v / hawk.v / hiss.v / hoot.v / howl.v / hum.v / keen.v / mew.v / mewl.v / moan.v / moo.v / neigh.v / patter.v / peal.v / peep.v / plash.v / plonk.v / plop.v / purr.v / quack.v / rasp.v / rattle.v / roar.v / rustle.v / scrape.v / screech.v / scrunch.v / sizzle.v / snarl.v / snicker.v / snigger.v / snore.v / snort.v / sob.v / sough.v / squawk.v / squeak.v / squeal.v / thump.v / thunder.v / tinkle.v / titter.v / toll.v / trumpet.v / tweet.v / twitter.v / ululate.v / wail.v / whimper.v / whine.v / whinny.v / whisper.v / whistle.v / yammer.v / yap.v / yelp.v / yodel.v / yowl.v / crepitate.v / laugh.v / clack.v / sploosh.v / scream.v / ring.v / beep.v / hem and haw.v / boom.v / cry.v / sound.v / honk.v / play.v / toot.v', 'definition': "A physical entity, construed as a point-Sound_source, emits a Sound.  This includes animals and people making noise with their vocal tracts. Sometimes the sound itself is referred to with a nominal expression, in which case it is called the Sound. Manner expressions may also be relevant in this frame, if they describe properties of the sound as such.  A path-schema can be overlaid on the simple noise-making scene, adding a Location_of_source and/or a Path.   This frame does not cover scenarios where objects create sound by coming into forceful contact with one another or rubbing against each other. Such scenarios are covered by the Impact and Friction frames. The current frame also does not cover cases where an animate Agent or a natural Force or Cause causes a single Source or several Sources (moving or rubbing against each other) to make noise. Such scenarios are  covered by the Cause_to_make_noise, Cause_impact and Cause_friction frames (the latter of which is not yet existent). Cases where the major emphasis of the portrayed scene is on the motion of a Theme, with sound emission only an accompaniment, are covered by the Motion_noise frame. Likewise, cases where the Sound itself is portrayed as moving through space are not covered in this frame but rather in Sound_movement. Finally, all nouns used to evoke Sounds have been placed in the Sounds frame. We have done this because these nouns do  not denote sound emission/production events but only the Sound itself (*The siren's blare occurred right on time)."}, {'frame': 'Breathing', 'tfidf': 0.7032569187257695, 'lexical_unit': 'breathe.v / inhale.v / breath.n / exhale.v / gasp.v / sigh.n / exhalation.n / exhalation [act].n / inhalation.n / inhalation [breath].n / huff.v / puff.v / sigh.v / blow.v / expire.v / inspire.v / insufflate.v / pant.v / respire.v / suspire.v', 'definition': "An Agent causes Air to move in a direction, usually specifying either in or out of the body.  'Lee breathed the hot desert air.'"}, {'frame': 'Manipulation', 'tfidf': 0.6993100892850279, 'lexical_unit': 'clasp.v / claw.v / clutch.v / finger.v / grab.v / grasp.v / grip.v / knead.v / massage.v / nip.v / nudge.v / paw.v / pinch.v / pull.v / push.v / seize.v / squeeze.v / tug.v / tweak.v / wring.v / yank.v / fumble.v / grope.v / stroke.n / rub.v / grab hold.v / pull.n / lick.v / touch.v / kiss.v / caress.v / caress.n / stroke.v / diddle.v / hold.v / tickle.v / handle.v / kiss.n / poke.v', 'definition': "The words in this frame describe the manipulation of an Entity by an Agent.  Generally, this implies that the Entity is not deeply or permanently physically affected, nor is it overall moved from one place to another.  'Ian squeezed Mara's hand.' ''  A number of lexemes listed in this frame also occur in the Cause_motion frame (for example, push, yank).  Only the non-motion uses of these words belong in this frame, e.g., combinations such as push at, push on, yank at. "}, {'frame': 'Making_faces', 'tfidf': 0.6972175024501929, 'lexical_unit': 'frown.v / grimace.v / grin.v / pout.v / scowl.v / smile.v / smirk.v', 'definition': "An Agent makes a particular facial expression, generally in response to some Internal_cause (generally an emotional state).  Sometimes the Body_part involved in the expression is mentioned in lieu of the Agent.  'His eyes smile, but his lips do not.'"}, {'frame': 'Shaped_part', 'tfidf': 0.6755635384420271, 'lexical_unit': 'arm.n / mouth.n / leg.n / rind.n / brim.n / handle.n', 'definition': "An entity is a shaped Part of a larger Whole. The Part may correspond in form and  function  to a part of another entity. For instance, the leg of a table supports the weight of a table like the leg of an animal or person supports their weight. The Orientation of the Part relative to the Whole may be expressed.  'I removed the brim of the hat'  'Bill likes to chew the waxy rind of the cheese'"}, {'frame': 'Communication_noise', 'tfidf': 0.6577305033081462, 'lexical_unit': 'babble.n / bark.v / bawl.v / bellow.v / bleat.v / bray.v / burble.v / cackle.v / chirp.v / chirrup.v / chuckle.v / cluck.v / coo.v / croak.v / croon.v / crow.v / cry.v / drone.v / gasp.v / grate.v / groan.v / growl.v / grunt.v / gurgle.v / hiss.v / hoot.v / howl.v / moan.v / murmur.v / purr.v / rap.v / rasp.v / rattle.v / roar.v / rumble.v / scream.v / screech.v / shriek.v / shrill.v / snarl.v / snort.v / splutter.v / sputter.v / squawk.v / squeak.v / squeal.v / thunder.v / titter.v / trill.v / trumpet.v / twitter.v / wail.v / warble.v / wheeze.v / whimper.v / whine.v / whoop.v / yell.v / yelp.v', 'definition': 'This frame contains words for types of noise which can be used to characterize verbal communication.  It inherits from Communication (possibly more specifically Communication_manner) and the Sound_emission frame (which simply characterizes basic sounds of whatever source, including those made by animals and inanimate objects).  As such, it involves a Speaker who produces noise and thus communicates a Message to an Addressee. \'\' \'"Don\'t treat me as a child!" she cried scornfully.\'  \'A writer in the Town Planning Review trumpeted that train-sheds were now obsolete.\'  \'You know he yelled at Aunt Lou yesterday, because he slipped on that mat in the hall.\''}, {'frame': 'Differentiation', 'tfidf': 0.638304284011103, 'lexical_unit': 'differentiate.v / discriminate.v / discrimination.n / distinguish.v / sort.v / tell apart.v / separate.v / know.v / tell from.v / distinguishable.a', 'definition': "Words in this frame have to do with a Cognizer being aware (or not being aware) of the difference between two Phenomena, which may be expressed jointly or disjointly.      'It is very difficult for people to visually distinguish between living and non-living things from such a great distance .'  "}, {'frame': 'Transition_to_state', 'tfidf': 0.6320246914030956, 'lexical_unit': 'grow.v / get.v / end up.v', 'definition': "An Entity ends up in a Final_category, Final_situation, or Final_quality which it was not in before.  Some members of the frame (e.g. grow.v) tend to emphasize a gradual change, while most members of the frame do not indicate whether a change is gradual or not.    'Why I became an Emacs user'  'I left the ministry and became an atheist.'  'Surprisingly, various veteran organizations also turned vehemently antiwar.'  ' Over the years she grew to hate him.'  This frame should be compared to Undergoing_change.  Undergoing_change is different in that it much more emphasizes the difference between the pre- and post-states of the Entity.  This shows up both in Undergoing_change's increased occurrence with Initial_category and Initial_state (change from red to blue) and in its increased occurrence with Final_category (changed into a toad) rather than Final_situation or Final_quality (?changed to red vs. became/turned red).  In addition, when Undergoing_change occurs with the Final_category frame element, it presents a deep difference between the Initial_category and the Final_category, so that it is humorous to say 'she turned into a Republican', because it presents this as a fundamental change of identity; compare to 'she became a Republican', which is quite normal.  In a less humorous example, someone can 'turn into a Mac user', strongly implying that they no longer use their former operating system, while if they 'become a Mac user', this is either as a replacement of other OS's or potentially as an addition to the use of other OS's."}, {'frame': 'Facial_expression', 'tfidf': 0.6249287016409426, 'lexical_unit': 'smile.n / grimace.n / grin.n / frown.n / expression.n / smirk.n / rictus.n / look.n / scowl.n / face.n / snarl.n / sneer.n / pout.n', 'definition': "The words in this frame refer to facial Expressions and the Possessors of those Expressions.  'His lackluster smile revealed his disappointment.'"}, {'frame': 'Desirable_event', 'tfidf': 0.6160728196140237, 'lexical_unit': 'should.v / ought to.v / bad idea.n / good idea.n / have to.v / be supposed to.v', 'definition': "A particular State_of_affairs is desirable.  The State_of_affairs may be required to achieve a Purpose.  A set of Circumstances may be specified under which the assessment of desirability holds.   'You should take the doses about 12 hours apart and at the same time each day.' ' If the metal is seriously rusted or warped, it should be repaired or replaced with a chimney top damper.' 'To ensure that, you should have no CLASSPATH set.'"}, {'frame': 'Attack', 'tfidf': 0.6000786865449761, 'lexical_unit': 'attack.v / assault.v / assault.n / attack.n / fall (upon).v / incursion.n / offensive.n / onset.n / strike.n / onslaught.n / charge.v / charge.n / lay (into).v / set (upon).v / storm.v / strike.v / ambush.v / ambush.n / jump.v / assail.v / raid.v / bomb.v / bombing.n / raid.n / attacker.n / offensive.a / infiltrate.v / infiltration.n / hit.v / fire.n / small arms fire.n / SAF.n / safire.n / drive-by.n / airstrike.n / assailant.n / bombardment.n / bombard.v', 'definition': "An Assailant physically attacks a Victim (which is usually but not always sentient), causing or intending to cause the Victim physical damage.   A Weapon used by the Assailant may also be mentioned, in addition to the usual Place, Time, Purpose, Explanation, etc.  Sometimes a location is used metonymically to stand for the Assailant or the Victim, and in such cases the Place FE will be annotated on a second FE layer.  'As soon as he stepped out of the bar he was set upon by four men in ski-masks.' 'Is he invading Iraq just to cover other shortcomings?' 'Then Jon-O's forces ambushed them on the left flank from a line of low hills.'"}, {'frame': 'Judgment_direct_address', 'tfidf': 0.5884206933744232, 'lexical_unit': 'scold.v / upbraid.v / thank.v / thanks.n / rebuke.v / rebuke.n / jeer.v / jeer.n / compliment.n / compliment.v / chide.v / chastise.v / chastisement.n / castigation.n / berate.v / admonish.v / admonishment.n / admonition.n / reprimand.n / reprimand.v / castigatory.a / reproach.v / harangue.v / reprove.v / reproof.n / take to task.v / tell off.v / telling off.n / tongue-lashing.n / congratulate.v / talking-to.n / give shit.v', 'definition': "In this frame, a Communicator judges the Addressee and then communicates that appraisal directly to the Addressee. The judgment is given for a particular Reason or about a particular Topic.  'The principal rebuked the student for cheating on the exam.'"}, {'frame': 'Trying_out', 'tfidf': 0.5836525215105334, 'lexical_unit': 'try.v / test out.v / try out.v', 'definition': "An Evaluator participates in an Experience (or metonymically, a salient Entity of the Experience), often for the first time, in order to form an opinion about its quality. The aspect of quality that is being judged is often implicit but may be expressed as the Purpose of the Evaluator's participation.   'Have you tried my latest get-rich-quick scheme? INI' 'Don tried out the bike to see if it was the right size.'"}, {'frame': 'Disembarking', 'tfidf': 0.5820020408782848, 'lexical_unit': 'disembark.v / debark.v / deplane.v / detrain.v / dismount.v / alight.v / debus.v / disembarkation.n / get.v', 'definition': "A Traveller leaves from or dismounts a Vehicle.  'The passengers disembarked in Southampton.'  'They then informed the passengers that, if the aircraft were to leave the runway, they would likely be deplaning through the rear cabin doors.'"}, {'frame': 'Buildings', 'tfidf': 0.5775728136741347, 'lexical_unit': 'house.n / houseboat.n / church.n / tower.n / bungalow.n / cabin.n / castle.n / condominium.n / cottage.n / dacha.n / dormitory.n / dwelling.n / farmhouse.n / home.n / hospital.n / hostel.n / hotel.n / igloo.n / lodge.n / mansion.n / monastery.n / motel.n / palace.n / pension.n / pueblo.n / residence.n / shack.n / shanty.n / shelter.n / tenement.n / tent.n / villa.n / acropolis.n / arena.n / auditorium.n / barn.n / barracks.n / basilica.n / blockhouse.n / campanile.n / caravan.n / caravanserai.n / chalet.n / chateau.n / conservatory.n / garage.n / gazebo.n / greenhouse.n / hall.n / hangar.n / hippodrome.n / hovel.n / inn.n / kennel.n / kiosk.n / lighthouse.n / maisonette.n / mall.n / manor.n / manse.n / mosque.n / outbuilding.n / outhouse.n / pagoda.n / palazzo.n / pavilion.n / penthouse.n / pyramid.n / rotunda.n / shebang.n / shed.n / skyscraper.n / stable.n / stadium.n / supermarket.n / synagogue.n / tabernacle.n / tavern.n / tepee.n / terminal.n / triplex.n / warehouse.n / wigwam.n / hacienda.n / homestead.n / bunker.n / theater.n / bar.n / city hall.n / disco.n / discotheque.n / library.n / temple.n / building.n / structure.n / housing.n / fortress.n / fortification.n / citadel.n / fort.n / airport.n / pub.n / high-rise.n / quarters.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Color', 'tfidf': 0.5748681779261092, 'lexical_unit': 'red.a / green.a / color.n / vermilion.a / ebony.a / purple.a / blue.a / orange.a / yellow.a / violet.a / brown.a / gray.a / black.a / white.a / pink.a / crimson.a / maroon.a / turquoise.a / azure.a / beige.a / mauve.a / tan.a / buff.a / scarlet.a / pitchblack.a / colored.a / indigo.a / puce.a', 'definition': "A Color serves as a landmark in color-space, either a point-like landmark (e.g. burnt sienna) or a broader region (e.g. blue).  Especially when the Color designates a broad region in color-space, it may be defined with a specific Type, further specified by comparison to the color of a Comparand, modified by a Color_qualifier, or evaluated with a Descriptor.  All color words are generally used to specify the color of some (physical) Entity. 'I really like that shade of blue.' 'The welts on his side had already turned an angry red.' 'The room was bathed in a soft pink light.' 'They promptly set up a zillion bright vermilion pavilions.' 'His face and hands were brown from a life spent in the bright sun of the fields.' "}, {'frame': 'Undergo_change', 'tfidf': 0.5530734069112583, 'lexical_unit': 'change.v / turn.v / change.n / veer.v / swing.v / plummet.v / changeable.a / shift.n / shift.v / transition.n / go.v', 'definition': "An Entity changes, either in its category membership, its situation, or in terms of the quality of an Attribute. In the first case, where category membership is changing, an Initial_category and a  Final_category may be expressed. In the second case, where a situation as a whole is changing, an Initial_situation and a Final_situation can be present. And in the last case, where some characterization of the Entity is changing, an Initial_quality and a Final_quality can be specified.    'As soon as Tiffany kissed the frog, Tiffany turned into a frog. '  'He chanted and the rock changed shape, becoming a great double bitted axe.'  'The College has changed markedly over the century since it first opened its doors.'  'If I'm understanding you correctly, you want the switchbar color to change whenever the bot says something?'  'My life instantly changed from an empty life, to a life full of joy and purpose.'  'As you can see, the word WALK changed from red to green rather than have a separate lens for each colour.'  'My feet turned to stone.'  'The promise will turn to ashes if progress is not made.'  'The price  changed from $1.26 to $1.27 per pint. DNI'  'At least one relative instruction has changed in size from short to long.'  In some cases, the types of perspective are mixed, so that, e.g., an Initial_quality is mixed with a Final_situation; this is usually considered poor style.  'She went from confused to acting completely confident .'  This frame is often the target domain of motion metaphors, in which the moving Theme corresponds to the  changing Entity, the Source of motion corresponds to the Initial_category, Initial_quality, or Initial_situation and the Goal of motion corresponds to the Final_category, Final_quality, or Final_situation of the Entity.  By correspondence with the complex domain of motion, this metaphor introduces several FEs to the target domain of change, such as an Intermediate_state (etc.) from Path, and Tendency_of_change from Direction.  'The nation was crawling towards oblivion.' 'We were walking past almost reasonable and heading right for what-the-bleep.' "}, {'frame': 'Cause_to_move_in_place', 'tfidf': 0.5507616485985726, 'lexical_unit': 'twirl.v / spin.v / vibrate.v / shake.v / swing.v / seesaw.v / turn.v / rotate.v / squeeze.v / swirl.v / rock.v / roll.v / wave.v / juggle.v / jiggle.v / wiggle.v', 'definition': "An Agent causes a Theme to move with respect to a certain Fixed_location, generally with a certain Periodicity, without undergoing unbounded translational motion or significant alteration of configuration/shape. 'Paul shook the remote control frantically.'"}, {'frame': 'Compatibility', 'tfidf': 0.5467174185417845, 'lexical_unit': 'compatible.a / incompatible.a / incompatibility.n / compatibility.n / harmonize.v / congruent.a / congruous.a / consonant.a / dovetail.v / jibe.v / square.v / comport.v / rhyme.v / accord.v / agree.v / cohere.v / consistent.a / harmony.n / go.v / clash.v / match.v / biocompatible.a / conflict.v / conflicting.a / at variance.a / fly in the face of.v', 'definition': "Item-1 and Item-2 are compatible with each other if they can exist or function together in some context without problems, conflict, or other undesirable situation.  The set of Item-1 and Item-2 may be expressed jointly as Items. The Degree to which the Items are compatible may also be indicated, as may be a Parameter along whose lines the Items are compatible. ' Make sure your site is compatible with any browser.' 'Our software applications  are compatible. ' "}, {'frame': 'Expressing_publicly', 'tfidf': 0.5434357520987342, 'lexical_unit': 'vent.v / air.v / express.v / voice.v / give voice.v / expression.n / articulate.v / put into words.v', 'definition': "A Communicator publically communicates some difficult-to-express Content which they (or a social group of which they are a member) have had for some time. The Content may not have been previously communicated due to inability or social stricture.  In cases where the individuals addressed are a smaller group than the public at large, a separate Addressee may be expressed.  'Those grievances can be aired during Board meetings. CNI'  'Saddam voiced his joy when he was told Spain's new government had left the US-led military coalition in Iraq.'   "}, {'frame': 'Catching_fire', 'tfidf': 0.5410029801595322, 'lexical_unit': 'break out.v / catch.v / catch fire.v / start.v / combust.v', 'definition': 'A Fuel, some flammable object or substance, ends up on fire.  In this frame, the cause of the fire is not the primary concern, but rather the fact that a fire started.  In rare cases, only the Fire is mentioned and the associated Fuel is not.  \'\' This frame does not include phrases like "a fire broke out" or "the conflagration started in the bedroom" as these are deemed to be compositional (see Process_start and Fire_burning).'}, {'frame': 'Connecting_architecture', 'tfidf': 0.5402298503961094, 'lexical_unit': 'door.n / elevator.n / lift.n / escalator.n / corridor.n / hallway.n / window.n / staircase.n / stairs.n / step.n / gate.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  The Part itself connects locations within the building to each other, Connected_locations. If a particular point of view is adopted in the context of real or imagined motion, then one of the locations can be construed as Goal and the other as Source.   'It was of great interest to me to see the star signs of Taurus the Bull and Leo the Lion on the staircase to the upper Palace.'  'All visitors may use the elevator between the Main Level and the Upper Level instead of the main staircase'  'The window into the garden was open.'"}, {'frame': 'Social_interaction_evaluation', 'tfidf': 0.5394263451638602, 'lexical_unit': 'inconsiderate.a / kind.a / considerate.a / mean.a / insensitive.a / thoughtless.a / thoughtful.a / cruel.a / sweet.a / rude.a / impolite.a / ill-mannered.a / churlish.a / discourteous.a / unkind.a / courteous.a / polite.a / impudent.a / respectful.a / disrespectful.a / boorish.a / compassionate.a / nice.a / friendly.a / unfriendly.a / amiable.a / sociable.a / cordial.a / genial.a / gracious.a / ungracious.a / civil.a / uncivil.a / impertinent.a / tactful.a / diplomatic.a / barbaric.a / spiteful.a / pleasant.a / horrible.a / good.a / good-natured.a / good-humored.a / warm.a / smart.a / mature.a / maturity.n / cruelty.n / thoughtfulness.n / rudeness.n / compassion.n / atrocious.a', 'definition': "In this frame an Evaluee is judged by a (usually implicit) Judge to be of a certain character based on her or his Behavior towards other human beings; a specific Affected_party may be overtly mentioned along with the Degree to which the Evaluee behaves appropriately towards others. TheBehavior alone may be mentioned with the understanding that these behaviors characterize a property of the unmentioned Evaluee. The Evaluee's Behavior may be in the context of a Topic.  ' It was nice of you to send a card. '   ' Jim was thoughtful to email the directions.'   ' For Martha to smoke in the car was extremely inconsiderate.'   ' It was cruel that he continued to call her.'   ' Mary was cruel to her friends.'   ' Samson was a thoughtless person.'   'Mrs. Robinson was always considerate of her students.'   ' The press was always kind about Madonna.'   ' Lee was nice about my car accident.'   ' I appreciated his kind offer of the car.'"}, {'frame': 'Preventing_or_letting', 'tfidf': 0.5393865476739699, 'lexical_unit': 'prevent.v / avert.v / frustrate.v / nip in the bud.v / obviate.v / stave off.v / check.v / avoid.v / prevention.n / stopping.n / prohibit.v / stop.v / upset.v / keep (from).v / preempt.v / preemption.n / preemptive.a / allow.v / let.v / permit.v / enable.v / enablement.n / forestall.v / preclude.v', 'definition': 'A Potential_hindrance or an Agent (via their actions) keeps an Event from taking place, or despite the possibility of prevent the Event, do not do so. Lexical units which indicate that the event is not prevented, e.g. allow.v, are marked with the semantic type "Negative".  Some lexical units, like avert and avoid indicate that the Potential_hindrance or Agent would have been affected if the Event occurred.   \' Rain prevented the ball game from taking place.\'   \' He could have stopped the riot .\'  \' The government narrowly averted a coup . \' \'She allowed more than a few mistakes to happen .\' \'Technology has permitted firms to link together more closely.\' \'Unlike DOS , Windows lets you get on with something else when sending a fax.\' \'Liberalization allows easier entry into particular markets .\' \'Mesh allows the water to circulate normally through the aquarium.\'  \'\'  Unlike in the Thwarting frame, the Potential_hindrance or Agent does not directly prevent the actions of an individual, but rather affects the world in such a way that an Event cannot occur.'}, {'frame': 'Attempt', 'tfidf': 0.538017418940939, 'lexical_unit': 'attempt.n / attempt.v / endeavor.v / endeavor.n / try.v / try.n / effort.n / go.n / undertake.v / stab.n / shot.n / quest.n / push.n', 'definition': "An Agent attempts to achieve a Goal. The Outcome may also be mentioned explicitly.  'John attempted to climb Mt. Everest.'  'It was another failed attempt to climb Mt. Everest.'"}, {'frame': 'Needing', 'tfidf': 0.5369834285994856, 'lexical_unit': 'need.v / require.v / need.n', 'definition': "The speaker believes that some state of affairs or entity (the Requirement) must be present in order to cause some other dependent state of affairs to occur (the Dependent).  In the typical case, the Cognizer desires the occurrence of the Dependent and so also desires the obtainment or occurrence of the Requirement.  'I need one more bolt. DNI' 'I need one more nail to finish building the cabinet.' 'In order to complete the treaty, the United States will require several more diplomats.' 'He needs everyone to leave his office to finish his work.'"}, {'frame': 'Correctness', 'tfidf': 0.5333120738157889, 'lexical_unit': 'correct.a / incorrect.a / wrong.a / right.a / accurate.a / correctness.n / exact.a / true.a', 'definition': "A particular piece of Information is evaluated for its accuracy.  The Degree of correctness may also be expressed.  The Source of information may also metonymically stand in for the Information.  'Is your reputation at risk due to incorrect information?' 'If your dealership service people make such totally wrong claims, I would be uncomfortable trusting their warranty claims too.' 'All users must verify the correctness of their own information.' 'We found all of his information to be right.'"}, {'frame': 'Cause_harm', 'tfidf': 0.5320884128877018, 'lexical_unit': 'bayonet.v / beat.v / boil.v / burn.v / bludgeon.v / club.v / crush.v / cut.v / slice.v / hammer.v / hit.v / kick.v / knife.v / punch.v / smash.v / stab.v / spear.v / stone.v / hurt.v / whip.v / batter.v / break.v / butt.v / chop.v / claw.v / clout.v / crack.v / cudgel.v / cuff.v / fracture.v / gash.v / injure.v / jab.v / bruise.v / knock.v / lash.v / maul.v / pelt.v / strike.v / thwack.v / bash.v / belt.v / buffet.v / horsewhip.v / smack.v / squash.v / slap.v / knee.v / wound.v / pummel.v / electrocute.v / electrocution.n / poisoning.n / beat up.v / torture.v / maim.v / flog.v / impale.v / biff.v / cane.v / flagellate.v / poison.v / transfix.v / welt.v / mutilate.v / elbow.v / sting.v / swipe.v / strike.n / drug.v / twist.v / run through.v', 'definition': "The words in this frame describe situations in which an Agent or a Cause injures a Victim. The Body_part of the Victim which is most directly affected may also be mentioned in the place of the Victim.  In such cases, the Victim is often indicated as a genitive modifier of the Body_part, in which case the Victim FE is indicated on a second FE layer. '' 'Rod saw his father beating his mother.'  'In the end Wormtongue is fed up with being beaten so he cuts Saruman's throat to free himself.'  'A mother stabbed to death by her husband made a secret will stating that he must never be allowed to care for their son.'"}];
+    </script>
+    <script type="text/javascript" src="word_cloud_prediction.js"></script>
+    <script type="text/javascript" src="../mturk.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 150px;
+            padding-right: 150px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel_1 canvas, #word_cloud_panel_2 canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+        .word_cloud_box {
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 3px rgba(70, 70, 70, 1) solid;
+            padding: 20px;
+            margin-bottom: 20px; 
+        }
+        .word_cloud_box:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+        }
+        .selected_story_block {
+            border-color: #7BDFF2;
+            border-width: 3px;
+            box-shadow: 0 0 10px 10px rgba(123, 223, 242, 0.3);
+            background-color: rgba(239, 247, 246, 0.8);
+        }
+        .indicator {
+            /*font-family: Courier;
+            font-weight: bold;*/
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px black solid;
+            border-radius: 20px;
+        }
+
+        .selected_story_block .indicator {
+            background-color: rgb(123, 223, 242);
+        }
+
+        #story_content {
+            max-height: 600px;
+        }
+        .not_qualified {
+            color: red;
+            font-weight: 900;
+        }
+        .qualified {
+            color: black;
+            font-weight: 900;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Which word-cloud best represents the story snippet?</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that a computer automatically 
+            generated to characterize a story snippet. 
+            These words can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            A <strong>word-cloud representation with nouns</strong> is a group of nouns a computer automatically 
+            generated to characterize a story snippet. 
+            These nouns can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            In this HIT, you will see a story snippet. <span class="highlight">Please read the it carefully.</span>
+            The story is long so we have a 3 minutes time lock for submission.
+            <br/><br/>
+
+            At the bottom of the HIT, you will see two sets of word-cloud representations, 
+            where each consists of nouns, verbs, and adjectives. 
+            <span class="highlight">Please select the word-cloud representation that best represents the story.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following story snippet carefully!</h3>
+            You will need to select the word-cloud representation that best represents this story. 
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story</h4>
+                        <h5>(An excerpt from the book <span style="font-weight:bold;">"Unspeakable Things"</span>.)</h5>
+                        <span class="not_qualified" id="read_lock">Please read all the story.</span>
+                        <br/><br/>
+                        <pre id="story_content">
+Munster asks, and Johnny snorts.
+"Am I a what?
+A fucking doctor?
+Witch doctor, more like, but it's the best you got."
+He walks over and roughly pushes Munster down onto the bed.
+"Oi!
+Careful!"
+Munster starts, but Johnny ignores him.
+"Hey, I'm just popping out!"
+Mara says brightly.
+"You need anything?"
+"Mara...?"
+Munster manages to say, before Johnny grabs his face and forces his mouth open with his hands, but Mara is already gone.
+Johnny is feeling under Munster's chin and it hurts, but the guy looks so angry, Munster really doesn't want to say anything, until Johnny starts pressing into his neck, wrapping his hands around it and squeezing gently, then a little more tightly, until Munster has to squeal before Johnny lets go.
+"Can't take the heat?"
+Johnny smirks as Munster gasps for breath and tries to steady himself.
+"Wh... what are you doing?"
+Munster asks.
+Johnny pulls himself back and laughs.
+"Nothing.
+I ain't got a clue about this, me.
+But Mara asked me to take you to see someone.
+Can you walk?"
+"Erm... well, no, that's the problem..."
+Johnny puts his hand in his mouth as if thinking.
+"I'll put you in the cart.
+We use it for the bar.
+Cover you like you're meat, or summat.
+I'll take you down that way.
+No use in drawing attention to ourselves, is there?"
+Johnny reaches over, and for a moment Munster thinks he's going to strangle him again, but instead he lifts him up an onto his shoulder, surprisingly easily for such a skinny looking guy.
+"Ouch!"
+Munster cries.
+"Shut up" Johnny says and, reaching behind, tries to smack him on the face.
+"Hey!
+Come on!
+I thought you were trying to help me!"
+Munster tries, but Johnny just snarls at him and walks through the door of the room, jerking upwards at the last minute to make sure Munster's head strikes the frame.
+"What the hell's the matter with you?"
+Munster asks.
+"Let me go!"
+There's a laugh from Johnny.
+"You sure you want me to do that, pal?"
+and he kneels down.
+"Hop off then" he starts, then "Oh, sorry, you can't.
+What a shame.
+Then shut the fuck up."
+Johnny gets back up and walks down a dark, damp corridor, small shafts of light getting through breaks in the wall where bricks should have been.
+It stinks in here, too, like some animal had been left to rot, and Munster tries not to gag, not wanting to risk Johnny's further rage by throwing up all over his back, but it's hard.
+They get to a door which Johnny kicks open, and which leads out into a small yard, which, Munster guesses, must be at the back of the house they've been in, the one next to the bar.
+As Johnny said, there's an old, hand pushed cart there, and Johnny unceremoniously throws Munster into it, landing his face in something soft and squidgy, that Munster really doesn't want to think about.
+Munster turns himself round and wipes his face down, and looks back at Johnny, who's standing over the cart.
+"Right" Johnny says, "you keep fucking quiet you understand.
+Don't want anyone nosing in here, do we?
+They don't take kindly to cripples."
+"Where are we going?"
+Munster ventures.
+"Like I told you" Johnny says gruffly, "I'm taking you to see a doctor.
+I'd have let you rot, but Mara, she asked us, so I guess I have to."
+He reaches over to something beside Munster and pulls it up; it looks like some sort of cover, which Johnny starts to fold out.
+"Where is Mara?"
+Johnny looks up.
+"Good, was she?"
+"What?"
+"In bed.
+Was she good?
+Made you come?"
+"Erm..."
+"She likes a bit of the rough stuff, Mara does.
+Bet you enjoyed that, didn't you?
+Bet you enjoyed taking advantage of her."
+"What?
+No!
+It was her...
+I mean, you know, I'm sorry..."
+Munster finds himself saying, without quite realising why he's apologising.
+"Yeah, well" Johnny sniffs.
+"Maybe if you hadn't been so fucking lecherous, you may not be in this mess" and he throws the cover over the cart, shielding Munster from view and from the constant rain.
+The cart jerks upwards and starts to trundle forward across the rough ground, the vibrations knocking him around and sending judders of pain into his body.
+He tries to hold on to the sides of the cart to reduce the pain, but it doesn't help much, and also means that he can't cover his face, and so is exposed to the smell here, which is almost worse than it was in the house.
+Munster feels the nausea returning and taking over his body and it's all he can do to stop himself from throwing up.
+If he had any choice he would start kicking and shouting until the cart stopped and Johnny let him go, but what can he do?
+It's not like he can go to a doctor and get treatment, it's not like he has any money to do that, even if he could get hold of one... so then what else can he do?
+He's completely useless and there's no way Louise wouldn't kick him out, and then what?
+Left to rot on the streets to beg for mercy or until the dogs get him.
+So he hangs on, trying to think of anything to distract him from this, and when that doesn't prove enough, he lets his left hand go from the side of the cart and starts to dig his fingernails into his left cheek, scratching hard to make it painful.
+He just feels the wetness of blood when the card judders to a halt, and he lets his breath out in relief, unaware that he had been holding it.
+The smell engulfs him and suddenly his stomach lurches and he can't control himself any longer, the stench and the pain overwhelming him as the contents of his guts are retched up and onto his body, still only covered loosely with the torn dressing gown.
+Oh god oh god oh god, Johnny's going to kill me, and he starts, as best he can, in the dark, trying to mop up the sick with the dressing gown, with something that felt like a rag, before Johnny pulled back the covers.
+Suddenly the cart jerks and starts moving again, to Munster's relief, giving him a bit more time; at least his stomach is a bit more settled even though the smell is immeasurably worse.
+It stops again and this time there's Johnny's voice, shouting something, then there's a crash and then there's another voice, and then the cart jerks forward a few more yards and stops again, before another crash.
+More voices and suddenly the cover is yanked off and Munster finds himself again under the wet sky, blinking to get used to the light.
+There are two figures standing there, but he can't yet make out who they are.
+"Jesus!
+The fucker's thrown up" says the one on the left, Johnny, he's sure, from the voice.
+There's a snort.
+"Not my problem.
+Get him cleaned up before you bring him inside" and the figure steps away and disappears.
+Johnny leans forward and grabs Munster's arms, keeping as far away from him as possible.
+"I'll make you pay for this" he mutters, "now I'm going to have to clean the cart up, aren't I."
+He pulls Munster roughly out into the open and lets him fall to the ground, and then kicks him, hard, in the side.
+Munster grimaces and cries out.
+"Sorry" he gasps, "I couldn't help it."
+"Pull yourself up or crawl after me.
+I ain't going to carry you after that."
+Johnny spits on the ground next to Munster, and Munster looks up at him.
+"Please" he whispers, but all this does is earn him another kick and push him further into the mud on the ground.
+Clutching his side, Munster turns back up, and, trying to avoid Johnny, grabs the lower axle of the cart's wheel and pulls himself up.
+The pain in his side is killing now, it feels like he's bleeding inside, but he tries to put this out of his mind as he concentrates on keeping his weight on his arms and leveraging himself to a half standing position against the crate.
+He avoids putting any weight on his legs, sitting on the edge of the cart, getting his breath back, before trying to move any further.
+He looks up, careful to avoid Johnny's gaze, careful not to antagonise him further, to see himself in another yard, this time gated and protected from the main street, behind another brick building, run down and derelict looking, with a corrugated iron sheet covering what must be the doorway.
+"Are we here?"
+he asks, tentatively.
+Johnny smiles cruelly and says "Yeah, we're here.
+Welcome to the doctor's abode" and moves his hand quickly, making Munster cower back and cover his head with his hand in anticipation of a blow.
+But Johnny's holding his hand out.
+"Grab hold.
+I'll help you walk" and gratefully Munster takes hold of Johnny's hand, only to find himself jerked forward and let go as Johnny laughs.
+Munster spins dangerously on his feet, but suddenly he's finding that they don't crumple, and he's still upright.
+"Oh!"
+he cries.
+"Oh!
+They're better" and relief floods through him as he turns to Johnny.
+"I can stand!"
+he shouts happily.
+"Fuck" Johnny says, and punches him in the face.
+-------- Munster's got over all the weird shit of waking up and trying to work out where he is.
+He's got over the fact that he doesn't recognise his surroundings, that he's in what seems to be a warehouse, old and seemingly abandoned except for the unusual fact that it's actually lit with artificial light and not candles ... which means money, but also means fear.
+He's got over the fact that his head hurts, not really surprising given that Johnny seems to have punched him, and that his nose really hurts, which could mean it's broken.
+He can taste dried blood in his mouth - probably from his nose, but he can't do anything about it, because he appears to be tied up, his hands held tightly behind his back and attached to a large metal pipe that also pulls him in and makes his back sore.
+He's struggling to get over the fact that things are clearly not what he expected and that he's probably in a huge amount of trouble.
+On the plus side, he's standing, which means that his legs are still working.
+On the minus side, he is tied up.
+And in a scary looking warehouse where people can afford to leave the lights on with just him in it, even scarier than having artificial light to begin with.
+Apart from the general abandonment and dark, dusty corners, from which strange noises can be heard, apart from all that, there are two stools just in front of him, waiting, empty, for people to come and sit on them.
+But for the moment it's just him.
+Until there's a clank, and a bang, and then a shaft of grey daylight that opens up in front of him, behind the stools.
+Daylight and they leave the lights on.
+These are serious people.
+Two figures step in; the first, Munster recognises as the young and fit form of Johnny, with his permanent scowl; the second, an older, skinny man, wearing a long, dirty white coat, his tall frame marked by what seems to be a permanent stoop.
+They are talking quietly as they approach Munster, without looking at him, and Munster decides it's probably best to keep quiet.
+They stand by the stools, without bothering to sit down, still talking, but in such quiet voices that Munster can't make out the words even though they are only a couple of feet away from him, until, eventually, the old man glances in Munster's direction, a surprised look crossing his face.
+His face is old and lined, but not without compassion, accentuated by the half-heartedly shaven grey stubble.
+"Ah!"
+he says, his voice croaky, "our patient is awake!"
+Johnny throws Munster a glance and sighs, as if Munster has done him a major disservice by waking up from the punch.
+"Munster" he grunts, "this is Dr Partington."
+Dr Partington steps forward and smiles.
+"Delighted to make your acquaintance!"
+he says, putting out his hand, but Munster just stares at it and eventually the doctor realises his mistake and laughs.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+
+        <h3>Select the word-cloud representation that best represents the above story.</h3>
+        Below, there are two word-cloud representations. Read them carefully and select the one that best represent the above story.
+        <br/><br/>
+
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_1" value="1">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 1</h3>
+                The following three word clouds jointly represent the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_2" value="2">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 2</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_2">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_2">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_2">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_2-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="10">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input name="note" type="hidden" value="BERT, LGBM">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+    </div>
+
+</body>
+</html>

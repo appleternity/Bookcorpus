@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="text/javascript">
+        var frame_list_1 = [{'frame': 'Money', 'tfidf': 2.489887329923696, 'lexical_unit': 'money.n / cash.n / funds.n / dough.n / capital.n / dinero.n / sterling.n / fund.n', 'definition': "Money is a medium used for exchanging goods and services. It is in most cases issued by a government (its Creator) in the form of coins and banknotes. Particular amounts of it may have a designated or planned Use, or may have come from some Origin.  'The money for our daughter's college education is currently earning interest in a savings account.'  'The entire project ended up being funded with Swiss funds.'  'The use of paper money really caught on in Europe in the 1700s'"}, {'frame': 'Businesses', 'tfidf': 2.161656101917, 'lexical_unit': 'business.n / shop.n / establishment.n / mill.n / practice.n / firm.n / operation.n / company.n / chain.n / corporation.n / paper.n / store.n / bank.n / boutique.n', 'definition': "A Proprietor owns or runs a Business which provides a Product (which may be goods or services).  'The consumer electronics company Apple has exploded with popularity in recent years.'"}, {'frame': 'Weapon', 'tfidf': 1.8397531113129604, 'lexical_unit': 'rifle.n / pistol.n / six-shooter.n / firearm.n / gun.n / cannon.n / bomb.n / warhead.n / sword.n / knife.n / gat.n / AK-47.n / grenade.n / crossbow.n / machine-gun.n / shotgun.n / shooter.n / flame-thrower.n / weapon.n / handgun.n / club.n / twenty-two.n / forty-four.n / missile.n / garrotte.n / revolver.n / weaponry.n / Scud-B missile.n / arsenal.n / chemical weapon.n / ballistic missile.n / biological weapon.n / nuclear weapon.n / mustard gas.n / CW.n / BW.n / WMD.n / weapon of mass destruction.n / mine.n / spear.n / bow.n / explosive.a / explosive.n / plastic explosive.n / dynamite.n / nuclear.a / Scud-B.n / Scud-C missile.n / atomic weapon.n / ordnance.n / arms.n / artillery.n / shell.n / atomic bomb.n / biological.a / chemical.a / nerve gas.n / strategic.a / strategic nuclear weapon.n / ICBM.n / RPG.n / rocket.n / small arms.n / EFP.n / assault rifle.n / mortar.n / automatic weapon.n / C4.n / phosgene.n', 'definition': "A Weapon is an artifact created specifically to cause harm or damage.  In some cases, a Use, Material of construction, Part or Type may be more narrowly specified.  'Did you, or did you not, fire this gun with intent to harm my client?'  'Cyra tried to swing her sword to parry, but it was to heavy.'  'I investigated a specialist precious metal firearms manufacturer.'  'My neighbor, a member of the NRA since birth, has got an AK-47 fully automatic assault rifle.'  'Let 's just say that he 's the kind of guy who likes guns with hair triggers.' "}, {'frame': 'Vehicle', 'tfidf': 1.736543391492028, 'lexical_unit': 'car.n / bus.n / truck.n / bike.n / taxi.n / plane.n / ferry.n / boat.n / bicycle.n / ship.n / tram.n / automobile.n / tricycle.n / airplane.n / scooter.n / schooner.n / train.n / carriage.n / cab.n / coach.n / vehicle.n / lorry.n / submarine.n / tank.n / cart.n / toboggan.n / pick-up.n / van.n / limousine.n / convertible.n / helicopter.n / canoe.n / kayak.n / buggy.n / liner.n / sedan.n / vessel.n / tank car.n / warplane.n / yacht.n / chopper.n / helo.n / bird.n / minivan.n / ambulance.n / aircraft.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'Member_of_military', 'tfidf': 1.2817371729285296, 'lexical_unit': 'soldier.n / marine.n / sailor.n / airman.n / troop.n / service member.n / commando.n', 'definition': "A Person is a member of an organized military organization belonging to a nation-state or similar body. The military membership may be part-time, but is considered a job. This is in opposition to combatants who may be loyal to a particular cause but are not part of the military arm of a government.  'The British at one point had an occupying army of over a million well-trained soldiers.'  'After 9/11 she decided to become a full-time airman'.  'US soldiers have fought in the region for the past twenty years with no end in sight.'"}, {'frame': 'People_by_origin', 'tfidf': 1.244996513347722, 'lexical_unit': 'Mexican.n / New Yorker.n / Frenchman.n / English.n / foreigner.n / American.n / American [N and S Am].n / Frenchwoman.n / Frenchy.n / Kraut.n / Brit.n / Denverite.n / Chicagoan.n / Californian.n / Iranian.n / Irish.n / Dubliner.n / Persian.n / Greek.n / Turk.n / italian.n / ottoman.n / german.n / Indian [American].n / englishwoman.n', 'definition': "This frame contains  words for individuals, i.e. humans, with respect to their Origin. The Origin is generally incorporated, but may occasionally be specified separately.  The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have an Age, Descriptor, Persistent_characteristic, or Ethnicity.   'I'm a proud Brit.'"}, {'frame': 'Food', 'tfidf': 1.2252022095971329, 'lexical_unit': 'fruit.n / apple.n / banana.n / vegetable.n / carrot.n / potato.n / pea.n / meat.n / beef.n / lamb.n / veal.n / poultry.n / chicken.n / turkey.n / fish.n / salmon.n / tuna.n / shellfish.n / shrimp.n / lobster.n / milk.n / cheese.n / egg.n / butter.n / nut.n / almond.n / peanut.n / pasta.n / noodle.n / herb.n / spice.n / pepper.n / basil.n / cereal.n / lettuce.n / berry.n / bread.n / roll.n / cracker.n / cake.n / pancake.n / cheesecake.n / pastry.n / croissant.n / cookie.n / biscuit.n / sweet.n / chocolate.n / sweetener.n / sugar.n / honey.n / fat.n / oil.n / vinegar.n / coffee.n / juice.n / soup.n / stew.n / sauce.n / dressing.n / vinaigrette.n / ketchup.n / mayonnaise.n / lasagne.n / food.n / tea.n / water.n / date.n / cabbage.n / MRE.n / beer.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Commerce_pay', 'tfidf': 1.1010309510400165, 'lexical_unit': 'pay.v / payment.n / disburse.v / disbursement.n / shell out.v / payer.n', 'definition': "This frame involves Buyers paying Money for Goods.  In this frame the Money is the direct object, and is mapped to the theme of the transfer.  'I paid her $50 for a video game.'"}, {'frame': 'Social_event', 'tfidf': 1.0716624985176428, 'lexical_unit': 'party.n / banquet.n / shindig.n / fete.n / celebration.n / social.n / get-together.n / picnic.n / fair.n / reception.n / dance.n / festival.n / feast.n / dinner.n / dinner-party.n / bash.n / gala.n / jollification.n / rave.n / soiree.n / barbecue.n / ball.n / meeting.n / function.n / benefit.n', 'definition': "A Social_event occurs at which Attendees are present to conduct a social function or joint activity.  The Social_event is often a party or celebration, in which case it is possible to express someone who is being honored (the Honoree) or its function may be to celebrate an Occasion at which Attendees are present. Often, a specific Attendee, the Host, provides a venue for people to gather.  'Sue threw a party for Bob's birthday.'  'Who will host the Olympic games in eight years?'"}, {'frame': 'People_by_vocation', 'tfidf': 1.0336421197024794, 'lexical_unit': 'politician.n / farmer.n / attendant.n / clerk.n / consultant.n / gardener.n / lawyer.n / maid.n / manager.n / professor.n / receptionist.n / salesman.n / servant.n / waiter.n / carpenter.n / scientist.n / private eye.n / actress.n / waitress.n / technician.n / toxicologist.n / engineer.n / double agent.n / researcher.n / archaeologist.n / professional.a / agent.n / journalist.n / judge.n / mechanic.n / oilman.n / reporter.n / scholar.n / veterinarian.n / trader.n / mole.n / spy.n / businessperson.n / speculator.n / architect.n / plain-clothes man.n / magistrate.n / officer.n / police officer.n / spokesperson.n / spokesman.n / spokeswoman.n / policeman.n / bodyguard.n / police.n / tailor.n / correspondent.n / cook.n / manservant.n / senator.n / attorney.n / athlete.n / chef.n / bartender.n / teacher.n / pilot.n / flight attendant.n / server.n / software developer.n / web developer.n / saleswoman.n / salesperson.n / homemaker.n / student.n / artist.n / musician.n / singer.n / painter.n / dancer.n / writer.n / editor.n / actor.n / producer.n / director.n / designer.n / neuroscientist.n / biologist.n / chemist.n / physicist.n / anthropologist.n / linguist.n / psychologist.n / psychiatrist.n / mathematician.n / sociologist.n / fire fighter.n / firefighter.n / programmer.n / driver.n', 'definition': "This frame contains  words for Individuals as viewed in terms of their vocation.   The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'Humphrey Bogart was a great actor.'"}, {'frame': 'Commerce_buy', 'tfidf': 0.9943590476350391, 'lexical_unit': 'buy.v / purchase.v / purchase [act].n / buyer.n / purchaser.n / client.n', 'definition': "These are words describing a basic commercial transaction involving a Buyer and a Seller exchanging Money and Goods, taking the perspective of the Buyer.  The words vary individually in the patterns of frame element realization they allow.  For example, the typical pattern for the verb BUY: Buyer buys Goods from Seller for Money. '' 'Abby bought a car from Robin for $5,000.'"}, {'frame': 'Locale_by_use', 'tfidf': 0.9204150975352583, 'lexical_unit': 'farm.n / hedge.n / mine.n / field.n / airfield.n / cemetery.n / rural.a / country.n / countryside.n / urban.a / city.n / village.n / center.n / facility.n / complex.n / installation.n / reactor.n / harbor.n / lab.n / plant.n / laboratory.n / depot.n / site.n / school.n / university.n / factory.n / silo.n / parking lot.n / base.n / settlement.n / courtyard.n / institute.n / pub.n / restaurant.n / museum.n / gallery.n / garden.n / park.n / square.n / theater.n / shop.n / college.n / open space.a / post office.n / canal.n / green.n / park[2].n / ranch.n / headquarters.n / downtown.n / campus.n / zoo.n / port.n / work.n / court.n / range.n / compound.n / station.n / firehouse.n / bathhouse.n / development.n / plantation.n / safe house.n / boutique.n', 'definition': "Geography as defined by its use.   'You must land in the next airfield, as this one is currently having difficulties.' 'The new sports complex was the tallest building on campus, oddly enough.' 'Cities of the Northeast tend to be dingier.'"}, {'frame': 'Buildings', 'tfidf': 0.8670076821138749, 'lexical_unit': 'house.n / houseboat.n / church.n / tower.n / bungalow.n / cabin.n / castle.n / condominium.n / cottage.n / dacha.n / dormitory.n / dwelling.n / farmhouse.n / home.n / hospital.n / hostel.n / hotel.n / igloo.n / lodge.n / mansion.n / monastery.n / motel.n / palace.n / pension.n / pueblo.n / residence.n / shack.n / shanty.n / shelter.n / tenement.n / tent.n / villa.n / acropolis.n / arena.n / auditorium.n / barn.n / barracks.n / basilica.n / blockhouse.n / campanile.n / caravan.n / caravanserai.n / chalet.n / chateau.n / conservatory.n / garage.n / gazebo.n / greenhouse.n / hall.n / hangar.n / hippodrome.n / hovel.n / inn.n / kennel.n / kiosk.n / lighthouse.n / maisonette.n / mall.n / manor.n / manse.n / mosque.n / outbuilding.n / outhouse.n / pagoda.n / palazzo.n / pavilion.n / penthouse.n / pyramid.n / rotunda.n / shebang.n / shed.n / skyscraper.n / stable.n / stadium.n / supermarket.n / synagogue.n / tabernacle.n / tavern.n / tepee.n / terminal.n / triplex.n / warehouse.n / wigwam.n / hacienda.n / homestead.n / bunker.n / theater.n / bar.n / city hall.n / disco.n / discotheque.n / library.n / temple.n / building.n / structure.n / housing.n / fortress.n / fortification.n / citadel.n / fort.n / airport.n / pub.n / high-rise.n / quarters.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Containers', 'tfidf': 0.8389395617059364, 'lexical_unit': 'amphora.n / backpack.n / can.n / cart.n / casket.n / chest.n / envelope.n / flask.n / glass.n / handbag.n / jar.n / knapsack.n / ladle.n / locker.n / mug.n / pot [cooking].n / purse.n / reservoir.n / sack.n / satchel.n / spoon.n / suitcase.n / tin.n / wallet.n / teaspoon.n / ampule.n / ashtray.n / bag.n / barrel.n / basin.n / basket.n / beaker.n / bin.n / bottle.n / bowl.n / box.n / briefcase.n / bucket.n / canister.n / canteen.n / carafe.n / carton.n / cartridge.n / case.n / coffer.n / coffin.n / container.n / cooler.n / crate.n / crock.n / crucible.n / cruet.n / cup.n / cuspidor.n / cylinder.n / cask.n / carryall.n / censer.n / chalice.n / creamer.n / decanter.n / dish.n / dispenser.n / drum.n / duffel bag.n / flagon.n / empty.n / etui.n / goblet.n / grail.n / hamper.n / haversack.n / hopper.n / jeroboam.n / jigger.n / jug.n / keg.n / magnum.n / mailer.n / overnighter.n / pack.n / sarcophagus.n / tun.n / stein.n / spittoon.n / pannier.n / ramekin.n / reticule.n / salver.n / samovar.n / snifter.n / thermos.n / tureen.n / valise.n / cauldron.n / casserole.n / folder.n / rucksack.n / pouch.n / vial.n / vase.n / pail.n / pipette.n / tumbler.n / vat.n / vivarium.n / punch bowl.n / toilet bowl.n / wine bottle.n / chest of drawers.n / hot-water bottle.n / urn.n / tank.n / safe.n / planter.n / pot.n / drawer.n / goldfish bowl.a / tub.n', 'definition': "This frame covers entities which are prototypically conceived of and created to fulfill the function of containing--i.e. Containers  that contain objects or substances, the Contents.  This can be expressed as a complement , and includes potential or intended contents.   A Container may also have an Owner, a current Relative_location, Material from which it is constructed, a method of Construction, and a Type.  Note the connection between words in this frame and those in the Filling, Emptying, and Fullness frames. 'a bag of popcorn' 'underwear drawer' 'Chuck's suitcase' 'the suitcase in Chuck's office' 'straw basket' 'woven basket' 'Erlenmeyer flask'"}, {'frame': 'Being_obligated', 'tfidf': 0.8349823929018654, 'lexical_unit': 'obligated.a / duty.n / job.n / task.n / responsibility.n / obligation.n / bound.a / assignment.n / mission.n / commission.n / contract.n / obliged.a / imposition.n', 'definition': "Under some Condition, usually left implicit, a Responsible_party is required to perform some Duty.  If they do not perform the Duty, there may be some undesirable Consequence, which may or may not be stated overtly.  'It is my duty to fight any attack on the Brotherhood .' 'This country has the responsibility to support its citizens' right to express themselves.' 'I am obligated to pay or they'll double the fine.'  NB:  Contrast this frame with Likelihood and Preconditions frames, which involve many of the same lemmas.  Many LUs which might be expected to be found here (should, must, have to) are actually in the Required_event frame. Our analysis is that these LUs do not evoke an obligation directly, although they are frequently used in contexts that are consistent with an understanding of obligation and are pragmatically strengthened to (defeasibly) imply an obligation. "}, {'frame': 'Architectural_part', 'tfidf': 0.8087402406238083, 'lexical_unit': 'fireplace.n / floor.n / ceiling.n / mantel.n / roof.n / rail.n / wall.n / counter.n / facade.n / foundation.n / flight.n / landing.n / window.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  'We need new counters for the kitchen'  'The storm ripped off the bathroom's roof'  "}, {'frame': 'Calendric_unit', 'tfidf': 0.8031330757423593, 'lexical_unit': 'day.n / week.n / daybreak.n / weekday.n / weekend.n / weeknight.n / dawn.n / morning.n / noon.n / Monday.n / Tuesday.n / Wednesday.n / Thursday.n / Friday.n / Saturday.n / today.n / yesterday.n / tomorrow.n / midday.n / afternoon.n / dusk.n / evening.n / eve.n / night.n / midnight.n / twilight.n / month.n / year.n / calendar year.n / fortnight.n / decade.n / January.n / February.n / March.n / April.n / May.n / June.n / July.n / August.n / September.n / October.n / November.n / December.n / Sunday.n / leap year.n / morn.n / winter.n / spring.n / summer.n / hour.n / minute.n / second.n / autumn.n / school year.n / quarter.n / era.n / age.n / rush hour.n / tonight.n / century.n / millennium.n / holiday.n / one day.n', 'definition': "Words in this frame name the different parts of the calendric cycle, both man-made and natural. The Unit (e.g. Tuesday) specifies some time period as part of a specific larger temporal Whole (Tuesday of next week), or may be resolved to an exact time span by a Relative_time (next Tuesday).   'Jo's mother will visit on this coming Tuesday.' '' Very frequently, the Whole or Relative_time are left out (i.e., DNI), and often should be interpreted as a time period overlapping with the communication, but more generally must be understood from context.  So, for example, in the first sentence below, we can imagine that the Whole refers to a year (e.g., 1983) that was already mentioned or established in context.  In the second example below, the most likely interpretation is the nearest April, whether in this year or the next, and this interpretation is best indicated by indicating the Relative_time is DNI.  'On April 2 , she finally found her mother . DNI. '  'I 'll come back in April .DNI' '' Most members of this frame can be used with iterative events, either with a plural Unit (on Tuesdays), or marked with every (every April).   'On Tuesday and Thursday afternoons , we have tea .' In this use, when the Whole is omitted, the Whole should be marked INI. 'On Tuesdays , we have tea . INI ' '' Words of this frame often occur in a non-lexical construction that uses some Calendric_unit expressions to establish when an event occurred.  To capture this information, we use the extra-thematic FEs Landmark_period and Trajector_event (see Temporal_collocation) on the second layer, as in the following: 'Last Tuesday she said I 'd have to come back .' 'Last Tuesday she said I 'd have to come back .' We do not use these FEs for cases where the temporal relationship is introduced by an overt word of the Temporal_collocation frame (like on, in, at, before, etc.).  Most lexical units of this frame occur in this construction, with or without requiring a Relative_time, while some idiosyncratically do not, so information on the use with the extra-thematic FE Trajector_event is lexically specific. '' There are a number of non-lexical constructions that evoke this frame, including date constructions (the third, May 5), decade constructions (the oughts), year constructions (1975, 24 BCE, 10 AH, year 19, etc.), and time-of-day constructions. Although not annotated in this frame, examples such as the following show that the FEs Unit and Whole are quite appropriate: 'The 4th of April dawned clear and cold .' 'December 11 was when Alix finally left .' 'The 23rd will be snowy . DNI ' 'Nothing much happened in the 90s , did it ? DNI ' As described above for the lexical targets that evoke this frame, some non-lexical versions of the frame may also occur in a non-lexical Temporal_collocation construction: 'No-one has forgotten what happened the 5th of November !' 'No-one has forgotten what happened the 5th of November !' ''  Words in this frame figure into a variety of temporal schemas, realized as constructions, primarily cases in which the Calendric_unit serves as a Landmark_period in the Temporal_collocation frame. There are families of constructions in which these words occur, including ones in which weekday names combine with day part names using particular prepositions (e.g. on Wednesday morning, cf. on Wednesday, but  in the morning) and ones in which  calendric terms fill the slots in multi-word expressions such as  N-after-N (e.g. day after day),  N-by-N (e.g. week by week),  N-to-N (e.g. month to month), etc. More can be found on these in Fillmore (2002).  Note, also, the connection between this frame and Frequency, specifically that many iterative adjectives and adverbs are based on calendric terms (e.g. daily, weekly, monthly, etc.).      "}, {'frame': 'Text', 'tfidf': 0.7987665128399882, 'lexical_unit': 'tome.n / fanzine.n / epilogue.n / benediction.n / imprecation.n / eulogy.n / autobiography.n / ballad.n / biography.n / chronicle.n / comedy.n / diary.n / drama.n / elegy.n / epic.n / epigram.n / epistle.n / essay.n / exemplum.n / fable.n / festschrift.n / haiku.n / letter.n / limerick.n / lyric.n / memoir.n / monograph.n / mystery.n / novel.n / novelette.n / novella.n / ode.n / poetry.n / poem.n / rhyme.n / saga.n / song.n / sonnet.n / speech.n / tetralogy.n / thriller.n / tragedy.n / trilogy.n / whodunit.n / manual.n / handbook.n / paperback.n / hardback.n / grimoire.n / spellbook.n / lay.n / book.n / magazine.n / account.n / sermon.n / tract.n / screenplay.n / script.n / article.n / obituary.n / volume.n / mag.n / edition.n / treatise.n / report.n / bulletin.n / tractate.n / hagiography.n / journal.n / periodical.n / editorial.n / meditation.n / booklet.n / fiction.n / writings.n / missive.n / newspaper.n / list.n / manuscript.n / literature.n / history.n / brochure.n / material.n / pamphlet.n / issue.n / paper [newspaper].n / paper [article].n / epic.a / publication.n / life.n / record.n / textbook.n', 'definition': "A Text is an entity that contains linguistic, symbolic information on a Topic, created by an Author at the Time_of_creation.  It may be a physical entity that is made of a certain Material etc.  It may be constructed for an Honoree.  'It was a good book.'"}, {'frame': 'Natural_features', 'tfidf': 0.798295028976598, 'lexical_unit': 'rill.n / hill.n / mountain.n / knoll.n / cordillera.n / lake.n / pond.n / tarn.n / creek.n / vale.n / crevasse.n / sound.n / strait.n / valley.n / river.n / sea.n / ocean.n / pool.n / peninsula.n / fjord.n / outcrop.n / island.n / archipelago.n / crag.n / glacier.n / canyon.n / mount.n / cove.n / bay.n / inlet.n / cliff.n / channel.n / headland.n / isthmus.n / cave.n / cavern.n / iceberg.n / berg.n / waterfall.n / falls.n / spring.n / cataract.n / stream.n / brook.n / atoll.n / floe.n / dune.n / massif.n / loch.n / butte.n / fell.n / hillock.n / mesa.n / isle.n / islet.n / cay.n / sandbar.n / coombe.n / key.n / crater.n / bar.n / sandbank.n / sandspit.n / reef.n / clough.n / dale.n / defile.n / dell.n / depression.n / range.n / dingle.n / gap.n / pass.n / glen.n / graben.n / gulch.n / gully.n / hollow.n / ravine.n / beck.n / hummock.n / moraine.n / burn.n / shelf.n / shoal.n / lagoon.n / slough.n / bayou.n / tor.n / eyot.n / plateau.n / seamount.n / guyot.n / volcano.n / declivity.n / corrie.n / ridge.n / skerry.n / rapids.n / watershed.n / height.n / cirque.n / beach.n / continent.n / continental.a / peak.n / coastal.a / wash.n / strand.n / rugged.a / gulf.n / cascade.n / land.n / water.n / range [grazing].n', 'definition': "The Locale is a geographical location as defined by shape.  This frame includes natural geographic features, including land/ice forms and bodies of water.  ' We climbed up the rock cliff.' "}, {'frame': 'Roadways', 'tfidf': 0.7913600727910667, 'lexical_unit': 'road.n / path.n / way.n / street.n / avenue.n / artery.n / highway.n / expressway.n / motorway.n / sidewalk.n / pavement.n / underpass.n / overpass.n / railway.n / railroad.n / route.n / line.n / crosswalk.n / bridge.n / tunnel.n / autobahn.n / lane.n / track.n / trail.n / boulevard.n / course.n / freeway.n / pathway.n / roadway.n / thoroughfare.n / byway.n / cul-de-sac.n / driveway.n / parkway.n / runway.n / bypass.n / flyover.n / rail.n', 'definition': "This frame involves stable Roadways which connect two stable Endpoints, the Source and the Goal.  Being physical objects, these Roadways may have Names and Characteristics; they are also made of a Material.  They also cover ground, so they may have a Path or a Relative_location that the travel occurs in.  ' We crossed the brick road.' ' I prefer to travel on highway I-80.'  'This is the only highway between Lodi and Sonoma.' ' She dreaded turning onto the busy street.'"}, {'frame': 'Organization', 'tfidf': 0.7887179857774733, 'lexical_unit': 'cartel.n / club.n / government.n / organization.n / association.n / league.n / intelligence.n / agency.n / union.n / brotherhood.n / delegation.n / committee.n / group.n / board.n / order.n / society.n / parliament.n / news outlet.n', 'definition': "This frame describes intentionally formed human social groups (here termed Organizations) with some definite structure and Members.  They may be relatively informal, consisting only of a group of individuals who are aware of who is and who is not a fellow member, or they may be complex and long-lasting, such as the Roman Catholic Church or the Conservative Party.   'Lucien is in the brotherhood.'"}, {'frame': 'Discussion', 'tfidf': 0.7878944832275719, 'lexical_unit': 'confer.v / debate.n / debate.v / dialog.n / discuss.v / discussion.n / exchange.n / meeting.n / conference.n / parley.v / parley.n / interlocutor.n / discussant.n / negotiation.n / negotiate.v / talk.n / consultation.n / talk (to).v / talk over.v', 'definition': "Two (or more) people (the Interlocutors, also encodable as Interlocutor_1 and Interlocutor_2) talk to one another. No person is construed as only a speaker or only an addressee. Rather, it is understood that both (or all) participants do some speaking and some listening--the process is understood to be symmetrical or reciprocal.  This frame differs from the Chatting frame in that the Interlocutors have a particular question that they are attempting to decide or understand.  'I would rather discuss politics with anyone but him.'   'World leaders met to discuss global warming on the coldest day of the year.'"}, {'frame': 'Process_start', 'tfidf': 0.7851856062432335, 'lexical_unit': 'start.v / begin.v / commence.v / erupt.v / break out.v / commencement.n / incipient.a / onset.n / nascent.a / eruption.n', 'definition': "An Event begins at a certain Time and Place. Reason may also be indicated.  NB:  Refer to Event frame.  'The project began.'"}, {'frame': 'Measure_duration', 'tfidf': 0.7678157632537089, 'lexical_unit': 'hour.n / minute.n / second.n / day.n / week.n / month.n / year.n / decade.n / century.n / millennium.n / fortnight.n / a while.n / nanosecond.n / time.n', 'definition': 'This frame contains (transparent ) nouns that are Units of measurement for time. The frame elements are Count, Unit and Process.  \'The final total was 606, scored in only 10 hours of excellent batsmanship.\'  In this frame, we will NOT annotate deictic, calendric uses of nouns like week, month, etc. as in "next week, this month, in the 21st century".'}, {'frame': 'Connecting_architecture', 'tfidf': 0.76662293048566, 'lexical_unit': 'door.n / elevator.n / lift.n / escalator.n / corridor.n / hallway.n / window.n / staircase.n / stairs.n / step.n / gate.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  The Part itself connects locations within the building to each other, Connected_locations. If a particular point of view is adopted in the context of real or imagined motion, then one of the locations can be construed as Goal and the other as Source.   'It was of great interest to me to see the star signs of Taurus the Bull and Leo the Lion on the staircase to the upper Palace.'  'All visitors may use the elevator between the Main Level and the Upper Level instead of the main staircase'  'The window into the garden was open.'"}, {'frame': 'Vehicle_subpart', 'tfidf': 0.7575860101229237, 'lexical_unit': 'door.n / window.n / seat.n / seatbelt.n / tire.n / wheel.n / brake.n / engine.n / hood.n / trunk.n / part.n / windshield.n', 'definition': "An entity is integrated into a vehicle as a Part of a (possibly unexpressed) Whole which may refer to the whole vehicle or merely to a sub-part of the vehicle.  '' 'The car's engine started smoking so we pulled over.' 'Put the bags in the trunk.' 'One should always wear a seatbelt while driving.' "}, {'frame': 'Color', 'tfidf': 0.7511688896306767, 'lexical_unit': 'red.a / green.a / color.n / vermilion.a / ebony.a / purple.a / blue.a / orange.a / yellow.a / violet.a / brown.a / gray.a / black.a / white.a / pink.a / crimson.a / maroon.a / turquoise.a / azure.a / beige.a / mauve.a / tan.a / buff.a / scarlet.a / pitchblack.a / colored.a / indigo.a / puce.a', 'definition': "A Color serves as a landmark in color-space, either a point-like landmark (e.g. burnt sienna) or a broader region (e.g. blue).  Especially when the Color designates a broad region in color-space, it may be defined with a specific Type, further specified by comparison to the color of a Comparand, modified by a Color_qualifier, or evaluated with a Descriptor.  All color words are generally used to specify the color of some (physical) Entity. 'I really like that shade of blue.' 'The welts on his side had already turned an angry red.' 'The room was bathed in a soft pink light.' 'They promptly set up a zillion bright vermilion pavilions.' 'His face and hands were brown from a life spent in the bright sun of the fields.' "}, {'frame': 'Activity_start', 'tfidf': 0.749486915121571, 'lexical_unit': 'start.v / begin.v / take up.v / beginner.n / neophyte.n / enter.v / swing (into).v / initiate.v / commence.v / launch (into).v / strike up.v / open.v / set about.v / get started.v', 'definition': "An Agent initiates the beginning of an ongoing Activity in which he will be continuously involved. '' 'At the same time, city-states began to grow in influence on the southern Greek mainland.'  'Naturally, I started crying to get out of work.'  "}, {'frame': 'Personal_relationship', 'tfidf': 0.7366355318392673, 'lexical_unit': 'husband.n / wife.n / widow.n / widower.n / widowed.a / spouse.n / couple.n / companion.n / divorcee.n / married.a / betrothed.n / bachelor.n / engaged.a / engagement.n / marriage.n / boyfriend.n / girlfriend.n / single.a / date.v / break-up.n / lover.n / partner.n / mistress.n / suitor.n / court.v / spinster.n / estranged.a / friend.n / betrothed.a / cohabit.v / cohabitation.n / seeing.v / widow.v / divorced.a / buddy.n / moll.n / paramour.n / inamorata.n / beau.n / sugar daddy.n / significant other.n / chum.n / pal.n / cobber.n / mate.n / crush.n / affair.n / adultery.n / amigo.n / sleep (together/with).v / spousal.a / marital.a / affianced.a / friendship.n / romance.n / befriend.v / familiar.a / fiancée.n / fiancé.n / relationship.n / chummy.a', 'definition': "The words in this frame have to do with people and the personal Relationships they are or can be a part of.  Some of the words denote people engaged in a particular kind of Relationship, others denote the Relationship, yet others the events bringing about or ending the Relationships. Many of the words presuppose an understanding of states and events that must have occurred before another event takes place or before a person can be classified in a certain way. '' 'And of course that drippy boyfriend of hers backed her up.'  'As the happy couple took their places there was a stir and a rising babble behind them.'  'Pattie is living proof that if you live with a man, you discover a lot you didn't know when you were just dating him.'"}, {'frame': 'Working_a_post', 'tfidf': 0.7344118528418512, 'lexical_unit': 'man.v / staff.v / work.v', 'definition': "The Agent is assigned to a Post where he or she performs a task associated with that Post. Alternatively, the Agent is expressed as acting with respect to a Salient_entity associated with the task. In most cases the Salient_entity is located at the Post.  'Volunteers were staffing the telephones.'  'Man your stations! CNI'"}];
+        var frame_list_2 = [{'frame': 'Money', 'tfidf': 6.695795059204102, 'lexical_unit': 'money.n / cash.n / funds.n / dough.n / capital.n / dinero.n / sterling.n / fund.n', 'definition': "Money is a medium used for exchanging goods and services. It is in most cases issued by a government (its Creator) in the form of coins and banknotes. Particular amounts of it may have a designated or planned Use, or may have come from some Origin.  'The money for our daughter's college education is currently earning interest in a savings account.'  'The entire project ended up being funded with Swiss funds.'  'The use of paper money really caught on in Europe in the 1700s'"}, {'frame': 'Businesses', 'tfidf': 3.100703239440918, 'lexical_unit': 'business.n / shop.n / establishment.n / mill.n / practice.n / firm.n / operation.n / company.n / chain.n / corporation.n / paper.n / store.n / bank.n / boutique.n', 'definition': "A Proprietor owns or runs a Business which provides a Product (which may be goods or services).  'The consumer electronics company Apple has exploded with popularity in recent years.'"}, {'frame': 'Commerce_sell', 'tfidf': 3.0199899673461914, 'lexical_unit': 'retail.v / retailer.n / sell.v / vend.v / vendor.n / sale.n / auction.v / auction.n / seller.n', 'definition': "These are words describing basic commercial transactions involving a buyer and a seller exchanging money and goods, taking the perspective of the seller.  The words vary individually in the patterns of frame element realization they allow. For example, the typical patterns for SELL: SELLER sells GOODS to BUYER for MONEY.  'Robin sold a car to Abby for $5,000.'"}, {'frame': 'Commerce_buy', 'tfidf': 2.7605485916137695, 'lexical_unit': 'buy.v / purchase.v / purchase [act].n / buyer.n / purchaser.n / client.n', 'definition': "These are words describing a basic commercial transaction involving a Buyer and a Seller exchanging Money and Goods, taking the perspective of the Buyer.  The words vary individually in the patterns of frame element realization they allow.  For example, the typical pattern for the verb BUY: Buyer buys Goods from Seller for Money. '' 'Abby bought a car from Robin for $5,000.'"}, {'frame': 'Commerce_pay', 'tfidf': 2.507814407348633, 'lexical_unit': 'pay.v / payment.n / disburse.v / disbursement.n / shell out.v / payer.n', 'definition': "This frame involves Buyers paying Money for Goods.  In this frame the Money is the direct object, and is mapped to the theme of the transfer.  'I paid her $50 for a video game.'"}, {'frame': 'People_by_vocation', 'tfidf': 1.7131510972976685, 'lexical_unit': 'politician.n / farmer.n / attendant.n / clerk.n / consultant.n / gardener.n / lawyer.n / maid.n / manager.n / professor.n / receptionist.n / salesman.n / servant.n / waiter.n / carpenter.n / scientist.n / private eye.n / actress.n / waitress.n / technician.n / toxicologist.n / engineer.n / double agent.n / researcher.n / archaeologist.n / professional.a / agent.n / journalist.n / judge.n / mechanic.n / oilman.n / reporter.n / scholar.n / veterinarian.n / trader.n / mole.n / spy.n / businessperson.n / speculator.n / architect.n / plain-clothes man.n / magistrate.n / officer.n / police officer.n / spokesperson.n / spokesman.n / spokeswoman.n / policeman.n / bodyguard.n / police.n / tailor.n / correspondent.n / cook.n / manservant.n / senator.n / attorney.n / athlete.n / chef.n / bartender.n / teacher.n / pilot.n / flight attendant.n / server.n / software developer.n / web developer.n / saleswoman.n / salesperson.n / homemaker.n / student.n / artist.n / musician.n / singer.n / painter.n / dancer.n / writer.n / editor.n / actor.n / producer.n / director.n / designer.n / neuroscientist.n / biologist.n / chemist.n / physicist.n / anthropologist.n / linguist.n / psychologist.n / psychiatrist.n / mathematician.n / sociologist.n / fire fighter.n / firefighter.n / programmer.n / driver.n', 'definition': "This frame contains  words for Individuals as viewed in terms of their vocation.   The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'Humphrey Bogart was a great actor.'"}, {'frame': 'People_by_origin', 'tfidf': 1.3636199235916138, 'lexical_unit': 'Mexican.n / New Yorker.n / Frenchman.n / English.n / foreigner.n / American.n / American [N and S Am].n / Frenchwoman.n / Frenchy.n / Kraut.n / Brit.n / Denverite.n / Chicagoan.n / Californian.n / Iranian.n / Irish.n / Dubliner.n / Persian.n / Greek.n / Turk.n / italian.n / ottoman.n / german.n / Indian [American].n / englishwoman.n', 'definition': "This frame contains  words for individuals, i.e. humans, with respect to their Origin. The Origin is generally incorporated, but may occasionally be specified separately.  The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have an Age, Descriptor, Persistent_characteristic, or Ethnicity.   'I'm a proud Brit.'"}, {'frame': 'Vehicle', 'tfidf': 1.3627678155899048, 'lexical_unit': 'car.n / bus.n / truck.n / bike.n / taxi.n / plane.n / ferry.n / boat.n / bicycle.n / ship.n / tram.n / automobile.n / tricycle.n / airplane.n / scooter.n / schooner.n / train.n / carriage.n / cab.n / coach.n / vehicle.n / lorry.n / submarine.n / tank.n / cart.n / toboggan.n / pick-up.n / van.n / limousine.n / convertible.n / helicopter.n / canoe.n / kayak.n / buggy.n / liner.n / sedan.n / vessel.n / tank car.n / warplane.n / yacht.n / chopper.n / helo.n / bird.n / minivan.n / ambulance.n / aircraft.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'Billing', 'tfidf': 1.3118491172790527, 'lexical_unit': 'bill.v / invoice.v / invoice.n', 'definition': 'A Billing_authority communicates in written form that the Debtor owes the Owed_party (often the same as the Billing_authority) some amount of Money for certain Goods (including services) provided by the Owed_party or to clear a debt for a Bad_action by the Debtor against the Owed_party.'}, {'frame': 'Appellations', 'tfidf': 1.236475944519043, 'lexical_unit': 'officer.n / general.n / captain.n / president.n / bishop.n / chairman.n / chairperson.n / chief.n / commander.n / commissioner.n / congressman.n / congresswoman.n / director.n / duchess.n / emperor.n / empress.n / executive.n / governor.n / headmaster.n / imam.n / kaiser.n / king.n / leader.n / legislator.n / maharaja.n / mayor.n / minister.n / mogul.n / monarch.n / official.n / premier.n / prince.n / principal.n / queen.n / representative.n / secretary.n / shah.n / sheik.n / sultan.n / superintendent.n / supervisor.n / tsar.n / mother.n / father.n / doctor.n / dr.n / mr.n / mrs.n / ms.n / miss.n / child.n / aunt.n / uncle.n / sister.n / brother.n / cousin.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Trendiness', 'tfidf': 1.2335097789764404, 'lexical_unit': 'fashionable.a / trendy.a / hip.a / style.n / fashion.n / chic.a / cool.a / big.a', 'definition': "A Behavior, attributed to an Evaluee, conforms with or is heavily influenced by a popular trend or practice, often in the realm of fashion, design, though extending social and interactional behavior in general. Trendiness differs from Popularity in adding a factor of aesthetic or other judgment to behaviors and individuals, and judging these with respect to social behavior; Popularity is about amount of acceptability or utilization based on general (often non-aesthetic) desirability.  'Wearing flowered brocaded silks was fashionable in the first few years of the decade.'"}, {'frame': 'Expensiveness', 'tfidf': 1.2271414995193481, 'lexical_unit': 'affordable.a / cheap.a / costly.a / exorbitant.a / expensive.a / free.a / inexpensive.a / low-cost.a / low-priced.a / overpriced.a / pricey.a / cost.v / cost.n / expense.n / affordability.n / set back.v', 'definition': 'A Payer gives up (or potentially gives up) the use of an Asset (generally money) in order to achieve an Intended_event.  This event is often more specifically described as gaining possession of some Goods or receiving a Service.  In the majority of cases, the Payer is described generically (INI), and the situation depicted answers the question of how much of an Asset would have to be given up to receive the Goods or bring about the Intended_event.  \'It \'ll cost Sandra\'s parents fifty grand a year for her to attend that school. \' \'That book would cost you more than twenty dollars to bind <fex name="">in a local book bindery.\' \'Stamps used to cost only five cents.  INI\' \'The cost of a trip to a resort or spa varies by region, dependent primarily on weather, not local economic conditions. INI\' \'Well, it \'ll cost you.\' \'For you, thirty bucks is practically free.  DNI\''}, {'frame': 'Commerce_scenario', 'tfidf': 1.2103233337402344, 'lexical_unit': 'price.n / goods.n / commerce.n / trafficker.n / supply side.n / merchandise.n', 'definition': "Commerce is a situation in which a Buyer and a Seller have agreed upon an exchange of Money and Goods (possibly after a negotiation), and then perform the exchange, optionally carrying it out with various kinds of direct payment or financing or the giving of change.    The Seller indicates their willingness to give the Goods in their possession to a Buyer who would give them some amount of Money.  The Seller may have already decided on the amount of money that they would require, in which case it is called the Asking price.    The Buyer also indicates their willingness to give an amount of money called an Offer to a Seller who would give them the Goods.    Normally the process is begun by the Seller.  The means by which the Seller indicates their wish to engage in an exchange are various, ranging from putting a price tag on an item on a store shelf, to advertizing, to communicating directly and specifically with a possible Buyer.  In some cases, however, the process may be initiated by the Buyer indicating to a possible Seller that they would like to make an exchange.  'buyer beware.'"}, {'frame': 'Attention_getting', 'tfidf': 1.177685260772705, 'lexical_unit': "pal.n / sir.n / ma'am.n / buddy.n / kid.n / dude.n / boy.n / guy.n / miss.n / bro.n / homes.n / yoohoo.intj / hello there.intj / excuse me.intj / hey.intj / officer.n", 'definition': "This frame covers terms used to get someone's attention, including Interjections (e.g. hey, yo) and certain terms of address (Address_term), the latter of which may serve the function of attention getting.    'Hey.' 'Hey, boy.' 'Hey, boy, come over here now!'  "}, {'frame': 'Working_a_post', 'tfidf': 1.1005040407180786, 'lexical_unit': 'man.v / staff.v / work.v', 'definition': "The Agent is assigned to a Post where he or she performs a task associated with that Post. Alternatively, the Agent is expressed as acting with respect to a Salient_entity associated with the task. In most cases the Salient_entity is located at the Post.  'Volunteers were staffing the telephones.'  'Man your stations! CNI'"}, {'frame': 'Candidness', 'tfidf': 1.0744335651397705, 'lexical_unit': 'blunt.a / candid.a / coy.a / discreet.a / explicit.a / forthcoming.a / forthright.a / frank.a / honest.a / open.a / outspoken.a / secretive.a / sincere.a / straightforward.a / truthful.a / disingenuous.a / evasive.a / circumspect.a / honesty.n / ingenuous.a / bluntness.n / candour.n / forthrightness.n / straight.a / earnest.a / earnestness.n / dishonest.a / devious.a / true.a', 'definition': "This frame contains adjectives and nouns that describe the truth or sincerity of communication. These words, analogously to behaver-evaluating words, can apply either to Speakers or to the Messages they produce. They can occur with about-PPs expressing Topic.   'Evelyn was candid with me about the party.'"}, {'frame': 'Building_subparts', 'tfidf': 1.0421042442321777, 'lexical_unit': 'room.n / antechamber.n / anteroom.n / atelier.n / attic.n / ballroom.n / basement.n / bathroom.n / bedroom.n / ben.n / boudoir.n / buttery.n / catacomb.n / cell.n / cellar.n / chamber.n / chancellery.n / chapel.n / checkroom.n / cloakroom.n / closet.n / corridor.n / den.n / foyer.n / garret.n / hallway.n / kitchen.n / kitchenette.n / larder.n / laundry.n / lift.n / elevator.n / lobby.n / loft.n / nursery.n / office.n / pantry.n / parlor.n / playroom.n / porch.n / refectory.n / repository.n / sacristy.n / salon.n / scullery.n / solarium.n / stoop.n / storeroom.n / studio.n / study.n / veranda.n / vestibule.n / ward.n / wing.n / workroom.n / workshop.n / banquet room.n / dining room.n / dressing room.n / family room.n / guest room.n / living room.n / master bedroom.n / powder room.n / rest room.n / rumpus room.n / sitting room.n / utility room.n / wine cellar.n / apartment.n / flat.n / lavatory.n / TV room.n / belfry.n / tower.n / altar.n / laundry room.n / level.n / floor.n / deck.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}, {'frame': 'Legality', 'tfidf': 1.0416315793991089, 'lexical_unit': 'illegal.a / legal.a / lawful.a / unlawful.a / wrongful.a / illicit.a / licit.a / permissible.a / wrongly.adv / wrong.a / prohibited.a / legitimate.a / fair.a / criminal.a', 'definition': "Words in this frame describe the status of an Action with respect to a Code of laws or rules. An Object may also be in violation or compliance of the Code by virtue of its existence, location or possession.    ' Illegal drug use is on the rise. '   ' Scores of illegal immigrants cross the border every year.'   ' Feeding the buffalo is prohibited according to Code 138 . '"}, {'frame': 'Contacting', 'tfidf': 1.020765781402588, 'lexical_unit': 'reach.v / contact.v / contact.n / write in.v / write.v / e-mail.v / call.v / call up.v / phone.v / phone in.v / ring.v / ring up.v / get in touch.v / telephone.v / call.n / mail.v / telex.v / fax.v / cable.v / page.v / radio.v / telegraph.v / call in.v / get through.v', 'definition': "A Communicator (whose Location may be indicated) directs a Communication to an Addressee at a particular Address.  Note that no actual successful communicative act is implied, only the successful completion of acts which would establish the communication.  (In other words, Mari can e-mail Jon without Jon ever reading it.) NB:  The Address or Location_of_communicator may be a virtual address, such as an e-mail or telephone number.'Disgruntled voters phoned Congressman Neil at his Washington residence with complaints about the recent increases in corporate welfare.''She tried to call from the payphone down the street.' "}, {'frame': 'Food', 'tfidf': 1.017914891242981, 'lexical_unit': 'fruit.n / apple.n / banana.n / vegetable.n / carrot.n / potato.n / pea.n / meat.n / beef.n / lamb.n / veal.n / poultry.n / chicken.n / turkey.n / fish.n / salmon.n / tuna.n / shellfish.n / shrimp.n / lobster.n / milk.n / cheese.n / egg.n / butter.n / nut.n / almond.n / peanut.n / pasta.n / noodle.n / herb.n / spice.n / pepper.n / basil.n / cereal.n / lettuce.n / berry.n / bread.n / roll.n / cracker.n / cake.n / pancake.n / cheesecake.n / pastry.n / croissant.n / cookie.n / biscuit.n / sweet.n / chocolate.n / sweetener.n / sugar.n / honey.n / fat.n / oil.n / vinegar.n / coffee.n / juice.n / soup.n / stew.n / sauce.n / dressing.n / vinaigrette.n / ketchup.n / mayonnaise.n / lasagne.n / food.n / tea.n / water.n / date.n / cabbage.n / MRE.n / beer.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Predicament', 'tfidf': 1.012375831604004, 'lexical_unit': 'pickle.n / scrape.n / pinch.n / predicament.n / bind.n / fix.n / jam.n / mess.n / plight.n / misfortune.n / problem.n / trouble.n', 'definition': "An Experiencer is in an undesirable Situation, whose Explanation may also be expressed.  'The insurers ended up in the bind of having to pay 15 years' taxes.'  'He was in a bit of a pickle and make no mistake!'  'What a mess we 're in now!'"}, {'frame': 'Destiny', 'tfidf': 0.9856423139572144, 'lexical_unit': 'destiny.n / fate.n / lot.n / fortune.n / kismet.n / stars.n / doom.n / the breaks.n / in the cards.adv / predestined.a / destined.a / fated.a / doomed.a', 'definition': "An State_of_affairs will come to hold with respect to a Protagonist at some future time. The Protagonist is not conceived of as having control over whether the State_of_affairs will hold: obscurely related previous actions or circumstances, or some hidden power may have already determined that it will occur.  'Exile was his fate and he triumphantly turned it into the fruit of his life.'  'One could say that it was Indonesia's destiny to initiate the decolonization process.'  'The sun's ultimate fate is as a white dwarf, a dense, cold core the size of the earth.'  'At the time it did not appear that greatness was in her stars.'  'Nine for mortal men , doomed to die .'  'This seemingly predestined meeting between a creator and the model he has pursued all his life suggests a kind of miracle . ' "}, {'frame': 'Organization', 'tfidf': 0.9564369320869446, 'lexical_unit': 'cartel.n / club.n / government.n / organization.n / association.n / league.n / intelligence.n / agency.n / union.n / brotherhood.n / delegation.n / committee.n / group.n / board.n / order.n / society.n / parliament.n / news outlet.n', 'definition': "This frame describes intentionally formed human social groups (here termed Organizations) with some definite structure and Members.  They may be relatively informal, consisting only of a group of individuals who are aware of who is and who is not a fellow member, or they may be complex and long-lasting, such as the Roman Catholic Church or the Conservative Party.   'Lucien is in the brotherhood.'"}, {'frame': 'Intoxicants', 'tfidf': 0.9417428374290466, 'lexical_unit': 'marijuana.n / heroin.n / cocaine.n / opium.n / LSD.n / mescaline.n / ecstasy.n / methamphetamine.n / cannabis.n / amphetamine.n / barbiturate.n / sedative.n / tranquillizer.n / dope.n / coke.n / upper.n / downer.n / speed.n / crack.n / freebase.n / pot.n / acid.n / hallucinogen.n / tobacco.n / nicotine.n / alcohol.n / ketamine.n / morphine.n / codeine.n / inhalant.n / weed.n / grass.n / hashish.n / peyote.n / snuff.n / drug.n / cigarette.n', 'definition': "An Intoxicant is ingested in order to achieve an altered state of consciousness. A Type or Descriptor may be indicated as well.  ' We smoked some high-grade marijuana.'  'They smoked freebase cocaine.'"}, {'frame': 'Buildings', 'tfidf': 0.908008873462677, 'lexical_unit': 'house.n / houseboat.n / church.n / tower.n / bungalow.n / cabin.n / castle.n / condominium.n / cottage.n / dacha.n / dormitory.n / dwelling.n / farmhouse.n / home.n / hospital.n / hostel.n / hotel.n / igloo.n / lodge.n / mansion.n / monastery.n / motel.n / palace.n / pension.n / pueblo.n / residence.n / shack.n / shanty.n / shelter.n / tenement.n / tent.n / villa.n / acropolis.n / arena.n / auditorium.n / barn.n / barracks.n / basilica.n / blockhouse.n / campanile.n / caravan.n / caravanserai.n / chalet.n / chateau.n / conservatory.n / garage.n / gazebo.n / greenhouse.n / hall.n / hangar.n / hippodrome.n / hovel.n / inn.n / kennel.n / kiosk.n / lighthouse.n / maisonette.n / mall.n / manor.n / manse.n / mosque.n / outbuilding.n / outhouse.n / pagoda.n / palazzo.n / pavilion.n / penthouse.n / pyramid.n / rotunda.n / shebang.n / shed.n / skyscraper.n / stable.n / stadium.n / supermarket.n / synagogue.n / tabernacle.n / tavern.n / tepee.n / terminal.n / triplex.n / warehouse.n / wigwam.n / hacienda.n / homestead.n / bunker.n / theater.n / bar.n / city hall.n / disco.n / discotheque.n / library.n / temple.n / building.n / structure.n / housing.n / fortress.n / fortification.n / citadel.n / fort.n / airport.n / pub.n / high-rise.n / quarters.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Social_interaction_evaluation', 'tfidf': 0.89644455909729, 'lexical_unit': 'inconsiderate.a / kind.a / considerate.a / mean.a / insensitive.a / thoughtless.a / thoughtful.a / cruel.a / sweet.a / rude.a / impolite.a / ill-mannered.a / churlish.a / discourteous.a / unkind.a / courteous.a / polite.a / impudent.a / respectful.a / disrespectful.a / boorish.a / compassionate.a / nice.a / friendly.a / unfriendly.a / amiable.a / sociable.a / cordial.a / genial.a / gracious.a / ungracious.a / civil.a / uncivil.a / impertinent.a / tactful.a / diplomatic.a / barbaric.a / spiteful.a / pleasant.a / horrible.a / good.a / good-natured.a / good-humored.a / warm.a / smart.a / mature.a / maturity.n / cruelty.n / thoughtfulness.n / rudeness.n / compassion.n / atrocious.a', 'definition': "In this frame an Evaluee is judged by a (usually implicit) Judge to be of a certain character based on her or his Behavior towards other human beings; a specific Affected_party may be overtly mentioned along with the Degree to which the Evaluee behaves appropriately towards others. TheBehavior alone may be mentioned with the understanding that these behaviors characterize a property of the unmentioned Evaluee. The Evaluee's Behavior may be in the context of a Topic.  ' It was nice of you to send a card. '   ' Jim was thoughtful to email the directions.'   ' For Martha to smoke in the car was extremely inconsiderate.'   ' It was cruel that he continued to call her.'   ' Mary was cruel to her friends.'   ' Samson was a thoughtless person.'   'Mrs. Robinson was always considerate of her students.'   ' The press was always kind about Madonna.'   ' Lee was nice about my car accident.'   ' I appreciated his kind offer of the car.'"}, {'frame': 'Containers', 'tfidf': 0.8749351501464844, 'lexical_unit': 'amphora.n / backpack.n / can.n / cart.n / casket.n / chest.n / envelope.n / flask.n / glass.n / handbag.n / jar.n / knapsack.n / ladle.n / locker.n / mug.n / pot [cooking].n / purse.n / reservoir.n / sack.n / satchel.n / spoon.n / suitcase.n / tin.n / wallet.n / teaspoon.n / ampule.n / ashtray.n / bag.n / barrel.n / basin.n / basket.n / beaker.n / bin.n / bottle.n / bowl.n / box.n / briefcase.n / bucket.n / canister.n / canteen.n / carafe.n / carton.n / cartridge.n / case.n / coffer.n / coffin.n / container.n / cooler.n / crate.n / crock.n / crucible.n / cruet.n / cup.n / cuspidor.n / cylinder.n / cask.n / carryall.n / censer.n / chalice.n / creamer.n / decanter.n / dish.n / dispenser.n / drum.n / duffel bag.n / flagon.n / empty.n / etui.n / goblet.n / grail.n / hamper.n / haversack.n / hopper.n / jeroboam.n / jigger.n / jug.n / keg.n / magnum.n / mailer.n / overnighter.n / pack.n / sarcophagus.n / tun.n / stein.n / spittoon.n / pannier.n / ramekin.n / reticule.n / salver.n / samovar.n / snifter.n / thermos.n / tureen.n / valise.n / cauldron.n / casserole.n / folder.n / rucksack.n / pouch.n / vial.n / vase.n / pail.n / pipette.n / tumbler.n / vat.n / vivarium.n / punch bowl.n / toilet bowl.n / wine bottle.n / chest of drawers.n / hot-water bottle.n / urn.n / tank.n / safe.n / planter.n / pot.n / drawer.n / goldfish bowl.a / tub.n', 'definition': "This frame covers entities which are prototypically conceived of and created to fulfill the function of containing--i.e. Containers  that contain objects or substances, the Contents.  This can be expressed as a complement , and includes potential or intended contents.   A Container may also have an Owner, a current Relative_location, Material from which it is constructed, a method of Construction, and a Type.  Note the connection between words in this frame and those in the Filling, Emptying, and Fullness frames. 'a bag of popcorn' 'underwear drawer' 'Chuck's suitcase' 'the suitcase in Chuck's office' 'straw basket' 'woven basket' 'Erlenmeyer flask'"}, {'frame': 'Text', 'tfidf': 0.8741917014122009, 'lexical_unit': 'tome.n / fanzine.n / epilogue.n / benediction.n / imprecation.n / eulogy.n / autobiography.n / ballad.n / biography.n / chronicle.n / comedy.n / diary.n / drama.n / elegy.n / epic.n / epigram.n / epistle.n / essay.n / exemplum.n / fable.n / festschrift.n / haiku.n / letter.n / limerick.n / lyric.n / memoir.n / monograph.n / mystery.n / novel.n / novelette.n / novella.n / ode.n / poetry.n / poem.n / rhyme.n / saga.n / song.n / sonnet.n / speech.n / tetralogy.n / thriller.n / tragedy.n / trilogy.n / whodunit.n / manual.n / handbook.n / paperback.n / hardback.n / grimoire.n / spellbook.n / lay.n / book.n / magazine.n / account.n / sermon.n / tract.n / screenplay.n / script.n / article.n / obituary.n / volume.n / mag.n / edition.n / treatise.n / report.n / bulletin.n / tractate.n / hagiography.n / journal.n / periodical.n / editorial.n / meditation.n / booklet.n / fiction.n / writings.n / missive.n / newspaper.n / list.n / manuscript.n / literature.n / history.n / brochure.n / material.n / pamphlet.n / issue.n / paper [newspaper].n / paper [article].n / epic.a / publication.n / life.n / record.n / textbook.n', 'definition': "A Text is an entity that contains linguistic, symbolic information on a Topic, created by an Author at the Time_of_creation.  It may be a physical entity that is made of a certain Material etc.  It may be constructed for an Honoree.  'It was a good book.'"}, {'frame': 'Deserving', 'tfidf': 0.8703077435493469, 'lexical_unit': 'merit.v / warrant.v / warrant.n / grounds.n / worth.a / deserve.v / call.v / justify.v', 'definition': 'The existence of a State_of_affairs is sufficient reason for taking an Action . The agent who is justified in taking the suggested Action is not part of the immediate scene, however.  \'The underwater sequences warrant the price of the admission alone.\'  \' \'Desperate situations call  for desperate measures ," said Mr Eames grandly.\''}, {'frame': 'Artifact', 'tfidf': 0.8575411438941956, 'lexical_unit': 'wheel.n / technology.n / biotechnology.n / artifact.n / control panel.n / board.n / board [game].n / spatula.n / whisk.n / tub.n / timer.n / oven.n / phone.n', 'definition': "An Artifact is deliberately made or modified by an intelligent entity to be put to a certain kind of Use.  Various properties of the Artifact may be specified, such as its Creator, Time_of_creation, Name, Type, and the Material of which it is composed.  The Artifact may or may not be a physical entity.  'There are reports that Kim Il Sung asked China to share its nuclear weapons technology.'"}];
+    </script>
+    <script type="text/javascript" src="word_cloud_prediction.js"></script>
+    <script type="text/javascript" src="../mturk.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 150px;
+            padding-right: 150px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel_1 canvas, #word_cloud_panel_2 canvas {
+            display: none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+        .word_cloud_box {
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 3px rgba(70, 70, 70, 1) solid;
+            padding: 20px;
+            margin-bottom: 20px; 
+        }
+        .word_cloud_box:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+        }
+        .selected_story_block {
+            border-color: #7BDFF2;
+            border-width: 3px;
+            box-shadow: 0 0 10px 10px rgba(123, 223, 242, 0.3);
+            background-color: rgba(239, 247, 246, 0.8);
+        }
+        .indicator {
+            /*font-family: Courier;
+            font-weight: bold;*/
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px black solid;
+            border-radius: 20px;
+        }
+
+        .selected_story_block .indicator {
+            background-color: rgb(123, 223, 242);
+        }
+
+        #story_content {
+            max-height: 600px;
+        }
+        .not_qualified {
+            color: red;
+            font-weight: 900;
+        }
+        .qualified {
+            color: black;
+            font-weight: 900;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Which word-cloud best represents the story snippet?</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that a computer automatically 
+            generated to characterize a story snippet. 
+            These words can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            A <strong>word-cloud representation with nouns</strong> is a group of nouns a computer automatically 
+            generated to characterize a story snippet. 
+            These nouns can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            In this HIT, you will see a story snippet. <span class="highlight">Please read the it carefully.</span>
+            The story is long so we have a 3 minutes time lock for submission.
+            <br/><br/>
+
+            At the bottom of the HIT, you will see two sets of word-cloud representations, 
+            where each consists of nouns, verbs, and adjectives. 
+            <span class="highlight">Please select the word-cloud representation that best represents the story.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following story snippet carefully!</h3>
+            You will need to select the word-cloud representation that best represents this story. 
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story</h4>
+                        <h5>(An excerpt from the book <span style="font-weight:bold;">"Captain Carbon Carbon Dating"</span>.)</h5>
+                        <span class="not_qualified" id="read_lock">Please read all the story.</span>
+                        <br/><br/>
+                        <pre id="story_content">
+No, I'm not.
+That's very strange to me, what you just said."
+Cap whined like a child whose toy had been taken.
+"So what am I supposed to do?
+I got nothin!"
+"Captain, you're starting on Monday.
+Once you complete the mission, your pay will be restored.
+Your first check should be in your account in about a week."
+"A week?
+Damn it Jones!
+I got a date tonight."
+"Well, perhaps you should consider doing something inexpensive.
+I gotta go.
+I'll talk to you later.
+And Captain; remember...Monday 8am."
+It took some doing, but Cap managed to convince his date to alter their plans for the night.
+At first, he had started to panic, but there was nothing else he could do on such short notice.
+Luckily, she seemed to be open-minded and as far as he could tell, it didn't appear to scare her off.
+It was around 8 o'clock at night when Cap pulled into the parking lot of the 24/7 Taco Bell.
+He parked at the end in the farthest spot away from the building in front of the path that led to the drive-thru.
+The only other car in the back row-two empty spaces between them-a silver Nissan Altima.
+Cap got out and put his coat on as he looked around.
+A burly, dim witted looking man in a minivan stared at him as rolled by in the drive-thru lane.
+'This is fucking embarrassing' Cap thought.
+He looked at his phone as the dim light glowed up at his face.
+He considered cancelling, until the door of the Nissan opened and he saw his date walking around the back of the car.
+"Hey" she said walking towards him.
+"Hey" he replied, taking four seconds longer to say it, even though it was the exact same word, with the same amount of letters.
+He stood there frozen.
+"Julius, right?"
+He mumbled under his breath, "It's Captain Carbon."
+"What?"
+"Uh, nothing.
+You're Ashley?"
+"I am."
+Her coal black heels clicked against the pavement as she came over and joined him at the back of the Tesla.
+If he hadn't physically seen her get out of the car, he'd have put money on her riding a motorcycle.
+Her baby blue eyes stood out amongst her young face, which while sharp, had full cheeks like two cherry tomatoes plumped beneath her eyes.
+The minimal amount of make-up she had looked professionally done, and her jet black curly hair crunched in place to the middle of her neck.
+Strangely, she had the type of face that was hard to imagine without a smile, even when she had a solemn look on it.
+Tight black jeans with a low-cut grey t-shirt and a small leather jacket.
+She looked like she was carved out of obsidian by a former gang member who had risen to become a world famous sculptor-a sculptor, who had turned his life around, filling the void in his life with art, but remnants of past violent tendencies forever stained his soul.
+So yea, she was pretty fucking sexy.
+With one hand tucked in her pocket, she blew a bubble with her pink gum and purposefully popped it-as if to say: 'I'm in charge, even with something as minute as bubble gum.
+It pops, only when I decide and allow it to fucking pop.'
+Having not yet taken her eyes off of him, she speared Cap with a devilish smile, and looked like she either wanted to kick his ass, or jump on him, wrap her legs around his waist and make-out.
+Cap was conflicted on whether he should prepare to be stabbed and have his wallet stolen, or rent a hotel room for the sole purpose of avoiding damage to his own bedroom from the animistic sex.
+"Hey, sorry again about the uh..."
+he waived his hand towards the building.
+"It's ok" she said politely.
+She had a sweet voice.
+It didn't fit her.
+"I love Taco Bell."
+"Right?
+It's great."
+Cap, still trying to shake his embarrassment, felt slightly better by her genuine acceptance for Taco Bell.
+Met by a bothersome line when they first walked in, by the time they got their food and sat down, there were only two other people inside.
+They sat at the opposite end against the window with a perfect view of their cars.
+"So, I thought you were like some health nut?
+You're ok with eating this stuff?"
+Zero timidity in her voice, every question she asked demanded an answer.
+Though her words were lightly coated in a friendly and bubbly glaze, Cap wasn't sure whether he was on a date, or in audience of a commanding officer.
+He quickly became addicted to the sound of her voice.
+"I protect the environment.
+To do that, I need food."
+He glanced up from his tray at her innocent face.
+'That's the only thing that's innocent about her' he thought.
+"Well yea, duh.
+But I mean, you aren't a vegan or a vegetarian or anything?
+I know a lot of environmentalists that are in to all that."
+He glanced at her then down at his tray.
+"I know you're all about the environment, more than anyone I've ever seen, I'm just curious.
+Like Taco Bell.
+Is Taco Bell good or bad for the environment?
+And if they're bad, you probably wouldn't eat here right?"
+Cap took a bite of his taco and just looked at her.
+"Let me ask you this" she said.
+"You obviously eat meat.
+Is that like, allowed?"
+Cap swallowed, tipped the paper cup of his drink without a lid and took a big sip, still staring at her.
+She took a bite of her quesadilla and looked at him.
+"Well!?"
+He took a deep breath and leaned forward.
+"Ashley, do you know how old the earth is?"
+She took another bite.
+"It's about 4.5 billion years old."
+"Ok..."
+"A long time, yes?
+Throughout that time, there have been all kinds of things crawling around.
+Some went extinct, some changed, some new ones came along.
+All kinds of shit was goin on.
+Millions of different animals, bugs, birds, fish, etc.
+Then, somehow, these fucking things called Humans came along, started actin' like they own everything.
+Walking around, swinging their dicks around, beaming their pussies at everything, just taking over motherfuckers."
+Ashley, brows raised and slightly taken back, was still listening.
+She was focused, and was actually finding Cap comical.
+"Anyway," Cap said, "Billions, Millions, thousands of years go by.
+You know who has-whose always had-but still has the biggest dick and continues to slap motherfuckers senseless with it?"
+"Humans."
+"No!
+Mother 'fucking' Earth."
+"Wait, mother earth has the dick?"
+"Look Ashley," he leaned forward again.
+She joined him as their faces were inches apart hovering over the middle of the table.
+"You asked me how I can still eat meat and be Mother Earth's Jules Winnfield?
+Because whether I'm eating a cow, some kind of genetically engineered leaf from a lab, or a juicy, tender, succulent leg of a bronto-fucking-saurus, me and Mother Earth are still gonna kick ass.
+We're gonna be walking through the woods, and see two people come along, one swinging their dick, one waving their pussy around, and we're gonna grab that dick, grab that pussy, bash em together, and throw em in the fucking ocean!"
+Cap sat back in the chair and took another sip of his drink.
+Ashley patted her mouth with a napkin and leaned forward on the table over her crossed arms.
+With a come hither motion from her finger, the rest of her red glossed nails clicking together in her palm, she smirked at him.
+As if under some spell, Cap floated back the table.
+She leaned in and brushed her delicate plump lips against his ear as she whispered to him with the softness of cotton.
+"I want you to fuck the shit out of me."
+The moment the sharp words hit his ear, Cap, like a reflex, squeezed the paper cup in his hand.
+The rest of his drink burst up out of the cup and splashed on both of their faces.
+They both sat back quickly, Cap with a look of horror on his face, his boner nearly flipping the table up and across the floor.
+'This is it,' he thought, 'I just ruined the date.'
+As they started to wipe the cold ice tea off their faces, an enormous weight lifted off his shoulders.
+Ashley burst out in laughter, as Cap quickly joined her.
+Simultaneously, they hopped up out of their chairs, threw away their trash, and walked outside together.
+It was late in the dead parking lot-a faded street light glowed down on the space between their cars.
+Cap, with his mind and heart racing, got in his car and shut the door.
+He paused as he noticed he hadn't said anything to her, but instead shot straight into his car.
+"Ugh.
+Idiot."
+Before he could jump back out, Ashley had already planted herself in his passenger seat and shut the door.
+"Oh, hello" he said.
+She flashed that devilish smile at him once again.
+She glanced down at his pants, at a rod shaped outline pressed against the denim.
+A nervous Cap shrugged as he positioned his arm over his pants, in an attempt to conceal it.
+Ashley slid her arm under his and started rubbing.
+The black Tesla began to rock back and forth in the quiet mid night of an empty Taco Bell parking lot as one of the employees sitting at a table inside ate his lunch and watched casually through the window.
+It was the only time Cap had ever doubted his decision to purchase Gaea, the two seated minx, as they went at it like wild animals trapped in a cage.
+With the warm, naked body of an attractive girl pressed against him, Cap had an unwelcomed and unfamiliar thought.
+'This was...too easy' he thought.
+He observed the situation he was in and realized that it wasn't new.
+He had been here before.
+'This wasn't a date' he admitted.
+He also realized that he had very few real dates recently and no actual relationships in more than a year.
+Once again, something that he had been actively looking for eluded him: a serious, meaningful relationship with a normal human being.
+He looked at the girl on top of him.
+'Is she the one?' he thought in a weak attempt to suppress his incoming depression.
+In his head, he tried to evoke arguments for her, trying to be open to the possibility.
+Anything from, 'she's got nice ears', to 'she's not the worst dresser in the world'-but he knew it was all bullshit.
+'I'm doing it again.
+I had the intention of getting to know someone, in an attempt to form some kind of relationship, and now, just mere hours later, my dick is about to be inside of her.
+Is it my fault or hers?' he pondered.
+'Why did she give it up so fast?
+Why do they all?
+Am I just...too sexy?
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+
+        <h3>Select the word-cloud representation that best represents the above story.</h3>
+        Below, there are two word-cloud representations. Read them carefully and select the one that best represent the above story.
+        <br/><br/>
+
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_1" value="1">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 1</h3>
+                The following three word clouds jointly represent the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_2" value="2">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 2</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_2">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_2">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_2">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_2-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="53">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_20">
+            <input name="note" type="hidden" value="LGBM, BERT">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+    </div>
+
+</body>
+</html>
