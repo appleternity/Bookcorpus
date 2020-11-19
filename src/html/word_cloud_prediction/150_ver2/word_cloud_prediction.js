@@ -202,7 +202,7 @@ $(window).ready(function() {
 
     var width = $("#noun").width()-5;
     var word_cloud_size = [500, 500];
-    var padding = 9;
+    var padding = 11;
 
     // First word cloud representation
     cloud_nouns = d3.layout.cloud()
@@ -346,7 +346,7 @@ $(window).ready(function() {
             .enter().append("text")
               .style("font-size", function(d) { return d.size + "px"; })
               .style("font-family", this.font())
-              .style("font-weight", 900)
+              .style("font-weight", "bold")
               // .style('fill', function(d,i){return color(i);})
               .style('fill', function(d,i){return d.color;})
               .attr("text-anchor", "middle")
