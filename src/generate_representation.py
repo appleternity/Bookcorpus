@@ -11,6 +11,7 @@ import pandas as pd
 import re
 from pymongo import MongoClient
 import random
+from nltk import word_tokenize
 
 root_dir = "/home/appleternity/workspace/lab/Crowd/bookcorpus"
 
@@ -439,11 +440,11 @@ def generate_html(block=20):
     with open(os.path.join("html", "word_cloud", str(block), "answer_info.json"), 'w', encoding='utf-8') as outfile:
         json.dump(answer_info, outfile, indent=4)
 
-def generate_frame_representation_for_word_cloud(sample, frame_dict):
-    frame = sample["y_frame"]
+def generate_frame_representation_for_word_cloud(frame, frame_dict):
+    #frame = sample["y_frame"]
     sorted_index = np.argsort(frame, axis=1)[0, ::-1]
     
-    best_ten_index = sorted_index[:30]
+    best_ten_index = sorted_index[:50]
     best_ten_frame_tfidf = [frame[0][b] for b in best_ten_index]
     best_ten_frame = [frame_dict[int(b)] for b in best_ten_index]
 
@@ -454,6 +455,29 @@ def generate_frame_representation_for_word_cloud(sample, frame_dict):
             "frame": f["name"],
             "tfidf": t,
             "lexical_unit": " / ".join(f["lexUnit"].keys()),
+            "definition": f["definition"],
+        })
+    return frame_info_list
+
+#stemmer = SnowballStemmer("english")
+def generate_frame_representation_for_word_cloud_ver2(frame, frame_dict, story):
+    tokens = set(word_tokenize(story))
+   
+    sorted_index = np.argsort(frame, axis=1)[0, ::-1]
+    
+    best_ten_index = sorted_index[:50]
+    best_ten_frame_tfidf = [frame[0][b] for b in best_ten_index]
+    best_ten_frame = [frame_dict[int(b)] for b in best_ten_index]
+
+    # build frame info
+    frame_info_list = []
+    for i, f, t in zip(best_ten_index, best_ten_frame, best_ten_frame_tfidf):
+        lexical_units = [lu for lu in f["lexUnit"].keys() if lu not in tokens]
+        np.random.shuffle(lexical_units)
+        frame_info_list.append({
+            "frame": f["name"],
+            "tfidf": t,
+            "lexical_unit": " / ".join(lexical_units[:3]),
             "definition": f["definition"],
         })
     return frame_info_list
@@ -473,7 +497,7 @@ def generate_html_wordcloud(block=20):
 
     answer_info = []
     for count, sample in enumerate(data[:100]):
-        frame_list = generate_frame_representation_for_word_cloud(sample, frame_dict)
+        frame_list = generate_frame_representation_for_word_cloud(sample["y_frame"], frame_dict)
         template = ori_template.replace("{{frame_list}}", str(frame_list))
         template = template.replace("{{setting}}", "block_{}".format(20))
         template = template.replace("{{id}}", str(sample["index"]))
@@ -507,6 +531,112 @@ def generate_html_wordcloud(block=20):
     with open(os.path.join("html", "word_cloud", str(block), "answer_info.json"), 'w', encoding='utf-8') as outfile:
         json.dump(answer_info, outfile, indent=4)
 
+def generate_html_wordcloud_prediction(block=20):
+    # load template
+    with open("word_cloud_prediction_template.html", 'r', encoding='utf-8') as infile:
+        ori_template = infile.read()
+    
+    # load data
+    with open(f"../data/human_evaluation_data_{block}_filled_2.json", 'r', encoding='utf-8') as infile:
+        data = json.load(infile)
+
+    model = load_tfidf_model(block=block)
+    frame_info_dict = get_frame_dictionary()
+    frame_dict = {v:frame_info_dict[k] for k, v in model.vocabulary.items()}
+
+    answer_info = []
+    for count, sample in enumerate(data[:100]):
+        frame_list_LGBM = generate_frame_representation_for_word_cloud([sample["LGBM"]], frame_dict)
+        frame_list_BERT = generate_frame_representation_for_word_cloud([sample["BERT"]], frame_dict)
+
+        frame_list = [
+            {"frame":frame_list_LGBM, "note":"LGBM"},
+            {"frame":frame_list_BERT, "note":"BERT"},
+        ]
+        np.random.shuffle(frame_list)
+
+        template = ori_template.replace("{{story}}", str(sample["y_text"]))
+        book_title = " ".join([w.capitalize() for w in sample["book"][:-4].split("__")[1].split("-")])
+        template = template.replace("{{book_title}}", str(book_title))
+
+        template = template.replace("{{frame_list_1}}", str(frame_list[0]["frame"]))
+        template = template.replace("{{frame_list_2}}", str(frame_list[1]["frame"]))
+        template = template.replace("{{setting}}", "block_{}".format(block))
+        template = template.replace("{{id}}", str(sample["index"]))
+        template = template.replace("{{note}}", ", ".join([f["note"] for f in frame_list]))
+
+        # save
+        with open(os.path.join("html", "word_cloud_prediction",  str(block), "{:0>4}.html".format(count)), 'w', encoding='utf-8') as outfile:
+            outfile.write(template)
+
+        answer_info.append({
+            "file": f"{count:0>4}.html",
+            "option_1":frame_list[0]["note"],
+            "option_2":frame_list[1]["note"],
+        })
+    
+    with open(os.path.join("html", "word_cloud_prediction", str(block), "answer_info.json"), 'w', encoding='utf-8') as outfile:
+        json.dump(answer_info, outfile, indent=4)
+
+def generate_html_wordcloud_prediction_ver3(block=20):
+    # load template
+    with open("word_cloud_prediction_template_three.html", 'r', encoding='utf-8') as infile:
+        ori_template = infile.read()
+    
+    # load data
+    with open(f"../data/human_evaluation_data_{block}_filled_2.json", 'r', encoding='utf-8') as infile:
+        data = json.load(infile)
+
+    model = load_tfidf_model(block=block)
+    frame_info_dict = get_frame_dictionary()
+    frame_dict = {v:frame_info_dict[k] for k, v in model.vocabulary.items()}
+
+    answer_info = []
+    for count, sample in enumerate(data[:100]):
+        # original version
+        """
+        frame_list_LGBM = generate_frame_representation_for_word_cloud([sample["LGBM"]], frame_dict)
+        frame_list_BERT = generate_frame_representation_for_word_cloud([sample["BERT"]], frame_dict)
+        frame_list_Gold = generate_frame_representation_for_word_cloud(sample["y_frame"], frame_dict)
+        """
+        
+        # new version
+        frame_list_LGBM = generate_frame_representation_for_word_cloud_ver2([sample["LGBM"]], frame_dict, sample["y_text"])
+        frame_list_BERT = generate_frame_representation_for_word_cloud_ver2([sample["BERT"]], frame_dict, sample["y_text"])
+        frame_list_Gold = generate_frame_representation_for_word_cloud_ver2(sample["y_frame"], frame_dict, sample["y_text"])
+
+        frame_list = [
+            {"frame":frame_list_LGBM, "note":"LGBM"},
+            {"frame":frame_list_BERT, "note":"BERT"},
+            {"frame":frame_list_Gold, "note":"Gold"},
+        ]
+        np.random.shuffle(frame_list)
+
+        template = ori_template.replace("{{story}}", str(sample["y_text"]))
+        book_title = " ".join([w.capitalize() for w in sample["book"][:-4].split("__")[1].split("-")])
+        template = template.replace("{{book_title}}", str(book_title))
+
+        template = template.replace("{{frame_list_1}}", str(frame_list[0]["frame"]))
+        template = template.replace("{{frame_list_2}}", str(frame_list[1]["frame"]))
+        template = template.replace("{{frame_list_3}}", str(frame_list[2]["frame"]))
+        template = template.replace("{{setting}}", "block_{}".format(block))
+        template = template.replace("{{id}}", str(sample["index"]))
+        template = template.replace("{{note}}", ", ".join([f["note"] for f in frame_list]))
+
+        # save
+        with open(os.path.join("html", "word_cloud_prediction",  str(block)+"_ver2", "{:0>4}.html".format(count)), 'w', encoding='utf-8') as outfile:
+            outfile.write(template)
+
+        answer_info.append({
+            "file": f"{count:0>4}.html",
+            "option_1":frame_list[0]["note"],
+            "option_2":frame_list[1]["note"],
+            "option_3":frame_list[2]["note"],
+        })
+    
+    with open(os.path.join("html", "word_cloud_prediction", str(block)+"_ver2", "answer_info.json"), 'w', encoding='utf-8') as outfile:
+        json.dump(answer_info, outfile, indent=4)
+
 def get_story():
     with open("frame_data.json", 'r', encoding='utf-8') as infile:
         data = json.load(infile)
@@ -533,7 +663,9 @@ def main():
     #generate_sample()
     #generate_html(200)
     #generate_html(20)
-    generate_html_wordcloud(20)
+    #generate_html_wordcloud(20)
+    #generate_html_wordcloud_prediction(150)
+    generate_html_wordcloud_prediction_ver3(150)
 
 if __name__ == "__main__":
     main()

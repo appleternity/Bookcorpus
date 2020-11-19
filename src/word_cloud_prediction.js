@@ -23,18 +23,21 @@ class TimeLock {
         }
         this.submit_btn.text("Submit ("+this.time+")");
     }
+
+
 }
 
 var testing_words;
 var cloud_nouns, cloud_verbs, cloud_adjs;
 var cloud_nouns_2, cloud_verbs_2, cloud_adjs_2;
+var all_read = false;
 
 $(window).ready(function() {
     /****************************************
        Button
     */
     console.log("Hello");
-    var time_lock = new TimeLock(30, "#submit_button");
+    var time_lock = new TimeLock(180, "#submit_button");
 
     $(document).on("click", ".word_cloud_box", function(evt) {
         
@@ -55,14 +58,20 @@ $(window).ready(function() {
         //$(".word_cloud_box .indicator").text("(   )");
         //$("#word_cloud_panel_"+value+" .indicator").text("( V )");
 
-        $(".word_cloud_box .indicator").html("(&nbsp;)");
-        $("#word_cloud_panel_"+value+" .indicator").html("(V)");
+        //$(".word_cloud_box .indicator").html("(&nbsp;)");
+        //$("#word_cloud_panel_"+value+" .indicator").html("(V)");
         //
         $("#story_answer").val(value);
     });
 
     $(document).on("click", "#submit_button", function(evt) {
         $("#warning").text("");
+
+        // read all lock
+        if (!all_read) {
+            $("#warning").text("Please read all the content.");
+            return;
+        }
 
         // time lock
         if(time_lock.is_locked) {
@@ -82,7 +91,17 @@ $(window).ready(function() {
         $("#mturk_form").submit();
     });
 
-
+    // read to the bottom check
+    var check_scroll_bottom = function() {
+        console.log($("#story_content").scrollTop(), $("#story_content").height(), $("#story_content")[0].scrollHeight);
+        if ($("#story_content").scrollTop() + $("#story_content").height() >= $("#story_content")[0].scrollHeight) {
+            all_read = true;
+            $("#read_lock").removeClass("not_qualified");
+            $("#read_lock").addClass("qualified");
+            $("#story_content").unbind("scroll");
+        }
+    };
+    $("#story_content").on("scroll", check_scroll_bottom);
 
     /****************************************
        Draw wordcloud
@@ -112,22 +131,29 @@ $(window).ready(function() {
             return 1.0*(max_tfidf-tfidf)/(max_tfidf-min_tfidf)*(max_val-min_val)+min_val;
         }
 
+        var size_min_val = 14;
+        var size_max_val = 32;
+        function size_interpolation(tfidf) {
+            return 1.0*(tfidf-min_tfidf)/(max_tfidf-min_tfidf)*(size_max_val-size_min_val)+size_min_val;
+        }
+
         var start = 30;
         var offset = 25;
-        function interpolation(i) {
+        function rank_interpolation(i) {
             return start + i * offset;
         }
 
         var words = [];
         for (var i = 0; i < 10; i++) {
             var lexical_unit_list = frame_list[i].lexical_unit.split(" / ");
-            // var c = interpolation(frame_list[i].tfidf);
-            var c = interpolation(i);
+            var c = interpolation(frame_list[i].tfidf);
+            // var c = rank_interpolation(i);
             console.log("c", frame_list[i].tfidf, c);
             for (var j = 0; j < lexical_unit_list.length; j++) {
                 words.push({
                     text: lexical_unit_list[j].split(".")[0],
-                    size: frame_list[i].tfidf*5,
+                    //size: frame_list[i].tfidf*10,
+                    size: size_interpolation(frame_list[i].tfidf),
                     color: rgbToHex(c, c, c),
                     pos: lexical_unit_list[j].split(".")[1],
                 });
@@ -153,7 +179,7 @@ $(window).ready(function() {
         return [nouns, verbs, adjs];
     }
 
-    var nouns, verbs, adjs, nouns_2, verbs_2, adjs_2;
+    var nouns, verbs, adjs, nouns_2, verbs_2, adjs_2, nouns_3, verbs_3, adjs_3;
     temp = organize_words(frame_list_1);
     nouns = temp[0];
     verbs = temp[1];
@@ -164,18 +190,25 @@ $(window).ready(function() {
     verbs_2 = temp[1];
     adjs_2 = temp[2];
 
+    temp = organize_words(frame_list_3);
+    nouns_3 = temp[0];
+    verbs_3 = temp[1];
+    adjs_3 = temp[2];
+
     console.log("Fisrt! Nouns = ", nouns.length, "Verbs = ", verbs.length, "Adjs = ", adjs.length);
     console.log("Second! Nouns = ", nouns_2.length, "Verbs = ", verbs_2.length, "Adjs = ", adjs_2.length);
+    console.log("Third! Nouns = ", nouns_3.length, "Verbs = ", verbs_3.length, "Adjs = ", adjs_3.length);
 
     var width = $("#noun").width()-5;
     var word_cloud_size = [500, 500];
+    var padding = 7;
 
     // First word cloud representation
     cloud_nouns = d3.layout.cloud()
         .random(new Math.seedrandom('noun'))
         .size(word_cloud_size)
         .words(nouns)
-        .padding(5)
+        .padding(padding)
         .rotate(0)
         .font("sans-serif")
         .fontSize(function(d) { return d.size; })
@@ -188,7 +221,7 @@ $(window).ready(function() {
         .random(new Math.seedrandom('verb'))
         .size(word_cloud_size)
         .words(verbs)
-        .padding(5)
+        .padding(padding)
         .rotate(0)
         .font("sans-serif")
         .fontSize(function(d) { return d.size; })
@@ -201,7 +234,7 @@ $(window).ready(function() {
         .random(new Math.seedrandom('adj'))
         .size(word_cloud_size)
         .words(adjs)
-        .padding(5)
+        .padding(padding)
         .rotate(0)
         .font("sans-serif")
         .fontSize(function(d) { return d.size; })
@@ -215,7 +248,7 @@ $(window).ready(function() {
         .random(new Math.seedrandom('noun_2'))
         .size(word_cloud_size)
         .words(nouns_2)
-        .padding(5)
+        .padding(padding)
         .rotate(0)
         .font("sans-serif")
         .fontSize(function(d) { return d.size; })
@@ -228,7 +261,7 @@ $(window).ready(function() {
         .random(new Math.seedrandom('verb_2'))
         .size(word_cloud_size)
         .words(verbs_2)
-        .padding(5)
+        .padding(padding)
         .rotate(0)
         .font("sans-serif")
         .fontSize(function(d) { return d.size; })
@@ -241,7 +274,7 @@ $(window).ready(function() {
         .random(new Math.seedrandom('adj_2'))
         .size(word_cloud_size)
         .words(adjs_2)
-        .padding(5)
+        .padding(padding)
         .rotate(0)
         .font("sans-serif")
         .fontSize(function(d) { return d.size; })
@@ -249,7 +282,48 @@ $(window).ready(function() {
         .on("end", draw)
         .note("adj_2");
     cloud_adjs_2.start();
-    
+
+    // Third word cloud representation
+    cloud_nouns_3 = d3.layout.cloud()
+        .random(new Math.seedrandom('noun_3'))
+        .size(word_cloud_size)
+        .words(nouns_3)
+        .padding(padding)
+        .rotate(0)
+        .font("sans-serif")
+        .fontSize(function(d) { return d.size; })
+        .container(d3.select("#noun_3"))
+        .on("end", draw)
+        .note("noun_3");
+    cloud_nouns_3.start();
+
+    cloud_verbs_3 = d3.layout.cloud()
+        .random(new Math.seedrandom('verb_3'))
+        .size(word_cloud_size)
+        .words(verbs_3)
+        .padding(padding)
+        .rotate(0)
+        .font("sans-serif")
+        .fontSize(function(d) { return d.size; })
+        .container(d3.select("#verb_3"))
+        .on("end", draw)
+        .note("verb_3");
+    cloud_verbs_3.start();
+
+    cloud_adjs_3 = d3.layout.cloud()
+        .random(new Math.seedrandom('adj_3'))
+        .size(word_cloud_size)
+        .words(adjs_3)
+        .padding(padding)
+        .rotate(0)
+        .font("sans-serif")
+        .fontSize(function(d) { return d.size; })
+        .container(d3.select("#adj_3"))
+        .on("end", draw)
+        .note("adj_3");
+    cloud_adjs_3.start();
+
+
     /**********************************************/
     function draw(words) {
         console.log(this.container());

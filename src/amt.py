@@ -21,10 +21,13 @@ def create_hit(client, url, reward, worker_id_list=None, num_assignment=5):
         LifetimeInSeconds=60*60*60, # 60 days
         AssignmentDurationInSeconds=60*60, # 60 min
         Reward=str(reward),
-        Title='Human Understanding toward Frame Representation.',
+        Title='Human Evaluation Task toward a Conceptual Representation of Stories.',
         Keywords='story, semantic frame, story generation, human evaluation, generation',
         Description="""
-            In this task, you will need to first read a frame representation that is abstracted from a story and try to find out its original story.
+            A word-cloud representation is a group of words that a computer automatically generated to characterize a story snippet. These words can either be in the story snippet or be somewhat relevant.
+            In this HIT, you will see a story snippet and three word-cloud representation.
+            Please find out the one that can better represent the story.
+            Notice that this HIT will last more than 3 minutes as the story is long.
         """.strip().replace("  ", ""),
         Question=setting,
         QualificationRequirements=[
@@ -73,14 +76,22 @@ def create_hit(client, url, reward, worker_id_list=None, num_assignment=5):
     return response
 
 def create_hit_batch(client):
-    for i in range(0, 10):
-        print("https://appleternity.github.io/Bookcorpus/src/html/20/{:0>4}.html".format(i))
+    info = []
+    for i in range(10, 50):
+        url = f"https://appleternity.github.io/Bookcorpus/src/html/word_cloud/20/{i:0>4}.html"
+        print(url)
 
-        create_hit(
+        res = create_hit(
             client,
-            url="https://appleternity.github.io/Bookcorpus/src/html/20/{:0>4}.html".format(i),
-            reward="0.42",
+            url=url,
+            reward="0.38",
+            num_assignment=9,
         )
+        info.append({
+            "url": url,
+            "hit_id": res["HIT"]["HITId"]
+        })
+    return info
 
 def get_result(client, hit_id):
     result = []
@@ -115,22 +126,81 @@ def get_hit_and_approve(client):
         json.dump(result, infile, indent=4)
 
 def frame_prediction_eval():
-    #client = get_client()
-    client = get_client(mode="production")
+    key_file="/home/appleternity/workspace/lab/kenneth_rootkey.csv"
+    #client = get_client(key_file=key_file)
+    client = get_client(mode="production", key_file=key_file)
     
-    hit_id_list = list_hit_id(client, 10)
-    result = get_result_batch(client, hit_id_list)
+    ################################
+    # create hit
+    #info = create_hit_batch(client)
+    #with open("wordcloud_info_production_batch_2.json", 'w', encoding='utf-8') as outfile:
+    #    json.dump(info, outfile, indent=4)
 
-    with open("frame_human_eval.json", 'w', encoding='utf-8') as outfile:
-        json.dump(result, outfile, indent=4)
-
-    #create_hit_batch(client)
-
-    #create_hit(
+    #url = f"https://appleternity.github.io/Bookcorpus/src/html/word_cloud/20/0000.html",
+    #print(url)
+    #res = create_hit(
     #    client,
-    #    url="https://appleternity.github.io/Bookcorpus/src/html/20/0000.html",
+    #    url=f"https://appleternity.github.io/Bookcorpus/src/html/word_cloud/20/0000.html",
     #    reward="0.42",
     #)
+    #print(res)
+
+    ################################
+    # get result
+    with open("wordcloud_info_production_batch_2.json", 'r', encoding='utf-8') as infile:
+        hit_id_list = [d["hit_id"] for d in json.load(infile)]
+    print(hit_id_list)
+
+    result = get_result_batch(client, hit_id_list)
+
+    with open("wordcloud_human_eval_batch_2.json", 'w', encoding='utf-8') as outfile:
+        json.dump(result, outfile, indent=4)
+
+def frame_prediction_next_block():
+    key_file="/home/appleternity/workspace/lab/kenneth_rootkey.csv"
+    #client = get_client(key_file=key_file)
+    client = get_client(mode="production", key_file=key_file)
+    
+    ################################
+    # create hit
+    #info = []
+    #for i in range(96, 100):
+    #    url = f"https://appleternity.github.io/Bookcorpus/src/html/word_cloud_prediction/150_new/{i:0>4}.html"
+    #    print(url)
+
+    #    res = create_hit(
+    #        client,
+    #        url=url,
+    #        reward="0.99", # 0.27 for 20, 0.99 for 150
+    #        num_assignment=9,
+    #    )
+    #    info.append({
+    #        "url": url,
+    #        "hit_id": res["HIT"]["HITId"]
+    #    })
+
+    #with open("wordcloud_prediction_info_NAACL_150_new_batch_1.json", 'w', encoding='utf-8') as outfile:
+    #    json.dump(info, outfile, indent=4)
+
+    #url = f"https://appleternity.github.io/Bookcorpus/src/html/word_cloud_prediction/20/0000.html"
+    #print(url)
+    #res = create_hit(
+    #    client,
+    #    url=f"https://appleternity.github.io/Bookcorpus/src/html/word_cloud/20/0000.html",
+    #    reward="0.28",
+    #)
+    #print(res)
+
+    ################################
+    # get result
+    with open("wordcloud_prediction_info_NAACL_150_new_batch_1.json", 'r', encoding='utf-8') as infile:
+        hit_id_list = [d["hit_id"] for d in json.load(infile)]
+    print(hit_id_list)
+
+    result = get_result_batch(client, hit_id_list)
+
+    with open("wordcloud_prediction_human_eval_NAACL_150_new_batch_1.json", 'w', encoding='utf-8') as outfile:
+        json.dump(result, outfile, indent=4)
 
 def lela_annotation():
     client = get_client(mode="production")
@@ -156,8 +226,11 @@ def lela_annotation():
 
 def main():
 
-    #client = get_client(mode="production")
-    client = get_client()
+    #client = get_client(
+    #    mode="production",
+    #    key_file="/home/appleternity/workspace/lab/kenneth_rootkey.csv",
+    #)
+    client = get_client(key_file="/home/appleternity/workspace/lab/kenneth_rootkey.csv")
     quit()
     
     #res = create_hit(client, "https://appleternity.github.io/CrowdWriting/html/story_feedback.html", 0.5)
@@ -167,4 +240,5 @@ def main():
 if __name__ == "__main__":
     #main()
     #lela_annotation()
-    frame_prediction_eval()
+    #frame_prediction_eval()
+    frame_prediction_next_block()
