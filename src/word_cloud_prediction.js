@@ -201,7 +201,7 @@ $(window).ready(function() {
 
     var width = $("#noun").width()-5;
     var word_cloud_size = [500, 500];
-    var padding = 9;
+    var padding = 7;
 
     // First word cloud representation
     cloud_nouns = d3.layout.cloud()
