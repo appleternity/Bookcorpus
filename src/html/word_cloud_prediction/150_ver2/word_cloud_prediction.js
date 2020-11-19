@@ -117,7 +117,7 @@ $(window).ready(function() {
 
     var organize_words = function(frame_list) {
         var tfidf_list = [];
-        for (var i = 0; i < 10; i++) {
+        for (var i = 0; i < num_frames; i++) {
             tfidf_list.push(frame_list[i].tfidf);
         }
 
@@ -125,11 +125,11 @@ $(window).ready(function() {
         var max_tfidf = Math.max(...tfidf_list);
         console.log(min_tfidf, max_tfidf);
 
-        var min_val = 30;
-        var max_val = 200;
+        var min_val = 10;
+        var max_val = 130;
 
         function interpolation(tfidf) {
-            return 1.0*(max_tfidf-tfidf)/(max_tfidf-min_tfidf)*(max_val-min_val)+min_val;
+            return parseInt(1.0*(max_tfidf-tfidf)/(max_tfidf-min_tfidf)*(max_val-min_val)+min_val);
         }
 
         var size_min_val = 17;
@@ -149,7 +149,7 @@ $(window).ready(function() {
             var lexical_unit_list = frame_list[i].lexical_unit.split(" / ");
             var c = interpolation(frame_list[i].tfidf);
             // var c = rank_interpolation(i);
-            console.log("c", frame_list[i].tfidf, c);
+            console.log("c", frame_list[i].tfidf, c, rgbToHex(c, c, c), size_interpolation(frame_list[i].tfidf));
             for (var j = 0; j < lexical_unit_list.length; j++) {
                 words.push({
                     text: lexical_unit_list[j].split(".")[0],
