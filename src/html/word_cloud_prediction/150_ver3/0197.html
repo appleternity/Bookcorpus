@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="text/javascript">
+        var frame_list_1 = [{'frame': 'Ineffability', 'tfidf': 3.366194273114202, 'lexical_unit': 'magicalness.n / ineffability.n / je ne sais quoi.n', 'definition': "A Stimulus inspires a feeling of awe and interest in a (generally implicit or generic) Experiencer due to desirable qualities which are difficult to explain.  Alternatively, the Attribute of the Stimulus may be described instead.  'There is a certain je-ne-sais-quoi about that city .'"}, {'frame': 'Animals', 'tfidf': 1.7844716565353684, 'lexical_unit': 'sheep.n / animal.n / cat.n', 'definition': "The LUs in this frame refer to biological entities other than human beings and plants, which are labeled by the FE Animal.  ''  'My husband and I adopted a really sweet dog last year.'  'The cows that live on the farm down the road are always mooing loudly.'"}, {'frame': 'Buildings', 'tfidf': 1.7448017792798, 'lexical_unit': 'shanty.n / tower.n / skyscraper.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Supply', 'tfidf': 1.7439095546025751, 'lexical_unit': 'provision.n / issue.v / provision.v', 'definition': "A Supplier gives a Theme to a Recipient to fulfill a need or purpose (Imposed_purpose) of the Recipient.   'Habituating the ground nesting chimp groups is done by provisioning them with sugar cane. CNI INI'  'I have equipped my leech troopers with tiny subspace displacement thingummies. INI'   ' She sat down on her bed, carefully folding her clothing and packing it into the small carryall Starfleet had provided her for the journey.'"}, {'frame': 'Gizmo', 'tfidf': 1.632051740181033, 'lexical_unit': 'system.n / core.n / player.n', 'definition': "This frame contains general words denoting equipment where the Use or purpose is not specified by the lexeme but (typically) by a separate expression. The words are described with respect to the Use for which the item is used or its typical User.  'coffee machine' 'dentist's equipment'"}, {'frame': 'Appellations', 'tfidf': 1.5405257760635045, 'lexical_unit': 'bishop.n / general.n / emperor.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Presence', 'tfidf': 1.343306416038029, 'lexical_unit': 'absence.n / present.a / presence.n', 'definition': "An Entity exists at a particular Location, at a particular Time, as observed by an implicit observer. A Depictive and/or Duration phrase is often found.  This frame differs from Existence in that the Location is profiled as a ground where an observer is conceived of as confirming the Entity's existence.  'Liquid water was present on the surface of Mars billions of years ago.'  'Urate was present in varying concentrations in the bathing solution only.'  'No one was present. DNI'  'Your presence is appreciated. DNI'  In some cases, the Location may be recoverable from phrases that primarily express peripheral information:  'Was the senator present for the committee vote?' 'Was the senator present for the committee vote?'"}, {'frame': 'Sending', 'tfidf': 1.310823994994461, 'lexical_unit': 'forward.v / dispatch.v / route.v', 'definition': "A Sender plans the Path (along with Source and Goal) of a Theme and places it in circumstances such that it travels along this Path under the power of some entity other than the Sender.  This frame also has a Recipient distinct from the Goal, as both can be present: 'I sent the manuscript to England to Bill.' 'I forwarded the grain to a dealer in Frankfurt.'  This frame contains verbs that participate in the ditransitive construction, with a recipient as the direct object, as in the following: 'I sent Bill the manuscript.' Certain Verbs in this Frame focus on the initial sending act, while others do not.  For example, I sent it rapidly can either mean the act of sending was initiated quickly or that it moved quickly. However, the in following sentence: I exported/dispatched it rapidly, meaning that the act was begun quickly, both types of verbs are included."}, {'frame': 'Organization', 'tfidf': 1.3059558130314148, 'lexical_unit': 'parliament.n / group.n / cartel.n', 'definition': "This frame describes intentionally formed human social groups (here termed Organizations) with some definite structure and Members.  They may be relatively informal, consisting only of a group of individuals who are aware of who is and who is not a fellow member, or they may be complex and long-lasting, such as the Roman Catholic Church or the Conservative Party.   'Lucien is in the brotherhood.'"}, {'frame': 'Vehicle', 'tfidf': 1.2321137469858703, 'lexical_unit': 'sedan.n / vehicle.n / lorry.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'Food', 'tfidf': 1.2222445454505586, 'lexical_unit': 'meat.n / herb.n / roll.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Political_locales', 'tfidf': 1.2208531564120617, 'lexical_unit': 'kingdom.n / country.n / national.a', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'Capability', 'tfidf': 1.1923919986864273, 'lexical_unit': 'able.a / power.n / incapacity.n', 'definition': "An Entity meets the pre-conditions for participating in an Event.  A Degree modifier may be included to indicate by how much the Entity exceeds or falls short of the minimum requirements.  'Conductor software gives us the hands-on capability to provide updates immediately'  'The GOP is afraid that it might not be capable of keeping the seat vacated by Dunn.'  'NASA is unable to communicate with Mars rover.'  'He can fly a kite.'"}, {'frame': 'Locale_by_use', 'tfidf': 1.070807576911372, 'lexical_unit': 'cemetery.n / work.n / hedge.n', 'definition': "Geography as defined by its use.   'You must land in the next airfield, as this one is currently having difficulties.' 'The new sports complex was the tallest building on campus, oddly enough.' 'Cities of the Northeast tend to be dingier.'"}, {'frame': 'Team', 'tfidf': 1.0573603876463626, 'lexical_unit': 'crew.n / fire fighter.n / team.n', 'definition': 'A Team is a group with shared goals and works toward them together in a coordinated fashion.'}, {'frame': 'Importance', 'tfidf': 0.998299406698178, 'lexical_unit': 'landmark.n / seriously.adv / main.a', 'definition': "A Factor affects the outcome of an Undertaking, which  can be a goal-oriented activity or the maintenance of a desirable state, the work in a Field, or something portrayed as affecting an Interested_party. A Reason may be given for the importance of the Factor. The Degree of importance may also be specified.  'Temperature is the most critical factor in successful storage.' ' Timing will be critical.' 'Heathcliff is more important to me than myself . ' ' 1992 was of great importance to the business community. ' "}, {'frame': 'Dynamism', 'tfidf': 0.9590563545573257, 'lexical_unit': 'intense.a / dynamism.n / laziness.n', 'definition': 'A physical Exerter, Action, or Force exerts energy at a level specified by the target. This frame covers both individual-level/static uses ("an INTENSE person") as well as stage-level/dynamic uses ("an INTENSE look"), although the individual-level meaning seems more basic.   \'Although an energetic and able warrior, Charlemagne tended to direct battles rather than fight in person.\' \'She dumped a mug on the bedside table with such vigor that steaming coffee spashed out.\' \'Swing the racket with dynamic force.\'   \'I felt particularly sluggish at work that day.\' Exerter, Action, and Force belong to a Core set.  \'\' This frame also covers several productive metaphor cases. In the first one, movement or change caused by a social entity is conveyed as energy exerted by a physical entity. \'Social\' here encompasses entities that are economic, political, technological, historical, cultural, and intimate: \'The private sector is so much more dynamic.\' \'Singh had been under intense political pressure.\' \'Economies are still sluggish.\' Relatedly, the influential effect of an psychological entity is described in terms of energy exertion by a physical entity. \'Psychological\' includes the intellectual, emotional, and creative: \'Sinead\'s emotional intensity permeates every nuance of every lyric.\' \'He finds the Poet Laureate\'s theory about Shakespeare to be more energetic than persuasive.\' Both metaphors appear to involve a third metaphor, which is the anthropomorphization of processes (see examples directly above) or inhuman entities (e.g. in nature): \'The lazy creak of sails\' \'The energetic waves\' \'A broad, lethargic river\'  Further, there is a metonymy wherein energy exerted by people carrying out an activity characterizes instead a central object or other component of the activity: \'Lucker plays lazy games.\' \'She thought the lazy days in France would never end.\'  \'\' Compare to: Level_of_force_exertion. '}, {'frame': 'Electricity', 'tfidf': 0.9396987309644887, 'lexical_unit': 'electrical.a / electrical power.n / photoelectric.a', 'definition': "Lexical units in this frame refer to Electricity, in particular as a form of energy harnessed for particular uses (such as powering machines).  The Source of the Electricity may also be expressed, or incorporated in the meaning of the LUs.  'A compound to generate wind electricity was built on the other side of those mountains.'  'China's hydroelectric dam is being built primarily for flood control and energy production.'"}, {'frame': 'Level_of_force_exertion', 'tfidf': 0.9340558883950605, 'lexical_unit': 'mighty.a / might.n / power.n', 'definition': 'An Exerter, Action, or Force is capable of exerting or does exert a physical force at a level specified by the target. That physical force may cause deformation or breakage of, or simply motion in the receiving entity. The receiving entity is conceptually present (even if remotely), but is usually not lexically explicit. This frame covers both individual-level/static uses ("a STRONG person") as well as stage-level/dynamic uses ("a STRONG push"). However, the durative, individual-level meaning appears more frequently in the data and seems more basic.   \'Eugenie loved the sea and was a strong swimmer.\'  \'Spartacus dealt the Roman soldier a mighty blow.\'  \'A powerful force tore off the tree\'s branches.\'  Exerter, Action, and Force belong to a Core set. \'\'  There are several productive metaphors covered by this frame. The first and most common is one in which social influence or control is conceptualized as the physical exertion of force. The social influence/control is more specifically a propensity to cause change in social realms such as the economic, political, militaristic, cultural, or intimate: \'There were theoretical limits to the power of the king.\' \'Voters in the South have a strong incentive to keep such Democrats in office.\'  Another similar metaphor is one in which psychological influence or control is understood as the physical exertion of force. The psychological influence/control includes the emotional as well: \'Poetic words in a text can be given more emotive power by using melisma.\' \'He was a forceful speaker.\'  A third metaphor involves the amount of an entity construed as the physical force exertion of said entity. Depending on context, amount could be volume, etc. (“STRONGEST critics”; “MIGHTY uproar”).  \'\'  Two related physical force dynamic frames are Level_of_force_resistance and Dynamism.  This frame is distinguished from the Level_of_force_resistance frame in that it describes the level of force exertion instead of the level of resistance, and also in that there are three categories of Core FE available to the target (i.e Exerter, Action, or Force), whereas in Level_of_force_resistance there are only two Core FEs (i.e. Resisting_entity and Opposing_force). Of the latter frame\'s FEs, Opposing_force specifies the thing that the main entity resists to a level desginated by the target. Its parallel in Level_of_force_exertion is implied but backgrounded to the extent that it rarely appears as explicit lexical material; thus there is no corresponding Core FE.   This frame differs from Dynamism with regard to individual-level cases; targets here express the FE\'s capability. In contrast, Dynamism targets express the FE\'s tendency. For example, "a STRONG person" is generally construed as a person who is capable of strength, while "an ENERGETIC person" (energetic.a from the Dynamism frame) is construed as a person who tends to be energetic.   However, there is overlap between the two frames in stage-level cases - "a STRONG push" and "an ENERGETIC push" seem rather comparable. '}, {'frame': 'Information', 'tfidf': 0.9141983081831998, 'lexical_unit': 'data.n / straight dope.n / dope.n', 'definition': "A Cognizer knows or comes to know some piece of Information about a Topic.  In this frame, many LUs encode a specific Means_of_Gathering and/or Source, but these may also be expressed separately.  'Also, the big problem is that our intel about WMD's has many times been wrong.'   ' Anyone got the straight dope on this? '  'Get the inside scoop on sprint football player Austin Wilson. CNI'  'I know him pretty well and I have a lot of dirt on him so I can always hold him over a barrel.'  'What's the info about the new scanner chip? INI'"}, {'frame': 'Kinship', 'tfidf': 0.8885894142325377, 'lexical_unit': 'kin.n / stepmother.n / mother-in-law.n', 'definition': "This frame contains words that denote Kinship relations. In annotating the directional uses of these words, we use the standard terms from anthropology, Ego and Alter.  'Matilde is Gilberto's cousin once removed' Compare to: Appellations."}, {'frame': 'Inclusion', 'tfidf': 0.8800804740281069, 'lexical_unit': 'exclude.v / integrated.a / have.v', 'definition': "A Total has a Part, either  as a member of an aggregate or as  a constituent part of a simple entity.  'His collection included two El Grecos.'"}, {'frame': 'Locale', 'tfidf': 0.8763997903107039, 'lexical_unit': 'site.n / zone.n / place.n', 'definition': "This frame contains general locale words, and is mostly a place-holder in the hierarchy. Words in this frame designate relatively stable bounded ares of the world which have permanent Relative_locations with respect to other locales, and thus are useful as permanent landmarks.  It is inherited by Locale_by_use, which has to do with places that are named according to their intended use, or some habitual use, such as factory.n, dance floor.n, village.n, field.n.  It is also inherited by Locale_by_event, which covers places that are names according to some event which took place there, such as concerts, battles, and meteor impacts.  'This is a pleasant area.'"}, {'frame': 'Inclination', 'tfidf': 0.8649234525916585, 'lexical_unit': 'inclined.a / tendency.n / prone.a', 'definition': 'Due to internal forces/properties, an Entity is inclined towards a particular Behavior, which may be to perform an action or to maintain a state. The underlying force is seen as being beyond the Entity\'s control. The Degree to which the Entity is inclined towards the Behavior may also be specified as well as the Basis for the inclination.   \'My grandmother has criminal tendencies. \' \' "Smithers has always had a deplorable tendency to exhibitionism. \' \'Chuck was not very inclined to believe me. \' \' Smithers has a genetic predisposition for neural tube defects. \''}, {'frame': 'Documents', 'tfidf': 0.860968843976188, 'lexical_unit': 'passport.n / summons.n / confirmation.n', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Being_obligated', 'tfidf': 0.8607550794340807, 'lexical_unit': 'contract.n / responsibility.n / duty.n', 'definition': "Under some Condition, usually left implicit, a Responsible_party is required to perform some Duty.  If they do not perform the Duty, there may be some undesirable Consequence, which may or may not be stated overtly.  'It is my duty to fight any attack on the Brotherhood .' 'This country has the responsibility to support its citizens' right to express themselves.' 'I am obligated to pay or they'll double the fine.'  NB:  Contrast this frame with Likelihood and Preconditions frames, which involve many of the same lemmas.  Many LUs which might be expected to be found here (should, must, have to) are actually in the Required_event frame. Our analysis is that these LUs do not evoke an obligation directly, although they are frequently used in contexts that are consistent with an understanding of obligation and are pragmatically strengthened to (defeasibly) imply an obligation. "}, {'frame': 'Purpose', 'tfidf': 0.8223730767829753, 'lexical_unit': 'aim.n / objective.n / object.n', 'definition': "An Agent wants to achieve a Goal,  or an object.  A Means  has been created or is used to allow the creator or a user to achieve a  Goal. The Goal is a state of the world that does not currently hold but which the Agent wants to realize and is planning and/or working towards. In some cases, it is difficult to decide whether a noun phrase metonymically stands for the Agent or the Means (e.g. The goal [of this paper/seminar/project] is to determine ...). We mark these phrases as Agent on the first layer but also annotate them as Means on a second annotation layer.  In some cases a Restrictor on the Goal state of affairs can be given prominence as a separate constituent. Talking about Goals frequently includes the mention of a Domain to which the Agent's Goal is relevant.  'The modest American goal of a threefold increase in capacity recognises this fact .' 'The object of the tutorial is to help a student concentrate on his writing skills ' ' The prime goal of the programme was to help develop processes of scientific thinking in children .' 'My goal in this book is to introduce the reader to Web programming applications.' 'The president's economic goal for the country was to overcome the recession.'"}, {'frame': 'Cotheme', 'tfidf': 0.8043274928235695, 'lexical_unit': "track.v / hound.v / dog (someone's) steps.idio", 'definition': "This frame contains words that necessarily indicate the motion of two distinct objects. The Theme is typically animate and is expressed the same way a Self-mover is expressed in the Self-motion frame--i.e. as the subject of a target verb. The Cotheme may or may not be animate and is typically expressed as a direct object or an oblique. Source, Path, Goal, and the other frame elements common to motion words also regularly occur with the words in this frame.  '' 'She accompanied him in the ambulance to Hollywood Memorial Hospital.'  'Police persue teenage joyrider across three counties.'  'My pursuit of academic superiority shows that I was still striving to be the person my parents wanted me to be.'"}, {'frame': 'Architectural_part', 'tfidf': 0.7940001299411206, 'lexical_unit': 'flight.n / foundation.n / mantel.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  'We need new counters for the kitchen'  'The storm ripped off the bathroom's roof'  "}, {'frame': 'Surviving', 'tfidf': 0.7919629544054636, 'lexical_unit': 'live [through].v / survive.v / ride out.v', 'definition': "A Survivor manages to avoid being negatively affected, despite encountering a Dangerous_situation. The negative effect is most often death, destruction, or a metaphorical construal of one of these.  'Wilderness Survival: Could You Survive the Wild?'  'More than 400 of the 600 residents rode out the hurricane in Gulfport's 11-story high-rise beachfront facility.'"}, {'frame': 'Hostile_encounter', 'tfidf': 0.7858923377785267, 'lexical_unit': 'war.n / showdown.n / duel.n', 'definition': "This frame consists of words that describe a hostile encounter between opposing forces (Side_1 and Side_2, collectively conceptualizable as Sides) over a disputed Issue and/or in order to reach a specific  Purpose. '' 'He still wants to fight Mike Tyson in about 8 months.'  'Dennis Andries's European cruiserweight title clash against Akim Tafer of France in Beausoleil last February has been voted as the EBU's fight of the year.'"}, {'frame': 'Building_subparts', 'tfidf': 0.7836163800986362, 'lexical_unit': 'ward.n / antechamber.n / stoop.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}, {'frame': 'Containers', 'tfidf': 0.7769532963975343, 'lexical_unit': 'cart.n / bowl.n / cup.n', 'definition': "This frame covers entities which are prototypically conceived of and created to fulfill the function of containing--i.e. Containers  that contain objects or substances, the Contents.  This can be expressed as a complement , and includes potential or intended contents.   A Container may also have an Owner, a current Relative_location, Material from which it is constructed, a method of Construction, and a Type.  Note the connection between words in this frame and those in the Filling, Emptying, and Fullness frames. 'a bag of popcorn' 'underwear drawer' 'Chuck's suitcase' 'the suitcase in Chuck's office' 'straw basket' 'woven basket' 'Erlenmeyer flask'"}, {'frame': 'Weapon', 'tfidf': 0.7751664118299533, 'lexical_unit': 'missile.n / strategic nuclear weapon.n / firearm.n', 'definition': "A Weapon is an artifact created specifically to cause harm or damage.  In some cases, a Use, Material of construction, Part or Type may be more narrowly specified.  'Did you, or did you not, fire this gun with intent to harm my client?'  'Cyra tried to swing her sword to parry, but it was to heavy.'  'I investigated a specialist precious metal firearms manufacturer.'  'My neighbor, a member of the NRA since birth, has got an AK-47 fully automatic assault rifle.'  'Let 's just say that he 's the kind of guy who likes guns with hair triggers.' "}, {'frame': 'Suitability', 'tfidf': 0.7724739343201729, 'lexical_unit': 'fitting.a / suitable.a / fit.v', 'definition': "This Frame is concerned with evaluating an Evaluee as being suitable for a Purpose or a User, presupposing some choice that is being made about which Evaluee to use for the Purpose or User.  An LU like suitable.a thus implies that, given a particular Purpose or User, the Evaluee is one which could be or ought to be chosen.  The Evaluee may be deemed suitable to a greater or lesser Degree. This frame has some similarity to the compatibility frame where two Items are evaluated with respect to their compatibility with each other against some background.  '(1) We need to build more houses suitable for local residents.' '(2) These chips are not verysuitable for parallel processing. ' '(3) We are not sure about the Cathedral's suitability for Philharmonic concerts.'"}, {'frame': 'Sensation', 'tfidf': 0.7671275902065983, 'lexical_unit': 'taste.n / sight.n / flavour.n', 'definition': "This frame contains nouns that refer to sensations in different modalities. The FE Source is used for the phenomenon that gives rise to the sensation in question. The FE Percept is used for the characteristic quality of the sensation. In cases of veridical perception these are not typically distinguished from one another; we use the FE Percept as the default in these cases. With some nouns in this frame it is possible to express the being who experiences the sensation, or the part of the body of such a being. We mark such expressions with the FEs Perceiver_passive and Body_part, respectively. (The -passive part of this label serves to distinguish this FE from the Perceiver-Agentive FE used in other frames.)  '' 'The huge sand dunes, perpetually changing, make for a surreal sight.'  'Endill heard the noise of glass smashing, plaster crumbling and furniture being broken.'  'The feel of his strong fingers enclosing her small palm came as something of a shock to her system.'"}, {'frame': 'Ground_up', 'tfidf': 0.7636324274618599, 'lexical_unit': 'crushed.a / grated.a / granulated.a', 'definition': "In this frame a Patient is in a state of having been broken into smaller pieces.  ' We enjoy eating ground beef . '"}, {'frame': 'Roadways', 'tfidf': 0.734921114899063, 'lexical_unit': 'road.n / lane.n / bridge.n', 'definition': "This frame involves stable Roadways which connect two stable Endpoints, the Source and the Goal.  Being physical objects, these Roadways may have Names and Characteristics; they are also made of a Material.  They also cover ground, so they may have a Path or a Relative_location that the travel occurs in.  ' We crossed the brick road.' ' I prefer to travel on highway I-80.'  'This is the only highway between Lodi and Sonoma.' ' She dreaded turning onto the busy street.'"}, {'frame': 'Conditional_occurrence', 'tfidf': 0.7268677375397252, 'lexical_unit': 'what if.scon / if.scon / assuming.scon', 'definition': "A Consequence is presented as occurring if the Profiled_possibility occurs.  See Conditional_scenario for further information.    'If you take too long , the train will leave without you .'"}, {'frame': 'Aggregate', 'tfidf': 0.7239578009113632, 'lexical_unit': 'group.n / huddle.n / party.n', 'definition': "This frame contains nouns denoting Aggregates of Individuals.  The Aggregates may be described by an Aggregate_property.   'An army of postal workers descended on my office.'  "}, {'frame': 'Color_qualities', 'tfidf': 0.721139122424798, 'lexical_unit': 'warm.a / dull.a / pale.a', 'definition': "This frame contains words that describe specific aspects of a Color. The Degree to which the Color being discussed deviates from the prototype may be marked. The description may also target a specific Aspect of color.  'I love really pale yellows.'"}, {'frame': 'Size', 'tfidf': 0.7134596823076403, 'lexical_unit': 'miniscule.a / voluminous.a / infinitesimal.a', 'definition': 'The size of an Entity is assessed in terms of the Degree by which it deviates from the norm. The size generally refers to the amount of three-dimensional space that is occupied by the Entity, not primarily to its weight, density, or length, which is why it is peculiar to refer to a bullet as "large", even if it is heavy, unless it actually has larger dimensions than usual, or to a rope as "big", even if it is long, unless its other, cross-sectional dimensions are also significant.  \'I own a very small home.\' \'Where is my little notebook?\' \'That dog is huge!\' \'\'  There are an enormous number of productive metaphors that involve this frame as the source domain; two of the most frequent metaphors come from the target domains of quantity/amount and importance.    \'He gave me a small sum of money.\' \'The novel was a substantial achievement.\' \'\'  Subcases of the quantity/amount and importance metaphors are also prominent. These involve cases describing the extent of an action\'s, event\'s, or person\'s effect ("his influence on her work was massive"), as well as those related to events ("big party"), similarity ("gigantic difference"), communication ("giant misunderstanding"), and emotions ("great joy", "little joys").  Other productive metaphors include those dealing with groups (in terms of their number of members, net worth, importance to the economy, i.e. "giant electronics company") and those describing sound volume ("in a tiny voice", "the enormous thundering of her heart").  \'\'  The target domain of fame, by contrast, occurs in a non-productive metaphor, found especially with big.a and huge.a. Maturity and age also occur in non-productive metaphors ("big boy", "little baby").'}, {'frame': 'System', 'tfidf': 0.712590577696822, 'lexical_unit': 'system.n / cascade.n / complex.n', 'definition': "A Complex with a particular Function is formed out of Component_entities. The function may be expressed by reference to a Salient_entity involved in the working of the Complex.  'The body's immune system can be mobilized against cancer. '  'The sewer system carries wastewater from homes and businesses to the Water Pollution Control Plant for treatment. '  "}, {'frame': 'Timespan', 'tfidf': 0.7111312122121699, 'lexical_unit': 'life.n / time.n / day.n', 'definition': "The words in this frame describe a period of time, as opposed to a point in time.  'The best time of year for planting tends to be fairly regular.' "}, {'frame': 'Leadership', 'tfidf': 0.7100494893535431, 'lexical_unit': 'head.n / khedive.n / monarch.n', 'definition': "These are words referring to control by a Leader over a particular entity  or group (the Governed) or an Activity. The frame contains both nouns referring to a title or position (e.g. director, king, president), and verbs describing the action of leadership (e.g. rule, reign). With verbs, it is possible to mention the Role played by the Leader (often a name of a leading position, e.g., king)  'Sebek em hat was a Leader of Priests. ca. 1780 BC' 'In 1789 Fletcher Christian led the mutiny on HMS Bounty' 'Louis XIV ruled over his people as king for the longest period of any European monarch.' Compare to: Appellations. "}, {'frame': 'People_by_vocation', 'tfidf': 0.7085049552820796, 'lexical_unit': 'actor.n / attorney.n / salesman.n', 'definition': "This frame contains  words for Individuals as viewed in terms of their vocation.   The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'Humphrey Bogart was a great actor.'"}, {'frame': 'Eclipse', 'tfidf': 0.7016835369054155, 'lexical_unit': 'veil.v / shrouded.a / concealed.a', 'definition': "An Obstruction blocks an Eclipsed entity partially or completely from view. The positions of the Obstruction and the Eclipsed entity are often reported relative to a Vantage_point.  'A small green bulb concealed behind the panel flashed on momentarily .'"}, {'frame': 'Killing', 'tfidf': 0.7009318297157251, 'lexical_unit': 'suffocation.n / eliminate.v / lethal.a', 'definition': "A Killer or Cause causes the death of the Victim. 'John drowned Martha.'"}, {'frame': 'Sole_instance', 'tfidf': 0.7000635282434591, 'lexical_unit': 'sole.a / one and only.a / lone.a', 'definition': "An Item is the only instance of its Type. 'Steven is the sole survivor in his family.'"}, {'frame': 'Project', 'tfidf': 0.696533477928503, 'lexical_unit': 'scheme.n / project.n / plan.n', 'definition': "An Agent, which may be an individual or group, is engaged in a complex Activity.  A larger Goal which motivates the Agent carrying out the Activity may be indicated. Instead of a particular  Activity, a Field of endeavor may be indicated. The project may also have a Name and the Time when as well as the Place where it is ongoing may be specified.  'The New Car Assessment Program (NCAP) is dedicated to helping the public buy a safer car.'  'The school will continue with its project to end all violence related to racism, xenophobia and intolerance.'"}];
+        var frame_list_2 = [{'frame': 'Ineffability', 'tfidf': 2.9864938259124756, 'lexical_unit': 'ineffable.a / magic.a / ineffability.n', 'definition': "A Stimulus inspires a feeling of awe and interest in a (generally implicit or generic) Experiencer due to desirable qualities which are difficult to explain.  Alternatively, the Attribute of the Stimulus may be described instead.  'There is a certain je-ne-sais-quoi about that city .'"}, {'frame': 'Vehicle', 'tfidf': 1.9832454919815063, 'lexical_unit': 'bicycle.n / boat.n / truck.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'Capability', 'tfidf': 1.9364713430404663, 'lexical_unit': 'powerless.a / capability.n / incapacity.n', 'definition': "An Entity meets the pre-conditions for participating in an Event.  A Degree modifier may be included to indicate by how much the Entity exceeds or falls short of the minimum requirements.  'Conductor software gives us the hands-on capability to provide updates immediately'  'The GOP is afraid that it might not be capable of keeping the seat vacated by Dunn.'  'NASA is unable to communicate with Mars rover.'  'He can fly a kite.'"}, {'frame': 'Ground_up', 'tfidf': 1.9095350503921509, 'lexical_unit': 'shredded.a / crushed.a / powdered.a', 'definition': "In this frame a Patient is in a state of having been broken into smaller pieces.  ' We enjoy eating ground beef . '"}, {'frame': 'Expressing_publicly', 'tfidf': 1.7788511514663696, 'lexical_unit': 'air.v / express.v / expression.n', 'definition': "A Communicator publically communicates some difficult-to-express Content which they (or a social group of which they are a member) have had for some time. The Content may not have been previously communicated due to inability or social stricture.  In cases where the individuals addressed are a smaller group than the public at large, a separate Addressee may be expressed.  'Those grievances can be aired during Board meetings. CNI'  'Saddam voiced his joy when he was told Spain's new government had left the US-led military coalition in Iraq.'   "}, {'frame': 'Electricity', 'tfidf': 1.7587536573410034, 'lexical_unit': 'electric.a / hydroelectricity.n / electrical power.n', 'definition': "Lexical units in this frame refer to Electricity, in particular as a form of energy harnessed for particular uses (such as powering machines).  The Source of the Electricity may also be expressed, or incorporated in the meaning of the LUs.  'A compound to generate wind electricity was built on the other side of those mountains.'  'China's hydroelectric dam is being built primarily for flood control and energy production.'"}, {'frame': 'Political_locales', 'tfidf': 1.7460238933563232, 'lexical_unit': 'country.n / internationally.adv / viscountcy.n', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'Hostile_encounter', 'tfidf': 1.6710437536239624, 'lexical_unit': 'battle.v / fighting.n / duel.n', 'definition': "This frame consists of words that describe a hostile encounter between opposing forces (Side_1 and Side_2, collectively conceptualizable as Sides) over a disputed Issue and/or in order to reach a specific  Purpose. '' 'He still wants to fight Mike Tyson in about 8 months.'  'Dennis Andries's European cruiserweight title clash against Akim Tafer of France in Beausoleil last February has been voted as the EBU's fight of the year.'"}, {'frame': 'Firefighting', 'tfidf': 1.5514789819717407, 'lexical_unit': 'fight.v / gain ground.idio / control.v', 'definition': 'This frame characterizes the situation or state of affairs in which someone acts to prevent a Fire_disaster from occurring, accelerating, or affecting any area not identified as a Controlled_area. The named Burn_area, targeted by the Fire_disaster, is more salient than "fire" itself and is often used for reference instead. The organizational methods for Firefighting are of utmost importance in this frame.'}, {'frame': 'Activity_start', 'tfidf': 1.5320364236831665, 'lexical_unit': 'commence.v / open.v / beginner.n', 'definition': "An Agent initiates the beginning of an ongoing Activity in which he will be continuously involved. '' 'At the same time, city-states began to grow in influence on the southern Greek mainland.'  'Naturally, I started crying to get out of work.'  "}, {'frame': 'Process_start', 'tfidf': 1.5305455923080444, 'lexical_unit': 'nascent.a / start.v / incipient.a', 'definition': "An Event begins at a certain Time and Place. Reason may also be indicated.  NB:  Refer to Event frame.  'The project began.'"}, {'frame': 'Communication_response', 'tfidf': 1.5150887966156006, 'lexical_unit': 'response.n / retort.v / comeback.n', 'definition': 'This frame deals with a Speaker communicating a reply or response, a Message, to some prior communication or action, the Trigger.  \'\' \'The landlord has not yet replied in writing to the tenant objecting the proposed alterations.DNI\'  \'"No, I do not agree with you," responded another officer to the CEO. DNI\''}, {'frame': 'Level_of_force_exertion', 'tfidf': 1.5038319826126099, 'lexical_unit': 'powerless.a / powerful.a / force.n', 'definition': 'An Exerter, Action, or Force is capable of exerting or does exert a physical force at a level specified by the target. That physical force may cause deformation or breakage of, or simply motion in the receiving entity. The receiving entity is conceptually present (even if remotely), but is usually not lexically explicit. This frame covers both individual-level/static uses ("a STRONG person") as well as stage-level/dynamic uses ("a STRONG push"). However, the durative, individual-level meaning appears more frequently in the data and seems more basic.   \'Eugenie loved the sea and was a strong swimmer.\'  \'Spartacus dealt the Roman soldier a mighty blow.\'  \'A powerful force tore off the tree\'s branches.\'  Exerter, Action, and Force belong to a Core set. \'\'  There are several productive metaphors covered by this frame. The first and most common is one in which social influence or control is conceptualized as the physical exertion of force. The social influence/control is more specifically a propensity to cause change in social realms such as the economic, political, militaristic, cultural, or intimate: \'There were theoretical limits to the power of the king.\' \'Voters in the South have a strong incentive to keep such Democrats in office.\'  Another similar metaphor is one in which psychological influence or control is understood as the physical exertion of force. The psychological influence/control includes the emotional as well: \'Poetic words in a text can be given more emotive power by using melisma.\' \'He was a forceful speaker.\'  A third metaphor involves the amount of an entity construed as the physical force exertion of said entity. Depending on context, amount could be volume, etc. (“STRONGEST critics”; “MIGHTY uproar”).  \'\'  Two related physical force dynamic frames are Level_of_force_resistance and Dynamism.  This frame is distinguished from the Level_of_force_resistance frame in that it describes the level of force exertion instead of the level of resistance, and also in that there are three categories of Core FE available to the target (i.e Exerter, Action, or Force), whereas in Level_of_force_resistance there are only two Core FEs (i.e. Resisting_entity and Opposing_force). Of the latter frame\'s FEs, Opposing_force specifies the thing that the main entity resists to a level desginated by the target. Its parallel in Level_of_force_exertion is implied but backgrounded to the extent that it rarely appears as explicit lexical material; thus there is no corresponding Core FE.   This frame differs from Dynamism with regard to individual-level cases; targets here express the FE\'s capability. In contrast, Dynamism targets express the FE\'s tendency. For example, "a STRONG person" is generally construed as a person who is capable of strength, while "an ENERGETIC person" (energetic.a from the Dynamism frame) is construed as a person who tends to be energetic.   However, there is overlap between the two frames in stage-level cases - "a STRONG push" and "an ENERGETIC push" seem rather comparable. '}, {'frame': 'Protecting', 'tfidf': 1.4871408939361572, 'lexical_unit': 'secure.v / protect.v / insulate.v', 'definition': "Some Protection prevents a Danger from harming an Asset.  'The rubber on her sneakers protected her from the mud.'  'The coral reefs shielded the coastline from the worst of the waves.'  'A growing number of sustainable farmers are preserving agricultural variety and protecting biodiversity by raising ?heritage? or ?heirloom? varieties.'  'The man responsible for this entire ordeal cowardly shielded himself from justice with the little boy's struggling body.'"}, {'frame': 'Architectural_part', 'tfidf': 1.4856104850769043, 'lexical_unit': 'flight.n / rail.n / mantel.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  'We need new counters for the kitchen'  'The storm ripped off the bathroom's roof'  "}, {'frame': 'Documents', 'tfidf': 1.4527876377105713, 'lexical_unit': 'diploma.n / agreement.n / business card.n', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Death', 'tfidf': 1.4397366046905518, 'lexical_unit': 'croak.v / demise.n / suffocation.n', 'definition': "The words in this frame describe the death of a Protagonist.  A Cause of death may also be expressed obliquely. '' 'The machine was not switched off, but Mr. Lavelle died of natural causes, police said.'  'To avenge the death of a son is not hasty work, if he is to be honored.'"}, {'frame': 'Dead_or_alive', 'tfidf': 1.4382950067520142, 'lexical_unit': 'lifeless.a / life.n / living.a', 'definition': "A Protagonist is in the dynamic, maintained state of being alive or has exited this state.  'Frank's dead body was apalling.'"}, {'frame': 'Natural_features', 'tfidf': 1.413630485534668, 'lexical_unit': 'mount.n / strait.n / coombe.n', 'definition': "The Locale is a geographical location as defined by shape.  This frame includes natural geographic features, including land/ice forms and bodies of water.  ' We climbed up the rock cliff.' "}, {'frame': 'Sending', 'tfidf': 1.3980220556259155, 'lexical_unit': 'barge.v / send.v / shipping.n', 'definition': "A Sender plans the Path (along with Source and Goal) of a Theme and places it in circumstances such that it travels along this Path under the power of some entity other than the Sender.  This frame also has a Recipient distinct from the Goal, as both can be present: 'I sent the manuscript to England to Bill.' 'I forwarded the grain to a dealer in Frankfurt.'  This frame contains verbs that participate in the ditransitive construction, with a recipient as the direct object, as in the following: 'I sent Bill the manuscript.' Certain Verbs in this Frame focus on the initial sending act, while others do not.  For example, I sent it rapidly can either mean the act of sending was initiated quickly or that it moved quickly. However, the in following sentence: I exported/dispatched it rapidly, meaning that the act was begun quickly, both types of verbs are included."}, {'frame': 'Kinship', 'tfidf': 1.3832283020019531, 'lexical_unit': 'brother-in-law.n / kinship.n / stepdaughter.n', 'definition': "This frame contains words that denote Kinship relations. In annotating the directional uses of these words, we use the standard terms from anthropology, Ego and Alter.  'Matilde is Gilberto's cousin once removed' Compare to: Appellations."}, {'frame': 'Attack', 'tfidf': 1.366971492767334, 'lexical_unit': 'storm.v / safire.n / strike.n', 'definition': "An Assailant physically attacks a Victim (which is usually but not always sentient), causing or intending to cause the Victim physical damage.   A Weapon used by the Assailant may also be mentioned, in addition to the usual Place, Time, Purpose, Explanation, etc.  Sometimes a location is used metonymically to stand for the Assailant or the Victim, and in such cases the Place FE will be annotated on a second FE layer.  'As soon as he stepped out of the bar he was set upon by four men in ski-masks.' 'Is he invading Iraq just to cover other shortcomings?' 'Then Jon-O's forces ambushed them on the left flank from a line of low hills.'"}, {'frame': 'Plants', 'tfidf': 1.3625099658966064, 'lexical_unit': 'tree.n / weed.n', 'definition': 'The LUs in this frame refer to biological entities other than human beings and animals, which are labeled by the FE Plant.'}, {'frame': 'Locale', 'tfidf': 1.324336051940918, 'lexical_unit': 'location.n / earth.n / region.n', 'definition': "This frame contains general locale words, and is mostly a place-holder in the hierarchy. Words in this frame designate relatively stable bounded ares of the world which have permanent Relative_locations with respect to other locales, and thus are useful as permanent landmarks.  It is inherited by Locale_by_use, which has to do with places that are named according to their intended use, or some habitual use, such as factory.n, dance floor.n, village.n, field.n.  It is also inherited by Locale_by_event, which covers places that are names according to some event which took place there, such as concerts, battles, and meteor impacts.  'This is a pleasant area.'"}, {'frame': 'Speed_description', 'tfidf': 1.3233015537261963, 'lexical_unit': 'rapidly.adv / rapid.a / smart.a', 'definition': "An Entity is in motion  at a particular Speed, a momentaneous description of distance traveled per time.     'The car went by real  fast.'  'The car is really fast.'  'Oh yeah, Maseratis are fast! INI'  'The speed of the car was 25 mph when it ran into the obstacle.'  LUs of this frame are commonly involved in a semantic construction in which, instead of describing the current Speed, they rather describe some other Speed saliently associated with the Entity, such as maximum possible Speed of the Entity or (for an Entity used as an implement) Speed when in operation.    This construction can be defined as follows:  A phrase describing a temporary (stage-level) property (A) of an entity (B) is pumped to a phrase describing an individual-level property predicating or attributing the entity's (B's) salient association with such a property (A) under some salient conditions, especially the conditions of use of the entity.  E.g., in the Temperature or Location_of_light frames:  'I can never bake anything in my oven because it 's too hot.' 'She gave him a really bright flashlight for Christmas.'"}, {'frame': 'Color_qualities', 'tfidf': 1.3210704326629639, 'lexical_unit': 'pale.a / vivid.a / bright.a', 'definition': "This frame contains words that describe specific aspects of a Color. The Degree to which the Color being discussed deviates from the prototype may be marked. The description may also target a specific Aspect of color.  'I love really pale yellows.'"}, {'frame': 'Level_of_light', 'tfidf': 1.3204243183135986, 'lexical_unit': 'lighted.a / light.a / dark.a', 'definition': "There is a gradable amount of light in a particular Location.  In some cases the Source of light may be indicated instead of the Location. '' 'The small print was bearly readable by the light of the very dim torch.' '' 'Tal flew over the barrier and into the dark tunnel.' ''  The negetive LUs in this frame can be used metaphorically to describe time periods which can be characterized as bad or lacking in awareness, as shown in the following examples: '' 'The custody of the era brought about a dark period during which the written word was forgotten and art had disappeared.' '' 'Clinton is shrewd to solidify political support during these dark days.'"}, {'frame': 'Dynamism', 'tfidf': 1.2932782173156738, 'lexical_unit': 'stamina.n / lazy.a / sluggishness.n', 'definition': 'A physical Exerter, Action, or Force exerts energy at a level specified by the target. This frame covers both individual-level/static uses ("an INTENSE person") as well as stage-level/dynamic uses ("an INTENSE look"), although the individual-level meaning seems more basic.   \'Although an energetic and able warrior, Charlemagne tended to direct battles rather than fight in person.\' \'She dumped a mug on the bedside table with such vigor that steaming coffee spashed out.\' \'Swing the racket with dynamic force.\'   \'I felt particularly sluggish at work that day.\' Exerter, Action, and Force belong to a Core set.  \'\' This frame also covers several productive metaphor cases. In the first one, movement or change caused by a social entity is conveyed as energy exerted by a physical entity. \'Social\' here encompasses entities that are economic, political, technological, historical, cultural, and intimate: \'The private sector is so much more dynamic.\' \'Singh had been under intense political pressure.\' \'Economies are still sluggish.\' Relatedly, the influential effect of an psychological entity is described in terms of energy exertion by a physical entity. \'Psychological\' includes the intellectual, emotional, and creative: \'Sinead\'s emotional intensity permeates every nuance of every lyric.\' \'He finds the Poet Laureate\'s theory about Shakespeare to be more energetic than persuasive.\' Both metaphors appear to involve a third metaphor, which is the anthropomorphization of processes (see examples directly above) or inhuman entities (e.g. in nature): \'The lazy creak of sails\' \'The energetic waves\' \'A broad, lethargic river\'  Further, there is a metonymy wherein energy exerted by people carrying out an activity characterizes instead a central object or other component of the activity: \'Lucker plays lazy games.\' \'She thought the lazy days in France would never end.\'  \'\' Compare to: Level_of_force_exertion. '}, {'frame': 'Directional_locative_relation', 'tfidf': 1.2851253747940063, 'lexical_unit': 'southwest.n / southeast.adv / above.prep', 'definition': "A Figure is located relative to a (presumably more easily located) Ground, asserting that the Figure lies (approximately) on line from the Ground whose direction is established by semantic types of the particular LUs.  'The plane landed 10 miles due north of Lake Travis in an empty field .' "}, {'frame': 'Connecting_architecture', 'tfidf': 1.280943512916565, 'lexical_unit': 'stairs.n / lift.n / step.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  The Part itself connects locations within the building to each other, Connected_locations. If a particular point of view is adopted in the context of real or imagined motion, then one of the locations can be construed as Goal and the other as Source.   'It was of great interest to me to see the star signs of Taurus the Bull and Leo the Lion on the staircase to the upper Palace.'  'All visitors may use the elevator between the Main Level and the Upper Level instead of the main staircase'  'The window into the garden was open.'"}, {'frame': 'Buildings', 'tfidf': 1.2777965068817139, 'lexical_unit': 'discotheque.n / hospital.n / mall.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Becoming', 'tfidf': 1.2765039205551147, 'lexical_unit': 'become.v / turn.v', 'definition': "An Entity ends up with some Final_quality--a new fact about the Entity. Alternatively, based on a cluster of changes of characteristics, the Entitynewly meets the conditions for being a member of a Final_category.  'The weather turned cold .' 'You can become a firefighter today !'  This frame should be compared with the Transition_to_state frame, which is more general in allowing arbitrary descriptions of a final situation:  'We ended up telling him to leave .'  There is no way to effectively paraphrase such a sentence in the Becoming frame.  "}, {'frame': 'Roadways', 'tfidf': 1.275612711906433, 'lexical_unit': 'road.n / rail.n / motorway.n', 'definition': "This frame involves stable Roadways which connect two stable Endpoints, the Source and the Goal.  Being physical objects, these Roadways may have Names and Characteristics; they are also made of a Material.  They also cover ground, so they may have a Path or a Relative_location that the travel occurs in.  ' We crossed the brick road.' ' I prefer to travel on highway I-80.'  'This is the only highway between Lodi and Sonoma.' ' She dreaded turning onto the busy street.'"}, {'frame': 'Weapon', 'tfidf': 1.2681893110275269, 'lexical_unit': 'bomb.n / small arms.n / mine.n', 'definition': "A Weapon is an artifact created specifically to cause harm or damage.  In some cases, a Use, Material of construction, Part or Type may be more narrowly specified.  'Did you, or did you not, fire this gun with intent to harm my client?'  'Cyra tried to swing her sword to parry, but it was to heavy.'  'I investigated a specialist precious metal firearms manufacturer.'  'My neighbor, a member of the NRA since birth, has got an AK-47 fully automatic assault rifle.'  'Let 's just say that he 's the kind of guy who likes guns with hair triggers.' "}, {'frame': 'Inclusion', 'tfidf': 1.264026403427124, 'lexical_unit': 'including.prep / integrated.a / contain.v', 'definition': "A Total has a Part, either  as a member of an aggregate or as  a constituent part of a simple entity.  'His collection included two El Grecos.'"}, {'frame': 'Event', 'tfidf': 1.252059817314148, 'lexical_unit': 'event.n / incident.n / development.n', 'definition': "An Event takes place at a Place and Time.  'Big earthquakes only happen along plate boundaries. INI '  'The party will take place on Sunday in the all-you-can-eat buffet.'"}, {'frame': 'Sensation', 'tfidf': 1.242143988609314, 'lexical_unit': 'aroma.n / whiff.n / noise.n', 'definition': "This frame contains nouns that refer to sensations in different modalities. The FE Source is used for the phenomenon that gives rise to the sensation in question. The FE Percept is used for the characteristic quality of the sensation. In cases of veridical perception these are not typically distinguished from one another; we use the FE Percept as the default in these cases. With some nouns in this frame it is possible to express the being who experiences the sensation, or the part of the body of such a being. We mark such expressions with the FEs Perceiver_passive and Body_part, respectively. (The -passive part of this label serves to distinguish this FE from the Perceiver-Agentive FE used in other frames.)  '' 'The huge sand dunes, perpetually changing, make for a surreal sight.'  'Endill heard the noise of glass smashing, plaster crumbling and furniture being broken.'  'The feel of his strong fingers enclosing her small palm came as something of a shock to her system.'"}, {'frame': 'Sole_instance', 'tfidf': 1.2411401271820068, 'lexical_unit': 'lone.a / only.a / sole.a', 'definition': "An Item is the only instance of its Type. 'Steven is the sole survivor in his family.'"}, {'frame': 'Existence', 'tfidf': 1.2263131141662598, 'lexical_unit': 'exist.v / existence.n / real.a', 'definition': "An Entity is declared to exist, generally irrespective of its position or even the possibility of its position being specified. Time, Duration, Inherent_purpose, and State may also be mentioned.  This frame is to be contrasted with Presence, which describes the existence of an Entity in a particular (and salient) spacio-temporal context, and which also entails the presence of an observer who can detect the existence of the Entity in that context.  'Finally, Poland ceased to exist as a state for hundreds of years.' 'Such laws exist to prevent exactly this kind of fraud.' 'There IS a Santa Claus!'"}, {'frame': 'Used_up', 'tfidf': 1.2218446731567383, 'lexical_unit': 'spent.a / exhausted.a / worn out.a', 'definition': "Through use, a Resource is diminished in quality or quantity (up to complete attrition) such that it becomes less capable of sustaining future use.   'My entire life savings is depleted due to university and medical bills.'  'All significant oil and gas reserves are exhausted or have dwindled to an uneconomical level except for those of the Middle East.'  'Use shampoo and conditioner every day until the shampoo and conditioner are completely used up.'"}, {'frame': 'Seeking', 'tfidf': 1.2189744710922241, 'lexical_unit': 'sniff.v / seek.v / watch.v', 'definition': "A Cognizer_agent attempts to find some Sought_entity by examining some Ground.  The success or failure of this activity (the Outcome) may be indicated.  NB:  This frame should be compared to the Scrutiny frame, in which the primary focus is on the Ground.  'John looked for his pencil.'"}, {'frame': 'Continued_state_of_affairs', 'tfidf': 1.2002390623092651, 'lexical_unit': 'to date.adv / up to.prep / so far.adv', 'definition': "A State_of_affairs has held and continues to hold up to the Reference_occasion.   'To date, the Department already has numerous requests for new systems to be developed.'  'SAGE has no activities planned as of yet.'  'PBGC guarantees the benefit that you had earned up to the date of plan termination'  'I think that she 's still in her office .'"}, {'frame': 'Identicality', 'tfidf': 1.1964377164840698, 'lexical_unit': 'distinct.a / identical.a / different.a', 'definition': "A Current_instance of a certain Type is under discussion. This instance  is evaluated as being the same instance or a different instance from a Previous_instance encountered in a Previous_context.  'Kim has a different hair color every week' 'Kim has a different hair color every week'  'Is this the same sofa as the one that used to be in the lobby?' 'Is this the same sofa as the one that used to be in the lobby?'   'Dracula and your neighbor are different people' 'Dracula and your neighbor are different people'"}, {'frame': 'Departing', 'tfidf': 1.1956216096878052, 'lexical_unit': 'escape.n / emerge.v / skedaddle.v', 'definition': "An object (the Theme) moves away from a Source. The Source may be expressed or it may be understood from context, but its existence is always implied by the departing word itself.   'The plane leaves at seven.DNI.'  'His departure from the dock was delayed by hundreds of tearful farewells.'  'We all exited the room slowly.'"}, {'frame': 'Part_inner_outer', 'tfidf': 1.1846184730529785, 'lexical_unit': 'center.n / surface.n / outside.n', 'definition': 'This frame concerns Parts of objects that are defined relative to the center or edge of the object.  The Part is a part of the Whole and the Part_prop describes a property of the Part.  \'She discarded the exterior of the walnut.\' \' She preferred a sparse church interior . \'  In cases where the Target is an adjective, it has a special relationship with the noun that it modifies such that a phrase which is a syntactic argument of the noun is semantically available to fill the argument structure of the adjective, as in "the outside row of the class"\'The inner shelf of the bookcase was lying on the floor.\'  '}, {'frame': 'Assistance', 'tfidf': 1.1716299057006836, 'lexical_unit': 'cater.v / serve.v / aid.v', 'definition': "A Helper benefits a Benefited_party by enabling the culmination of a Goal that the Benefited_party has.  A Focal_entity that is involved in reaching the Goal may stand in for it.  This Frame has unique Frame-to-Frame Relations: it inherits from and uses the Intentionally_act frame. This is atypical of FrameNet's frame relations.  'Will you help the Government find your brother?' 'Maybe Stephen should assist him with the last manuscript.' 'They helped me psychologically to overcome the physical loss I had suffered.' 'You have helped him tremendously by showing him  how to stand up for himself and by being his friend.' 'By bringing assistance to his troops wherever they were in trouble he aided them greatly.'"}, {'frame': 'Range', 'tfidf': 1.166614294052124, 'lexical_unit': 'intercontinental.a / sight.n / strike.n', 'definition': 'There is a certain physical Distance within which some other entity can participate in an Event (typically perception or manipulation) with the Participant.  Alternatively, the Event may be indicated metonymically by a Instrument .  [Note the connection with *Distance, Sufficiency, and Capability.  Words in this frame can generally be paraphrased "close enough to be able to".]  \'I\'m sorry, but he was well within the blast range.\' \'They are now within our missile range.\' \'They are now within our missile \'s range.\' \'They are now within missile range.\' \'But then they passed out of my earshot. INC\' \'I would consider striking distance to be about two meters for this weapon.\' \'Jordanian troops came within easy strike of Israel.\''}, {'frame': 'Objective_influence', 'tfidf': 1.165825366973877, 'lexical_unit': 'influence.n / impact.v / influence.v', 'definition': "An Influencing_entity, an Influencing_situation, or an Influencing_variable has an influence on a Dependent_entity, Dependent_situation,  or a Dependent_variable.  ''  Compare to Subjective_influence. Words in Objective_influence are used to make claims about correlations in the world, where words in Subjective_influence are used to explain emotional impacts made on cognizers.   'More and more doctors realise that diet can influence disease.'  'Our subject is the body clock; how it influences our physiology and behaviour and how it interacts with the rhythms in our environment.'  'But it is more likely that a physical restraint influenced the swirling liquids.'  'It claimed, perhaps hollowly, that NT had yet to impact its business.'  'This kind of elementary boo-boo would certainly impact video speed.'"}, {'frame': 'Killing', 'tfidf': 1.16203773021698, 'lexical_unit': 'assassin.n / lethal.a / liquidator.n', 'definition': "A Killer or Cause causes the death of the Victim. 'John drowned Martha.'"}, {'frame': 'Biological_area', 'tfidf': 1.1527941226959229, 'lexical_unit': 'jungle.n / fen.n / heathland.n', 'definition': " This frame contains words that denote large ecological areas as well as smaller locations characterized by the type of life present--in other words, geography locations as defined by biota.  'I've spent a long time in the rugged prairies of northern Llorwyn.'"}];
+    </script>
+    <script type="text/javascript" src="word_cloud_prediction.js"></script>
+    <script type="text/javascript" src="../mturk.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 150px;
+            padding-right: 150px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel_1 canvas, #word_cloud_panel_2 canvas {
+            display: none;
+        }
+        .word_cloud_box canvas {
+            display:none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+        .word_cloud_box {
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 3px rgba(70, 70, 70, 1) solid;
+            padding: 20px;
+            margin-bottom: 20px; 
+        }
+        .word_cloud_box:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+        }
+        .selected_story_block {
+            border-color: #7BDFF2;
+            border-width: 3px;
+            box-shadow: 0 0 10px 10px rgba(123, 223, 242, 0.3);
+            background-color: rgba(239, 247, 246, 0.8);
+        }
+        .indicator {
+            /*font-family: Courier;
+            font-weight: bold;*/
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px black solid;
+            border-radius: 20px;
+        }
+
+        .selected_story_block .indicator {
+            background-color: rgb(123, 223, 242);
+        }
+
+        #story_content {
+            max-height: 600px;
+        }
+        .not_qualified {
+            color: red;
+            font-weight: 900;
+        }
+        .qualified {
+            color: black;
+            font-weight: 900;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Which word-cloud best represents the story snippet?</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that a computer automatically 
+            generated to characterize a story snippet. 
+            The words in the word cloud <strong>do NOT necessarily occur</strong> in the story snippet. 
+            These words can just be relevant or semantically similar. <br/><br/>
+
+            A <strong>word-cloud representation with nouns</strong> is a group of nouns a computer automatically 
+            generated to characterize a story snippet. 
+            These nouns can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            In this HIT, you will see a story snippet. <span class="highlight">Please read it carefully.</span>
+            The story is long so we have a <span class="highlight">3 minutes time lock</span> for submission.
+            <br/><br/>
+
+            At the bottom of the HIT, you will see three sets of word-cloud representations, 
+            where each consists of nouns, verbs, and adjectives. 
+            <span class="highlight">Please select the word-cloud representation that best represents the story.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following story snippet carefully!</h3>
+            You will need to select the word-cloud representation that best represents this story. 
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story</h4>
+                        <h5>(An excerpt from the book <span style="font-weight:bold;">"The Guardians Book 2 Sorcerers Duel"</span>.)</h5>
+                        <span class="not_qualified" id="read_lock">Please read all the story.</span>
+                        <br/><br/>
+                        <pre id="story_content">
+His emotional control had vanished, and he was unable to prevent the stresses from bubbling over and destroying any chance of recovery.
+Then he felt the negative emotions explode: Resentment, fury and with it, an overwhelming desire for retribution.
+The power behind it overshadowed his weakness and appeared to be giving him an inner strength, much the same as it did during his fights with the Krelathans.
+Only this time it was far more intense, more overpowering, and more energizing.
+It felt as if the power within was waiting to burst out and consume whatever it contacted, but there was much more to it.
+There was a sense of impenetrable darkness creeping up on him, a presence that was far stronger than the temptation induced by the dark realm.
+It was a sinister and angry presence with hatred burning like fire.
+There was nothing he could do to quench it.
+Images of his father, his brother Ben and his close friend Hobbes appeared in his mind, making him realise just how much he missed them all.
+Then he pictured Miranda standing by the lake holding her hand up to admire her ring.
+As the memory filled his mind, he felt as if his spirit was being ripped asunder.
+The pain was so intense he was barely able to stand.
+Then the grief, pain, and anguish, transformed into an uncontrollable rage fuelled by the presence within.
+The images of loved ones now dead faded away leaving a black hole of emptiness, a void in which he felt the fire of hatred and anger building stronger, expanding and fuelling the darkness and the presence.
+It mattered not what he thought.
+He was unable to prevent it.
+A vacuum was beginning to form in his mind, one that was threatening to consume every ounce of his conscious thought.
+'When will it all end?' he screamed in his mind.
+He wanted to shout so loud, loud enough for the whole galaxy to hear of his pain, his anguish and his torment.
+Inside his mind, he howled in grief for his loss.
+It was a long and painful howl that threatened to tear his spirit apart, one that reverberated through the astral realm.
+Inside the ruins of the building, Ellarna lay unconscious in the room on the basement level that contained the Qarakans, most of which were dead.
+These animals used their power not only to hide from their intended prey, but also to hide themselves when injured or threatened, as they did now.
+Ellarna, accompanied by Te'Endsa, was admiring some paintings in the gallery directly above the quarantine rooms when the explosion went off.
+The floor collapsed and both women fell through, landing among rubble and the cages of the Qarakans.
+Ellarna sustained the worst of the injuries and was fading quickly.
+Unfortunately, they were lying within the animals' sphere of magical influence, and their presence was hidden from the sensory ability of any Guardian, including Grogaan.
+The necklace Ellarna had been wearing was torn away as she fell through the floor.
+The two green gems shattered as they hit the ground, and two flumes of smoke spiralled up from within the pieces.
+They floated toward the ceiling and passed through the cracks between the chunks of rubble and out into the air.
+Grogaan collapsed to his knees in front of what remained of the government building, which was nothing more than a large pile of rubble and twisted metal girders.
+Tears ran down his dust covered cheeks and dripped onto his legs.
+The intense rage that was continuing to grow within seemed to be consuming him, mind, body and soul.
+He tried to control his emotions, to relax and let his magic flow through his aching body, but he failed miserably.
+The sheer power and influence of the dark magic, coupled with the presence within, was too much for him to cope with.
+He found he was unable to focus his thoughts on anything or anyone.
+He wondered whether he could or would care about anything or anyone again, or even care about what happened to him.
+Grogaan felt as he had done after Miranda's death: Broken, torn apart and alone.
+Only this time it was more profound and debilitating.
+Nobody noticed the two plumes of smoke rising from the rubble.
+They travelled horizontally toward Grogaan and when they reached him, entered his body through his legs.
+He was oblivious to the brief sharp pain caused as they pierced his skin.
+Within a few moments, the four separated parts of the sorcerer's soul were reunited.
+Temalleus Feringita was whole once more.
+Immediately on unification, the sorcerer's spirit and conscience began to take control of Grogaan.
+How this was possible was unknown even by those who discovered the process, and it was a mystery that would never be unravelled.
+Grogaan jerked his head up feeling very strange and uncomfortable.
+He felt as though something or someone was trying to gain control of his mind and his body.
+His own conscience was being pushed farther back into the recesses of the mind.
+He gradually began to lose all knowledge of who he was or what he was doing kneeling on the floor.
+Everything became vague as if a thick impenetrable fog had descended into this mind.
+As the spirit of the sorcerer gained more control over Grogaan, he felt the power and strength within grow to a level he had never experienced before.
+It seemed as if his whole body was expanding to cater for the sheer intensity of that power, and he was unable to do anything to prevent it.
+There was no resistance, no strength, and no will to fight off the invading presence.
+His grief, anger, and the feeling of worthlessness had quashed his mental strength.
+Although the grief and pain of his loss were still present, they were being pushed to the back of his mind by the ever-growing intensity of his anger, resentment and thirst for retribution.
+The negative emotions continued building until it felt like a volcano waiting to erupt.
+It was not long before any sense of peace and calm had vanished completely, replaced by rage and other extreme negative emotions.
+Eventually, he was no longer able to feel the grief and pain that had once been so prevalent.
+The sorcerer that now possessed him drew upon the power from the dark realm.
+His renewed strength added to that of the Guardian's, made him stronger and more dangerous than any sorcerer in history.
+Grogaan's own conscience and awareness was now simply a vague subconscious thought.
+It had no effect on the actions or intentions of the possessing invader.
+The possessor took hold of Grogaan's thirst for revenge upon the perpetrators of his fiancee's death, and would act to quench that thirst.
+He knew this would intensify the emotional strength of the body he now possessed as well as his own ability to draw magical power.
+With no more grief or sorrow evident in his mind, he stood purposefully and rested his clenched hands on his hips, rolled his head backward and laughed loudly and deeply.
+It was a blood-curdling laugh empowered by magic that sent a shiver through all that heard it.
+Women screamed in fright at the sound.
+They ran from the area in panic, afraid of what he might do to those who crossed his path.
+Governor La'Astor stared at Grogaan in utter shock and disbelief.
+A Guardian had somehow transformed to one of the dark sorcerers in a matter of moments.
+It was unbelievable.
+Never had such a change happened so quickly.
+He wondered whether this had something to do with those strange visitors from the Hebradon Empire, but then dismissed the notion as impossible.
+The astonished Da'Aranban continued to watch the Guardian laugh.
+His whole body was shaking from the power that was emanating from the man.
+He backed off slowly, putting a greater distance between them.
+He felt the hair on the nape of his neck begin to crawl sending more shivers through his body.
+A sudden sense of fear swept through him as he saw the Guardian look in his direction.
+Droplets of sweat trickled down his brow stinging his eyes, but he dared not wipe them away, dared not move a muscle just in case the sorcerer misinterpreted the movement and was provoked into doing something bad.
+The Guardian ceased laughing, looked skyward and closed his eyes.
+A light blue aura formed around him, and as he raised his arms blue lightning emanated from his fingertips, spreading outward in a wide arc.
+The noise was deafening, and those that had strayed too close ran away covering their ears.
+As he looked around, Grogaan noticed a small building to his left.
+He felt a prompting telling him he should check it out.
+He walked toward it and even though he sensed nobody inside, entered.
+There was a small electronic device on the floor near the window.
+Grogaan picked it up and looked at it carefully.
+It was a remote-detonating device, which he believed had been used to trigger the explosion.
+Grogaan closed his eyes and concentrated, allowing his magic to enhance his ability.
+He sensed the presence of a man nearby, one who was worried because of his recent actions.
+Keeping his mind focussed on the man, he walked toward the cantina wherein the man was hiding.
+When he entered, an eerie and deathly silence fell over the gathered clientele.
+The wave of fear he felt flowing across the room delighted him.
+The man he sought was hiding in a small back room, fearing for his life.
+Nobody attempted to question or stop Grogaan as he strode along the narrow corridor.
+As he opened the door, he saw the man shaking with fear, and sensed the intensity of his anguish over what he had done.
+Grogaan felt no sympathy for the one that cowered in fear before him.
+Grabbing him by the collar, he lifted Hemstack off the ground and squeezed gently on his neck.
+The man remained silent.
+Grogaan drew more power from the dark realm and forced his quarry to reveal all that he needed to know through mental manipulation.
+Satisfied with what he had learnt, the sorcerer released him, but then held him suspended in mid air with magic.
+Terror was etched into the man's features, and droplets of perspiration streamed down his face.
+Hemstack's body started quivering, his heart palpitated irregularly and he felt the pain sear his body as his heart strained under the pressure.
+He wanted to cry out and explain that he had had no choice in doing what he had done, but his throat was being constricted to the point of suffocation.
+As he headed for the door, the sorcerer propelled the man with great speed and force across the room.
+There were loud cracking sounds as the man hit the wall.
+The force of the impact was so great, bones shattered piercing flesh and vital organs.
+The limp body of Hemstack fell to the ground in a crumpled heap.
+With an evil laugh and a sinister smile, the Guardian become sorcerer left the cantina and went to locate his ship.
+His first act of retribution was complete.
+Chapter Twenty-One
+Safkaari, Safkar System, Beraston Sector, Ladorran Quadrant
+The reunification of the sorcerer's spirit was enough to cause a ripple in the fabric of the astral realm.
+However, because Grogaan and the sorcerer were both formidable wizards, the sheer intensity of the power being united, turned that ripple into a powerful reverberation that was felt by other Guardians and wizards across the galaxy.
+Sorann and Deanna were on Safkaari, the principle planet in the Safkar System, enjoying a few moments alone before being given a tour of the Imperial palace.
+First, they heard the scream, an intense piercing scream that resounded in their subconscious.
+Then a vision burst into their minds' eye, shocking them from their quiet contemplation.
+Sorann knew instantly something terrible had occurred and that it involved Grogaan.
+"What was that?"
+asked Deanna, who was reeling from the shock.
+Sorann looked at her, his face drawn in distress.
+"What I feared most but hoped would never happen.
+It was a vision of an event that has just transpired."
+Deanna looked puzzled.
+"I saw a man that looked very familiar."
+Sorann sighed heavily.
+"The one you saw was Grogaan.
+It appears that he has been seduced by the power of the dark realm, but there is something about the intensity that doesn't make sense; it was too sudden, too violent."
+"Remember how different he was after his return from Hiastora Two?
+"I do, but surely that would not have caused such a rapid transformation in him?
+There's more to it than that, something sinister.
+I've a very bad feeling about it too."
+Sorann's brow creased in thought.
+"There was something else Grogaan had not told us about, something that posed a dilemma for him concerning his future.
+The events are intricately linked somehow, but how and why?"
+"And what was that scream?
+I've never sensed anything like that before."
+"I don't know.
+I detected intense pain and grief in that scream, and no, I have never sensed anything like that either.
+Something is definitely wrong."
+Sorann took a deep breath, closed his eyes and tried to see into the future.
+Nothing enlightening was revealed, but a vision that Sorann was not expecting did appear.
+It was the same one that Grogaan himself had had so many times before, only it appeared very clear and revealed far more than Grogaan had told him.
+It was of a man standing in the middle of a compound with his arms raised, and the blue lightning emanating from his fingertips flashed toward buildings and Imperial soldiers.
+The vision sent a shiver through Sorann's body.
+He had felt the power of magical lightning and never wanted to experience it again.
+The pain was intense and indescribable.
+"What have you seen?"
+"A vision of the future I believe was the same Grogaan experienced.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+
+        <h3>Select the word-cloud representation that best represents the above story.</h3>
+        Below, there are three word-cloud representations. Read them carefully and select the one that best represent the above story.
+        <br/><br/>
+
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_1" value="1">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 1</h3>
+                The following three word clouds jointly represent the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_2" value="2">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 2</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_2">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_2">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_2">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_2-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <!--div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_3" value="3">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 3</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_3">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_3-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_3">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_3-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_3">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_3-png-container" class="text-center"></div>
+            </div>
+        </div-->
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="197">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_150">
+            <input name="note" type="hidden" value="LGBM, BERT">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+    </div>
+
+</body>
+</html>

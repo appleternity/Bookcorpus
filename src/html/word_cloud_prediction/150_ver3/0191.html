@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="text/javascript">
+        var frame_list_1 = [{'frame': 'Money', 'tfidf': 1.8385128330513767, 'lexical_unit': 'cash.n / funds.n / dough.n', 'definition': "Money is a medium used for exchanging goods and services. It is in most cases issued by a government (its Creator) in the form of coins and banknotes. Particular amounts of it may have a designated or planned Use, or may have come from some Origin.  'The money for our daughter's college education is currently earning interest in a savings account.'  'The entire project ended up being funded with Swiss funds.'  'The use of paper money really caught on in Europe in the 1700s'"}, {'frame': 'Businesses', 'tfidf': 1.6451009352718364, 'lexical_unit': 'chain.n / boutique.n / mill.n', 'definition': "A Proprietor owns or runs a Business which provides a Product (which may be goods or services).  'The consumer electronics company Apple has exploded with popularity in recent years.'"}, {'frame': 'Employing', 'tfidf': 1.536381147279339, 'lexical_unit': 'worker.n / personnel.n / employment.n', 'definition': "An Employer employs an Employee whose Position entails that the Employee perform certain Tasks in exchange for Compensation.  'I employed him as Chief Gardener for ten years.'"}, {'frame': 'Roadways', 'tfidf': 1.051329290354904, 'lexical_unit': 'boulevard.n / driveway.n / runway.n', 'definition': "This frame involves stable Roadways which connect two stable Endpoints, the Source and the Goal.  Being physical objects, these Roadways may have Names and Characteristics; they are also made of a Material.  They also cover ground, so they may have a Path or a Relative_location that the travel occurs in.  ' We crossed the brick road.' ' I prefer to travel on highway I-80.'  'This is the only highway between Lodi and Sonoma.' ' She dreaded turning onto the busy street.'"}, {'frame': 'Building_subparts', 'tfidf': 0.9927210722899714, 'lexical_unit': 'dressing room.n / living room.n / office.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}, {'frame': 'People_by_vocation', 'tfidf': 0.9803513703352041, 'lexical_unit': 'spokesperson.n / journalist.n / tailor.n', 'definition': "This frame contains  words for Individuals as viewed in terms of their vocation.   The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'Humphrey Bogart was a great actor.'"}, {'frame': 'Connecting_architecture', 'tfidf': 0.9580297700326916, 'lexical_unit': 'lift.n / escalator.n / hallway.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  The Part itself connects locations within the building to each other, Connected_locations. If a particular point of view is adopted in the context of real or imagined motion, then one of the locations can be construed as Goal and the other as Source.   'It was of great interest to me to see the star signs of Taurus the Bull and Leo the Lion on the staircase to the upper Palace.'  'All visitors may use the elevator between the Main Level and the Upper Level instead of the main staircase'  'The window into the garden was open.'"}, {'frame': 'Legality', 'tfidf': 0.9517840505182203, 'lexical_unit': 'wrongly.adv / wrong.a / unlawful.a', 'definition': "Words in this frame describe the status of an Action with respect to a Code of laws or rules. An Object may also be in violation or compliance of the Code by virtue of its existence, location or possession.    ' Illegal drug use is on the rise. '   ' Scores of illegal immigrants cross the border every year.'   ' Feeding the buffalo is prohibited according to Code 138 . '"}, {'frame': 'Commerce_pay', 'tfidf': 0.8887261529478289, 'lexical_unit': 'payment.n / disbursement.n / pay.v', 'definition': "This frame involves Buyers paying Money for Goods.  In this frame the Money is the direct object, and is mapped to the theme of the transfer.  'I paid her $50 for a video game.'"}, {'frame': 'Social_event', 'tfidf': 0.783881240826963, 'lexical_unit': 'fete.n / festival.n / function.n', 'definition': "A Social_event occurs at which Attendees are present to conduct a social function or joint activity.  The Social_event is often a party or celebration, in which case it is possible to express someone who is being honored (the Honoree) or its function may be to celebrate an Occasion at which Attendees are present. Often, a specific Attendee, the Host, provides a venue for people to gather.  'Sue threw a party for Bob's birthday.'  'Who will host the Olympic games in eight years?'"}, {'frame': 'Vehicle_subpart', 'tfidf': 0.7819043605974438, 'lexical_unit': 'tire.n / windshield.n / trunk.n', 'definition': "An entity is integrated into a vehicle as a Part of a (possibly unexpressed) Whole which may refer to the whole vehicle or merely to a sub-part of the vehicle.  '' 'The car's engine started smoking so we pulled over.' 'Put the bags in the trunk.' 'One should always wear a seatbelt while driving.' "}, {'frame': 'Working_a_post', 'tfidf': 0.7464516794773357, 'lexical_unit': 'work.v / staff.v / man.v', 'definition': "The Agent is assigned to a Post where he or she performs a task associated with that Post. Alternatively, the Agent is expressed as acting with respect to a Salient_entity associated with the task. In most cases the Salient_entity is located at the Post.  'Volunteers were staffing the telephones.'  'Man your stations! CNI'"}, {'frame': 'Commerce_buy', 'tfidf': 0.7350606911873415, 'lexical_unit': 'purchaser.n / client.n / purchase [act].n', 'definition': "These are words describing a basic commercial transaction involving a Buyer and a Seller exchanging Money and Goods, taking the perspective of the Buyer.  The words vary individually in the patterns of frame element realization they allow.  For example, the typical pattern for the verb BUY: Buyer buys Goods from Seller for Money. '' 'Abby bought a car from Robin for $5,000.'"}, {'frame': 'Personal_relationship', 'tfidf': 0.7187573255167765, 'lexical_unit': 'spinster.n / suitor.n / fiancé.n', 'definition': "The words in this frame have to do with people and the personal Relationships they are or can be a part of.  Some of the words denote people engaged in a particular kind of Relationship, others denote the Relationship, yet others the events bringing about or ending the Relationships. Many of the words presuppose an understanding of states and events that must have occurred before another event takes place or before a person can be classified in a certain way. '' 'And of course that drippy boyfriend of hers backed her up.'  'As the happy couple took their places there was a stir and a rising babble behind them.'  'Pattie is living proof that if you live with a man, you discover a lot you didn't know when you were just dating him.'"}, {'frame': 'Architectural_part', 'tfidf': 0.7173953136969964, 'lexical_unit': 'rail.n / wall.n / counter.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  'We need new counters for the kitchen'  'The storm ripped off the bathroom's roof'  "}, {'frame': 'Vehicle', 'tfidf': 0.7084262816820669, 'lexical_unit': 'carriage.n / bird.n / kayak.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'Locale_by_use', 'tfidf': 0.6982301475010583, 'lexical_unit': 'city.n / court.n / pub.n', 'definition': "Geography as defined by its use.   'You must land in the next airfield, as this one is currently having difficulties.' 'The new sports complex was the tallest building on campus, oddly enough.' 'Cities of the Northeast tend to be dingier.'"}, {'frame': 'Buildings', 'tfidf': 0.6972173074916914, 'lexical_unit': 'mosque.n / hacienda.n / farmhouse.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Temporary_stay', 'tfidf': 0.694857130492583, 'lexical_unit': 'stay.n / lodge.v / stay.v', 'definition': "A Guest stays for a time at a Location, which is not his or her permanent residence, for some Duration. The Location is often the permanent residence of a Host.  'I usually stay with my aunt at her summer house when I go to Seville.'  'For a few days my father lodged at a hotel with a buddy who was a biology student.'"}, {'frame': 'Commerce_sell', 'tfidf': 0.6944759980231604, 'lexical_unit': 'sell.v / sale.n / vend.v', 'definition': "These are words describing basic commercial transactions involving a buyer and a seller exchanging money and goods, taking the perspective of the seller.  The words vary individually in the patterns of frame element realization they allow. For example, the typical patterns for SELL: SELLER sells GOODS to BUYER for MONEY.  'Robin sold a car to Abby for $5,000.'"}, {'frame': 'Food', 'tfidf': 0.6864608896124762, 'lexical_unit': 'MRE.n / vinaigrette.n / milk.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Kinship', 'tfidf': 0.667481310101125, 'lexical_unit': 'offspring.n / relative.n / stepdaughter.n', 'definition': "This frame contains words that denote Kinship relations. In annotating the directional uses of these words, we use the standard terms from anthropology, Ego and Alter.  'Matilde is Gilberto's cousin once removed' Compare to: Appellations."}, {'frame': 'Storing', 'tfidf': 0.6620389240299221, 'lexical_unit': 'stock.v / cache.v / cellar.v', 'definition': 'An Agent has placed a Theme in an accessible but somewhat out of the way Location for the purposes of maintaining it free from harm and illegitimate use while it is not being used.'}, {'frame': 'Containers', 'tfidf': 0.6614327906550317, 'lexical_unit': 'chalice.n / sarcophagus.n / overnighter.n', 'definition': "This frame covers entities which are prototypically conceived of and created to fulfill the function of containing--i.e. Containers  that contain objects or substances, the Contents.  This can be expressed as a complement , and includes potential or intended contents.   A Container may also have an Owner, a current Relative_location, Material from which it is constructed, a method of Construction, and a Type.  Note the connection between words in this frame and those in the Filling, Emptying, and Fullness frames. 'a bag of popcorn' 'underwear drawer' 'Chuck's suitcase' 'the suitcase in Chuck's office' 'straw basket' 'woven basket' 'Erlenmeyer flask'"}, {'frame': 'Organization', 'tfidf': 0.6524903400933951, 'lexical_unit': 'agency.n / organization.n / club.n', 'definition': "This frame describes intentionally formed human social groups (here termed Organizations) with some definite structure and Members.  They may be relatively informal, consisting only of a group of individuals who are aware of who is and who is not a fellow member, or they may be complex and long-lasting, such as the Roman Catholic Church or the Conservative Party.   'Lucien is in the brotherhood.'"}, {'frame': 'Locale', 'tfidf': 0.6369534215310054, 'lexical_unit': 'regional.a / area.n / site.n', 'definition': "This frame contains general locale words, and is mostly a place-holder in the hierarchy. Words in this frame designate relatively stable bounded ares of the world which have permanent Relative_locations with respect to other locales, and thus are useful as permanent landmarks.  It is inherited by Locale_by_use, which has to do with places that are named according to their intended use, or some habitual use, such as factory.n, dance floor.n, village.n, field.n.  It is also inherited by Locale_by_event, which covers places that are names according to some event which took place there, such as concerts, battles, and meteor impacts.  'This is a pleasant area.'"}, {'frame': 'Being_obligated', 'tfidf': 0.6367646431371655, 'lexical_unit': 'assignment.n / task.n / contract.n', 'definition': "Under some Condition, usually left implicit, a Responsible_party is required to perform some Duty.  If they do not perform the Duty, there may be some undesirable Consequence, which may or may not be stated overtly.  'It is my duty to fight any attack on the Brotherhood .' 'This country has the responsibility to support its citizens' right to express themselves.' 'I am obligated to pay or they'll double the fine.'  NB:  Contrast this frame with Likelihood and Preconditions frames, which involve many of the same lemmas.  Many LUs which might be expected to be found here (should, must, have to) are actually in the Required_event frame. Our analysis is that these LUs do not evoke an obligation directly, although they are frequently used in contexts that are consistent with an understanding of obligation and are pragmatically strengthened to (defeasibly) imply an obligation. "}, {'frame': 'Text', 'tfidf': 0.631206958460283, 'lexical_unit': 'hagiography.n / textbook.n / memoir.n', 'definition': "A Text is an entity that contains linguistic, symbolic information on a Topic, created by an Author at the Time_of_creation.  It may be a physical entity that is made of a certain Material etc.  It may be constructed for an Honoree.  'It was a good book.'"}, {'frame': 'Containing', 'tfidf': 0.6306391288655834, 'lexical_unit': 'contain.v / store.v / house.v', 'definition': "In this frame a Container holds within its physical boundaries the Contents.  'The box holds three hundred pictures.'"}, {'frame': 'Attention_getting', 'tfidf': 0.6260084686695632, 'lexical_unit': 'miss.n / sir.n / boy.n', 'definition': "This frame covers terms used to get someone's attention, including Interjections (e.g. hey, yo) and certain terms of address (Address_term), the latter of which may serve the function of attention getting.    'Hey.' 'Hey, boy.' 'Hey, boy, come over here now!'  "}, {'frame': 'Transition_to_state', 'tfidf': 0.6025657606339281, 'lexical_unit': 'get.v / grow.v / end up.v', 'definition': "An Entity ends up in a Final_category, Final_situation, or Final_quality which it was not in before.  Some members of the frame (e.g. grow.v) tend to emphasize a gradual change, while most members of the frame do not indicate whether a change is gradual or not.    'Why I became an Emacs user'  'I left the ministry and became an atheist.'  'Surprisingly, various veteran organizations also turned vehemently antiwar.'  ' Over the years she grew to hate him.'  This frame should be compared to Undergoing_change.  Undergoing_change is different in that it much more emphasizes the difference between the pre- and post-states of the Entity.  This shows up both in Undergoing_change's increased occurrence with Initial_category and Initial_state (change from red to blue) and in its increased occurrence with Final_category (changed into a toad) rather than Final_situation or Final_quality (?changed to red vs. became/turned red).  In addition, when Undergoing_change occurs with the Final_category frame element, it presents a deep difference between the Initial_category and the Final_category, so that it is humorous to say 'she turned into a Republican', because it presents this as a fundamental change of identity; compare to 'she became a Republican', which is quite normal.  In a less humorous example, someone can 'turn into a Mac user', strongly implying that they no longer use their former operating system, while if they 'become a Mac user', this is either as a replacement of other OS's or potentially as an addition to the use of other OS's."}, {'frame': 'Calendric_unit', 'tfidf': 0.600481670619869, 'lexical_unit': 'weekend.n / June.n / midday.n', 'definition': "Words in this frame name the different parts of the calendric cycle, both man-made and natural. The Unit (e.g. Tuesday) specifies some time period as part of a specific larger temporal Whole (Tuesday of next week), or may be resolved to an exact time span by a Relative_time (next Tuesday).   'Jo's mother will visit on this coming Tuesday.' '' Very frequently, the Whole or Relative_time are left out (i.e., DNI), and often should be interpreted as a time period overlapping with the communication, but more generally must be understood from context.  So, for example, in the first sentence below, we can imagine that the Whole refers to a year (e.g., 1983) that was already mentioned or established in context.  In the second example below, the most likely interpretation is the nearest April, whether in this year or the next, and this interpretation is best indicated by indicating the Relative_time is DNI.  'On April 2 , she finally found her mother . DNI. '  'I 'll come back in April .DNI' '' Most members of this frame can be used with iterative events, either with a plural Unit (on Tuesdays), or marked with every (every April).   'On Tuesday and Thursday afternoons , we have tea .' In this use, when the Whole is omitted, the Whole should be marked INI. 'On Tuesdays , we have tea . INI ' '' Words of this frame often occur in a non-lexical construction that uses some Calendric_unit expressions to establish when an event occurred.  To capture this information, we use the extra-thematic FEs Landmark_period and Trajector_event (see Temporal_collocation) on the second layer, as in the following: 'Last Tuesday she said I 'd have to come back .' 'Last Tuesday she said I 'd have to come back .' We do not use these FEs for cases where the temporal relationship is introduced by an overt word of the Temporal_collocation frame (like on, in, at, before, etc.).  Most lexical units of this frame occur in this construction, with or without requiring a Relative_time, while some idiosyncratically do not, so information on the use with the extra-thematic FE Trajector_event is lexically specific. '' There are a number of non-lexical constructions that evoke this frame, including date constructions (the third, May 5), decade constructions (the oughts), year constructions (1975, 24 BCE, 10 AH, year 19, etc.), and time-of-day constructions. Although not annotated in this frame, examples such as the following show that the FEs Unit and Whole are quite appropriate: 'The 4th of April dawned clear and cold .' 'December 11 was when Alix finally left .' 'The 23rd will be snowy . DNI ' 'Nothing much happened in the 90s , did it ? DNI ' As described above for the lexical targets that evoke this frame, some non-lexical versions of the frame may also occur in a non-lexical Temporal_collocation construction: 'No-one has forgotten what happened the 5th of November !' 'No-one has forgotten what happened the 5th of November !' ''  Words in this frame figure into a variety of temporal schemas, realized as constructions, primarily cases in which the Calendric_unit serves as a Landmark_period in the Temporal_collocation frame. There are families of constructions in which these words occur, including ones in which weekday names combine with day part names using particular prepositions (e.g. on Wednesday morning, cf. on Wednesday, but  in the morning) and ones in which  calendric terms fill the slots in multi-word expressions such as  N-after-N (e.g. day after day),  N-by-N (e.g. week by week),  N-to-N (e.g. month to month), etc. More can be found on these in Fillmore (2002).  Note, also, the connection between this frame and Frequency, specifically that many iterative adjectives and adverbs are based on calendric terms (e.g. daily, weekly, monthly, etc.).      "}, {'frame': 'Appellations', 'tfidf': 0.5986732620273331, 'lexical_unit': 'ms.n / tsar.n / brother.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Documents', 'tfidf': 0.5980843997304564, 'lexical_unit': 'business card.n / certificate.n / finding.n', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Artistic_style', 'tfidf': 0.5928634895178139, 'lexical_unit': 'style.n / order.n / sound.n', 'definition': "This frame contains LUs that express the Form which a piece of Artwork represents. The Form may also represent the entire body  of an Artist's work. The Form may be further characterized by the Time of some Artwork's creation or other Descriptors.  'Her style of painting is an excellent blend of traditional and modern.' 'The whimsical style of this piece is very effective.'"}, {'frame': 'Cotheme', 'tfidf': 0.5903512985768462, 'lexical_unit': 'conduct.v / follow.v / dog.v', 'definition': "This frame contains words that necessarily indicate the motion of two distinct objects. The Theme is typically animate and is expressed the same way a Self-mover is expressed in the Self-motion frame--i.e. as the subject of a target verb. The Cotheme may or may not be animate and is typically expressed as a direct object or an oblique. Source, Path, Goal, and the other frame elements common to motion words also regularly occur with the words in this frame.  '' 'She accompanied him in the ambulance to Hollywood Memorial Hospital.'  'Police persue teenage joyrider across three counties.'  'My pursuit of academic superiority shows that I was still striving to be the person my parents wanted me to be.'"}, {'frame': 'Reason', 'tfidf': 0.5870294474252526, 'lexical_unit': 'reason.n / basis.n / motive.n', 'definition': "A volitional  Agent is responding to a State_of_affairs by performing some Action.  'And was that your reason for becoming an actor ?' 'But Giles is the reason that I am here .' 'Oh my reason for including it was Section fifty four A.'  "}, {'frame': 'Expensiveness', 'tfidf': 0.5855450491103067, 'lexical_unit': 'cheap.a / affordability.n / expensive.a', 'definition': 'A Payer gives up (or potentially gives up) the use of an Asset (generally money) in order to achieve an Intended_event.  This event is often more specifically described as gaining possession of some Goods or receiving a Service.  In the majority of cases, the Payer is described generically (INI), and the situation depicted answers the question of how much of an Asset would have to be given up to receive the Goods or bring about the Intended_event.  \'It \'ll cost Sandra\'s parents fifty grand a year for her to attend that school. \' \'That book would cost you more than twenty dollars to bind <fex name="">in a local book bindery.\' \'Stamps used to cost only five cents.  INI\' \'The cost of a trip to a resort or spa varies by region, dependent primarily on weather, not local economic conditions. INI\' \'Well, it \'ll cost you.\' \'For you, thirty bucks is practically free.  DNI\''}, {'frame': 'Aggregate', 'tfidf': 0.58510031831162, 'lexical_unit': 'quartet.n / heap.n / colony.n', 'definition': "This frame contains nouns denoting Aggregates of Individuals.  The Aggregates may be described by an Aggregate_property.   'An army of postal workers descended on my office.'  "}, {'frame': 'Clothing', 'tfidf': 0.578096305665516, 'lexical_unit': 'cape.n / jacket.n / tie.n', 'definition': "This frame refers to clothing and its characteristics,  including anything that people conventionally wear.  The Wearer wears a Garment that has a certain Style, is made of a certain Material, and can be otherwise characterized by a Descriptor.  In some cases, the Body_location (where the garment is worn) and Subregion of the clothing may also be specified.  'Claudia dressed in a dark green cotton DRESS clasped round her slender waist with a broad yellow belt , drank a cup of coffee and opened her neglected post .'"}, {'frame': 'Capability', 'tfidf': 0.5738176234591253, 'lexical_unit': 'capacity.n / potential.n / can.v', 'definition': "An Entity meets the pre-conditions for participating in an Event.  A Degree modifier may be included to indicate by how much the Entity exceeds or falls short of the minimum requirements.  'Conductor software gives us the hands-on capability to provide updates immediately'  'The GOP is afraid that it might not be capable of keeping the seat vacated by Dunn.'  'NASA is unable to communicate with Mars rover.'  'He can fly a kite.'"}, {'frame': 'Temporal_subregion', 'tfidf': 0.5723148648249501, 'lexical_unit': 'outset.n / mid.a / early.a', 'definition': "A Subpart of a Time_period is picked out.  In some cases, the part (as opposed to the entire Time_period) may be described by a Subpart_property.  The Time_period may be indicated by an event which takes place during the Time_period.  'I nearly kicked my TV this afternoon after watching the shambolic end of the Austrian Grand-Prix .' 'Jack Yan looks at how the branding profession will be affected in the early 2000s by globalization .' 'The late part of the afternoon is the worst time to get things done .' "}, {'frame': 'Being_operational', 'tfidf': 0.5700044928885388, 'lexical_unit': 'working.a / busted.a / operational.a', 'definition': "An Object with an understood function is or is not in a state ready to perform that function.  'The remote is almost broken.'  'Hand me that broken watch so I can throw it away.'"}, {'frame': 'Funding', 'tfidf': 0.5696846966913212, 'lexical_unit': 'bankroll.v / back.v / fund.v', 'definition': "A Supplier gives funds to a Recipient to fulfill a need or purpose (Imposed_purpose) of the Recipient.   'The University funded Paige so that she could complete her doctorate.'  ''  Often, the Imposed_purpose appears as a direct object of the target verb instead of the Recipient. With these, the Imposed_purpose can either be metonymically linked to some Recipient, in which case the Recipient FE is marked as DNI: 'Investors financed the software start-up.DNI'   or it can explicitly encompass the Recipient, in which case the Recipient part is annotated on a second FE layer: 'Lobbyists backed the senator's campaign for president.' . . . . . . . . . . . . . . . . . . . . . the senator's"}, {'frame': 'Filling', 'tfidf': 0.5637256013373994, 'lexical_unit': 'dab.v / wallpaper.v / suffuse.v', 'definition': "These are words relating to filling containers and covering areas with some thing, things or substance, the Theme. The area or container can appear as the direct object with all these verbs, and is designated Goal because it is the goal of motion of the Theme. Corresponding to its nuclear argument status, it is also affected in some crucial way, unlike goals in other frames.  'Lionel Hutz coated the wall with paint. '"}, {'frame': 'Spelling_and_pronouncing', 'tfidf': 0.5631027302252605, 'lexical_unit': 'spell.v / misspell.v / pronounce.v', 'definition': 'A Speaker realizes a Sign, usually a linguistic one, in some Formal_realization. The Formal_realization may be described as correct or incorrect in a Judgment expression, or it may be partially indicated as a Part_of_form.  Manner may be used as a more general indication of the Formal_realization  \'A person doesn\'t always pronounce a word the way they say  it in context\'  \'I can\'t spell. INI INI\'  \'Stephanopolous spells his name with a "ph".\'  \'On page 87465, you spelled the name of my dog incorrectly as "Checquers".\'  \'In German, the word for \'peace\' is written "Friede" CNI\''}, {'frame': 'Political_locales', 'tfidf': 0.5624374385361185, 'lexical_unit': 'county.n / federal.a / village.n', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'Gizmo', 'tfidf': 0.5623030275129562, 'lexical_unit': 'instrument.n / tool.n / core.n', 'definition': "This frame contains general words denoting equipment where the Use or purpose is not specified by the lexeme but (typically) by a separate expression. The words are described with respect to the Use for which the item is used or its typical User.  'coffee machine' 'dentist's equipment'"}, {'frame': 'Assistance', 'tfidf': 0.5588632755174332, 'lexical_unit': 'helpful.a / help.v / abet.v', 'definition': "A Helper benefits a Benefited_party by enabling the culmination of a Goal that the Benefited_party has.  A Focal_entity that is involved in reaching the Goal may stand in for it.  This Frame has unique Frame-to-Frame Relations: it inherits from and uses the Intentionally_act frame. This is atypical of FrameNet's frame relations.  'Will you help the Government find your brother?' 'Maybe Stephen should assist him with the last manuscript.' 'They helped me psychologically to overcome the physical loss I had suffered.' 'You have helped him tremendously by showing him  how to stand up for himself and by being his friend.' 'By bringing assistance to his troops wherever they were in trouble he aided them greatly.'"}, {'frame': 'Contacting', 'tfidf': 0.558220304802828, 'lexical_unit': 'ring up.v / call in.v / e-mail.v', 'definition': "A Communicator (whose Location may be indicated) directs a Communication to an Addressee at a particular Address.  Note that no actual successful communicative act is implied, only the successful completion of acts which would establish the communication.  (In other words, Mari can e-mail Jon without Jon ever reading it.) NB:  The Address or Location_of_communicator may be a virtual address, such as an e-mail or telephone number.'Disgruntled voters phoned Congressman Neil at his Washington residence with complaints about the recent increases in corporate welfare.''She tried to call from the payphone down the street.' "}];
+        var frame_list_2 = [{'frame': 'Architectural_part', 'tfidf': 2.5637688636779785, 'lexical_unit': 'mantel.n / wall.n / foundation.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  'We need new counters for the kitchen'  'The storm ripped off the bathroom's roof'  "}, {'frame': 'Connecting_architecture', 'tfidf': 2.5491442680358887, 'lexical_unit': 'lift.n / step.n / door.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  The Part itself connects locations within the building to each other, Connected_locations. If a particular point of view is adopted in the context of real or imagined motion, then one of the locations can be construed as Goal and the other as Source.   'It was of great interest to me to see the star signs of Taurus the Bull and Leo the Lion on the staircase to the upper Palace.'  'All visitors may use the elevator between the Main Level and the Upper Level instead of the main staircase'  'The window into the garden was open.'"}, {'frame': 'Color', 'tfidf': 2.1353256702423096, 'lexical_unit': 'vermilion.a / azure.a / purple.a', 'definition': "A Color serves as a landmark in color-space, either a point-like landmark (e.g. burnt sienna) or a broader region (e.g. blue).  Especially when the Color designates a broad region in color-space, it may be defined with a specific Type, further specified by comparison to the color of a Comparand, modified by a Color_qualifier, or evaluated with a Descriptor.  All color words are generally used to specify the color of some (physical) Entity. 'I really like that shade of blue.' 'The welts on his side had already turned an angry red.' 'The room was bathed in a soft pink light.' 'They promptly set up a zillion bright vermilion pavilions.' 'His face and hands were brown from a life spent in the bright sun of the fields.' "}, {'frame': 'Building_subparts', 'tfidf': 2.111563205718994, 'lexical_unit': 'kitchen.n / buttery.n / laundry.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}, {'frame': 'Vehicle_subpart', 'tfidf': 2.034461259841919, 'lexical_unit': 'part.n / brake.n / window.n', 'definition': "An entity is integrated into a vehicle as a Part of a (possibly unexpressed) Whole which may refer to the whole vehicle or merely to a sub-part of the vehicle.  '' 'The car's engine started smoking so we pulled over.' 'Put the bags in the trunk.' 'One should always wear a seatbelt while driving.' "}, {'frame': 'Food', 'tfidf': 1.7667404413223267, 'lexical_unit': 'stew.n / fish.n / pastry.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Vehicle', 'tfidf': 1.7354357242584229, 'lexical_unit': 'convertible.n / cab.n / airplane.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'Buildings', 'tfidf': 1.6582391262054443, 'lexical_unit': 'disco.n / chalet.n / caravan.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Clothing', 'tfidf': 1.6207023859024048, 'lexical_unit': 'clothes.n / greatcoat.n / cummerbund.n', 'definition': "This frame refers to clothing and its characteristics,  including anything that people conventionally wear.  The Wearer wears a Garment that has a certain Style, is made of a certain Material, and can be otherwise characterized by a Descriptor.  In some cases, the Body_location (where the garment is worn) and Subregion of the clothing may also be specified.  'Claudia dressed in a dark green cotton DRESS clasped round her slender waist with a broad yellow belt , drank a cup of coffee and opened her neglected post .'"}, {'frame': 'Substance', 'tfidf': 1.5941523313522339, 'lexical_unit': 'juice.n / metal.n / methane.n', 'definition': 'This frame concerns internally undifferentiated Substances.   \'As their gut bacteria ferment cellulose , they generate methane gas , which escapes from the rear ends of the insects.\'  \' The pipes are leaking noxious gas.\'  \'Some CH-47 "Bombers" were equipped to roll-out riot control gas or napalm onto Viet Cong bunker complexes from the rear cargo ramp.\''}, {'frame': 'Roadways', 'tfidf': 1.5779768228530884, 'lexical_unit': 'pavement.n / way.n / cul-de-sac.n', 'definition': "This frame involves stable Roadways which connect two stable Endpoints, the Source and the Goal.  Being physical objects, these Roadways may have Names and Characteristics; they are also made of a Material.  They also cover ground, so they may have a Path or a Relative_location that the travel occurs in.  ' We crossed the brick road.' ' I prefer to travel on highway I-80.'  'This is the only highway between Lodi and Sonoma.' ' She dreaded turning onto the busy street.'"}, {'frame': 'Level_of_light', 'tfidf': 1.549104928970337, 'lexical_unit': 'moonless.a / sunless.a / bright.a', 'definition': "There is a gradable amount of light in a particular Location.  In some cases the Source of light may be indicated instead of the Location. '' 'The small print was bearly readable by the light of the very dim torch.' '' 'Tal flew over the barrier and into the dark tunnel.' ''  The negetive LUs in this frame can be used metaphorically to describe time periods which can be characterized as bad or lacking in awareness, as shown in the following examples: '' 'The custody of the era brought about a dark period during which the written word was forgotten and art had disappeared.' '' 'Clinton is shrewd to solidify political support during these dark days.'"}, {'frame': 'Color_qualities', 'tfidf': 1.5249847173690796, 'lexical_unit': 'pale.a / warm.a / light.a', 'definition': "This frame contains words that describe specific aspects of a Color. The Degree to which the Color being discussed deviates from the prototype may be marked. The description may also target a specific Aspect of color.  'I love really pale yellows.'"}, {'frame': 'Temporary_stay', 'tfidf': 1.5194426774978638, 'lexical_unit': 'sleep over.v / stay.v / quarter.v', 'definition': "A Guest stays for a time at a Location, which is not his or her permanent residence, for some Duration. The Location is often the permanent residence of a Host.  'I usually stay with my aunt at her summer house when I go to Seville.'  'For a few days my father lodged at a hotel with a buddy who was a biology student.'"}, {'frame': 'Expressing_publicly', 'tfidf': 1.4874544143676758, 'lexical_unit': 'voice.v / articulate.v / vent.v', 'definition': "A Communicator publically communicates some difficult-to-express Content which they (or a social group of which they are a member) have had for some time. The Content may not have been previously communicated due to inability or social stricture.  In cases where the individuals addressed are a smaller group than the public at large, a separate Addressee may be expressed.  'Those grievances can be aired during Board meetings. CNI'  'Saddam voiced his joy when he was told Spain's new government had left the US-led military coalition in Iraq.'   "}, {'frame': 'Animals', 'tfidf': 1.4323757886886597, 'lexical_unit': 'cat.n / animal.n / dog.n', 'definition': "The LUs in this frame refer to biological entities other than human beings and plants, which are labeled by the FE Animal.  ''  'My husband and I adopted a really sweet dog last year.'  'The cows that live on the farm down the road are always mooing loudly.'"}, {'frame': 'Activity_start', 'tfidf': 1.4212323427200317, 'lexical_unit': 'beginner.n / initiate.v / swing (into).v', 'definition': "An Agent initiates the beginning of an ongoing Activity in which he will be continuously involved. '' 'At the same time, city-states began to grow in influence on the southern Greek mainland.'  'Naturally, I started crying to get out of work.'  "}, {'frame': 'Part_inner_outer', 'tfidf': 1.4136077165603638, 'lexical_unit': 'outside.n / lining.n / exterior.n', 'definition': 'This frame concerns Parts of objects that are defined relative to the center or edge of the object.  The Part is a part of the Whole and the Part_prop describes a property of the Part.  \'She discarded the exterior of the walnut.\' \' She preferred a sparse church interior . \'  In cases where the Target is an adjective, it has a special relationship with the noun that it modifies such that a phrase which is a syntactic argument of the noun is semantically available to fill the argument structure of the adjective, as in "the outside row of the class"\'The inner shelf of the bookcase was lying on the floor.\'  '}, {'frame': 'Cause_harm', 'tfidf': 1.4116430282592773, 'lexical_unit': 'cane.v / impale.v / electrocute.v', 'definition': "The words in this frame describe situations in which an Agent or a Cause injures a Victim. The Body_part of the Victim which is most directly affected may also be mentioned in the place of the Victim.  In such cases, the Victim is often indicated as a genitive modifier of the Body_part, in which case the Victim FE is indicated on a second FE layer. '' 'Rod saw his father beating his mother.'  'In the end Wormtongue is fed up with being beaten so he cuts Saruman's throat to free himself.'  'A mother stabbed to death by her husband made a secret will stating that he must never be allowed to care for their son.'"}, {'frame': 'Race_descriptor', 'tfidf': 1.406661033630371, 'lexical_unit': 'white.a / yellow.a / color.n', 'definition': "This frame covers LUs that describe the race of a Person.  'Carlos is hispanic, or so he says.'"}, {'frame': 'Dead_or_alive', 'tfidf': 1.3756053447723389, 'lexical_unit': 'undead.a / live.v / nonliving.a', 'definition': "A Protagonist is in the dynamic, maintained state of being alive or has exited this state.  'Frank's dead body was apalling.'"}, {'frame': 'Containers', 'tfidf': 1.3733071088790894, 'lexical_unit': 'mailer.n / hamper.n / tank.n', 'definition': "This frame covers entities which are prototypically conceived of and created to fulfill the function of containing--i.e. Containers  that contain objects or substances, the Contents.  This can be expressed as a complement , and includes potential or intended contents.   A Container may also have an Owner, a current Relative_location, Material from which it is constructed, a method of Construction, and a Type.  Note the connection between words in this frame and those in the Filling, Emptying, and Fullness frames. 'a bag of popcorn' 'underwear drawer' 'Chuck's suitcase' 'the suitcase in Chuck's office' 'straw basket' 'woven basket' 'Erlenmeyer flask'"}, {'frame': 'Cotheme', 'tfidf': 1.369684100151062, 'lexical_unit': 'usher.v / show.v / shadow.v', 'definition': "This frame contains words that necessarily indicate the motion of two distinct objects. The Theme is typically animate and is expressed the same way a Self-mover is expressed in the Self-motion frame--i.e. as the subject of a target verb. The Cotheme may or may not be animate and is typically expressed as a direct object or an oblique. Source, Path, Goal, and the other frame elements common to motion words also regularly occur with the words in this frame.  '' 'She accompanied him in the ambulance to Hollywood Memorial Hospital.'  'Police persue teenage joyrider across three counties.'  'My pursuit of academic superiority shows that I was still striving to be the person my parents wanted me to be.'"}, {'frame': 'Weapon', 'tfidf': 1.3566380739212036, 'lexical_unit': 'ballistic missile.n / BW.n / grenade.n', 'definition': "A Weapon is an artifact created specifically to cause harm or damage.  In some cases, a Use, Material of construction, Part or Type may be more narrowly specified.  'Did you, or did you not, fire this gun with intent to harm my client?'  'Cyra tried to swing her sword to parry, but it was to heavy.'  'I investigated a specialist precious metal firearms manufacturer.'  'My neighbor, a member of the NRA since birth, has got an AK-47 fully automatic assault rifle.'  'Let 's just say that he 's the kind of guy who likes guns with hair triggers.' "}, {'frame': 'Breathing', 'tfidf': 1.3444048166275024, 'lexical_unit': 'inhale.v / inhalation [breath].n / exhalation [act].n', 'definition': "An Agent causes Air to move in a direction, usually specifying either in or out of the body.  'Lee breathed the hot desert air.'"}, {'frame': 'Hair_configuration', 'tfidf': 1.324946403503418, 'lexical_unit': 'wavy.a / blonde.a / hairstyle.n', 'definition': "Temporary or permanent Styles and Configurations of Hair, as well as its inherent Nature.  Note that Attachment and Body Part will generally be incorporated in the lexical meanings.  Subregions (e.g. roots, ends) are often not specified, and sometimes incorporated (e.g. in 'bangs')  'On either side her head gleamed coiled braids of dark-gold hair , almost pale copper in the subdued light of the room .'"}, {'frame': 'Working_a_post', 'tfidf': 1.3248363733291626, 'lexical_unit': 'staff.v / work.v / man.v', 'definition': "The Agent is assigned to a Post where he or she performs a task associated with that Post. Alternatively, the Agent is expressed as acting with respect to a Salient_entity associated with the task. In most cases the Salient_entity is located at the Post.  'Volunteers were staffing the telephones.'  'Man your stations! CNI'"}, {'frame': 'Size', 'tfidf': 1.3223727941513062, 'lexical_unit': 'miniature.a / infinitesimal.a / humongous.a', 'definition': 'The size of an Entity is assessed in terms of the Degree by which it deviates from the norm. The size generally refers to the amount of three-dimensional space that is occupied by the Entity, not primarily to its weight, density, or length, which is why it is peculiar to refer to a bullet as "large", even if it is heavy, unless it actually has larger dimensions than usual, or to a rope as "big", even if it is long, unless its other, cross-sectional dimensions are also significant.  \'I own a very small home.\' \'Where is my little notebook?\' \'That dog is huge!\' \'\'  There are an enormous number of productive metaphors that involve this frame as the source domain; two of the most frequent metaphors come from the target domains of quantity/amount and importance.    \'He gave me a small sum of money.\' \'The novel was a substantial achievement.\' \'\'  Subcases of the quantity/amount and importance metaphors are also prominent. These involve cases describing the extent of an action\'s, event\'s, or person\'s effect ("his influence on her work was massive"), as well as those related to events ("big party"), similarity ("gigantic difference"), communication ("giant misunderstanding"), and emotions ("great joy", "little joys").  Other productive metaphors include those dealing with groups (in terms of their number of members, net worth, importance to the economy, i.e. "giant electronics company") and those describing sound volume ("in a tiny voice", "the enormous thundering of her heart").  \'\'  The target domain of fame, by contrast, occurs in a non-productive metaphor, found especially with big.a and huge.a. Maturity and age also occur in non-productive metaphors ("big boy", "little baby").'}, {'frame': 'Residence', 'tfidf': 1.3196905851364136, 'lexical_unit': 'camp.v / bivouac.n / shack up.v', 'definition': "This frame has to do with people (the Residents) residing in Locations, sometimes with a Co-resident.  'Peter lives in New York.' 'Sue is an inhabitant of Los Angeles.'"}, {'frame': 'Change_position_on_a_scale', 'tfidf': 1.3101961612701416, 'lexical_unit': 'growing.a / depressed.a / explode.v', 'definition': 'This frame consists of words that indicate the change of an Item\'s position on a scale (the Attribute) from a starting point (Initial_value) to an end point (Final_value). The direction (Path) of the movement can be indicated as well as the magnitude of the change (Difference).  The rate of change of the value (Speed) is optionally indicated.  Another scale (Correlate), which the values are correlated with, is indicated if it is not the default correlate (namely, absolute time).  \'\' The distinction between Attributes and Items is not always an easy one. The clear cases involve the expression of the Attribute in an in-PP.  \'Hawke\'s Bay winery doubled in size last year.\'  \'The amount you can deduct, then, depends on whether or not the stock has increased in value during the period you have owned it.\'  Other clear cases of Attributes involve NP\'s like size, quality, number, value that denote abstract attributes rather than events or classes of things.   \'\' The analysis is more complicated when an event-denoting noun phrase occurs as the subject and the sentence has no in-PP. In the simplest cases, where the Attribute is the number of occurrences of the event, the Attribute is usually left implicit, as in exx. 1 and 2, the Attribute below.  \'(1)Accidents increased 20% to 345.\' \'(1--second FE layer)Accidents increased 20% to 345.\' \'(2) Attacks on civilians decreased over the last 4 months  DNI.\'  In cases  like (1), we will tag the Attribute on the second layer below the Final_value label, as that FE makes it clear that the Attribute is simply cardinality. In cases like (2), we tag it as DNI because in context the hearer has to understand a particular Attribute rather than just some or any appropriate Attribute of the Item.  Note that the above pattern can be compared to cases involving tangible Items, where the Attribute may similarly be missing when the incidence or frequency of the Item is specified.  \'(3) Woodland birds increasedto their highest level since 1990 DNI.\'   A more complicated case involving event-denoting subjects is when the Attribute measured is not the incidence of the type of event specified but rather an Attribute of an event-participant. In (4), it is not the number of times that turbot was caught that has changed but the amount of fish caught.  \'(4) Turbot catches increased from around 100 tonnes in the 1960s to around 1,200 tonnes in the mid 1990s.\' \'(4-second FE layer) Turbot catches increased from around 100 tonnes in the 1960s to around 1,200 tonnes in the mid 1990s.\'  (Note the 2nd layer annotation of the Attribute below the Initial_value and Final_value FEs, since they indicate that the Attribute is implicitly weight.)  Similarly, in (5), the report is (in context) about the total monetary value of the gifts, not about the number of donations made.  \'(5)Overall Giving by Church Members increased  from 2000 to 2001\'  As can be seen from the above examples, we consider the event nouns in uses such as (4) and (5) to also specify Items. Note that in cases like (4), we do not want to treat the subject NP "turbot catches" as an Attribute that includes information about the Item, since it would not make sense to restate (4) as follows:  \'*Turbot increased in catches.\'  Two more complications arise. First, certain nouns that do not, by their etymology, denote abstract attributes have a second sense in which they do denote an Attribute.  \'(6) The population of Smallville increased fourfold to 807.\'   Under one reading, (6a), the population could be understood as referring to "the people", in which case the Attribute cardinality is understood as unexpressed, as in (1),  (2), and (3).  The Attribute could be overtly specified:  \'(6a) The population of Smallville increased fourfold in size to 807.\'  Under another reading, (6b), population is an Attribute that habitats or locations possess. In this case, the whole NP "the population of Smallville" is treated as the Attribute and on the second layer "of Smallville" is tagged as Item.   \'(6b) The population of Smallville increased fourfold to 807.\' \'(6b-second FE layer) The population of Smallville increased fourfold to 807.\' Support for the possibility of this second reading comes from the fact that you can also state the facts as in (6c).  \'(6c) Smallville increased fourfold in population to 807.\'   The last complication is that Initial_value expressions can also function as the subject, which superficially look like expressions of Attribute.  \'(7) The 1999 price had increased to $3400 by 2001.\' \'(7--second layer) The 1999 price had increased to $3400 by 2001.\'  There is no Attribute "1999 price" here (though the concept is plausible in certain special statistical contexts where prices are indexed to prices of a particular year). (7) simply reports that the value of the price-Attribute changed from whatever it was in 1999 to the new value of $3400 by 2001. For sentence (7), Attribute would only be indicated as "price" on the 2nd layer. '}, {'frame': 'Filling', 'tfidf': 1.3057961463928223, 'lexical_unit': 'asphalt.v / pile.v / coat.v', 'definition': "These are words relating to filling containers and covering areas with some thing, things or substance, the Theme. The area or container can appear as the direct object with all these verbs, and is designated Goal because it is the goal of motion of the Theme. Corresponding to its nuclear argument status, it is also affected in some crucial way, unlike goals in other frames.  'Lionel Hutz coated the wall with paint. '"}, {'frame': 'Process_start', 'tfidf': 1.2876075506210327, 'lexical_unit': 'commencement.n / incipient.a / start.v', 'definition': "An Event begins at a certain Time and Place. Reason may also be indicated.  NB:  Refer to Event frame.  'The project began.'"}, {'frame': 'Activity_done_state', 'tfidf': 1.28367018699646, 'lexical_unit': 'through.a / finished.a / done.a', 'definition': "An Agent has completed an Activity. '' 'Finally I am done cleaning the apartment.'  'Construction on the new Safeway was done by October.'"}, {'frame': 'Seeking', 'tfidf': 1.2704647779464722, 'lexical_unit': 'grope.v / pat down.v / dig.v', 'definition': "A Cognizer_agent attempts to find some Sought_entity by examining some Ground.  The success or failure of this activity (the Outcome) may be indicated.  NB:  This frame should be compared to the Scrutiny frame, in which the primary focus is on the Ground.  'John looked for his pencil.'"}, {'frame': 'Measure_linear_extent', 'tfidf': 1.269182562828064, 'lexical_unit': 'kilometer.n / meter.n / centimeter.n', 'definition': "This frame is concerned with nouns that denote Units of measurement for linear extent. The Frame Elements are Unit, Count,  and Stuff.'The shirt is made from 12 miles of pure cotton.''81 miles of dyke are still visible from this point.'"}, {'frame': 'Used_up', 'tfidf': 1.2678841352462769, 'lexical_unit': 'depleted.a / exhausted.a / through.a', 'definition': "Through use, a Resource is diminished in quality or quantity (up to complete attrition) such that it becomes less capable of sustaining future use.   'My entire life savings is depleted due to university and medical bills.'  'All significant oil and gas reserves are exhausted or have dwindled to an uneconomical level except for those of the Middle East.'  'Use shampoo and conditioner every day until the shampoo and conditioner are completely used up.'"}, {'frame': 'Path_shape', 'tfidf': 1.2664967775344849, 'lexical_unit': 'emerge.v / edge.v / weave.v', 'definition': 'The words in this frame describe the "fictive" motion of a stationary Road.  Some of the targets cast the scene primarily in terms of the Path_shape:  \'The long mountain road meandered through the woods.\'  Some of the words in this frame imply a Source or Goal which is expressed by a direct object:  \'The path entered the garden on the west side.\'  Other members of the frame refer to a Direction: \'Then the path bears a little to the right.\'  Yet others indicate a Path which requires mention of a landmark:  \'The otherwise arrow-straight highway veers north and skirts the lake.\''}, {'frame': 'Distributed_position', 'tfidf': 1.2602882385253906, 'lexical_unit': 'envelop.v / cover.v / blanket.v', 'definition': 'This frame involves a static (primarily spatial) relationship between a Location and a Theme, in which the Theme is located in many or all subregions of the Location, and is thus construable as covering it. The Time when the covering configuration holds, and the Subregion of the Location that is involved may, optionally, be indicated.    \'By Summer, weeds dotted the field .\' \'The papers around my office were too messy .\' Prepositional and verb targets of this frame differ in the ways they can participate in forming sentences; one of the most important differences is that prepositions may modify the entire sentence to describe the event (the Theme) as distributed over the Location. \'Puddles were rippling all over the roof .\'  Some members of this frame specifically indicate that the configuration is attractive or unattractive; this is indicated by the semantic types Positive_judgement and Negative_judgement respectively.  Some of the non-verb LUs of the frame (esp. around.prep) refer to multiple possible positions that might be occupied by a single Theme, often accompanied by "somewhere":  \'I hope my wallet is around here (somewhere) .\'  These same LUs may refer a vague sequence of locations occupied by a single Theme:  \'I kept walking around my apartment .\'  All or virtually all of the verbs used statically in this frame can also occur in the frame Filling, producing pairs such as the following:  \'Filling: Pat covered the table with flowers.\'  \'Distributed_position: Flowers covered the table.\'  \'\' Please note: adorned, covered, etc are in the Abounding_with frame because of the point of view shift. \'\' \'The tree was studded all over with soft dark fruit.\''}, {'frame': 'Scrutiny', 'tfidf': 1.259955644607544, 'lexical_unit': 'investigation.n / surveillance.n / reconnoitre.v', 'definition': "This frame concerns a Cognizer (a person or other intelligent being) paying close attention to something, the Ground, in order to discover and note its salient characteristics.  The Cognizer may be interested in a particular characteristic or entity, the Phenomenon, that belongs to the Ground or is contained in the Ground (or to ensure that such a property of entity is not present).  Some words in this frame allow alternate expressions of the Groundand the Phenomenon: 'We searched the yard  for my contact lens.'"}, {'frame': 'Surrounding', 'tfidf': 1.2494454383850098, 'lexical_unit': 'edge.v / around.prep / astride.prep', 'definition': 'A Figure surrounds a Ground.  The Ground location is presented as more likely to be a known location than the location of the Figure. Some lexical units entail more-or-less complete surrounding in two or three dimensions (e.g. surround.v), while others entail surrounding on only two sides (e.g. astride.prep, straddle.v).  Like other locative relations, the Figure may be any of a movable entity, an immovable entity, or an event.  \'The hand around the sword-hilt was no less impressive than the sword .\' \'The drug war straddles the border of the US and Mexico .\'  This frame resembles the Adorning frame, in that both involve a Figure "covering" some Ground, but the Surrounding frame differs in that the Profiled_region is not coextensive with the Ground, as it is in the Adorning frame, and, in fact, unusually for a locative relation, the Ground entity is normally smaller than the Figure.  For this reason, the verbs of this frame are often used in the passive (restoring the normal relationship of stative subjects to oblique elements). \'\' In addition to several lexical units of this frame originating as metaphorical extentions of much more specific posture descriptions (straddle.v, astride.prep), this frame is itself used in a productive metaphor, involving abstract entities metaphorically "impinging" on other entities (in terms of derivative similarity, control, etc.), as in the following: \'that led to Dolce and Gabbana to base their autumn/winter D and G collection around her style in 2008\' \'But he discovered that the literary world was a battlefield— mined with hatred, rimmed with snipers. \' \'Countless legends sprung up around the knight.\'  Common abstract entities that serve as Figure include emotions (\'the hopelessness surrounding them\'), as well as theories, arguments, and collective philosophies (\'Ageism surrounds us, but passes largely unnoticed\').  This metaphor arises from the normal invited implicature of this frame that the Figure may physically impinge on the Ground, either protecting it, or limiting its motion, or even supporting it.'}, {'frame': 'Front_for', 'tfidf': 1.2465598583221436, 'lexical_unit': 'front.n / front.v / blind.n', 'definition': "An individual or organization, the Front, serves as a cover for an Illicit_activity or an Illicit_organization.  'The laundromat is a front for the Yakuza.'"}, {'frame': 'Cause_motion', 'tfidf': 1.239782452583313, 'lexical_unit': 'chuck.v / draw.v / cast.v', 'definition': 'An Agent causes a Theme to move from a Source, along a Path, to a Goal.  Different members of the frame emphasize the trajectory to different degrees, and a given instance of the frame will usually leave some of the Source, Path and/or Goal implicit. The completion of motion is not required (unlike the Placing frame, see below), although individual sentences annotated with this frame may emphasize the Goal.   \'\' This frame is very broad and contains several different kinds of words that refer to causing motion.  Some words in this frame do not emphasize the Manner/Means of causing the motion (transfer.v, move.v).  For many of the others (cast.v, throw.v, chuck.v, etc.), the Agent has control of the Theme only at the Source of motion, and does not experience overall motion.  For others (e.g. drag.v, push.v, shove.v, etc.) the Agent has control of the Theme throughout the motion; for these words, the Theme is resistant to motion due to some friction with the surface along which they move.    \'She threw her shoes into the dryer .\' \'The mechanic dragged the jack out from under the car .\' \'We will move the sofa out of the room through the french doors, down the stairs, and onto the sidewalk .\' \'\' \'\'  This frame is used in a very large number of productive metaphors, not all of which can be outlined here.  The most salient types include causing an entity, construed as a Theme, to change state from an initial state (Source) via an intermediate state (Path) to a final state (Goal): \'Hillary was catapulted to stardom and his life has never been the same since . CNI\' \'She felt as though flung from health to illness and back by the day , by the hour .\' \'Once our parents are dead , we are catapulted into becoming the older generation ourselves . CNI\' \'Croquet was pushed out by tennis .\' \'\'  A particularly divergent subtype casts changing someone\'s intentions as changing their location: \'Democratsforced the Senate into a rare closed door session .\' \'He nudged Mrs Thatcher towards acceptance of a unified Germany .\' \'\'  Another subtype is specifically about causing a change in quantity (the Theme) through some sequence of values (Source, Path, and Goal): \'Bonus payments would be handed out for pushing up voting levels CNI .\' \'\'  Another type, with many subtypes, involves causing an action or state (construed as a Theme) to have an effect on another person or location or conceptual domain. In such cases, theGoal is used for the final affected domain, and Source for initial affected domain, Path for an intermediate affected domain, and Distance for degree of difference between original application of the action and final: \'Jake had been hurling these same insults at her now for years\' \'One can not press this argument too far .\' \'She shoved the thought to the very back of her mind .\' \'She flung him a savage little smile .\' All of the foregoing metaphorical uses are annotated in this frame and marked "Metaphor", since they seem to be semantically motivated and not lexically idiosyncratic. \'\' \'\'  This frame contrasts with the following frames which talk about an Agent changing a Theme\'s position with respect to a landmark (either Source or Goal): \'\'  In Placing, the figure (Theme) is profiled as the object, and ends up on the ground (Goal).  The focus is on the final stage of motion, in which the Theme ends up at the Goal, and usually stably remains there. \'Joyce placed the flowers onto the bed.\' \'\'  In Filling, the ground (Goal) is profiled as the object, and the figure (Theme) ends up on the ground (Goal). \'John filled the box with old toys.\' \'\'  In Removing, the figure (Theme) is profiled, and is removed from the ground (Source). \'Jennifer removed the flowers from the bed.\' \'\'  In Emptying, the ground (Source) is profiled and the figure (Theme) is removed from it. \'Jason emptied the box of the old toys .\' \'\'  Words of this frame also differ from the words of the Bringing frame in that they are more general:  either the Agent has a momentary interaction with the Theme that causes its motion, unlike the continuous causation of Bringing, or the Agent continuously acts on the Theme, but there is no supporting object that helps with the motion like the Carrier of the Bringing frame.  '}, {'frame': 'Facial_expression', 'tfidf': 1.2380532026290894, 'lexical_unit': 'frown.n / grimace.n / look.n', 'definition': "The words in this frame refer to facial Expressions and the Possessors of those Expressions.  'His lackluster smile revealed his disappointment.'"}, {'frame': 'Containing', 'tfidf': 1.2325159311294556, 'lexical_unit': 'hold.v / store.v / house.v', 'definition': "In this frame a Container holds within its physical boundaries the Contents.  'The box holds three hundred pictures.'"}, {'frame': 'Artistic_style', 'tfidf': 1.22882878780365, 'lexical_unit': 'look.n / sound.n / order.n', 'definition': "This frame contains LUs that express the Form which a piece of Artwork represents. The Form may also represent the entire body  of an Artist's work. The Form may be further characterized by the Time of some Artwork's creation or other Descriptors.  'Her style of painting is an excellent blend of traditional and modern.' 'The whimsical style of this piece is very effective.'"}, {'frame': 'Locale_by_use', 'tfidf': 1.2125111818313599, 'lexical_unit': 'complex.n / pub.n / campus.n', 'definition': "Geography as defined by its use.   'You must land in the next airfield, as this one is currently having difficulties.' 'The new sports complex was the tallest building on campus, oddly enough.' 'Cities of the Northeast tend to be dingier.'"}, {'frame': 'Political_locales', 'tfidf': 1.1979178190231323, 'lexical_unit': 'town.n / jurisdiction.n / international.a', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'Natural_features', 'tfidf': 1.1928744316101074, 'lexical_unit': 'ravine.n / continent.n / shoal.n', 'definition': "The Locale is a geographical location as defined by shape.  This frame includes natural geographic features, including land/ice forms and bodies of water.  ' We climbed up the rock cliff.' "}, {'frame': 'Measurable_attributes', 'tfidf': 1.1893670558929443, 'lexical_unit': 'high.a / thick.a / deep.a', 'definition': "An Entity has a particular scalar Attribute with a value exceeding a contextually-specified or generally-understood standard. Except where there is a difference in FEs, we place all adjectives related to measurable quantities in this frame. Note that when an adjective appears with a quantity expression (e.g., 6 feet long), it belongs to the Dimension frame.  'That ladder is really tall.'  'After his back injury, he won't lift heavy boxes.'"}, {'frame': 'Being_operational', 'tfidf': 1.1865819692611694, 'lexical_unit': 'work.v / broken.a / functional.a', 'definition': "An Object with an understood function is or is not in a state ready to perform that function.  'The remote is almost broken.'  'Hand me that broken watch so I can throw it away.'"}];
+    </script>
+    <script type="text/javascript" src="word_cloud_prediction.js"></script>
+    <script type="text/javascript" src="../mturk.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 150px;
+            padding-right: 150px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel_1 canvas, #word_cloud_panel_2 canvas {
+            display: none;
+        }
+        .word_cloud_box canvas {
+            display:none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+        .word_cloud_box {
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 3px rgba(70, 70, 70, 1) solid;
+            padding: 20px;
+            margin-bottom: 20px; 
+        }
+        .word_cloud_box:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+        }
+        .selected_story_block {
+            border-color: #7BDFF2;
+            border-width: 3px;
+            box-shadow: 0 0 10px 10px rgba(123, 223, 242, 0.3);
+            background-color: rgba(239, 247, 246, 0.8);
+        }
+        .indicator {
+            /*font-family: Courier;
+            font-weight: bold;*/
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px black solid;
+            border-radius: 20px;
+        }
+
+        .selected_story_block .indicator {
+            background-color: rgb(123, 223, 242);
+        }
+
+        #story_content {
+            max-height: 600px;
+        }
+        .not_qualified {
+            color: red;
+            font-weight: 900;
+        }
+        .qualified {
+            color: black;
+            font-weight: 900;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Which word-cloud best represents the story snippet?</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that a computer automatically 
+            generated to characterize a story snippet. 
+            The words in the word cloud <strong>do NOT necessarily occur</strong> in the story snippet. 
+            These words can just be relevant or semantically similar. <br/><br/>
+
+            A <strong>word-cloud representation with nouns</strong> is a group of nouns a computer automatically 
+            generated to characterize a story snippet. 
+            These nouns can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            In this HIT, you will see a story snippet. <span class="highlight">Please read it carefully.</span>
+            The story is long so we have a <span class="highlight">3 minutes time lock</span> for submission.
+            <br/><br/>
+
+            At the bottom of the HIT, you will see three sets of word-cloud representations, 
+            where each consists of nouns, verbs, and adjectives. 
+            <span class="highlight">Please select the word-cloud representation that best represents the story.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following story snippet carefully!</h3>
+            You will need to select the word-cloud representation that best represents this story. 
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story</h4>
+                        <h5>(An excerpt from the book <span style="font-weight:bold;">"The Salem Concord Book 1 Interview For A Wizard"</span>.)</h5>
+                        <span class="not_qualified" id="read_lock">Please read all the story.</span>
+                        <br/><br/>
+                        <pre id="story_content">
+He turned to his laptop and entered www.google.com.
+The familiar web search engine appeared.
+He thought for a moment.
+What to search for?
+He entered "Claw" not knowing what was his first name.
+The responses were too many.
+Forget that, he thought, I'll be here forever.
+Then he thought again.
+He hesitated for a moment withdrawing his hands from the keyboard.
+Why not?
+He typed, "Mount Dora murders."
+Another list of responses appeared.
+Slowly, he glanced down the different options.
+Jesse read, Ira Lefkoff finally convicted of murder after three years...
+He selected this option and a new site appeared on the screen from the local Mount Dora Newspaper.
+Jesse read on.
+Ira Lefkoff, age 77, found guilty of six murders.
+Victims frightened to death.
+How does a 77-year-old man scare someone to death?
+Ira Lefkoff, retired, moved from Chicago after working thirty-five-years as a candy sales representative for Hershey's.
+The first murder took place in front of his home at the bus stop, the others in the same manner every six months.
+Evidence inside the convicted murderer's house proved that Ira Lefkoff was obsessed with fright tactics.
+Investigators found articles, movies and journal descriptions of how he committed the murders.
+All six victims suffered from heart attacks.
+Families and friends of the victims were satisfied with the jury's deliberation.
+The convicted testified that he did not commit any of the accused crimes.
+He repeatedly vocalized that he was framed.
+Ira Lefkoff was found later that afternoon dead in his cell.
+Autopsy report revealed that Ira Lefkoff suffered a heart attack and died from fear.
+"Weird," whispered Jesse.
+He looked around the room, feeling watched.
+The boxes were still at the top of the stairs but by tomorrow morning they would be gone.
+Not this time, Jesse thought, this time I'm going to catch you.
+However, the truth was that he was hoping that nothing would happen.
+The truth was that Jesse was hoping that tomorrow morning the boxes would still be there and that all this was nothing more than a mistake.
+Jesse was feeling restless after spending too many hours stuck inside Alivan's Wizards and Witches Corner Store.
+He peered out the window again hoping to see something or someone that would distract him, but it was still dark and quiet.
+He glanced at his cell phone, nothing.
+Jesse stretched and yawned with such intensity that he thought it would never end.
+He pushed the keyboard aside, crossed his arms on the desk, and laid his head down.
+Just ten minutes, he thought to himself.
+Jesse was abruptly awakened when he heard something outside.
+He apprehensively looked around the store.
+The boxes were still in their place.
+He heard it again, shuffling, struggling.
+Jesse looked out the window.
+Everything was still.
+Even the laptop went into sleep mode.
+Then he heard it again, it came from outside the front door.
+Jesse froze.
+He anxiously observed the door as the handle slowly turned.
+It turned to the left and then to the right, then a slight push but the door was locked.
+It must be Mr. Claw, thought Jesse.
+I got him.
+I'm going to be the one able to identify Mr. Claw.
+I solved the mystery.
+Jesse rose from his chair and slowly made his way to the front door.
+Cautiously, he spread apart the window blind and took a quick look.
+Jesse saw nothing.
+Strange, he thought.
+He reached down and gripped the door handle and with the other unlocked the bolted lock.
+The hanging bell rang slowly, mysteriously.
+Jesse slowly opened the door and found a man standing before him in the dark.
+His heart was beating through his chest as he turned the porch lights on.
+An elderly man with sunken eyes and dressed in striped prison clothes faced him.
+He stepped forward awkwardly, reaching out zombie-like.
+Jesse stepped back.
+He moved deathlike towards Jesse.
+Jesse could feel his heart beating in his ears.
+He didn't know how to react.
+The old man stood only inches from Jesse, and opened his mouth.
+Stale breath rushed over Jesse's face.
+The old man opened his mouth wider and wider.
+Shrieks and howls filled the room as the mouth grew and grew.
+Jesse tried to move but he was too scared.
+The man's teeth, stained and rotted passed the top of Jesse's head.
+Jesse shuddered.
+The old man's mouth completely covered Jesse's head.
+Jesse yelled and yelled and yelled.
+Jesse fell from his chair and woke up, his heart still beating rapidly.
+The answering machine followed crashing upon the hard wood floor.
+It took him a few minutes to calm down and realize that he was experiencing a terrible nightmare.
+Jesse quickly rose to his feet and looked around the room, and up the stairs.
+The boxes were gone.
+Chapter 7 Wednesday
+Jesse locked the front door with his key, still perplexed that the boxes were missing.
+It was unexplainable, and yet they were missing.
+He searched the entire store for them unsuccessfully.
+With nothing more to do, he decided to go home.
+"Did you hear it?"
+The tight grip on his shoulder startled Jesse making him jump.
+"Did you hear it?"
+The homeless man repeated as he drew uncomfortably close to Jesse's face.
+Jesse backed away climbing down the steps.
+The homeless man followed.
+"Hear what?"
+"That raving mad laughter!"
+The homeless man covered his ears as his hands trembled.
+"The same laughter I heard before all those people were murdered."
+"You saw who killed them?"
+"I found them dead!"
+Jesse stepped further away.
+"I would hear the laughter and come out."
+The homeless man pointed to the dark alley.
+"They would be dead.
+I told the police that it wasn't Mr. Lefkoff.
+He was too kind - - always giving me something to eat.
+It was him, the stranger with the laugh always telling me insane stories to torture me."
+"Who?"
+Jesse drew closer.
+"I don't know, but he knows that I know.
+He knows!"
+"Did you tell the police?"
+"He said he would kill me...he knows that I know!
+He knows that I know...he knows!"
+The homeless man lunged forward barely missing Jesse and rushed across the street disappearing back into the dark alley.
+Jesse tossed and turned in bed all night.
+Every time he closed his eyes hoping to fall asleep, he would repeatedly envision the horrific dream.
+It was enough to make anyone die of a heart attack.
+He could still feel his heart throbbing in his head, and his hands cold and clammy.
+The other option was to stay up all night and figure out how the boxes were moved.
+It was impossible.
+No one was able to get in or out of Alivan's Wizards and Witches Corner Store without passing in front of his counter.
+Even if he had fallen asleep, he would have heard the door bells ring as the front door opened, and it was impossible for anyone to come in through the back door because not only was it locked, the amount of junk piled up against it would require effort and time to move.
+Over and over, Jesse replayed the events of the evening in his head, and each time he failed to come up with one reasonable explanation for how the boxes disappeared.
+He searched the entire store.
+He even went as far as to try to enter Mr. Claw's office.
+Although hesitant, he knocked on the office door, and when there was no response, he listened against the door for any sign of movement.
+All was silent.
+Determined, Jesse tried to open the door, but it was locked.
+It was useless.
+The morning sun was rising slowly, casting soft shadows across the floor and walls.
+It was Wednesday, four days before Halloween, and three days before the annual Halloween festival.
+It was going to be a busy day for sure.
+So Jesse decided to make an early start of it.
+Not that he was in a rush to return to work, but on the way he could stop by the Deli and speak to Cindy.
+The Mount Dora Annual Halloween Festival was a very profitable fundraiser sponsored by local organizations to help raise money for needy causes.
+Recently, it attracted tourists from the main city who enjoyed escaping the hustle and bustle for the weekend.
+Alivan's Witches and Wizards Corner Store was in the perfect place at the perfect time to service everyone seeking last minute costumes for the event.
+That was enough to cause Jesse to be stressed out.
+He didn't need to add on top of his work pressure a secret agent wizard out to stop a mad wizard.
+Jesse heard a low beep coming from his cell phone as he threw on a clean shirt.
+He walked around his bed to his dresser where he plugged his cell phone last night to charge.
+"Meet me for breakfast at the same place."
+It was a text message from the wizard Beifar.
+He's Okay, thought Jesse, somewhat relieved.
+"You buying?"
+Jesse responded.
+***
+It was 8:00 a.m. on Jesse's watch.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+
+        <h3>Select the word-cloud representation that best represents the above story.</h3>
+        Below, there are three word-cloud representations. Read them carefully and select the one that best represent the above story.
+        <br/><br/>
+
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_1" value="1">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 1</h3>
+                The following three word clouds jointly represent the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_2" value="2">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 2</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_2">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_2">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_2">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_2-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <!--div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_3" value="3">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 3</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_3">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_3-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_3">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_3-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_3">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_3-png-container" class="text-center"></div>
+            </div>
+        </div-->
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="191">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_150">
+            <input name="note" type="hidden" value="LGBM, BERT">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+    </div>
+
+</body>
+</html>

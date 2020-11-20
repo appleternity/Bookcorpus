@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="text/javascript">
+        var frame_list_1 = [{'frame': 'Breathing', 'tfidf': 1.8840886354446411, 'lexical_unit': 'expire.v / breath.n / insufflate.v', 'definition': "An Agent causes Air to move in a direction, usually specifying either in or out of the body.  'Lee breathed the hot desert air.'"}, {'frame': 'Manipulation', 'tfidf': 1.8640187978744507, 'lexical_unit': 'grip.v / tickle.v / clasp.v', 'definition': "The words in this frame describe the manipulation of an Entity by an Agent.  Generally, this implies that the Entity is not deeply or permanently physically affected, nor is it overall moved from one place to another.  'Ian squeezed Mara's hand.' ''  A number of lexemes listed in this frame also occur in the Cause_motion frame (for example, push, yank).  Only the non-motion uses of these words belong in this frame, e.g., combinations such as push at, push on, yank at. "}, {'frame': 'Communication_response', 'tfidf': 1.6548199653625488, 'lexical_unit': 'riposte.n / rejoin.v / acknowledge.v', 'definition': 'This frame deals with a Speaker communicating a reply or response, a Message, to some prior communication or action, the Trigger.  \'\' \'The landlord has not yet replied in writing to the tenant objecting the proposed alterations.DNI\'  \'"No, I do not agree with you," responded another officer to the CEO. DNI\''}, {'frame': 'Shaped_part', 'tfidf': 1.4732029438018799, 'lexical_unit': 'handle.n / arm.n / mouth.n', 'definition': "An entity is a shaped Part of a larger Whole. The Part may correspond in form and  function  to a part of another entity. For instance, the leg of a table supports the weight of a table like the leg of an animal or person supports their weight. The Orientation of the Part relative to the Whole may be expressed.  'I removed the brim of the hat'  'Bill likes to chew the waxy rind of the cheese'"}, {'frame': 'Connecting_architecture', 'tfidf': 1.4541584253311157, 'lexical_unit': 'escalator.n / gate.n / door.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  The Part itself connects locations within the building to each other, Connected_locations. If a particular point of view is adopted in the context of real or imagined motion, then one of the locations can be construed as Goal and the other as Source.   'It was of great interest to me to see the star signs of Taurus the Bull and Leo the Lion on the staircase to the upper Palace.'  'All visitors may use the elevator between the Main Level and the Upper Level instead of the main staircase'  'The window into the garden was open.'"}, {'frame': 'Expressing_publicly', 'tfidf': 1.4400839805603027, 'lexical_unit': 'expression.n / air.v / voice.v', 'definition': "A Communicator publically communicates some difficult-to-express Content which they (or a social group of which they are a member) have had for some time. The Content may not have been previously communicated due to inability or social stricture.  In cases where the individuals addressed are a smaller group than the public at large, a separate Addressee may be expressed.  'Those grievances can be aired during Board meetings. CNI'  'Saddam voiced his joy when he was told Spain's new government had left the US-led military coalition in Iraq.'   "}, {'frame': 'Reason', 'tfidf': 1.3992035388946533, 'lexical_unit': 'why.n / reason.n / motive.n', 'definition': "A volitional  Agent is responding to a State_of_affairs by performing some Action.  'And was that your reason for becoming an actor ?' 'But Giles is the reason that I am here .' 'Oh my reason for including it was Section fifty four A.'  "}, {'frame': 'Protecting', 'tfidf': 1.3678847551345825, 'lexical_unit': 'shield.v / protect.v / protection [entity].n', 'definition': "Some Protection prevents a Danger from harming an Asset.  'The rubber on her sneakers protected her from the mud.'  'The coral reefs shielded the coastline from the worst of the waves.'  'A growing number of sustainable farmers are preserving agricultural variety and protecting biodiversity by raising ?heritage? or ?heirloom? varieties.'  'The man responsible for this entire ordeal cowardly shielded himself from justice with the little boy's struggling body.'"}, {'frame': 'Making_faces', 'tfidf': 1.3604528903961182, 'lexical_unit': 'frown.v / smirk.v / smile.v', 'definition': "An Agent makes a particular facial expression, generally in response to some Internal_cause (generally an emotional state).  Sometimes the Body_part involved in the expression is mentioned in lieu of the Agent.  'His eyes smile, but his lips do not.'"}, {'frame': 'Have_as_requirement', 'tfidf': 1.3424739837646484, 'lexical_unit': 'require.v / need.v / demand.v', 'definition': "The obtaining of a Requirement state of affairs or the presence of a Required_entity is profiled as a prerequisite for the obtaining or occurring of a Dependent state-of-affairs.  'This game demands great skill.'  'The war on terror requires little sacrifice for most Americans.'  'Glass  art demands great patience from the student.'"}, {'frame': 'Building_subparts', 'tfidf': 1.3336048126220703, 'lexical_unit': 'altar.n / refectory.n / laundry room.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}, {'frame': 'Vehicle_subpart', 'tfidf': 1.323325276374817, 'lexical_unit': 'hood.n / seatbelt.n / seat.n', 'definition': "An entity is integrated into a vehicle as a Part of a (possibly unexpressed) Whole which may refer to the whole vehicle or merely to a sub-part of the vehicle.  '' 'The car's engine started smoking so we pulled over.' 'Put the bags in the trunk.' 'One should always wear a seatbelt while driving.' "}, {'frame': 'Cause_change_of_position_on_a_scale', 'tfidf': 1.3087425231933594, 'lexical_unit': 'move.v / swell.v / knock down.v', 'definition': "This frame consists of words that indicate that an Agent or a Cause affects the position of an Item on some scale (the Attribute) to change it from an initial value (Value_1) to an end value (Value_2). The direction of the change (Path) can be encoded as well as the magnitude of the change (Difference). The rate of change of the value (Speed) can optionally be indicated as well as a second scale (Co_Variable), which the values are correlated with.  '' 'The company is raising the final dividend from 4.34p to 4.57p, to boost the total by 5.3 percent to 6.36p.'  'Similarly, a consumer boom will encourage the authorities to increase interest rates in order to keep money supply on target.'  'United Way of Central Indiana adds value to your investment.'"}, {'frame': 'Sensation', 'tfidf': 1.288944959640503, 'lexical_unit': 'sound.n / perfume.n / image.n', 'definition': "This frame contains nouns that refer to sensations in different modalities. The FE Source is used for the phenomenon that gives rise to the sensation in question. The FE Percept is used for the characteristic quality of the sensation. In cases of veridical perception these are not typically distinguished from one another; we use the FE Percept as the default in these cases. With some nouns in this frame it is possible to express the being who experiences the sensation, or the part of the body of such a being. We mark such expressions with the FEs Perceiver_passive and Body_part, respectively. (The -passive part of this label serves to distinguish this FE from the Perceiver-Agentive FE used in other frames.)  '' 'The huge sand dunes, perpetually changing, make for a surreal sight.'  'Endill heard the noise of glass smashing, plaster crumbling and furniture being broken.'  'The feel of his strong fingers enclosing her small palm came as something of a shock to her system.'"}, {'frame': 'Questioning', 'tfidf': 1.273972749710083, 'lexical_unit': 'questioning.n / grill.v / inquire.v', 'definition': "The words in this frame have to do with a Speaker asking an Addressee a question which calls for a reply (as opposed to making a request which calls for an action on the part of the Addressee).  '' 'We asked Ruby what kind of food they ate.'  'Yeats was able to interrogate the spirit world about his relationship with Maude.'"}, {'frame': 'Coming_to_believe', 'tfidf': 1.2685490846633911, 'lexical_unit': 'surmise.v / find.v / realize.v', 'definition': "A person (the Cognizer) comes to believe something (the Content), sometimes after a process of reasoning. This change in belief is usually initiated by a person or piece of Evidence. Occasionally words in this domain are accompanied by phrases expressing Topic, i.e. that which the mental Content is about.   'Based on the most recent census I have concluded that most Americans sleep too much.'     "}, {'frame': 'Being_at_risk', 'tfidf': 1.2597424983978271, 'lexical_unit': 'vulnerability.n / vulnerable.a / security.n', 'definition': 'An Asset is in a state where it is exposed to or otherwise liable to be affected by a Harmful_event, which may be metonymically evoked by reference to a Dangerous_entity. Words expressing relative safety (i.e., lack of risk) are also in this frame.  \'If you are a farmer, you are at risk for hearing loss caused by noise exposure in your work.\'  \'No child is secure from the temptation to do what "my friends" are doing.\'  \'Our nation is making a disastrous mistake thinking that we can have security from people: There is only security with people. \'  \'You don\'t have security against impersonation unless you have security against eavesdropping.\''}, {'frame': 'Resolve_problem', 'tfidf': 1.2554845809936523, 'lexical_unit': 'deal.v / work through.v / answer.n', 'definition': "An Agent resolves an outstanding Problem by finding its solution, explanation, answer, etc.  Alternatively, some non-agentive Cause may resolve the Problem.  The Means, Degree, Time and Place may also be expressed.  'As it turns out, putting all of my eggs in one basket completely solved all of my problems.' 'Students finally worked through all of the difficult problems by working together.'"}, {'frame': 'Attention', 'tfidf': 1.2532525062561035, 'lexical_unit': 'closely.adv / attend.v / attention.n', 'definition': "This frame concerns a Perceiver's state of readiness to process and consider impressions of a Figure within a Ground.  It is often unknown to the Perceiver whether or not the Figure exists within the Ground. Alternatively, the Expressor may be expressed as showing signs of the Perceiver's state of attentiveness.  'Legislator tells consumers to be alert to dioxin levels.'  'They demand an attentive gaze, a careful accounting of parts.'"}, {'frame': 'Difficulty', 'tfidf': 1.2461888790130615, 'lexical_unit': 'ease.n / near thing.a / tricky.a', 'definition': 'An Experiencer has an easy or difficult time carrying out an Activity. The ease or difficulty associated with the Activity seems to often be associated with a prominent participant. However, we consider this impression to be due to the syntax and pragmatics of the relevant sentence constructions and employ no special FE for such participants. The Degree of ease or difficulty is often specified as well as a set of Circumstances. A Parameter may be mentioned that indicates in which respect the Activity is judged to be easy or difficult. \'\' Unmarked LUs of this frame indicate that something is easy, while LUs of this frame that mean the opposite of easy are marked with the semantic type "Negative", as in difficult.a, arduous.a, and a bitch.n.    \'(1) John is easy to please.\' \'(2) It is easy to get Alex annoyed.\' \'(3) Smithers is very tough for me to please.\' \'(4) VWs are easy to repair.\' \'(5) The dating of western sculpture is difficult.\' \'(6) In that kind of wind the course is physically very tricky.\' \'(7) The last question on the exam was hard. \' \'(8) The last one was a hard question to answer. \''}, {'frame': 'Needing', 'tfidf': 1.240835428237915, 'lexical_unit': 'require.v / need.n / need.v', 'definition': "The speaker believes that some state of affairs or entity (the Requirement) must be present in order to cause some other dependent state of affairs to occur (the Dependent).  In the typical case, the Cognizer desires the occurrence of the Dependent and so also desires the obtainment or occurrence of the Requirement.  'I need one more bolt. DNI' 'I need one more nail to finish building the cabinet.' 'In order to complete the treaty, the United States will require several more diplomats.' 'He needs everyone to leave his office to finish his work.'"}, {'frame': 'Clothing', 'tfidf': 1.2372550964355469, 'lexical_unit': 'sarong.n / trousers.n / vestment.n', 'definition': "This frame refers to clothing and its characteristics,  including anything that people conventionally wear.  The Wearer wears a Garment that has a certain Style, is made of a certain Material, and can be otherwise characterized by a Descriptor.  In some cases, the Body_location (where the garment is worn) and Subregion of the clothing may also be specified.  'Claudia dressed in a dark green cotton DRESS clasped round her slender waist with a broad yellow belt , drank a cup of coffee and opened her neglected post .'"}, {'frame': 'Desirable_event', 'tfidf': 1.2323486804962158, 'lexical_unit': 'bad idea.n / be supposed to.v / have to.v', 'definition': "A particular State_of_affairs is desirable.  The State_of_affairs may be required to achieve a Purpose.  A set of Circumstances may be specified under which the assessment of desirability holds.   'You should take the doses about 12 hours apart and at the same time each day.' ' If the metal is seriously rusted or warped, it should be repaired or replaced with a chimney top damper.' 'To ensure that, you should have no CLASSPATH set.'"}, {'frame': 'Experience_bodily_harm', 'tfidf': 1.2228302955627441, 'lexical_unit': 'injury.n / break.v / sunburn.v', 'definition': "An Experiencer is involved in a bodily injury to a Body_part.  (In some cases, no Body_part need be indicated.)  Often an Injuring_entity on which the Experiencer injures themselves is mentioned. 'I think that I hurt myself pretty bad back there.' 'He smacked his head on the mantel getting up from poking at the fire.'"}, {'frame': 'Cause_to_move_in_place', 'tfidf': 1.2131165266036987, 'lexical_unit': 'roll.v / spin.v / vibrate.v', 'definition': "An Agent causes a Theme to move with respect to a certain Fixed_location, generally with a certain Periodicity, without undergoing unbounded translational motion or significant alteration of configuration/shape. 'Paul shook the remote control frantically.'"}, {'frame': 'Temporary_stay', 'tfidf': 1.2106720209121704, 'lexical_unit': 'board.v / lodge.v / quarter.v', 'definition': "A Guest stays for a time at a Location, which is not his or her permanent residence, for some Duration. The Location is often the permanent residence of a Host.  'I usually stay with my aunt at her summer house when I go to Seville.'  'For a few days my father lodged at a hotel with a buddy who was a biology student.'"}, {'frame': 'Expectation', 'tfidf': 1.207157850265503, 'lexical_unit': 'unpredictable.a / expect.v / expectation.n', 'definition': "Words in this frame have to do with a Cognizer believing that some Phenomenon will take place in the future.  Some words in the frame (e.g. foresee.v) indicate that the Phenomenon is asserted also to be true, while others do not.  'Michael expected Abby to demand examples.' 'From the look on her face Michael expected that she would say she got the job.'  "}, {'frame': 'Conditional_occurrence', 'tfidf': 1.2060346603393555, 'lexical_unit': 'if.scon / in case.scon / assuming.scon', 'definition': "A Consequence is presented as occurring if the Profiled_possibility occurs.  See Conditional_scenario for further information.    'If you take too long , the train will leave without you .'"}, {'frame': 'Communication_manner', 'tfidf': 1.205908179283142, 'lexical_unit': 'stammer.v / slur.v / gibber.v', 'definition': "The words in this frame describe Manners of verbal communication.  All of them can occur with quoted expressions.   'He slurred his confession.'"}, {'frame': 'Cause_motion', 'tfidf': 1.2025283575057983, 'lexical_unit': 'jerk.v / scoot.v / transfer.v', 'definition': 'An Agent causes a Theme to move from a Source, along a Path, to a Goal.  Different members of the frame emphasize the trajectory to different degrees, and a given instance of the frame will usually leave some of the Source, Path and/or Goal implicit. The completion of motion is not required (unlike the Placing frame, see below), although individual sentences annotated with this frame may emphasize the Goal.   \'\' This frame is very broad and contains several different kinds of words that refer to causing motion.  Some words in this frame do not emphasize the Manner/Means of causing the motion (transfer.v, move.v).  For many of the others (cast.v, throw.v, chuck.v, etc.), the Agent has control of the Theme only at the Source of motion, and does not experience overall motion.  For others (e.g. drag.v, push.v, shove.v, etc.) the Agent has control of the Theme throughout the motion; for these words, the Theme is resistant to motion due to some friction with the surface along which they move.    \'She threw her shoes into the dryer .\' \'The mechanic dragged the jack out from under the car .\' \'We will move the sofa out of the room through the french doors, down the stairs, and onto the sidewalk .\' \'\' \'\'  This frame is used in a very large number of productive metaphors, not all of which can be outlined here.  The most salient types include causing an entity, construed as a Theme, to change state from an initial state (Source) via an intermediate state (Path) to a final state (Goal): \'Hillary was catapulted to stardom and his life has never been the same since . CNI\' \'She felt as though flung from health to illness and back by the day , by the hour .\' \'Once our parents are dead , we are catapulted into becoming the older generation ourselves . CNI\' \'Croquet was pushed out by tennis .\' \'\'  A particularly divergent subtype casts changing someone\'s intentions as changing their location: \'Democratsforced the Senate into a rare closed door session .\' \'He nudged Mrs Thatcher towards acceptance of a unified Germany .\' \'\'  Another subtype is specifically about causing a change in quantity (the Theme) through some sequence of values (Source, Path, and Goal): \'Bonus payments would be handed out for pushing up voting levels CNI .\' \'\'  Another type, with many subtypes, involves causing an action or state (construed as a Theme) to have an effect on another person or location or conceptual domain. In such cases, theGoal is used for the final affected domain, and Source for initial affected domain, Path for an intermediate affected domain, and Distance for degree of difference between original application of the action and final: \'Jake had been hurling these same insults at her now for years\' \'One can not press this argument too far .\' \'She shoved the thought to the very back of her mind .\' \'She flung him a savage little smile .\' All of the foregoing metaphorical uses are annotated in this frame and marked "Metaphor", since they seem to be semantically motivated and not lexically idiosyncratic. \'\' \'\'  This frame contrasts with the following frames which talk about an Agent changing a Theme\'s position with respect to a landmark (either Source or Goal): \'\'  In Placing, the figure (Theme) is profiled as the object, and ends up on the ground (Goal).  The focus is on the final stage of motion, in which the Theme ends up at the Goal, and usually stably remains there. \'Joyce placed the flowers onto the bed.\' \'\'  In Filling, the ground (Goal) is profiled as the object, and the figure (Theme) ends up on the ground (Goal). \'John filled the box with old toys.\' \'\'  In Removing, the figure (Theme) is profiled, and is removed from the ground (Source). \'Jennifer removed the flowers from the bed.\' \'\'  In Emptying, the ground (Source) is profiled and the figure (Theme) is removed from it. \'Jason emptied the box of the old toys .\' \'\'  Words of this frame also differ from the words of the Bringing frame in that they are more general:  either the Agent has a momentary interaction with the Theme that causes its motion, unlike the continuous causation of Bringing, or the Agent continuously acts on the Theme, but there is no supporting object that helps with the motion like the Carrier of the Bringing frame.  '}, {'frame': 'Facial_expression', 'tfidf': 1.197227954864502, 'lexical_unit': 'smile.n / expression.n / pout.n', 'definition': "The words in this frame refer to facial Expressions and the Possessors of those Expressions.  'His lackluster smile revealed his disappointment.'"}, {'frame': 'Assistance', 'tfidf': 1.1917849779129028, 'lexical_unit': 'helpful.a / aid.v / help.n', 'definition': "A Helper benefits a Benefited_party by enabling the culmination of a Goal that the Benefited_party has.  A Focal_entity that is involved in reaching the Goal may stand in for it.  This Frame has unique Frame-to-Frame Relations: it inherits from and uses the Intentionally_act frame. This is atypical of FrameNet's frame relations.  'Will you help the Government find your brother?' 'Maybe Stephen should assist him with the last manuscript.' 'They helped me psychologically to overcome the physical loss I had suffered.' 'You have helped him tremendously by showing him  how to stand up for himself and by being his friend.' 'By bringing assistance to his troops wherever they were in trouble he aided them greatly.'"}, {'frame': 'Weapon', 'tfidf': 1.1826802492141724, 'lexical_unit': 'pistol.n / arsenal.n / C4.n', 'definition': "A Weapon is an artifact created specifically to cause harm or damage.  In some cases, a Use, Material of construction, Part or Type may be more narrowly specified.  'Did you, or did you not, fire this gun with intent to harm my client?'  'Cyra tried to swing her sword to parry, but it was to heavy.'  'I investigated a specialist precious metal firearms manufacturer.'  'My neighbor, a member of the NRA since birth, has got an AK-47 fully automatic assault rifle.'  'Let 's just say that he 's the kind of guy who likes guns with hair triggers.' "}, {'frame': 'Cogitation', 'tfidf': 1.1799935102462769, 'lexical_unit': 'meditate.v / deliberation.n / deliberate.v', 'definition': "A person, the Cognizer, thinks about a Topic over a period of time. What is thought about may be a course of action that the person might take, or something more general.  'The men were silently mulling over the proposition of committing an assassination'"}, {'frame': 'Body_movement', 'tfidf': 1.1793513298034668, 'lexical_unit': 'shrug.v / roll.v / wink.n', 'definition': "This frame contains words for motions or actions an Agent performs using some part of his/her body.   A number of words in this frame occur as blends with Communication, in which the action has an Addressee.  For example,   'Pat nodded at Kim.'  These examples differ from Communication.Gesture in that no specific message need be expressed, as in  'She nodded to him to sit down.'  Since this frame involves a particular type of motion, it contains the frame elements Source, Path, Goal and Area, which originate in the motion frame.  All of these frame elements are generally expressed in PP Complements.  'The boy swung his legs from under the table.'"}, {'frame': 'Scrutiny', 'tfidf': 1.1755121946334839, 'lexical_unit': 'surveillance.n / scour.v / sift.v', 'definition': "This frame concerns a Cognizer (a person or other intelligent being) paying close attention to something, the Ground, in order to discover and note its salient characteristics.  The Cognizer may be interested in a particular characteristic or entity, the Phenomenon, that belongs to the Ground or is contained in the Ground (or to ensure that such a property of entity is not present).  Some words in this frame allow alternate expressions of the Groundand the Phenomenon: 'We searched the yard  for my contact lens.'"}, {'frame': 'Offering', 'tfidf': 1.175121784210205, 'lexical_unit': 'proffer.v / extend.v / offer.v', 'definition': "An Offerer indicates that he or she is able and willing to give a Theme to a Potential_recipient. In the absence of further qualifications, it is often understood that the Potential_recipient accepts the Theme.  'The host graciously offered us food and drink.'"}, {'frame': 'Removing', 'tfidf': 1.1740747690200806, 'lexical_unit': 'flush.v / swipe.v / evacuate.v', 'definition': "An Agent causes a Theme to move away from a location, the Source.  The Sourceis profiled by the words in this frame, just as the Goal is profiled in the Placing frame.  'I saw that several men in dark suits had removed all of the evidence from the scene.' 'With your index finger prise the meat out of the shell' 'The torrential winds dislodged most of the roof tiles.'"}, {'frame': 'Purpose', 'tfidf': 1.1736172437667847, 'lexical_unit': 'plan.n / determined.a / purpose.n', 'definition': "An Agent wants to achieve a Goal,  or an object.  A Means  has been created or is used to allow the creator or a user to achieve a  Goal. The Goal is a state of the world that does not currently hold but which the Agent wants to realize and is planning and/or working towards. In some cases, it is difficult to decide whether a noun phrase metonymically stands for the Agent or the Means (e.g. The goal [of this paper/seminar/project] is to determine ...). We mark these phrases as Agent on the first layer but also annotate them as Means on a second annotation layer.  In some cases a Restrictor on the Goal state of affairs can be given prominence as a separate constituent. Talking about Goals frequently includes the mention of a Domain to which the Agent's Goal is relevant.  'The modest American goal of a threefold increase in capacity recognises this fact .' 'The object of the tutorial is to help a student concentrate on his writing skills ' ' The prime goal of the programme was to help develop processes of scientific thinking in children .' 'My goal in this book is to introduce the reader to Web programming applications.' 'The president's economic goal for the country was to overcome the recession.'"}, {'frame': 'Capability', 'tfidf': 1.1727913618087769, 'lexical_unit': 'powerless.a / can.v / power.n', 'definition': "An Entity meets the pre-conditions for participating in an Event.  A Degree modifier may be included to indicate by how much the Entity exceeds or falls short of the minimum requirements.  'Conductor software gives us the hands-on capability to provide updates immediately'  'The GOP is afraid that it might not be capable of keeping the seat vacated by Dunn.'  'NASA is unable to communicate with Mars rover.'  'He can fly a kite.'"}, {'frame': 'Activity_done_state', 'tfidf': 1.1678826808929443, 'lexical_unit': 'done.a / through.a / finished.a', 'definition': "An Agent has completed an Activity. '' 'Finally I am done cleaning the apartment.'  'Construction on the new Safeway was done by October.'"}, {'frame': 'Point_of_dispute', 'tfidf': 1.1668022871017456, 'lexical_unit': 'question.n / concern.n / issue.n', 'definition': "The answer to a Question is under discussion in a Group, which still  has a difference of opinion among its members. The prominence of the Question relative to others can be indicated by a Status expression.   'Firstly, it is quite clear the issue in this context was not so much apostasy as much as it was treason.'  'The question in Finucane's case is this: will an inquiry bring out the truth?'  'It remains an issue of central importance to women .'  'Democracy in Serbia was blocked by the unresolved national question.'"}, {'frame': 'Activity_ongoing', 'tfidf': 1.1554698944091797, 'lexical_unit': 'continue.v / keep.v / maintenance.n', 'definition': "An Agent is performing the portion of an Activity in which there is dynamic stability. '' 'Not noticing the hoards of people rushing by the window, Manny continued eating his lunch.'  'Keep living the dream!'  "}, {'frame': 'Obviousness', 'tfidf': 1.152310848236084, 'lexical_unit': 'evident.a / clear.a / clearly.adv', 'definition': "A Phenomenon is portrayed with respect to the Degree of likelihood that it will  be perceived and known, given the (usually implicit) Evidence, Perceiver, and the Circumstances in which it is considered.  For several of the LUs, such as visible, audible, etc., the type of the Evidence is fixed by the targets themselves being a perceptual experience.  'It's abundantly obvious that we'll need to spend more time on public perception.' 'Are you certain that the shovel was visible from the door of the apartment?' ' I think they miss some of the important impacts of the work that are not visible just from looking at the vote tally.' 'That the defense will declare a mistrial regardless is quite evident from their consistent obstructionist tactics.' 'In late July 2000 it was barely visible to the unaided eye.'"}, {'frame': 'Chatting', 'tfidf': 1.148093342781067, 'lexical_unit': 'chat.n / conversation.n / gossip.v', 'definition': "A group of people (the Interlocutors or Interlocutor_1 and Interlocutor_2 together) have a conversation.  No person is construed as only a speaker or only an addressee. Rather, it is understood that both (or all) participants do some speaking and some listening--the process is understood to be symmetrical or reciprocal.  In this frame, the purpose of the conversation is generally social, rather than specifically to decide something or exchange information, or to quarrel (see Discussion and Quarreling).  'If you ain't got nothin' better to do, I 'd like to shoot the breeze with you for a couple.' 'We used to chat about everything.'"}, {'frame': 'Alternatives', 'tfidf': 1.1473156213760376, 'lexical_unit': 'chance.n / use.n / option.n', 'definition': "There exist a number of different possible Situations that may happen in the future.  (In some cases, the Situation is concurrent or past, and only the knowledge of which has happened is in the future.)  In most cases, there is an Agent involved who has to consider which of the possible Situations will or should occur.  A Salient_entity which is deeply involved in the Situation may also be mentioned.  'You have but two choices for your daughter .'  While all the members of this frame denote possible situations, in principle, this frame could be split into a number of subtypes on the following basis:  ''1. Future.n, and most uses of alternative.n and possibility.n all evoke nothing more than a simple possible situation (not necessarily an Situation) with no Agent; the remaining frames would inherit from this. ''2. Use.n evokes different possible things that can be done with a Salient_entity (i.e., Purposes) and thus uses the Using frame; in this frame, the target denotes the Purpose that can be achieved. ''3. way.n evokes different events that can lead to an Outcome (not necessarily a Purpose); this frame should use the Means frame.  In this frame, the target denotes the possible Means actions. ''4. option.n, choice.n, and many instances of alternative.n and possibility.n, evoke possible Situations that an implicit or explicit Agent can bring about at will.  A Purpose that would be served by bringing these Situations about may be mentioned. A Salient_entity related to the Purpose may occur in place of the Purpose.  "}, {'frame': 'Food', 'tfidf': 1.1465892791748047, 'lexical_unit': 'tuna.n / dressing.n / almond.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Surrounding', 'tfidf': 1.1443082094192505, 'lexical_unit': 'straddle.v / surrounding.a / ring.v', 'definition': 'A Figure surrounds a Ground.  The Ground location is presented as more likely to be a known location than the location of the Figure. Some lexical units entail more-or-less complete surrounding in two or three dimensions (e.g. surround.v), while others entail surrounding on only two sides (e.g. astride.prep, straddle.v).  Like other locative relations, the Figure may be any of a movable entity, an immovable entity, or an event.  \'The hand around the sword-hilt was no less impressive than the sword .\' \'The drug war straddles the border of the US and Mexico .\'  This frame resembles the Adorning frame, in that both involve a Figure "covering" some Ground, but the Surrounding frame differs in that the Profiled_region is not coextensive with the Ground, as it is in the Adorning frame, and, in fact, unusually for a locative relation, the Ground entity is normally smaller than the Figure.  For this reason, the verbs of this frame are often used in the passive (restoring the normal relationship of stative subjects to oblique elements). \'\' In addition to several lexical units of this frame originating as metaphorical extentions of much more specific posture descriptions (straddle.v, astride.prep), this frame is itself used in a productive metaphor, involving abstract entities metaphorically "impinging" on other entities (in terms of derivative similarity, control, etc.), as in the following: \'that led to Dolce and Gabbana to base their autumn/winter D and G collection around her style in 2008\' \'But he discovered that the literary world was a battlefield— mined with hatred, rimmed with snipers. \' \'Countless legends sprung up around the knight.\'  Common abstract entities that serve as Figure include emotions (\'the hopelessness surrounding them\'), as well as theories, arguments, and collective philosophies (\'Ageism surrounds us, but passes largely unnoticed\').  This metaphor arises from the normal invited implicature of this frame that the Figure may physically impinge on the Ground, either protecting it, or limiting its motion, or even supporting it.'}, {'frame': 'Cause_harm', 'tfidf': 1.1284751892089844, 'lexical_unit': 'knock.v / pummel.v / swipe.v', 'definition': "The words in this frame describe situations in which an Agent or a Cause injures a Victim. The Body_part of the Victim which is most directly affected may also be mentioned in the place of the Victim.  In such cases, the Victim is often indicated as a genitive modifier of the Body_part, in which case the Victim FE is indicated on a second FE layer. '' 'Rod saw his father beating his mother.'  'In the end Wormtongue is fed up with being beaten so he cuts Saruman's throat to free himself.'  'A mother stabbed to death by her husband made a secret will stating that he must never be allowed to care for their son.'"}, {'frame': 'Simple_name', 'tfidf': 1.1251235008239746, 'lexical_unit': 'word.n / term.n', 'definition': "A Term is the linguistic sign conventionally used by a Speaker to refer to a type of Entity.  ' Perianth is a collective term for the outer whorls of the flower, which protect the reproductive parts during development.'  'The Polish word for it is czarnuszka'"}];
+        var frame_list_2 = [{'frame': 'Communication_response', 'tfidf': 1.242188469257725, 'lexical_unit': 'rejoinder.n / riposte.n / reply.n', 'definition': 'This frame deals with a Speaker communicating a reply or response, a Message, to some prior communication or action, the Trigger.  \'\' \'The landlord has not yet replied in writing to the tenant objecting the proposed alterations.DNI\'  \'"No, I do not agree with you," responded another officer to the CEO. DNI\''}, {'frame': 'Connecting_architecture', 'tfidf': 0.9503719700112417, 'lexical_unit': 'staircase.n / hallway.n / lift.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  The Part itself connects locations within the building to each other, Connected_locations. If a particular point of view is adopted in the context of real or imagined motion, then one of the locations can be construed as Goal and the other as Source.   'It was of great interest to me to see the star signs of Taurus the Bull and Leo the Lion on the staircase to the upper Palace.'  'All visitors may use the elevator between the Main Level and the Upper Level instead of the main staircase'  'The window into the garden was open.'"}, {'frame': 'Manipulation', 'tfidf': 0.9450866291324166, 'lexical_unit': 'grip.v / grab hold.v / kiss.v', 'definition': "The words in this frame describe the manipulation of an Entity by an Agent.  Generally, this implies that the Entity is not deeply or permanently physically affected, nor is it overall moved from one place to another.  'Ian squeezed Mara's hand.' ''  A number of lexemes listed in this frame also occur in the Cause_motion frame (for example, push, yank).  Only the non-motion uses of these words belong in this frame, e.g., combinations such as push at, push on, yank at. "}, {'frame': 'Vehicle_subpart', 'tfidf': 0.8843969722579614, 'lexical_unit': 'window.n / tire.n / wheel.n', 'definition': "An entity is integrated into a vehicle as a Part of a (possibly unexpressed) Whole which may refer to the whole vehicle or merely to a sub-part of the vehicle.  '' 'The car's engine started smoking so we pulled over.' 'Put the bags in the trunk.' 'One should always wear a seatbelt while driving.' "}, {'frame': 'Building_subparts', 'tfidf': 0.8615005232342199, 'lexical_unit': 'playroom.n / rest room.n / refectory.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}, {'frame': 'Shaped_part', 'tfidf': 0.8032576580050679, 'lexical_unit': 'leg.n / mouth.n / handle.n', 'definition': "An entity is a shaped Part of a larger Whole. The Part may correspond in form and  function  to a part of another entity. For instance, the leg of a table supports the weight of a table like the leg of an animal or person supports their weight. The Orientation of the Part relative to the Whole may be expressed.  'I removed the brim of the hat'  'Bill likes to chew the waxy rind of the cheese'"}, {'frame': 'Clothing', 'tfidf': 0.7364901105417797, 'lexical_unit': 'tracksuit.n / pyjama.n / nightdress.n', 'definition': "This frame refers to clothing and its characteristics,  including anything that people conventionally wear.  The Wearer wears a Garment that has a certain Style, is made of a certain Material, and can be otherwise characterized by a Descriptor.  In some cases, the Body_location (where the garment is worn) and Subregion of the clothing may also be specified.  'Claudia dressed in a dark green cotton DRESS clasped round her slender waist with a broad yellow belt , drank a cup of coffee and opened her neglected post .'"}, {'frame': 'Ammunition', 'tfidf': 0.7356328878895706, 'lexical_unit': 'shell.n / bullet.n / ordnance.n', 'definition': "A piece of Ammunition is a disposable artifact to be fired as a projectile in a weapon with the purpose of causing harm or damage.    'The octagenarian inventor's vest repels armor-piercing bullets. '  'It is armed with a automatic loaded 105 mm gun firing anti-tank rounds'  'Depleted uranium munitions are primarily used by the US and the UK.'"}, {'frame': 'Making_faces', 'tfidf': 0.723976719468883, 'lexical_unit': 'grimace.v / grin.v / frown.v', 'definition': "An Agent makes a particular facial expression, generally in response to some Internal_cause (generally an emotional state).  Sometimes the Body_part involved in the expression is mentioned in lieu of the Agent.  'His eyes smile, but his lips do not.'"}, {'frame': 'Breathing', 'tfidf': 0.7167070582459449, 'lexical_unit': 'sigh.n / breath.n / sigh.v', 'definition': "An Agent causes Air to move in a direction, usually specifying either in or out of the body.  'Lee breathed the hot desert air.'"}, {'frame': 'Body_movement', 'tfidf': 0.7080722399730566, 'lexical_unit': 'shuffle.v / lift.v / crinkle.v', 'definition': "This frame contains words for motions or actions an Agent performs using some part of his/her body.   A number of words in this frame occur as blends with Communication, in which the action has an Addressee.  For example,   'Pat nodded at Kim.'  These examples differ from Communication.Gesture in that no specific message need be expressed, as in  'She nodded to him to sit down.'  Since this frame involves a particular type of motion, it contains the frame elements Source, Path, Goal and Area, which originate in the motion frame.  All of these frame elements are generally expressed in PP Complements.  'The boy swung his legs from under the table.'"}, {'frame': 'Temporary_stay', 'tfidf': 0.6263333219471323, 'lexical_unit': 'stay over.v / lodge.v / stay.n', 'definition': "A Guest stays for a time at a Location, which is not his or her permanent residence, for some Duration. The Location is often the permanent residence of a Host.  'I usually stay with my aunt at her summer house when I go to Seville.'  'For a few days my father lodged at a hotel with a buddy who was a biology student.'"}, {'frame': 'Measure_volume', 'tfidf': 0.6136440538936759, 'lexical_unit': 'sackful.n / bowl.n / pint.n', 'definition': 'This frame is concerned with nouns that denote Units of measurement for volumes. The Frame Elements are Unit, Count,  Stuff, and Size. The frame will be split soon into container-derived volumes (box, bottle etc.) and pure volumes (gallon, quart). For the moment we tag things as follows: \'Greg drank two 2 liter bottles of lemonade.\' \'Sue drank two liters of beer.\' This frame necessitated the introduction of  the GF: Quant and the PT: Num used for expressions such as  the following: \'two cups of coffee\' FE: Count, GF: Quant, PT: Num\'\' Note that we treat cardinal numbers and "a" (= 1) in the same way.  \'a cup of coffee\' FE: Count, GF: Quant, PT: Num\'\' For the present, we prefer not to annotate "many cups of coffee" \'many cups of coffee\' FE: Count, GF: Quant, PT: Adj\'\''}, {'frame': 'Make_noise', 'tfidf': 0.6104600690365488, 'lexical_unit': 'chirp.v / chuckle.v / sploosh.v', 'definition': "A physical entity, construed as a point-Sound_source, emits a Sound.  This includes animals and people making noise with their vocal tracts. Sometimes the sound itself is referred to with a nominal expression, in which case it is called the Sound. Manner expressions may also be relevant in this frame, if they describe properties of the sound as such.  A path-schema can be overlaid on the simple noise-making scene, adding a Location_of_source and/or a Path.   This frame does not cover scenarios where objects create sound by coming into forceful contact with one another or rubbing against each other. Such scenarios are covered by the Impact and Friction frames. The current frame also does not cover cases where an animate Agent or a natural Force or Cause causes a single Source or several Sources (moving or rubbing against each other) to make noise. Such scenarios are  covered by the Cause_to_make_noise, Cause_impact and Cause_friction frames (the latter of which is not yet existent). Cases where the major emphasis of the portrayed scene is on the motion of a Theme, with sound emission only an accompaniment, are covered by the Motion_noise frame. Likewise, cases where the Sound itself is portrayed as moving through space are not covered in this frame but rather in Sound_movement. Finally, all nouns used to evoke Sounds have been placed in the Sounds frame. We have done this because these nouns do  not denote sound emission/production events but only the Sound itself (*The siren's blare occurred right on time)."}, {'frame': 'Questioning', 'tfidf': 0.6101390892039315, 'lexical_unit': 'inquiry.n / inquire.v / query.v', 'definition': "The words in this frame have to do with a Speaker asking an Addressee a question which calls for a reply (as opposed to making a request which calls for an action on the part of the Addressee).  '' 'We asked Ruby what kind of food they ate.'  'Yeats was able to interrogate the spirit world about his relationship with Maude.'"}, {'frame': 'Resolve_problem', 'tfidf': 0.6074967048796178, 'lexical_unit': 'fix.v / do something about.v / solve.v', 'definition': "An Agent resolves an outstanding Problem by finding its solution, explanation, answer, etc.  Alternatively, some non-agentive Cause may resolve the Problem.  The Means, Degree, Time and Place may also be expressed.  'As it turns out, putting all of my eggs in one basket completely solved all of my problems.' 'Students finally worked through all of the difficult problems by working together.'"}, {'frame': 'Process_start', 'tfidf': 0.5989826546824562, 'lexical_unit': 'start.v / eruption.n / erupt.v', 'definition': "An Event begins at a certain Time and Place. Reason may also be indicated.  NB:  Refer to Event frame.  'The project began.'"}, {'frame': 'Architectural_part', 'tfidf': 0.5925343055185425, 'lexical_unit': 'counter.n / roof.n / foundation.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  'We need new counters for the kitchen'  'The storm ripped off the bathroom's roof'  "}, {'frame': 'Reason', 'tfidf': 0.5818892711192133, 'lexical_unit': 'why.n / reason.n / basis.n', 'definition': "A volitional  Agent is responding to a State_of_affairs by performing some Action.  'And was that your reason for becoming an actor ?' 'But Giles is the reason that I am here .' 'Oh my reason for including it was Section fifty four A.'  "}, {'frame': 'Facial_expression', 'tfidf': 0.5778606377762779, 'lexical_unit': 'look.n / scowl.n / snarl.n', 'definition': "The words in this frame refer to facial Expressions and the Possessors of those Expressions.  'His lackluster smile revealed his disappointment.'"}, {'frame': 'Social_interaction_evaluation', 'tfidf': 0.574347892604405, 'lexical_unit': 'genial.a / warm.a / maturity.n', 'definition': "In this frame an Evaluee is judged by a (usually implicit) Judge to be of a certain character based on her or his Behavior towards other human beings; a specific Affected_party may be overtly mentioned along with the Degree to which the Evaluee behaves appropriately towards others. TheBehavior alone may be mentioned with the understanding that these behaviors characterize a property of the unmentioned Evaluee. The Evaluee's Behavior may be in the context of a Topic.  ' It was nice of you to send a card. '   ' Jim was thoughtful to email the directions.'   ' For Martha to smoke in the car was extremely inconsiderate.'   ' It was cruel that he continued to call her.'   ' Mary was cruel to her friends.'   ' Samson was a thoughtless person.'   'Mrs. Robinson was always considerate of her students.'   ' The press was always kind about Madonna.'   ' Lee was nice about my car accident.'   ' I appreciated his kind offer of the car.'"}, {'frame': 'Hair_configuration', 'tfidf': 0.5734896358290708, 'lexical_unit': 'lock.n / blond.a / curl.v', 'definition': "Temporary or permanent Styles and Configurations of Hair, as well as its inherent Nature.  Note that Attachment and Body Part will generally be incorporated in the lexical meanings.  Subregions (e.g. roots, ends) are often not specified, and sometimes incorporated (e.g. in 'bangs')  'On either side her head gleamed coiled braids of dark-gold hair , almost pale copper in the subdued light of the room .'"}, {'frame': 'Secrecy_status', 'tfidf': 0.5730098768329572, 'lexical_unit': 'open.a / public.a / confidential.a', 'definition': "A Phenomenon, which may be an activity, state or object, is purposefully hidden from the awareness of a potential Cognizer. The person responsible for the hiding of the Phenomenon is not part of this frame and cannot be syntactically realized. The potential Cognizer may be realized, but is in fact rarely expressed. A period of Time during which the Phenomenon is secret may be indicated.   'Few people would use ATMs if the content of their transaction was secret from their bank and there was no paper trail verifying the transaction. .'  'The protesters were not on her list, and weren't allowed in, despite the fact that the meeting was public.'  'Student disciplinary matters are confidential and should only be discussed with appropriate university officials'"}, {'frame': 'Containers', 'tfidf': 0.5682666678547723, 'lexical_unit': 'hamper.n / casserole.n / cylinder.n', 'definition': "This frame covers entities which are prototypically conceived of and created to fulfill the function of containing--i.e. Containers  that contain objects or substances, the Contents.  This can be expressed as a complement , and includes potential or intended contents.   A Container may also have an Owner, a current Relative_location, Material from which it is constructed, a method of Construction, and a Type.  Note the connection between words in this frame and those in the Filling, Emptying, and Fullness frames. 'a bag of popcorn' 'underwear drawer' 'Chuck's suitcase' 'the suitcase in Chuck's office' 'straw basket' 'woven basket' 'Erlenmeyer flask'"}, {'frame': 'Judgment', 'tfidf': 0.5602677580637403, 'lexical_unit': 'disdainful.a / approving.a / approve.v', 'definition': "A Cognizer makes a judgment about an Evaluee. The judgment may be positive (e.g. respect) or negative (e.g. condemn), and this information is recorded in the semantic types Positive and Negative on the Lexical Units of this frame. There may be a specific Reason for the Cognizer's judgment, or there may be a capacity or Role in which the Evaluee is judged.  '' This frame is distinct from the Judgment_communication frame in that this frame does not involve the Cognizer communicating his or her judgment to an Addressee.   'JUDGMENT:  She admired Einstein for his character.' 'JUDGMENT_COMMUNICATION:  She accused Einstein of collusion.' '' Currently, however, some lexical units and annotation for both remain in this frame."}, {'frame': 'Expressing_publicly', 'tfidf': 0.5506515516082751, 'lexical_unit': 'articulate.v / put into words.v / expression.n', 'definition': "A Communicator publically communicates some difficult-to-express Content which they (or a social group of which they are a member) have had for some time. The Content may not have been previously communicated due to inability or social stricture.  In cases where the individuals addressed are a smaller group than the public at large, a separate Addressee may be expressed.  'Those grievances can be aired during Board meetings. CNI'  'Saddam voiced his joy when he was told Spain's new government had left the US-led military coalition in Iraq.'   "}, {'frame': 'Assistance', 'tfidf': 0.5496888265337782, 'lexical_unit': 'succor.v / help.v / abet.v', 'definition': "A Helper benefits a Benefited_party by enabling the culmination of a Goal that the Benefited_party has.  A Focal_entity that is involved in reaching the Goal may stand in for it.  This Frame has unique Frame-to-Frame Relations: it inherits from and uses the Intentionally_act frame. This is atypical of FrameNet's frame relations.  'Will you help the Government find your brother?' 'Maybe Stephen should assist him with the last manuscript.' 'They helped me psychologically to overcome the physical loss I had suffered.' 'You have helped him tremendously by showing him  how to stand up for himself and by being his friend.' 'By bringing assistance to his troops wherever they were in trouble he aided them greatly.'"}, {'frame': 'Cause_motion', 'tfidf': 0.5435133547448423, 'lexical_unit': 'jerk.v / run.v / nudge.v', 'definition': 'An Agent causes a Theme to move from a Source, along a Path, to a Goal.  Different members of the frame emphasize the trajectory to different degrees, and a given instance of the frame will usually leave some of the Source, Path and/or Goal implicit. The completion of motion is not required (unlike the Placing frame, see below), although individual sentences annotated with this frame may emphasize the Goal.   \'\' This frame is very broad and contains several different kinds of words that refer to causing motion.  Some words in this frame do not emphasize the Manner/Means of causing the motion (transfer.v, move.v).  For many of the others (cast.v, throw.v, chuck.v, etc.), the Agent has control of the Theme only at the Source of motion, and does not experience overall motion.  For others (e.g. drag.v, push.v, shove.v, etc.) the Agent has control of the Theme throughout the motion; for these words, the Theme is resistant to motion due to some friction with the surface along which they move.    \'She threw her shoes into the dryer .\' \'The mechanic dragged the jack out from under the car .\' \'We will move the sofa out of the room through the french doors, down the stairs, and onto the sidewalk .\' \'\' \'\'  This frame is used in a very large number of productive metaphors, not all of which can be outlined here.  The most salient types include causing an entity, construed as a Theme, to change state from an initial state (Source) via an intermediate state (Path) to a final state (Goal): \'Hillary was catapulted to stardom and his life has never been the same since . CNI\' \'She felt as though flung from health to illness and back by the day , by the hour .\' \'Once our parents are dead , we are catapulted into becoming the older generation ourselves . CNI\' \'Croquet was pushed out by tennis .\' \'\'  A particularly divergent subtype casts changing someone\'s intentions as changing their location: \'Democratsforced the Senate into a rare closed door session .\' \'He nudged Mrs Thatcher towards acceptance of a unified Germany .\' \'\'  Another subtype is specifically about causing a change in quantity (the Theme) through some sequence of values (Source, Path, and Goal): \'Bonus payments would be handed out for pushing up voting levels CNI .\' \'\'  Another type, with many subtypes, involves causing an action or state (construed as a Theme) to have an effect on another person or location or conceptual domain. In such cases, theGoal is used for the final affected domain, and Source for initial affected domain, Path for an intermediate affected domain, and Distance for degree of difference between original application of the action and final: \'Jake had been hurling these same insults at her now for years\' \'One can not press this argument too far .\' \'She shoved the thought to the very back of her mind .\' \'She flung him a savage little smile .\' All of the foregoing metaphorical uses are annotated in this frame and marked "Metaphor", since they seem to be semantically motivated and not lexically idiosyncratic. \'\' \'\'  This frame contrasts with the following frames which talk about an Agent changing a Theme\'s position with respect to a landmark (either Source or Goal): \'\'  In Placing, the figure (Theme) is profiled as the object, and ends up on the ground (Goal).  The focus is on the final stage of motion, in which the Theme ends up at the Goal, and usually stably remains there. \'Joyce placed the flowers onto the bed.\' \'\'  In Filling, the ground (Goal) is profiled as the object, and the figure (Theme) ends up on the ground (Goal). \'John filled the box with old toys.\' \'\'  In Removing, the figure (Theme) is profiled, and is removed from the ground (Source). \'Jennifer removed the flowers from the bed.\' \'\'  In Emptying, the ground (Source) is profiled and the figure (Theme) is removed from it. \'Jason emptied the box of the old toys .\' \'\'  Words of this frame also differ from the words of the Bringing frame in that they are more general:  either the Agent has a momentary interaction with the Theme that causes its motion, unlike the continuous causation of Bringing, or the Agent continuously acts on the Theme, but there is no supporting object that helps with the motion like the Carrier of the Bringing frame.  '}, {'frame': 'Activity_start', 'tfidf': 0.5402415923688072, 'lexical_unit': 'launch (into).v / begin.v / take up.v', 'definition': "An Agent initiates the beginning of an ongoing Activity in which he will be continuously involved. '' 'At the same time, city-states began to grow in influence on the southern Greek mainland.'  'Naturally, I started crying to get out of work.'  "}, {'frame': 'Communication_manner', 'tfidf': 0.5331520132114305, 'lexical_unit': 'shout.v / stammer.v / natter.v', 'definition': "The words in this frame describe Manners of verbal communication.  All of them can occur with quoted expressions.   'He slurred his confession.'"}, {'frame': 'Offering', 'tfidf': 0.5286592864331585, 'lexical_unit': 'extend.v / offer.v / proffer.v', 'definition': "An Offerer indicates that he or she is able and willing to give a Theme to a Potential_recipient. In the absence of further qualifications, it is often understood that the Potential_recipient accepts the Theme.  'The host graciously offered us food and drink.'"}, {'frame': 'Cause_change_of_position_on_a_scale', 'tfidf': 0.5275689466192373, 'lexical_unit': 'push.v / growth.n / raise.v', 'definition': "This frame consists of words that indicate that an Agent or a Cause affects the position of an Item on some scale (the Attribute) to change it from an initial value (Value_1) to an end value (Value_2). The direction of the change (Path) can be encoded as well as the magnitude of the change (Difference). The rate of change of the value (Speed) can optionally be indicated as well as a second scale (Co_Variable), which the values are correlated with.  '' 'The company is raising the final dividend from 4.34p to 4.57p, to boost the total by 5.3 percent to 6.36p.'  'Similarly, a consumer boom will encourage the authorities to increase interest rates in order to keep money supply on target.'  'United Way of Central Indiana adds value to your investment.'"}, {'frame': 'Desirable_event', 'tfidf': 0.5199390954137175, 'lexical_unit': 'have to.v / ought to.v / good idea.n', 'definition': "A particular State_of_affairs is desirable.  The State_of_affairs may be required to achieve a Purpose.  A set of Circumstances may be specified under which the assessment of desirability holds.   'You should take the doses about 12 hours apart and at the same time each day.' ' If the metal is seriously rusted or warped, it should be repaired or replaced with a chimney top damper.' 'To ensure that, you should have no CLASSPATH set.'"}, {'frame': 'Vehicle', 'tfidf': 0.5153039449487716, 'lexical_unit': 'cart.n / toboggan.n / cab.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'Experience_bodily_harm', 'tfidf': 0.510858216139965, 'lexical_unit': 'cut.v / injure.v / sunburn.v', 'definition': "An Experiencer is involved in a bodily injury to a Body_part.  (In some cases, no Body_part need be indicated.)  Often an Injuring_entity on which the Experiencer injures themselves is mentioned. 'I think that I hurt myself pretty bad back there.' 'He smacked his head on the mantel getting up from poking at the fire.'"}, {'frame': 'Cause_harm', 'tfidf': 0.502657225404627, 'lexical_unit': 'run through.v / poisoning.n / knife.v', 'definition': "The words in this frame describe situations in which an Agent or a Cause injures a Victim. The Body_part of the Victim which is most directly affected may also be mentioned in the place of the Victim.  In such cases, the Victim is often indicated as a genitive modifier of the Body_part, in which case the Victim FE is indicated on a second FE layer. '' 'Rod saw his father beating his mother.'  'In the end Wormtongue is fed up with being beaten so he cuts Saruman's throat to free himself.'  'A mother stabbed to death by her husband made a secret will stating that he must never be allowed to care for their son.'"}, {'frame': 'Cause_to_move_in_place', 'tfidf': 0.5019041216330864, 'lexical_unit': 'wiggle.v / spin.v / rock.v', 'definition': "An Agent causes a Theme to move with respect to a certain Fixed_location, generally with a certain Periodicity, without undergoing unbounded translational motion or significant alteration of configuration/shape. 'Paul shook the remote control frantically.'"}, {'frame': 'Attempt', 'tfidf': 0.5006528054631332, 'lexical_unit': 'attempt.v / shot.n / endeavor.v', 'definition': "An Agent attempts to achieve a Goal. The Outcome may also be mentioned explicitly.  'John attempted to climb Mt. Everest.'  'It was another failed attempt to climb Mt. Everest.'"}, {'frame': 'Process_continue', 'tfidf': 0.49719909826891856, 'lexical_unit': 'continue.v / proceed.v / drag on.v', 'definition': "An Event continues at a certain Place through Time.  (Note that often when 'continue.v' occurs with definite time points, it denotes Resumption, which is out of frame here.) NB:  Refer to Process frame. '' 'Pyongyang agreed to suspend its withdrawal while talks continued with Washington.'  'Missions and different plans proceed according to Islamic law provision.'"}, {'frame': 'Preventing_or_letting', 'tfidf': 0.49645114194377665, 'lexical_unit': 'obviate.v / prohibit.v / forestall.v', 'definition': 'A Potential_hindrance or an Agent (via their actions) keeps an Event from taking place, or despite the possibility of prevent the Event, do not do so. Lexical units which indicate that the event is not prevented, e.g. allow.v, are marked with the semantic type "Negative".  Some lexical units, like avert and avoid indicate that the Potential_hindrance or Agent would have been affected if the Event occurred.   \' Rain prevented the ball game from taking place.\'   \' He could have stopped the riot .\'  \' The government narrowly averted a coup . \' \'She allowed more than a few mistakes to happen .\' \'Technology has permitted firms to link together more closely.\' \'Unlike DOS , Windows lets you get on with something else when sending a fax.\' \'Liberalization allows easier entry into particular markets .\' \'Mesh allows the water to circulate normally through the aquarium.\'  \'\'  Unlike in the Thwarting frame, the Potential_hindrance or Agent does not directly prevent the actions of an individual, but rather affects the world in such a way that an Event cannot occur.'}, {'frame': 'Difficulty', 'tfidf': 0.4950823983613869, 'lexical_unit': 'difficult.a / like taking candy from a baby.adv / a pain.n', 'definition': 'An Experiencer has an easy or difficult time carrying out an Activity. The ease or difficulty associated with the Activity seems to often be associated with a prominent participant. However, we consider this impression to be due to the syntax and pragmatics of the relevant sentence constructions and employ no special FE for such participants. The Degree of ease or difficulty is often specified as well as a set of Circumstances. A Parameter may be mentioned that indicates in which respect the Activity is judged to be easy or difficult. \'\' Unmarked LUs of this frame indicate that something is easy, while LUs of this frame that mean the opposite of easy are marked with the semantic type "Negative", as in difficult.a, arduous.a, and a bitch.n.    \'(1) John is easy to please.\' \'(2) It is easy to get Alex annoyed.\' \'(3) Smithers is very tough for me to please.\' \'(4) VWs are easy to repair.\' \'(5) The dating of western sculpture is difficult.\' \'(6) In that kind of wind the course is physically very tricky.\' \'(7) The last question on the exam was hard. \' \'(8) The last one was a hard question to answer. \''}, {'frame': 'Containing', 'tfidf': 0.4946745296730505, 'lexical_unit': 'hold.v / house.v / contain.v', 'definition': "In this frame a Container holds within its physical boundaries the Contents.  'The box holds three hundred pictures.'"}, {'frame': 'Request', 'tfidf': 0.4931840298716016, 'lexical_unit': 'request.n / order.v / command.n', 'definition': "In this frame a Speaker asks an Addressee for something, or to carry out some action.  'The customer demanded a refund.' 'I begged my parents to let me stay up late.' "}, {'frame': 'Removing', 'tfidf': 0.49241683237620276, 'lexical_unit': 'remove.v / extraction.n / empty.v', 'definition': "An Agent causes a Theme to move away from a location, the Source.  The Sourceis profiled by the words in this frame, just as the Goal is profiled in the Placing frame.  'I saw that several men in dark suits had removed all of the evidence from the scene.' 'With your index finger prise the meat out of the shell' 'The torrential winds dislodged most of the roof tiles.'"}, {'frame': 'Undergo_change', 'tfidf': 0.4913951755887564, 'lexical_unit': 'change.v / swing.v / veer.v', 'definition': "An Entity changes, either in its category membership, its situation, or in terms of the quality of an Attribute. In the first case, where category membership is changing, an Initial_category and a  Final_category may be expressed. In the second case, where a situation as a whole is changing, an Initial_situation and a Final_situation can be present. And in the last case, where some characterization of the Entity is changing, an Initial_quality and a Final_quality can be specified.    'As soon as Tiffany kissed the frog, Tiffany turned into a frog. '  'He chanted and the rock changed shape, becoming a great double bitted axe.'  'The College has changed markedly over the century since it first opened its doors.'  'If I'm understanding you correctly, you want the switchbar color to change whenever the bot says something?'  'My life instantly changed from an empty life, to a life full of joy and purpose.'  'As you can see, the word WALK changed from red to green rather than have a separate lens for each colour.'  'My feet turned to stone.'  'The promise will turn to ashes if progress is not made.'  'The price  changed from $1.26 to $1.27 per pint. DNI'  'At least one relative instruction has changed in size from short to long.'  In some cases, the types of perspective are mixed, so that, e.g., an Initial_quality is mixed with a Final_situation; this is usually considered poor style.  'She went from confused to acting completely confident .'  This frame is often the target domain of motion metaphors, in which the moving Theme corresponds to the  changing Entity, the Source of motion corresponds to the Initial_category, Initial_quality, or Initial_situation and the Goal of motion corresponds to the Final_category, Final_quality, or Final_situation of the Entity.  By correspondence with the complex domain of motion, this metaphor introduces several FEs to the target domain of change, such as an Intermediate_state (etc.) from Path, and Tendency_of_change from Direction.  'The nation was crawling towards oblivion.' 'We were walking past almost reasonable and heading right for what-the-bleep.' "}, {'frame': 'Point_of_dispute', 'tfidf': 0.4897513984256355, 'lexical_unit': 'issue.n / question.n / concern.n', 'definition': "The answer to a Question is under discussion in a Group, which still  has a difference of opinion among its members. The prominence of the Question relative to others can be indicated by a Status expression.   'Firstly, it is quite clear the issue in this context was not so much apostasy as much as it was treason.'  'The question in Finucane's case is this: will an inquiry bring out the truth?'  'It remains an issue of central importance to women .'  'Democracy in Serbia was blocked by the unresolved national question.'"}, {'frame': 'Appointing', 'tfidf': 0.48955789743533534, 'lexical_unit': 'finger.v / name.v / tap.v', 'definition': "A Selector, often an individual in a leadership role, appoints a Official to assume an official Role in an organization (which can be expressed as the Body).  'Press secretaries accredit journalists to the sessions.'"}, {'frame': 'Continued_state_of_affairs', 'tfidf': 0.4856006067157231, 'lexical_unit': 'so far.adv / up to.prep / to date.adv', 'definition': "A State_of_affairs has held and continues to hold up to the Reference_occasion.   'To date, the Department already has numerous requests for new systems to be developed.'  'SAGE has no activities planned as of yet.'  'PBGC guarantees the benefit that you had earned up to the date of plan termination'  'I think that she 's still in her office .'"}, {'frame': 'Appellations', 'tfidf': 0.4831032637279062, 'lexical_unit': 'imam.n / president.n / executive.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Expectation', 'tfidf': 0.4825732088241374, 'lexical_unit': 'unforeseeable.a / foresee.v / unpredictable.a', 'definition': "Words in this frame have to do with a Cognizer believing that some Phenomenon will take place in the future.  Some words in the frame (e.g. foresee.v) indicate that the Phenomenon is asserted also to be true, while others do not.  'Michael expected Abby to demand examples.' 'From the look on her face Michael expected that she would say she got the job.'  "}];
+    </script>
+    <script type="text/javascript" src="word_cloud_prediction.js"></script>
+    <script type="text/javascript" src="../mturk.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 150px;
+            padding-right: 150px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel_1 canvas, #word_cloud_panel_2 canvas {
+            display: none;
+        }
+        .word_cloud_box canvas {
+            display:none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+        .word_cloud_box {
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 3px rgba(70, 70, 70, 1) solid;
+            padding: 20px;
+            margin-bottom: 20px; 
+        }
+        .word_cloud_box:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+        }
+        .selected_story_block {
+            border-color: #7BDFF2;
+            border-width: 3px;
+            box-shadow: 0 0 10px 10px rgba(123, 223, 242, 0.3);
+            background-color: rgba(239, 247, 246, 0.8);
+        }
+        .indicator {
+            /*font-family: Courier;
+            font-weight: bold;*/
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px black solid;
+            border-radius: 20px;
+        }
+
+        .selected_story_block .indicator {
+            background-color: rgb(123, 223, 242);
+        }
+
+        #story_content {
+            max-height: 600px;
+        }
+        .not_qualified {
+            color: red;
+            font-weight: 900;
+        }
+        .qualified {
+            color: black;
+            font-weight: 900;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Which word-cloud best represents the story snippet?</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that a computer automatically 
+            generated to characterize a story snippet. 
+            The words in the word cloud <strong>do NOT necessarily occur</strong> in the story snippet. 
+            These words can just be relevant or semantically similar. <br/><br/>
+
+            A <strong>word-cloud representation with nouns</strong> is a group of nouns a computer automatically 
+            generated to characterize a story snippet. 
+            These nouns can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            In this HIT, you will see a story snippet. <span class="highlight">Please read it carefully.</span>
+            The story is long so we have a <span class="highlight">3 minutes time lock</span> for submission.
+            <br/><br/>
+
+            At the bottom of the HIT, you will see three sets of word-cloud representations, 
+            where each consists of nouns, verbs, and adjectives. 
+            <span class="highlight">Please select the word-cloud representation that best represents the story.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following story snippet carefully!</h3>
+            You will need to select the word-cloud representation that best represents this story. 
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story</h4>
+                        <h5>(An excerpt from the book <span style="font-weight:bold;">"Bound"</span>.)</h5>
+                        <span class="not_qualified" id="read_lock">Please read all the story.</span>
+                        <br/><br/>
+                        <pre id="story_content">
+"I'm no monster," he said, watching as whatever worries she was dwelling on clouded her eyes.
+"I'm just trying to help, that's all."
+"Well, you're not."
+It was only when he was running water at the sink and the first stirring of his wolf caught his attention before he realised the time.
+Tonight was the first full moon of the cycle, the time when all wolves were slave to the magnetic call that compelled them to phase.
+"It's a full moon," he said, turning to where she continued to sit in silence.
+There was no way he was letting her out of his house to run free in the forest.
+She returned a blank look.
+"I can't allow you to run, sorry."
+"Oh.
+Um, sure, that's okay," she replied, getting to her feet.
+"I'll be fine."
+Taylor lifted the pepper grinder off the table and held it up to him.
+"Where does this go?"
+"I can give you something to help you sleep if that would ease it for you?"
+he offered.
+"No, there's no need."
+"Taylor, you--."
+"I'll manage," she insisted.
+"Could you please tell me where this goes?"
+Her reaction was baffling as she gave up waiting for an answer and set the grinder on the counter.
+Shifting during the full moon was as necessary as breathing.
+How was she not troubled by knowing her wolf would have to be subdued?
+No Lycan could  ignore the call of  ...
+Dean stared at where she stood with her back to him, now looking for a home for the butter dish.
+"Taylor," he said softly.
+"Can you not ... ?"
+Her shoulders tensed.
+"Where does the butter go?"
+"Taylor."
+The dish came down on the counter with a hard crack.
+"Leave it," she warned.
+"Are you telling me you can't phase?"
+"I said leave it."
+"You can't phase?"
+With her back still turned, she shoved her hands into the pockets of her hoodie.
+"You can't take no for an answer, can you?"
+"Are you serious?"
+Dean threw the tea-towel onto the counter and took a step towards her.
+"You can't phase?"
+"No."
+"How is that possible?"
+"It just is."
+"It just is?"
+he repeated.
+"You're telling me you can't phase and that's your explanation?"
+"You don't need to know why I can't phase."
+"I beg to differ," he said, taking her arm to make her face him.
+"It's none of your business!"
+she snapped, wrenching her arm free.
+Taylor rammed one shoulder against him, but he blocked her path.
+"It is my business, and not because I'm an Alpha, but because I'm a werewolf.
+Who did this to you?"
+"Let it go," she ground out.
+"I've no problem being stuck here while you run.
+I'll be fine, really."
+"How long have you been like this?"
+Muttering at his persistence she moved to push by him again, but he slammed a hand against the edge of the counter, trapping her in place.
+"How long have you been like this?"
+"What does it matter?
+It's my problem, not yours!"
+"Why can't you just give me one damned answer?
+Can't you see I'm trying to help you?"
+"Hey!"
+she yelled.
+"Why don't you do yourself a favour and get this into your thick skull.
+You.
+Cannot.
+Help.
+Me."
+Again, she shoved against him, but it didn't budge him an inch.
+It was alarming how weak she was.
+"You shouldn't be able to speak to me like that," he said.
+"Your wolf shouldn't allow it."
+"Well, she's not around to nip my butt, so I'll speak to you whatever way I like."
+"What do you mean she's not around?"
+"She's taken a forced leave of absence."
+"What?"
+"Yeah, she's gone.
+Been involuntarily removed."
+"Your wolf is gone?"
+Realising how frustration had made her blab, Taylor once again ground her together and folded her arms.
+Tears glistened in the corners of her eyes and the sight stirred pain in Dean.
+"Your wolf is gone?"
+he repeated.
+"Taylor ..."
+Her watering eyes slid from his to drift to a point beyond his shoulder.
+"I don't understand."
+It wasn't possible.
+Lycans don't lose their wolves.
+They don't just up and leave.
+"Your wolf is gone?"
+he repeated.
+"Stop saying it," she muttered.
+"But, how?
+And for how long?
+Days, weeks?"
+Dean grabbed her shoulders, wanting to shake an answer loose, but she shrugged his hands away and attempted to push him aside again.
+"Stop with all the questions!"
+she pleaded, elbowing him when he refused to move.
+"Taylor."
+"No!
+Leave me alone.
+I'm not telling you anything else!"
+"You're giving me no choice but to find out who your pack is," he snapped, no effort required in keeping her trapped between him and the counter.
+"If you don't answer my questions, I'll have no other option."
+In that second he was sorely tempted to follow through on his warning.
+It would only take minutes to run upstairs to his office, pick up the phone and dial the first Alpha on his list.
+Her pathetic attempts to squirm away came to an abrupt stop.
+"If you contact my Alpha," she stilled, her voice lowering to deliver her threat, "I'll harm one of your pack."
+"And you know exactly what that would force me to do."
+"Yes, I do."
+Dean paused in disbelief as she stared up at him with determination.
+"You'd rather die?"
+"If that's what it takes for you to butt out, then yes."
+This time, when she pushed by him, he let her go.
+Chapter 15
+Dean scrubbed his hands across his face, exhaled a build-up of frustration and sank back in his office chair.
+"Okay," he said to the screen of his laptop, lacing his hands behind his head, "let's have a think about this."
+Taylor is a rogue he began, ordering his thoughts before making any further moves, a rogue, who for some really screwed up reason has lost, or can't connect with her wolf.
+Whatever did this to her originated from her pack and she's terrified of them finding her.
+"Yep," he sighed.
+"That's about it."
+And that was all he had learned.
+The phone on his desk waited, but his hands stayed put behind his head.
+He'd met rogues before, dealt with them in all kinds of situations, but this was the first time he'd ever seen a rogue so terrified of being returned to their pack they would choose to die first.
+Her threat of harming one of his pack was an empty one, she didn't have the necessary strength, but her determined words had finally sunk in with him.
+Taylor's need to leave his territory, as far as she was concerned, was for her own survival.
+It had taken a few moments before he'd been able to shake his head clear of Taylor's alarming revelations and follow her out of the kitchen.
+She'd found the living room and had curled up in a tight ball on the corner of his couch, her refusal to make eye contact lasting for nearly half an hour, along with her silence.
+Not that he'd asked her more questions, he'd decided to drop the interrogation because it had been making him uncomfortable to see how distressed she was becoming, but every suggestion of how he could help were met with ardent head shakes until the moment when he'd offered her a place in his pack.
+Then she had finally spoken.
+"No."
+"Taylor, come on, think about it.
+If you join my pack you'd be under our protection."
+"I said no."
+"Even temporarily?"
+"No."
+"Why?"
+"It would only make things worse."
+"How?
+That makes no sense."
+Her reply had been a bitter laugh, then silence again.
+In the end, more frustrated than he'd thought possible, he decided to show her the guest bedroom so she could enjoy her own mute company.
+She'd refused of course, insisting that sleeping on the couch would suit her better, and he'd just been about to remind her of how the house was securely guarded and there was no way she'd be able to sneak out during the night, when she had looked up and pleaded with him for one final time that he not contact her pack.
+About to shrug a reply to his genuine indecision, her cowered form in the corner of his couch registered.
+This wolf was maimed, maimed in a way he would never have thought possible, and he couldn't pretend to ignore it any longer.
+Lycans were violently territorial and unfailingly savage about protecting their own packs, but an honour code still existed beneath the aggressive covetousness, a code that compelled them to defend any of their kin when threatened by another kind.
+As an Alpha, this rogue was his responsibility, but as a werewolf, this injured female was his responsibility too.
+"I won't contact your pack," he had decided aloud.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+
+        <h3>Select the word-cloud representation that best represents the above story.</h3>
+        Below, there are three word-cloud representations. Read them carefully and select the one that best represent the above story.
+        <br/><br/>
+
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_1" value="1">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 1</h3>
+                The following three word clouds jointly represent the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_2" value="2">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 2</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_2">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_2">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_2">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_2-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <!--div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_3" value="3">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 3</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_3">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_3-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_3">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_3-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_3">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_3-png-container" class="text-center"></div>
+            </div>
+        </div-->
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="63">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_150">
+            <input name="note" type="hidden" value="BERT, LGBM">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+    </div>
+
+</body>
+</html>

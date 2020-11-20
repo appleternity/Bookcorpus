@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="text/javascript">
+        var frame_list_1 = [{'frame': 'Robbery', 'tfidf': 20.618088849082316, 'lexical_unit': 'mugging.n / rob.v / rifle.v', 'definition': "These are words describing situations in which a Perpetrator wrongs a Victim by taking something (Goods) from them.  In some cases, the Source location from which the Goods were taken is used to metonymically refer to the Victim.  The robbery can be done in a particular Manner (for example, forcefully) and via a specific Means (for example, by threatening the Victim).  'Half of the team held up the tellers while the others were stationed to report the arrival of police.'  As opposed to Theft, Robbery focuses on the harm to the Victim and on the Source location from which the Goods have been removed, rather than the Goods themselves."}, {'frame': 'Sign', 'tfidf': 19.520176549386278, 'lexical_unit': 'signify.v / symptomatic.a / sign.n', 'definition': "A phenomenon, the Indicator, exists as an indication of another phenomenon, the Indicated. The relationship is asymmetric: the Indicated is not necessarily a sign for the existence or presence of an Indicator. The Indicated can be a past, present, or future entity or eventuality. The relationship between Indicator and Indicated is not one of symbolization or iconicity. Rather the Indicator is an index of the Indicated.  'This is a sign of things to come.'"}, {'frame': 'Team', 'tfidf': 7.6493195512658945, 'lexical_unit': 'firefighter.n / team.n / fire fighter.n', 'definition': 'A Team is a group with shared goals and works toward them together in a coordinated fashion.'}, {'frame': 'Locale', 'tfidf': 3.764804361949796, 'lexical_unit': 'regional.a / zone.n / spot.n', 'definition': "This frame contains general locale words, and is mostly a place-holder in the hierarchy. Words in this frame designate relatively stable bounded ares of the world which have permanent Relative_locations with respect to other locales, and thus are useful as permanent landmarks.  It is inherited by Locale_by_use, which has to do with places that are named according to their intended use, or some habitual use, such as factory.n, dance floor.n, village.n, field.n.  It is also inherited by Locale_by_event, which covers places that are names according to some event which took place there, such as concerts, battles, and meteor impacts.  'This is a pleasant area.'"}, {'frame': 'Vehicle', 'tfidf': 3.560907956647066, 'lexical_unit': 'airplane.n / scooter.n / convertible.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'Colonization', 'tfidf': 3.46984676259818, 'lexical_unit': 'colonize.v / colony.n / people.v', 'definition': "A group of Colonists from a Homeland migrate to and proceed to settle in a New_area. The New_area then becomes their permanent home. The New_area and Homeland are in some way construed as being part of the same organization or system. In the case of (people from) nation-states colonizing other areas, the colony and nation-state are considered a single political entity. In the extended sense of living things in general colonizing or settling a new area, the original Homeland must still inhabited by some of the same group. In this sense Colonization is distinct from migration or exodus.  'In the 7th century BC, Phoenicians colonized the eastern section of Libya.' 'In the 7th century BC, Phoenicians colonized the eastern section of Libya.' 'Finns colonized the land from the south some 2,000 to 4,000 years ago' 'If a colony from Britain was established in that large tract of Country, and if we were at war with Holland or Spain, we might very powerfully annoy either state from our new settlement.'  This frame also includes metaphorical uses involving animals or plants, or abstract domains such as ideas.  'Deciduous trees such as red alder subsequently colonized the logged area.'  'Conservatives don't get what the left gets, which is that the left has already colonized and converted whole university departments.'  'As the years progressed and adaptations occurred new species and subspecies began to populate the islands.'"}, {'frame': 'Weapon', 'tfidf': 3.28718633289303, 'lexical_unit': 'firearm.n / automatic weapon.n / crossbow.n', 'definition': "A Weapon is an artifact created specifically to cause harm or damage.  In some cases, a Use, Material of construction, Part or Type may be more narrowly specified.  'Did you, or did you not, fire this gun with intent to harm my client?'  'Cyra tried to swing her sword to parry, but it was to heavy.'  'I investigated a specialist precious metal firearms manufacturer.'  'My neighbor, a member of the NRA since birth, has got an AK-47 fully automatic assault rifle.'  'Let 's just say that he 's the kind of guy who likes guns with hair triggers.' "}, {'frame': 'Piracy', 'tfidf': 2.6696674509193654, 'lexical_unit': 'hijack.v / carjacking.n / hijacking.n', 'definition': "The words in this frame describe situations in which a Perpetrator forcibly seizes control over a Victim's Vehicle to gain some end.  '' 'French farmers have hijacked a lorry and destroyed its load of strawberries.'  'But attackers have hijacked cars waiting at traffic lights and road junctions by simply opening the passenger door, jumping in and forcing the driver to a more deserted area.'"}, {'frame': 'Deciding', 'tfidf': 2.5225552211127003, 'lexical_unit': 'decision.n / determine.v / decide.v', 'definition': "A Cognizer makes a Decision, which may be about an entity or a course of action.  How (and whether) this frame is distinct from Choosing is currently up for debate.  'Mo decided to quit the program.' "}, {'frame': 'Documents', 'tfidf': 2.5190987237430953, 'lexical_unit': 'agreement.n / permit.n / contractual.a', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Electricity', 'tfidf': 2.384187769009772, 'lexical_unit': 'hydroelectric.a / electric.a / photoelectricity.n', 'definition': "Lexical units in this frame refer to Electricity, in particular as a form of energy harnessed for particular uses (such as powering machines).  The Source of the Electricity may also be expressed, or incorporated in the meaning of the LUs.  'A compound to generate wind electricity was built on the other side of those mountains.'  'China's hydroelectric dam is being built primarily for flood control and energy production.'"}, {'frame': 'Sending', 'tfidf': 2.2264806592197646, 'lexical_unit': 'export.v / forward.v / barge.v', 'definition': "A Sender plans the Path (along with Source and Goal) of a Theme and places it in circumstances such that it travels along this Path under the power of some entity other than the Sender.  This frame also has a Recipient distinct from the Goal, as both can be present: 'I sent the manuscript to England to Bill.' 'I forwarded the grain to a dealer in Frankfurt.'  This frame contains verbs that participate in the ditransitive construction, with a recipient as the direct object, as in the following: 'I sent Bill the manuscript.' Certain Verbs in this Frame focus on the initial sending act, while others do not.  For example, I sent it rapidly can either mean the act of sending was initiated quickly or that it moved quickly. However, the in following sentence: I exported/dispatched it rapidly, meaning that the act was begun quickly, both types of verbs are included."}, {'frame': 'Craft', 'tfidf': 2.061894017042882, 'lexical_unit': 'art.n / science.n / craft.n', 'definition': "A  particular Activity, performed conventionally or habitually by more than one Practitioner  within a Culture, is described  in terms of its method.   'One lived-in cabin also had a grassy roof, as if the craft of thatching had died out locally'  "}, {'frame': 'Path_traveled', 'tfidf': 2.0441152463940577, 'lexical_unit': 'path.n / circuit.n / orbit.n', 'definition': "A Path, a series of connected locations, is traversed by a Theme, moving under its own power or under the influence of a physical force. The Path may be described in various terms depending on whether it is bounded or not. If it is bounded, the Path may be identified by its Endpoints, which may be presented separately as Source and Goal.  'For Earth, these perturbations slowly change the eccentricity of the planet's orbit around the Sun.'  'From the eyewitness accounts, as well as satellite data, videos and photos, Brown and his team have worked out the meteor's path through space.'  'Its period around Saturn is just under one Earth day, meaning that it really barrels along, to cover its 700,000 mile orbit in such a short time.'"}, {'frame': 'Discussion', 'tfidf': 1.8951415019475613, 'lexical_unit': 'confer.v / dialog.n / parley.n', 'definition': "Two (or more) people (the Interlocutors, also encodable as Interlocutor_1 and Interlocutor_2) talk to one another. No person is construed as only a speaker or only an addressee. Rather, it is understood that both (or all) participants do some speaking and some listening--the process is understood to be symmetrical or reciprocal.  This frame differs from the Chatting frame in that the Interlocutors have a particular question that they are attempting to decide or understand.  'I would rather discuss politics with anyone but him.'   'World leaders met to discuss global warming on the coldest day of the year.'"}, {'frame': 'Aggregate', 'tfidf': 1.8826035700345505, 'lexical_unit': 'variety.n / covey.n / body.n', 'definition': "This frame contains nouns denoting Aggregates of Individuals.  The Aggregates may be described by an Aggregate_property.   'An army of postal workers descended on my office.'  "}, {'frame': 'Being_obligated', 'tfidf': 1.7729396016153616, 'lexical_unit': 'imposition.n / commission.n / obligation.n', 'definition': "Under some Condition, usually left implicit, a Responsible_party is required to perform some Duty.  If they do not perform the Duty, there may be some undesirable Consequence, which may or may not be stated overtly.  'It is my duty to fight any attack on the Brotherhood .' 'This country has the responsibility to support its citizens' right to express themselves.' 'I am obligated to pay or they'll double the fine.'  NB:  Contrast this frame with Likelihood and Preconditions frames, which involve many of the same lemmas.  Many LUs which might be expected to be found here (should, must, have to) are actually in the Required_event frame. Our analysis is that these LUs do not evoke an obligation directly, although they are frequently used in contexts that are consistent with an understanding of obligation and are pragmatically strengthened to (defeasibly) imply an obligation. "}, {'frame': 'Roadways', 'tfidf': 1.7302366093864945, 'lexical_unit': 'course.n / thoroughfare.n / street.n', 'definition': "This frame involves stable Roadways which connect two stable Endpoints, the Source and the Goal.  Being physical objects, these Roadways may have Names and Characteristics; they are also made of a Material.  They also cover ground, so they may have a Path or a Relative_location that the travel occurs in.  ' We crossed the brick road.' ' I prefer to travel on highway I-80.'  'This is the only highway between Lodi and Sonoma.' ' She dreaded turning onto the busy street.'"}, {'frame': 'Food', 'tfidf': 1.7093266388354698, 'lexical_unit': 'poultry.n / pasta.n / biscuit.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Store', 'tfidf': 1.7078387275780413, 'lexical_unit': 'stock.n / stockpile.n / cargo.n', 'definition': "A Supply of a Resource is kept safe and available for a future Use.  The Supply may be under the control of a Possessor.  'Our supply of food is running low.'"}, {'frame': 'Resurrection', 'tfidf': 1.6998549119137425, 'lexical_unit': 'return.v / resurrect.v / rise.v', 'definition': "A Protagonist which had been dead returns to life.  'He'll come back from the dead at 11:03PM exactly, since that's what his suicide note indicated.'"}, {'frame': 'Personal_success', 'tfidf': 1.6739102967088524, 'lexical_unit': 'make it.v / succeed.v / success [event].n', 'definition': "A Person is in a state of prosperity and/or renown after some period of development or hardship in an Endeavor.  LUs in this frame invoke a developmental path that is related to the goal one should have in a Person, such that the Person, after traversing a path of development (including hardship, effort, and time), completes or does not complete these goals. Note that this distinguishes an event's success in this frame from Successful_action.  'Framenet is enjoying huge success.' 'He had a long and successful career in banking.'"}, {'frame': 'Building_subparts', 'tfidf': 1.5842431437979365, 'lexical_unit': 'elevator.n / workshop.n / living room.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}, {'frame': 'Gizmo', 'tfidf': 1.5792266109813065, 'lexical_unit': 'equipment.n / implement.n / range.n', 'definition': "This frame contains general words denoting equipment where the Use or purpose is not specified by the lexeme but (typically) by a separate expression. The words are described with respect to the Use for which the item is used or its typical User.  'coffee machine' 'dentist's equipment'"}, {'frame': 'Communication_response', 'tfidf': 1.5123493463179494, 'lexical_unit': 'acknowledge.v / retort.n / come back.v', 'definition': 'This frame deals with a Speaker communicating a reply or response, a Message, to some prior communication or action, the Trigger.  \'\' \'The landlord has not yet replied in writing to the tenant objecting the proposed alterations.DNI\'  \'"No, I do not agree with you," responded another officer to the CEO. DNI\''}, {'frame': 'Seeking', 'tfidf': 1.444407106350969, 'lexical_unit': 'watch.v / seek.v / grope.v', 'definition': "A Cognizer_agent attempts to find some Sought_entity by examining some Ground.  The success or failure of this activity (the Outcome) may be indicated.  NB:  This frame should be compared to the Scrutiny frame, in which the primary focus is on the Ground.  'John looked for his pencil.'"}, {'frame': 'Capability', 'tfidf': 1.4384311371685756, 'lexical_unit': 'capability.n / can.v / able.a', 'definition': "An Entity meets the pre-conditions for participating in an Event.  A Degree modifier may be included to indicate by how much the Entity exceeds or falls short of the minimum requirements.  'Conductor software gives us the hands-on capability to provide updates immediately'  'The GOP is afraid that it might not be capable of keeping the seat vacated by Dunn.'  'NASA is unable to communicate with Mars rover.'  'He can fly a kite.'"}, {'frame': 'Dynamism', 'tfidf': 1.4368343640750274, 'lexical_unit': 'dynamic.a / sluggishness.n / lethargic.a', 'definition': 'A physical Exerter, Action, or Force exerts energy at a level specified by the target. This frame covers both individual-level/static uses ("an INTENSE person") as well as stage-level/dynamic uses ("an INTENSE look"), although the individual-level meaning seems more basic.   \'Although an energetic and able warrior, Charlemagne tended to direct battles rather than fight in person.\' \'She dumped a mug on the bedside table with such vigor that steaming coffee spashed out.\' \'Swing the racket with dynamic force.\'   \'I felt particularly sluggish at work that day.\' Exerter, Action, and Force belong to a Core set.  \'\' This frame also covers several productive metaphor cases. In the first one, movement or change caused by a social entity is conveyed as energy exerted by a physical entity. \'Social\' here encompasses entities that are economic, political, technological, historical, cultural, and intimate: \'The private sector is so much more dynamic.\' \'Singh had been under intense political pressure.\' \'Economies are still sluggish.\' Relatedly, the influential effect of an psychological entity is described in terms of energy exertion by a physical entity. \'Psychological\' includes the intellectual, emotional, and creative: \'Sinead\'s emotional intensity permeates every nuance of every lyric.\' \'He finds the Poet Laureate\'s theory about Shakespeare to be more energetic than persuasive.\' Both metaphors appear to involve a third metaphor, which is the anthropomorphization of processes (see examples directly above) or inhuman entities (e.g. in nature): \'The lazy creak of sails\' \'The energetic waves\' \'A broad, lethargic river\'  Further, there is a metonymy wherein energy exerted by people carrying out an activity characterizes instead a central object or other component of the activity: \'Lucker plays lazy games.\' \'She thought the lazy days in France would never end.\'  \'\' Compare to: Level_of_force_exertion. '}, {'frame': 'Inclusion', 'tfidf': 1.4364241775081954, 'lexical_unit': 'integrated.a / have.v / contain.v', 'definition': "A Total has a Part, either  as a member of an aggregate or as  a constituent part of a simple entity.  'His collection included two El Grecos.'"}, {'frame': 'Eventive_cognizer_affecting', 'tfidf': 1.4360834535273888, 'lexical_unit': 'decide.v / convince.v', 'definition': "An Event causes the Cognizer to accept some Content.  Although the Cognizer forms an intention, it is not entailed that he/she acts.  'The divorce convinced him to get help.'  'The price of a factory reconditioned tool decided it for me.'"}, {'frame': 'Commitment', 'tfidf': 1.4265090890482537, 'lexical_unit': 'covenant.v / commitment.n / pledge.v', 'definition': "A Speaker makes a commitment to an Addressee to carry out some future action.  This may be an action desirable (as with promise) or not desirable (as with threaten) to the Addressee. Some of the words in this frame allow an Addressee to be expressed. 'You promised me you'd come to my graduation.' Other words cannot normally occur with an Addressee. 'Kim undertook to finish the project by June.'"}, {'frame': 'Activity_ready_state', 'tfidf': 1.4250361366897175, 'lexical_unit': 'prepared.a / set.a / ready.a', 'definition': "The Protagonist is in an initial state, before beginning to be involved in the Activity, but all pre-conditions for performance of the Activity have been satisfied.  In many cases, the Protagonist is an intentional agent, but there are other uses in which the agent is deprofiled, and the Protagonist is an entity which is essential to the Activity.   Alternatively, the Activity may be indicated by a Salient_entity which stands in for the Activity.  This Salient_entity may also be an intentional agent, but need not be.  'She 's not ready ! DNI.' 'He 's ready to talk , I think .' 'Is the UK government ready to do a u-turn on passport-ID cards ?' 'Check and see if Sal is ready for the bathtub .' 'The world is finally prepared for him !'"}, {'frame': 'Giving_birth', 'tfidf': 1.4065355262588863, 'lexical_unit': 'drop.v / beget.v / bring forth.v', 'definition': "A Mother and Father produce a Child or an Egg. 'Betty bore Gerry three intelligent daughters.'"}, {'frame': 'Chatting', 'tfidf': 1.4003229553246996, 'lexical_unit': 'conversation.n / yak.v / chit-chat.n', 'definition': "A group of people (the Interlocutors or Interlocutor_1 and Interlocutor_2 together) have a conversation.  No person is construed as only a speaker or only an addressee. Rather, it is understood that both (or all) participants do some speaking and some listening--the process is understood to be symmetrical or reciprocal.  In this frame, the purpose of the conversation is generally social, rather than specifically to decide something or exchange information, or to quarrel (see Discussion and Quarreling).  'If you ain't got nothin' better to do, I 'd like to shoot the breeze with you for a couple.' 'We used to chat about everything.'"}, {'frame': 'Regard', 'tfidf': 1.3828353820777157, 'lexical_unit': 'think.v / find.v / regard.v', 'definition': "A Cognizer has a Judgment of an Evaluee, expressing how high or low their regard for the Evaluee is.  'What do you think of him as a linguist?' 'She secretly thought well of him for his role in defrocking Mr. Matthews.' 'Please understand, I hold you in the highest regard.' 'My low opinion of him was of long standing.'"}, {'frame': 'Substance', 'tfidf': 1.3789661809864546, 'lexical_unit': 'metal.n / aluminum.n / liquid.n', 'definition': 'This frame concerns internally undifferentiated Substances.   \'As their gut bacteria ferment cellulose , they generate methane gas , which escapes from the rear ends of the insects.\'  \' The pipes are leaking noxious gas.\'  \'Some CH-47 "Bombers" were equipped to roll-out riot control gas or napalm onto Viet Cong bunker complexes from the rear cargo ramp.\''}, {'frame': 'Activity_finish', 'tfidf': 1.349063551710999, 'lexical_unit': 'graduate.v / conclude.v / tie up.v', 'definition': "An Agent finishes an Activity, which can no longer logically continue. This frame is a subframe of Activity. '' 'Jason completed grading the papers late Sunday night.'  'Upon completion of the final exam, Ava tossed out her notes. '"}, {'frame': 'Timespan', 'tfidf': 1.3210344029898065, 'lexical_unit': 'time.n / life.n / day.n', 'definition': "The words in this frame describe a period of time, as opposed to a point in time.  'The best time of year for planting tends to be fairly regular.' "}, {'frame': 'Speed_description', 'tfidf': 1.300381670763669, 'lexical_unit': 'rapidly.adv / breakneck.a / speedy.a', 'definition': "An Entity is in motion  at a particular Speed, a momentaneous description of distance traveled per time.     'The car went by real  fast.'  'The car is really fast.'  'Oh yeah, Maseratis are fast! INI'  'The speed of the car was 25 mph when it ran into the obstacle.'  LUs of this frame are commonly involved in a semantic construction in which, instead of describing the current Speed, they rather describe some other Speed saliently associated with the Entity, such as maximum possible Speed of the Entity or (for an Entity used as an implement) Speed when in operation.    This construction can be defined as follows:  A phrase describing a temporary (stage-level) property (A) of an entity (B) is pumped to a phrase describing an individual-level property predicating or attributing the entity's (B's) salient association with such a property (A) under some salient conditions, especially the conditions of use of the entity.  E.g., in the Temperature or Location_of_light frames:  'I can never bake anything in my oven because it 's too hot.' 'She gave him a really bright flashlight for Christmas.'"}, {'frame': 'Natural_features', 'tfidf': 1.2879593892111447, 'lexical_unit': 'clough.n / beach.n / river.n', 'definition': "The Locale is a geographical location as defined by shape.  This frame includes natural geographic features, including land/ice forms and bodies of water.  ' We climbed up the rock cliff.' "}, {'frame': 'Intoxicants', 'tfidf': 1.2864805629454126, 'lexical_unit': 'ketamine.n / alcohol.n / barbiturate.n', 'definition': "An Intoxicant is ingested in order to achieve an altered state of consciousness. A Type or Descriptor may be indicated as well.  ' We smoked some high-grade marijuana.'  'They smoked freebase cocaine.'"}, {'frame': 'Scrutiny', 'tfidf': 1.2798072234820508, 'lexical_unit': 'spy out the land.v / surveyor.n / once-over.n', 'definition': "This frame concerns a Cognizer (a person or other intelligent being) paying close attention to something, the Ground, in order to discover and note its salient characteristics.  The Cognizer may be interested in a particular characteristic or entity, the Phenomenon, that belongs to the Ground or is contained in the Ground (or to ensure that such a property of entity is not present).  Some words in this frame allow alternate expressions of the Groundand the Phenomenon: 'We searched the yard  for my contact lens.'"}, {'frame': 'Imprisonment', 'tfidf': 1.2696195694752745, 'lexical_unit': 'jail.v / imprison.v / incarcerate.v', 'definition': "The Authorities put a Prisoner in Prison as punishment for an Offense.   'US Drug Researcher Imprisoned for FDA Fraud.' 'Men will be more likely to be put away for murder rather than manslaughter for killing their wives.' 'However, any treatments may be years in the future and in the meantime, criminals will continue to be imprisoned for public safety.'  'The government wrongfully imprisoned them in ?detention centers? (a nice term for concentration camps), tortured them mentally and physically' "}, {'frame': 'Being_operational', 'tfidf': 1.2618348911369681, 'lexical_unit': 'in order.a / busted.a / broken.a', 'definition': "An Object with an understood function is or is not in a state ready to perform that function.  'The remote is almost broken.'  'Hand me that broken watch so I can throw it away.'"}, {'frame': 'Locale_by_use', 'tfidf': 1.2600472101233091, 'lexical_unit': 'complex.n / harbor.n / rural.a', 'definition': "Geography as defined by its use.   'You must land in the next airfield, as this one is currently having difficulties.' 'The new sports complex was the tallest building on campus, oddly enough.' 'Cities of the Northeast tend to be dingier.'"}, {'frame': 'Businesses', 'tfidf': 1.2287447314444369, 'lexical_unit': 'firm.n / practice.n / paper.n', 'definition': "A Proprietor owns or runs a Business which provides a Product (which may be goods or services).  'The consumer electronics company Apple has exploded with popularity in recent years.'"}, {'frame': 'Coming_up_with', 'tfidf': 1.21986117356762, 'lexical_unit': 'contrivance.n / devise.v / design.v', 'definition': "Words in this frame have to do with a Cognizer creating a new intellectual entity, the Idea. These words are similar to words of physical creation such as build and make, and in some cases may be understood as metaphorically based on such words. However, the Ideas in this frame are predominantly conceptual in nature.  Compare this frame with Achieving_first.  In that frame, the fact that the idea is new to society is emphasized, whereas Coming_up_with refers to an agentive Cognizer using mental effort to figure something out, without any implication of the impact of the idea.  'I 've been trying to come up with a plan .'  "}, {'frame': 'Artistic_style', 'tfidf': 1.2142614433436543, 'lexical_unit': 'sound.n / look.n / style.n', 'definition': "This frame contains LUs that express the Form which a piece of Artwork represents. The Form may also represent the entire body  of an Artist's work. The Form may be further characterized by the Time of some Artwork's creation or other Descriptors.  'Her style of painting is an excellent blend of traditional and modern.' 'The whimsical style of this piece is very effective.'"}, {'frame': 'Duration_relation', 'tfidf': 1.2120639524459247, 'lexical_unit': 'last.v / persist.v / for.prep', 'definition': "A Period or Eventuality is related to its Duration.  Alternatively, an Entity may stand in metonymically for an Eventuality that it is involved in.  'You wouldn't last five minutes!'"}, {'frame': 'Rescuing', 'tfidf': 1.2048686115464466, 'lexical_unit': 'rescue.v / save.v', 'definition': "An Agent saves a Patient or an Asset from a Harmful_situation.   'Israeli commandos rescued the hostages and left.'   'His German shepherd saved him from drowing once.'  'She saved my life on the bridge yesterday.'"}];
+        var frame_list_2 = [{'frame': 'Sign', 'tfidf': 7.052529335021973, 'lexical_unit': 'mark.v / signify.v / usher in.v', 'definition': "A phenomenon, the Indicator, exists as an indication of another phenomenon, the Indicated. The relationship is asymmetric: the Indicated is not necessarily a sign for the existence or presence of an Indicator. The Indicated can be a past, present, or future entity or eventuality. The relationship between Indicator and Indicated is not one of symbolization or iconicity. Rather the Indicator is an index of the Indicated.  'This is a sign of things to come.'"}, {'frame': 'Vehicle', 'tfidf': 2.4777605533599854, 'lexical_unit': 'buggy.n / bus.n / liner.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'Gizmo', 'tfidf': 2.3081412315368652, 'lexical_unit': 'range.n / centrifuge.n / device.n', 'definition': "This frame contains general words denoting equipment where the Use or purpose is not specified by the lexeme but (typically) by a separate expression. The words are described with respect to the Use for which the item is used or its typical User.  'coffee machine' 'dentist's equipment'"}, {'frame': 'Sending', 'tfidf': 2.162750005722046, 'lexical_unit': 'mail.v / shipment [act].n / shipping.n', 'definition': "A Sender plans the Path (along with Source and Goal) of a Theme and places it in circumstances such that it travels along this Path under the power of some entity other than the Sender.  This frame also has a Recipient distinct from the Goal, as both can be present: 'I sent the manuscript to England to Bill.' 'I forwarded the grain to a dealer in Frankfurt.'  This frame contains verbs that participate in the ditransitive construction, with a recipient as the direct object, as in the following: 'I sent Bill the manuscript.' Certain Verbs in this Frame focus on the initial sending act, while others do not.  For example, I sent it rapidly can either mean the act of sending was initiated quickly or that it moved quickly. However, the in following sentence: I exported/dispatched it rapidly, meaning that the act was begun quickly, both types of verbs are included."}, {'frame': 'Weapon', 'tfidf': 1.931417465209961, 'lexical_unit': 'warhead.n / gat.n / grenade.n', 'definition': "A Weapon is an artifact created specifically to cause harm or damage.  In some cases, a Use, Material of construction, Part or Type may be more narrowly specified.  'Did you, or did you not, fire this gun with intent to harm my client?'  'Cyra tried to swing her sword to parry, but it was to heavy.'  'I investigated a specialist precious metal firearms manufacturer.'  'My neighbor, a member of the NRA since birth, has got an AK-47 fully automatic assault rifle.'  'Let 's just say that he 's the kind of guy who likes guns with hair triggers.' "}, {'frame': 'Team', 'tfidf': 1.692797064781189, 'lexical_unit': 'firefighter.n / team.n / fire fighter.n', 'definition': 'A Team is a group with shared goals and works toward them together in a coordinated fashion.'}, {'frame': 'Protecting', 'tfidf': 1.3805748224258423, 'lexical_unit': 'safeguard.v / shield.v / secure.v', 'definition': "Some Protection prevents a Danger from harming an Asset.  'The rubber on her sneakers protected her from the mud.'  'The coral reefs shielded the coastline from the worst of the waves.'  'A growing number of sustainable farmers are preserving agricultural variety and protecting biodiversity by raising ?heritage? or ?heirloom? varieties.'  'The man responsible for this entire ordeal cowardly shielded himself from justice with the little boy's struggling body.'"}, {'frame': 'Documents', 'tfidf': 1.3584864139556885, 'lexical_unit': 'business card.n / papers.n / affidavit.n', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Natural_features', 'tfidf': 1.290973424911499, 'lexical_unit': 'cirque.n / channel.n / dingle.n', 'definition': "The Locale is a geographical location as defined by shape.  This frame includes natural geographic features, including land/ice forms and bodies of water.  ' We climbed up the rock cliff.' "}, {'frame': 'Information', 'tfidf': 1.2133015394210815, 'lexical_unit': 'details.n / scoop.n / data.n', 'definition': "A Cognizer knows or comes to know some piece of Information about a Topic.  In this frame, many LUs encode a specific Means_of_Gathering and/or Source, but these may also be expressed separately.  'Also, the big problem is that our intel about WMD's has many times been wrong.'   ' Anyone got the straight dope on this? '  'Get the inside scoop on sprint football player Austin Wilson. CNI'  'I know him pretty well and I have a lot of dirt on him so I can always hold him over a barrel.'  'What's the info about the new scanner chip? INI'"}, {'frame': 'Supply', 'tfidf': 1.2081650495529175, 'lexical_unit': 'supply.v / fuel.v / provide.v', 'definition': "A Supplier gives a Theme to a Recipient to fulfill a need or purpose (Imposed_purpose) of the Recipient.   'Habituating the ground nesting chimp groups is done by provisioning them with sugar cane. CNI INI'  'I have equipped my leech troopers with tiny subspace displacement thingummies. INI'   ' She sat down on her bed, carefully folding her clothing and packing it into the small carryall Starfleet had provided her for the journey.'"}, {'frame': 'Locale_by_use', 'tfidf': 1.1801602840423584, 'lexical_unit': 'factory.n / work.n / university.n', 'definition': "Geography as defined by its use.   'You must land in the next airfield, as this one is currently having difficulties.' 'The new sports complex was the tallest building on campus, oddly enough.' 'Cities of the Northeast tend to be dingier.'"}, {'frame': 'Being_at_risk', 'tfidf': 1.1532304286956787, 'lexical_unit': 'unsafe.a / danger.n / risk.n', 'definition': 'An Asset is in a state where it is exposed to or otherwise liable to be affected by a Harmful_event, which may be metonymically evoked by reference to a Dangerous_entity. Words expressing relative safety (i.e., lack of risk) are also in this frame.  \'If you are a farmer, you are at risk for hearing loss caused by noise exposure in your work.\'  \'No child is secure from the temptation to do what "my friends" are doing.\'  \'Our nation is making a disastrous mistake thinking that we can have security from people: There is only security with people. \'  \'You don\'t have security against impersonation unless you have security against eavesdropping.\''}, {'frame': 'Appellations', 'tfidf': 1.1391278505325317, 'lexical_unit': 'premier.n / chairman.n / imam.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Directional_locative_relation', 'tfidf': 1.1041815280914307, 'lexical_unit': 'south.n / northwest.n / southeast.n', 'definition': "A Figure is located relative to a (presumably more easily located) Ground, asserting that the Figure lies (approximately) on line from the Ground whose direction is established by semantic types of the particular LUs.  'The plane landed 10 miles due north of Lake Travis in an empty field .' "}, {'frame': 'Political_locales', 'tfidf': 1.10048508644104, 'lexical_unit': 'nation.n / locality.n / province.n', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'Locale', 'tfidf': 1.0988072156906128, 'lexical_unit': 'zone.n / grounds.n / regional.a', 'definition': "This frame contains general locale words, and is mostly a place-holder in the hierarchy. Words in this frame designate relatively stable bounded ares of the world which have permanent Relative_locations with respect to other locales, and thus are useful as permanent landmarks.  It is inherited by Locale_by_use, which has to do with places that are named according to their intended use, or some habitual use, such as factory.n, dance floor.n, village.n, field.n.  It is also inherited by Locale_by_event, which covers places that are names according to some event which took place there, such as concerts, battles, and meteor impacts.  'This is a pleasant area.'"}, {'frame': 'Eclipse', 'tfidf': 1.0858356952667236, 'lexical_unit': 'concealed.a / beclouded.a / veil.v', 'definition': "An Obstruction blocks an Eclipsed entity partially or completely from view. The positions of the Obstruction and the Eclipsed entity are often reported relative to a Vantage_point.  'A small green bulb concealed behind the panel flashed on momentarily .'"}, {'frame': 'People_by_vocation', 'tfidf': 1.0810787677764893, 'lexical_unit': 'biologist.n / politician.n / server.n', 'definition': "This frame contains  words for Individuals as viewed in terms of their vocation.   The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'Humphrey Bogart was a great actor.'"}, {'frame': 'Being_obligated', 'tfidf': 1.0809354782104492, 'lexical_unit': 'obliged.a / responsibility.n / job.n', 'definition': "Under some Condition, usually left implicit, a Responsible_party is required to perform some Duty.  If they do not perform the Duty, there may be some undesirable Consequence, which may or may not be stated overtly.  'It is my duty to fight any attack on the Brotherhood .' 'This country has the responsibility to support its citizens' right to express themselves.' 'I am obligated to pay or they'll double the fine.'  NB:  Contrast this frame with Likelihood and Preconditions frames, which involve many of the same lemmas.  Many LUs which might be expected to be found here (should, must, have to) are actually in the Required_event frame. Our analysis is that these LUs do not evoke an obligation directly, although they are frequently used in contexts that are consistent with an understanding of obligation and are pragmatically strengthened to (defeasibly) imply an obligation. "}, {'frame': 'Store', 'tfidf': 1.0757118463516235, 'lexical_unit': 'stockpile.n / store.n / inventory.n', 'definition': "A Supply of a Resource is kept safe and available for a future Use.  The Supply may be under the control of a Possessor.  'Our supply of food is running low.'"}, {'frame': 'Measure_linear_extent', 'tfidf': 1.07526433467865, 'lexical_unit': 'centimeter.n / light-year.n / furlong.n', 'definition': "This frame is concerned with nouns that denote Units of measurement for linear extent. The Frame Elements are Unit, Count,  and Stuff.'The shirt is made from 12 miles of pure cotton.''81 miles of dyke are still visible from this point.'"}, {'frame': 'Substance', 'tfidf': 1.044421911239624, 'lexical_unit': 'methane.n / oil.n / uranium.n', 'definition': 'This frame concerns internally undifferentiated Substances.   \'As their gut bacteria ferment cellulose , they generate methane gas , which escapes from the rear ends of the insects.\'  \' The pipes are leaking noxious gas.\'  \'Some CH-47 "Bombers" were equipped to roll-out riot control gas or napalm onto Viet Cong bunker complexes from the rear cargo ramp.\''}, {'frame': 'Roadways', 'tfidf': 1.0410372018814087, 'lexical_unit': 'autobahn.n / thoroughfare.n / track.n', 'definition': "This frame involves stable Roadways which connect two stable Endpoints, the Source and the Goal.  Being physical objects, these Roadways may have Names and Characteristics; they are also made of a Material.  They also cover ground, so they may have a Path or a Relative_location that the travel occurs in.  ' We crossed the brick road.' ' I prefer to travel on highway I-80.'  'This is the only highway between Lodi and Sonoma.' ' She dreaded turning onto the busy street.'"}, {'frame': 'Part_whole', 'tfidf': 1.0291680097579956, 'lexical_unit': 'segment.n / eighth.n / hundredth.n', 'definition': "This frame is concerned with nouns denoting a part or parts of a Whole entity . The Part is not defined relative to the Whole's orientation, center, or edge and is not ordered.  We also annotate properties of the Part, e.g. relating to its size.  'Kim forgot a large part of the story.'  'Abby ate only the top half of the cake.'"}, {'frame': 'Scrutiny', 'tfidf': 1.0119922161102295, 'lexical_unit': 'explore.v / surveillance.n / investigate.v', 'definition': "This frame concerns a Cognizer (a person or other intelligent being) paying close attention to something, the Ground, in order to discover and note its salient characteristics.  The Cognizer may be interested in a particular characteristic or entity, the Phenomenon, that belongs to the Ground or is contained in the Ground (or to ensure that such a property of entity is not present).  Some words in this frame allow alternate expressions of the Groundand the Phenomenon: 'We searched the yard  for my contact lens.'"}, {'frame': 'Education_teaching', 'tfidf': 1.0074450969696045, 'lexical_unit': 'graduate.n / study.v / education.n', 'definition': 'This frame contains words referring to teaching and the participants in teaching.  A Student comes to learn either about a Subject; a Skill; a Precept; or a Fact as a result of instruction by a Teacher.  Some of the nouns (schoolmaster, -mistress) in this frame refer to administrative positions and do not take relevant frame elements; these will be moved.    \'Dad taught <fex name="">me that if you work hard, you will be OK - no matter what happens. \'  \'What Our Cat  taught Me  About Marketing!\'  \'For two years she taught me French\'  \'Mom and Dad taught me not to bullshit, because it always came back to bite me in the ass, without fail. \'  \'A young swiss girl up in a swiss chalet taught me how to yodel.\'  \'Young Murdock later met a blind martial arts master known as Stick, who taught him how to use his augmented senses and trained him as a fighter.\'  \' Maria, a woman studying to be a nun is sent from her convent to be the governess of the seven children of a widowed naval captain \'  Frame-Element relations:  Several Frame element relations hold in this frame. There is a core-set {Material, Teacher} (possibly also including Institution); these FE\'s can fill the subject slot of the teach-type verbs. There is another core-set  {Precept, Subject, Skill, Fact, Role} to do with what is learnt. In addition, the FE Qualification may occur with Subject and Role  \'My sister is studying for a maths degree    to be a teacher \' \'She\'s studying maths to be a teacher .\'  Phrases expressing Qualification also very often include information about the Subject (see below), which is to be annotated on the second layer.  \'Bill is studying for a BS in physics/a maths degree.\' \'Bill is studying for a BS in physics/a maths degree.\'  '}, {'frame': 'Capability', 'tfidf': 1.0054715871810913, 'lexical_unit': 'potential.n / powerless.a / powerlessness.n', 'definition': "An Entity meets the pre-conditions for participating in an Event.  A Degree modifier may be included to indicate by how much the Entity exceeds or falls short of the minimum requirements.  'Conductor software gives us the hands-on capability to provide updates immediately'  'The GOP is afraid that it might not be capable of keeping the seat vacated by Dunn.'  'NASA is unable to communicate with Mars rover.'  'He can fly a kite.'"}, {'frame': 'Architectural_part', 'tfidf': 1.0030653476715088, 'lexical_unit': 'wall.n / fireplace.n / foundation.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  'We need new counters for the kitchen'  'The storm ripped off the bathroom's roof'  "}, {'frame': 'Body_description_holistic', 'tfidf': 0.9880595207214355, 'lexical_unit': 'big-boned.a / lithe.a / obese.a', 'definition': "This frame covers descriptions of an entire human body, viewed as a gestalt (as opposed to descriptions based on salient body parts).  The Frame Elements are Individual and Figure.    'Chuck is muscular.'  'Chuck has a muscular body.' "}, {'frame': 'Hostile_encounter', 'tfidf': 0.9752638936042786, 'lexical_unit': 'stalemate.n / fighting.n / spat.n', 'definition': "This frame consists of words that describe a hostile encounter between opposing forces (Side_1 and Side_2, collectively conceptualizable as Sides) over a disputed Issue and/or in order to reach a specific  Purpose. '' 'He still wants to fight Mike Tyson in about 8 months.'  'Dennis Andries's European cruiserweight title clash against Akim Tafer of France in Beausoleil last February has been voted as the EBU's fight of the year.'"}, {'frame': 'Attack', 'tfidf': 0.9747825860977173, 'lexical_unit': 'jump.v / fire.n / attack.n', 'definition': "An Assailant physically attacks a Victim (which is usually but not always sentient), causing or intending to cause the Victim physical damage.   A Weapon used by the Assailant may also be mentioned, in addition to the usual Place, Time, Purpose, Explanation, etc.  Sometimes a location is used metonymically to stand for the Assailant or the Victim, and in such cases the Place FE will be annotated on a second FE layer.  'As soon as he stepped out of the bar he was set upon by four men in ski-masks.' 'Is he invading Iraq just to cover other shortcomings?' 'Then Jon-O's forces ambushed them on the left flank from a line of low hills.'"}, {'frame': 'Be_on_alert', 'tfidf': 0.9672726392745972, 'lexical_unit': 'alert.n / guard.n', 'definition': "A Protagonist has become aware of a possible Danger (a dangerous event or a Dangerous_entity that might participate in an event harmful to the Protagonist) and is ready to engage in an Activity in response to that Danger.  'All tropps are on high alert for possible intruders following an attack on a nearby compound.'  'we're on alert to stop anyone trying to sneak in.'  'we're on guard for possible sabotage.'"}, {'frame': 'Process_start', 'tfidf': 0.96318519115448, 'lexical_unit': 'eruption.n / start.v / nascent.a', 'definition': "An Event begins at a certain Time and Place. Reason may also be indicated.  NB:  Refer to Event frame.  'The project began.'"}, {'frame': 'Firefighting', 'tfidf': 0.9498615264892578, 'lexical_unit': 'gain ground.idio / attack.v / battle.n', 'definition': 'This frame characterizes the situation or state of affairs in which someone acts to prevent a Fire_disaster from occurring, accelerating, or affecting any area not identified as a Controlled_area. The named Burn_area, targeted by the Fire_disaster, is more salient than "fire" itself and is often used for reference instead. The organizational methods for Firefighting are of utmost importance in this frame.'}, {'frame': 'Size', 'tfidf': 0.945719301700592, 'lexical_unit': 'Lilliputian.a / immeasurable.a / immense.a', 'definition': 'The size of an Entity is assessed in terms of the Degree by which it deviates from the norm. The size generally refers to the amount of three-dimensional space that is occupied by the Entity, not primarily to its weight, density, or length, which is why it is peculiar to refer to a bullet as "large", even if it is heavy, unless it actually has larger dimensions than usual, or to a rope as "big", even if it is long, unless its other, cross-sectional dimensions are also significant.  \'I own a very small home.\' \'Where is my little notebook?\' \'That dog is huge!\' \'\'  There are an enormous number of productive metaphors that involve this frame as the source domain; two of the most frequent metaphors come from the target domains of quantity/amount and importance.    \'He gave me a small sum of money.\' \'The novel was a substantial achievement.\' \'\'  Subcases of the quantity/amount and importance metaphors are also prominent. These involve cases describing the extent of an action\'s, event\'s, or person\'s effect ("his influence on her work was massive"), as well as those related to events ("big party"), similarity ("gigantic difference"), communication ("giant misunderstanding"), and emotions ("great joy", "little joys").  Other productive metaphors include those dealing with groups (in terms of their number of members, net worth, importance to the economy, i.e. "giant electronics company") and those describing sound volume ("in a tiny voice", "the enormous thundering of her heart").  \'\'  The target domain of fame, by contrast, occurs in a non-productive metaphor, found especially with big.a and huge.a. Maturity and age also occur in non-productive metaphors ("big boy", "little baby").'}, {'frame': 'Aggregate', 'tfidf': 0.9455392360687256, 'lexical_unit': 'pack.n / party.n / package.n', 'definition': "This frame contains nouns denoting Aggregates of Individuals.  The Aggregates may be described by an Aggregate_property.   'An army of postal workers descended on my office.'  "}, {'frame': 'First_rank', 'tfidf': 0.9422987103462219, 'lexical_unit': 'principal.a / chief.a / leading.a', 'definition': 'An Item is located at the top end of a scale of importance or social rank (or some other Attribute) in comparison to other members of a Contrast_set (usually, implicit) that is otherwise similar in kind to the Item. Oftentimes, the limits of the Contrast_set are determined by an expression of the Limits_of_consideration.  \'The main problem is that the administration has not yet clarified "Regime change." INI\' \'Oh, he had a great many concerns -- chief among them his own boredom.\' \'Their primary objective in Bosnia was bringing about a lasting peace. INI\''}, {'frame': 'Speed_description', 'tfidf': 0.9250749349594116, 'lexical_unit': 'speedily.adv / rapid.a / pace.n', 'definition': "An Entity is in motion  at a particular Speed, a momentaneous description of distance traveled per time.     'The car went by real  fast.'  'The car is really fast.'  'Oh yeah, Maseratis are fast! INI'  'The speed of the car was 25 mph when it ran into the obstacle.'  LUs of this frame are commonly involved in a semantic construction in which, instead of describing the current Speed, they rather describe some other Speed saliently associated with the Entity, such as maximum possible Speed of the Entity or (for an Entity used as an implement) Speed when in operation.    This construction can be defined as follows:  A phrase describing a temporary (stage-level) property (A) of an entity (B) is pumped to a phrase describing an individual-level property predicating or attributing the entity's (B's) salient association with such a property (A) under some salient conditions, especially the conditions of use of the entity.  E.g., in the Temperature or Location_of_light frames:  'I can never bake anything in my oven because it 's too hot.' 'She gave him a really bright flashlight for Christmas.'"}, {'frame': 'Part_inner_outer', 'tfidf': 0.9188867807388306, 'lexical_unit': 'inside.n / exterior.a / outside.n', 'definition': 'This frame concerns Parts of objects that are defined relative to the center or edge of the object.  The Part is a part of the Whole and the Part_prop describes a property of the Part.  \'She discarded the exterior of the walnut.\' \' She preferred a sparse church interior . \'  In cases where the Target is an adjective, it has a special relationship with the noun that it modifies such that a phrase which is a syntactic argument of the noun is semantically available to fill the argument structure of the adjective, as in "the outside row of the class"\'The inner shelf of the bookcase was lying on the floor.\'  '}, {'frame': 'Buildings', 'tfidf': 0.9142776131629944, 'lexical_unit': 'home.n / theater.n / supermarket.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Ground_up', 'tfidf': 0.9107165336608887, 'lexical_unit': 'milled.a / ground.a / crushed.a', 'definition': "In this frame a Patient is in a state of having been broken into smaller pieces.  ' We enjoy eating ground beef . '"}, {'frame': 'Colonization', 'tfidf': 0.9100238680839539, 'lexical_unit': 'settle.v / settlement [entity].n / colonist.n', 'definition': "A group of Colonists from a Homeland migrate to and proceed to settle in a New_area. The New_area then becomes their permanent home. The New_area and Homeland are in some way construed as being part of the same organization or system. In the case of (people from) nation-states colonizing other areas, the colony and nation-state are considered a single political entity. In the extended sense of living things in general colonizing or settling a new area, the original Homeland must still inhabited by some of the same group. In this sense Colonization is distinct from migration or exodus.  'In the 7th century BC, Phoenicians colonized the eastern section of Libya.' 'In the 7th century BC, Phoenicians colonized the eastern section of Libya.' 'Finns colonized the land from the south some 2,000 to 4,000 years ago' 'If a colony from Britain was established in that large tract of Country, and if we were at war with Holland or Spain, we might very powerfully annoy either state from our new settlement.'  This frame also includes metaphorical uses involving animals or plants, or abstract domains such as ideas.  'Deciduous trees such as red alder subsequently colonized the logged area.'  'Conservatives don't get what the left gets, which is that the left has already colonized and converted whole university departments.'  'As the years progressed and adaptations occurred new species and subspecies began to populate the islands.'"}, {'frame': 'Military', 'tfidf': 0.909867525100708, 'lexical_unit': 'navy.n / air force.n / coast guard.n', 'definition': 'Some Possessor, either a nation, institution, or private individual, controls a Force whose primary functions to defend the Possessor (or, in the case of an institution or individual, some area of land significant to them) and to carry out offensive actions for the Possessor.  The Domain of operation of the Force may be expressed.'}, {'frame': 'Project', 'tfidf': 0.902105450630188, 'lexical_unit': 'plan.n / project.n / scheme.n', 'definition': "An Agent, which may be an individual or group, is engaged in a complex Activity.  A larger Goal which motivates the Agent carrying out the Activity may be indicated. Instead of a particular  Activity, a Field of endeavor may be indicated. The project may also have a Name and the Time when as well as the Place where it is ongoing may be specified.  'The New Car Assessment Program (NCAP) is dedicated to helping the public buy a safer car.'  'The school will continue with its project to end all violence related to racism, xenophobia and intolerance.'"}, {'frame': 'Purpose', 'tfidf': 0.8970462083816528, 'lexical_unit': 'use.n / object.n / plan.n', 'definition': "An Agent wants to achieve a Goal,  or an object.  A Means  has been created or is used to allow the creator or a user to achieve a  Goal. The Goal is a state of the world that does not currently hold but which the Agent wants to realize and is planning and/or working towards. In some cases, it is difficult to decide whether a noun phrase metonymically stands for the Agent or the Means (e.g. The goal [of this paper/seminar/project] is to determine ...). We mark these phrases as Agent on the first layer but also annotate them as Means on a second annotation layer.  In some cases a Restrictor on the Goal state of affairs can be given prominence as a separate constituent. Talking about Goals frequently includes the mention of a Domain to which the Agent's Goal is relevant.  'The modest American goal of a threefold increase in capacity recognises this fact .' 'The object of the tutorial is to help a student concentrate on his writing skills ' ' The prime goal of the programme was to help develop processes of scientific thinking in children .' 'My goal in this book is to introduce the reader to Web programming applications.' 'The president's economic goal for the country was to overcome the recession.'"}, {'frame': 'Communication_response', 'tfidf': 0.8944137692451477, 'lexical_unit': 'rejoin.v / rejoinder.n / comeback.n', 'definition': 'This frame deals with a Speaker communicating a reply or response, a Message, to some prior communication or action, the Trigger.  \'\' \'The landlord has not yet replied in writing to the tenant objecting the proposed alterations.DNI\'  \'"No, I do not agree with you," responded another officer to the CEO. DNI\''}, {'frame': 'Achieving_first', 'tfidf': 0.8879095911979675, 'lexical_unit': 'inventor.n / pioneer.n / originator.n', 'definition': "A Cognizer introduces a New_idea into society.  'It is difficult to imagine how different our lives would be without Edison's invention of the light bulb.'  "}, {'frame': 'Activity_start', 'tfidf': 0.8718124628067017, 'lexical_unit': 'strike up.v / open.v / initiate.v', 'definition': "An Agent initiates the beginning of an ongoing Activity in which he will be continuously involved. '' 'At the same time, city-states began to grow in influence on the southern Greek mainland.'  'Naturally, I started crying to get out of work.'  "}, {'frame': 'Building', 'tfidf': 0.8594368696212769, 'lexical_unit': 'make.v / weld.v / construction.n', 'definition': "This frame describes assembly or construction actions, where an Agent joins Components together to form a Created_entity, which is profiled, and hence the object of the verb.  'Jack built a new house out of bricks.' 'We glued the airplanes together.'"}];
+    </script>
+    <script type="text/javascript" src="word_cloud_prediction.js"></script>
+    <script type="text/javascript" src="../mturk.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 150px;
+            padding-right: 150px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel_1 canvas, #word_cloud_panel_2 canvas {
+            display: none;
+        }
+        .word_cloud_box canvas {
+            display:none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+        .word_cloud_box {
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 3px rgba(70, 70, 70, 1) solid;
+            padding: 20px;
+            margin-bottom: 20px; 
+        }
+        .word_cloud_box:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+        }
+        .selected_story_block {
+            border-color: #7BDFF2;
+            border-width: 3px;
+            box-shadow: 0 0 10px 10px rgba(123, 223, 242, 0.3);
+            background-color: rgba(239, 247, 246, 0.8);
+        }
+        .indicator {
+            /*font-family: Courier;
+            font-weight: bold;*/
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px black solid;
+            border-radius: 20px;
+        }
+
+        .selected_story_block .indicator {
+            background-color: rgb(123, 223, 242);
+        }
+
+        #story_content {
+            max-height: 600px;
+        }
+        .not_qualified {
+            color: red;
+            font-weight: 900;
+        }
+        .qualified {
+            color: black;
+            font-weight: 900;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Which word-cloud best represents the story snippet?</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that a computer automatically 
+            generated to characterize a story snippet. 
+            The words in the word cloud <strong>do NOT necessarily occur</strong> in the story snippet. 
+            These words can just be relevant or semantically similar. <br/><br/>
+
+            A <strong>word-cloud representation with nouns</strong> is a group of nouns a computer automatically 
+            generated to characterize a story snippet. 
+            These nouns can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            In this HIT, you will see a story snippet. <span class="highlight">Please read it carefully.</span>
+            The story is long so we have a <span class="highlight">3 minutes time lock</span> for submission.
+            <br/><br/>
+
+            At the bottom of the HIT, you will see three sets of word-cloud representations, 
+            where each consists of nouns, verbs, and adjectives. 
+            <span class="highlight">Please select the word-cloud representation that best represents the story.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following story snippet carefully!</h3>
+            You will need to select the word-cloud representation that best represents this story. 
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story</h4>
+                        <h5>(An excerpt from the book <span style="font-weight:bold;">"Journey To The Stars"</span>.)</h5>
+                        <span class="not_qualified" id="read_lock">Please read all the story.</span>
+                        <br/><br/>
+                        <pre id="story_content">
+Mark almost choked at Tarsier`s words.
+"You are slavers captain, pirates, thieves, raiders and probably murderers, you are lucky that I have not taken the easy way out and turned off the oxygen flowing in to your prison cell, if the situation was reversed, you would have already done just that."
+Mark replied just as angrily.
+"In fact, Captain, why not assist us by repairing the sabotage carried out by you to the Ion drive upgrade."
+Tarsier looked at Mark sardonically and replied.
+"Captain Blazer, as I have already told you, it is impossible to repair the damage with what you have available here on the Jupiter Express.
+Why not accept that and return to Ganymede, rescue would then be only a few days away, after I had made the call to my people?"
+"Sorry Captain, but the uniform of a slave would not suit me, I have a better option that I might yet resort to, I might start to shoot your crew, I am certain that one of them would agree to assist us, for they are only pirates, slavers, and loyalty to any cause has never been in their make-up."
+Mark replied and he laughed as he left the pirates to think over his parting words.
+**********
+One month had crawled by on their return voyage to Earth, everyone was tired, irritable and wishing that the next nine months would pass at a faster rate than they currently were.
+It was bathroom duty time again and Peter and Rob were on duty.
+Peter stood at the top of the ladder waiting for Tarsier to arrive and Rob and Jean stood outside of hold number one ensuring that Tarsier climbed up not down to engineering or environmental, where he would attempt to sabotage the ship, once again.
+Tarsier reached the residential level and climbed off the ladder on to the deck, he stumbled, Peter foolishly put out a hand to assist Tarsier and had his energy weapon wrenched from his hand.
+Tarsier smiled grimly at Peter, put the nasty end of the weapon just inches from Peter`s head and asked.
+"Where is your captain, tell me quickly and I will not kill you, hesitate and after killing you I will kill all of your crew, or die trying?
+From this distance, even the lowest setting that you have this weapon set to, will kill you."
+"Kill my friend, Captain, and I will kill you, then I will switch off the air supply in hold number one, your entire crew will die because you made a grave error of judgment."
+Mark said at the entrance to his cabin.
+Mark had returned here to collect some notes that Jean had made regarding the alien computer, once again he was attempting to discover its secrets.
+Tarsier froze; however, he kept his finger on the trigger of his energy weapon, turning his head slightly he said.
+"We have a stalemate captain, however, if you promise to return my crew and myself to our Ganymede base, then I will hand your engineer his weapon back."
+"That would mean slavery for us, because the Xavier, or a starship much like it, would catch us up well before we reached Earth.
+No, Captain, I have a better idea."
+Mark replied.
+Tarsier looked at Mark, his mind racing, his finger inadvertently moving off the trigger of his weapon.
+"A better idea Captain, and what might that be."
+Tarsier asked curiously.
+"Well, Captain, it seems that I must give you something, if I am to stop you from killing my friend."
+This was as far as Mark got, for opposite him and behind Tarsier, Rob stood silently on a rung of the ladder, waiting his best opportunity.
+As soon as he saw Tarsier`s grip on his weapon`s trigger loosen, as Tarsier listened eagerly to Mark, Rob fired his own weapon at the same instance that Peter jerked himself away from the alien captain, ducking his head at the same moment.
+The energy bolt whistled noisily across the short distance and took out Tarsier immediately.
+However, Tarsier`s hand still jerked down on to the trigger of his weapon, firing it, its energy bolt striking the ceiling of the residential level, but the damage was only superficial.
+On the floor below, Jean called up frantically.
+"Rob, what happened, is everyone all right?"
+"Everyone is fine Jean, except for Tarsier who will have a bad headache when he wakes up."
+Rob replied as he hauled himself up on to the residential level.
+"I am sorry Mark, he stumbled against me and I simply attempted to help him."
+Peter cried out as his fingers explored his hair in fear that some of it had been shaved off.
+"You`re tired, we all are, in hindsight it was an obvious attempt waiting to happen."
+Mark replied.
+"We need to assure that it does not happen again, does anyone have any ideas?"
+Mark asked.
+"Well let`s see."
+Jean began.
+"We can kill them, that would solve the problem, we could keep them short of oxygen, that would keep them weak.
+We do have some drugs, not enough to keep them docile for nine months, but enough for one month, maybe.
+Other than that, we will just have to be more careful."
+Jean`s suggestions had lifted their spirits and on thinking the matter over, Mark said.
+"More careful it is them, we can keep your other suggestions in mind, but only as a last resort."
+Tarsier woke up to see four energy weapons pointed at his head, he shrugged and then said.
+"Can I use the bathroom, I could do with a pee and a wash."
+Mark smiled at the slaver and led the way, with Peter following behind him, his weapon aimed at the slaver`s back.
+**********
+Two months in to the return voyage, and Mark tried, once more, to get in to the alien computer, however, he could not find a program that would allow him to read it in the English language.
+He knew that to obtain the most out of the information contained within it, it would need Jean Warrior and the scientists of Blazer Space back on Earth.
+It was then that Peter came up to the bridge to speak to a very lonely Mark Blazer, for the others had been very busy in engineering since the voyage home had begun.
+"Mark, we think that we have done it.
+Yes, it is a mess, and certainly not the nice neat job that the aliens managed, but then we do not have that much material available to use.
+However, using parts from what was left of the radio, one of the energy weapons and our entire stock of spare parts, we should be ready to test the upgrade to the Ion drive by tomorrow morning."
+"That is great Peter, give the others my congratulations" Mark said adding.
+"If your upgrade is successful Peter, we should reach Earth in six weeks, which will put us in to the record books."
+Mark declared happily.
+"It will also be a smack in the mouth for the aliens."
+The upgrade was successful, and their alien prisoners looked at one another anxiously as they felt the Jupiter Express surge forward.
+Six weeks later, in the early morning, the Jupiter Express turned around and used their Ion drive together with the liquid fuel engines to decelerate, and two weeks after that they were approaching the American space station.
+They had been away from it for six and a half months, and Mark could visualise the excitement there, on seeing the Jupiter Express returning home, early.
+Especially after hearing nothing from them for so long, he smiled as he used their thrusters to manoeuvre the massive spaceship up to the space dock.
+When they opened their main airlock, which was on the accommodation level, they were met by a mixed group; however, the marines with their stun weapons stood out amongst the others, until Colonel Rick Jameson, the commander of the space station, saw Mark.
+"Mark, what on Earth happened out there, are you all okay?"
+"Yes Rick, although we had an interesting journey to Jupiter and back."
+Mark replied and smiled when he saw the puzzled expression appear on his friend's face.
+"I will explain in your office Rick, however, first I have some very important prisoners that I need you to put under a high security guard."
+Adding swiftly as Rick`s gaze moved quizzically to Peter, Jean and Rob.
+"No Rick, not my crew."
+He said chuckling.
+"We had some uninvited guests who hijacked my ship, thankfully we managed to turn the tables on them and return home.
+Rick, they must be considered dangerous and we cannot allow them to escape, I will tell you more Rick, once we are in your office."
+Jameson looked at Mark quizzically and said.
+"You have had an exciting voyage Mark; just how many uninvited guests have you got and where have you stowed them?"
+"Seven of them, they are in the number one hold, unfortunately you will have to bring them up to this level using the emergency ladder, and under guard at all times, that Rick, I cannot stress too much."
+Jameson looked quizzically at Mark before sending his marines down to collect their prisoners, Rob accompanying them to input the code in to the keypad.
+Later, when the crew of the space station saw the aliens, they were stunned, they finally knew what happened to the missing scientists from Marduh, they were hijackers.
+Tarsier and his crew were taken to a quarantine area and held there under guard, to await whoever was put in charge of them.
+Mark and his crew accompanied Jameson to his office and told him of their trip, of the hijacking, their winning back of their spaceship, and of the advances in technology that they had gained from the hardware that the aliens had brought aboard the Jupiter Express.
+"You're kidding me Mark; you mean to tell me that the first aliens that I get to meet are space pirates?"
+Jameson asked.
+"Not only pirates, they are also slave traders, the people of Earth have been lucky, we now have advanced notice of their peoples' intentions for us and we can make plans to counter them."
+Mark replied.
+"I had better contact the authorities about this, they will not believe it, however, once they see your alien hardware they will have to believe it."
+Jameson said.
+The next twenty-four hours were hectic, with an order coming from the White House forbidding anyone on the space station from mentioning anything about the aliens or the voyage of the Jupiter Express.
+This was followed by an order from the Pentagon ordering Mark and his crew to stay on the space station.
+They were to await General Jack Dance and members of his staff, who would shortly arrive there along with another squad of marines, and Marlene Houston, who was the deputy director of the DIA, that is the Defence Intelligence Agency.
+They came in two shuttles, one of which left immediately with the aliens on board, guarded by the squad of marines to ensure they arrived safely at a high security base in Middle America.
+Here the aliens were imprisoned below ground in three secure cells to await agents of both the FBI and the DIA, who would interrogate them.
+On the space station, and after a second debriefing, this time carried out by General Jack Dance and Marlene Houston, Mark and his crew escorted Dance and Houston, together with the scientists who had accompanied them, aboard the Jupiter Express.
+Here they were able to view the alien technology; however, only the energy weapons looked impressive, as they could test fire them.
+The computer was simply a box with a fancy display screen, as for the Ion drive upgrade, it had been patched up with an assortment of spare parts and it looked nothing like a most important piece of advanced space technology.
+Mark and the others were moved to the Kennedy Space Centre, and the next morning they were sitting in the headquarters building.
+Here they spoke with a Dance and Houston again, as well as some of the country`s leading scientists.
+They talked well in to the night, as they went over all that they had learned about the aliens, their technology and what they intended for the people of Earth.
+Then Mark mentioned the Pacifier, and all that it could do.
+It was this weapon more than anything else worried the assembled group.
+Finally, Mark mentioned the alien starship Xavier, of its recent trip to Earth, and of its chameleon stealth mode of operation.
+Worried by what they had just heard, it was decided that the crew of the American space station be brought back to Earth for a full medical and psychiatric check-up.
+The battered remnants of the Pacifier were handed over to an elderly scientist, who had top-level clearance, was brilliant, and worked exclusively for the pentagon.
+However, Mark made it clear that the other alien technology, which was now on Earth, and in his laboratory at Cape Canaveral, was the property of Blazer Space.
+Dance initially agreed to this, however, he had despatched a company of marines to ensure that it was not moved elsewhere or stolen by the agents of another country.
+The government realised just how important it was, not for use against aliens from space, but to ensure that America was safe against its use on them by their enemies on Earth.
+**********
+At the White House, the president spoke with his cabinet, the subject, whether they should notify the leaders of the permanent members of the UN Security Council.
+They comprised of the EU, which was reborn again and this time as one united nation, the UK, China, Russia, Japan and India.
+If so should they to tell them everything?
+That they now had proof that an advanced alien civilisation existed, and that they had visited Earth.
+About the presence of seven alien prisoners, of the aliens` intensions, of the Pacifier, of the alien starship the Xavier, and finally whether to tell them of the alien technology now in the hands of Blazer Space.
+It was finally decided that in the interests of the people of Earth, that everything should be disclosed.
+Then all he had to do was to decide whether to reveal this information to the leaders of the Democratic Party, and then there were the senior members of his own Republican Party to consider, the president felt a migraine coming on, he could always resign, he supposed.
+Initially this disclosure was met with disbelief by some of the parties that had been notified, however, they were invited to meet the alien prisoners and inspect the remains of the Pacifier.
+Finally, they accepted that America had told them the truth, and a meeting of these permanent members of the UN Security Council was scheduled for the coming week, to give the leaders of the nations` time to discuss the situation with their advisors.
+The first thing that they agreed upon was that the crews of the other space stations should be immediately brought back to Earth, to be checked by the leading psychiatrists of the countries who had people aboard the stations, they would also have to check past crews, ones who had recently returned to Earth.
+The next thing that was decided by the Security Council was that the rest of the world was not yet ready to hear of this new threat to its people, it would cause far too much panic.
+**********
+When everyone had gone their ways, except for the marines who now guarded his offices and laboratory, Mark called his crew together to speak to them.
+"Jean, we have a lot of important work ahead of us, and I want you to head the team."
+Jean was a little stunned, but he ignored her surprised look and continued.
+"We must commence the initial research on a larger version of the alien`s energy weapon, I want one fitted to the Jupiter Express and powered by its nuclear reactor.
+On a smaller scale, we need to start production of the hand-held energy weapons.
+Finally, I want you to look at the device that upgraded our Ion Drive, one with more than just one setting.
+If we can travel around the solar system at anything approaching half a G, it will be good enough for most people."
+Mark declared in barely concealed excitement.
+Mark then looked at Peter and Rob.
+"Jean will need your help; your recent experience with alien technology makes you both important to the swift completion of all three projects.
+Is everyone okay with this?"
+"No problem Mark, there are more women down here than on the space station."
+Peter replied with a grin.
+"Sounds good to me as well Mark."
+Rob agreed smiling, for he agreed with Peter.
+"Good, then can you start tomorrow morning?"
+Mark added to which they all agreed and then he said.
+"A trio of generals from the pentagon are coming to see us tomorrow morning, I will bring them through to your laboratory Jean, I want you all there to meet them and then to run through everything with them.
+It is important to Blazer Space and to us three, and not just financially, because after our last adventure we are now the leading space exploration team on Earth, and I intend to keep us ahead of the rest.
+The other space faring countries are going to want to play catch up, I do not want them to catch us, I want us to stay number one, that way the best opportunities, whatever they are, will come our way."
+"You can count on us Mark."
+Peter said for all the others.
+"I like the idea of being famous."
+Mark and the others immediately laughed and beat him around the head with their baseball hats, they needed to let off steam now, tomorrow they would have to listen to generals, politicians and their lackies.
+The planned meeting the next day went well, with the Pentagon promising to invest a substantial sum in to the three projects, if some of their scientists could participate.
+They also demanded substantial discounts on the subsequent technology designed by the Blazer Space science team.
+This Mark agreed to, he really did not have much choice, he needed their money and scientists.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+
+        <h3>Select the word-cloud representation that best represents the above story.</h3>
+        Below, there are three word-cloud representations. Read them carefully and select the one that best represent the above story.
+        <br/><br/>
+
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_1" value="1">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 1</h3>
+                The following three word clouds jointly represent the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_2" value="2">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 2</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_2">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_2">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_2">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_2-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <!--div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_3" value="3">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 3</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_3">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_3-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_3">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_3-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_3">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_3-png-container" class="text-center"></div>
+            </div>
+        </div-->
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="193">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_150">
+            <input name="note" type="hidden" value="LGBM, BERT">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+    </div>
+
+</body>
+</html>

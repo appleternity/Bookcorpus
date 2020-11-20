@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="text/javascript">
+        var frame_list_1 = [{'frame': 'Communication_response', 'tfidf': 3.344423294067383, 'lexical_unit': 'response.n / answer.v / rejoinder.n', 'definition': 'This frame deals with a Speaker communicating a reply or response, a Message, to some prior communication or action, the Trigger.  \'\' \'The landlord has not yet replied in writing to the tenant objecting the proposed alterations.DNI\'  \'"No, I do not agree with you," responded another officer to the CEO. DNI\''}, {'frame': 'Appellations', 'tfidf': 2.71443772315979, 'lexical_unit': 'king.n / shah.n / leader.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Attention_getting', 'tfidf': 2.172459363937378, 'lexical_unit': "bro.n / ma'am.n / pal.n", 'definition': "This frame covers terms used to get someone's attention, including Interjections (e.g. hey, yo) and certain terms of address (Address_term), the latter of which may serve the function of attention getting.    'Hey.' 'Hey, boy.' 'Hey, boy, come over here now!'  "}, {'frame': 'Stimulus_focus', 'tfidf': 2.069535255432129, 'lexical_unit': 'white-knuckle.a / alienating.a / revolting.a', 'definition': "In this frame either a Stimulus brings about a particular emotion or experience in the Experiencer or  saliently fails to bring about a particular experience. Some words indicate that the Stimulus is characterized by the experience it is likely to evoke in an Experiencer and for these, the Experiencer may rarely be present. There may also be a Degree to which the Stimulus affects the Experiencer and Circumstances under which the experience occurs. There may also be a Comparison_set to which the Stimulus is compared and a Parameter that indicates the area in which the Stimulus has its effect.  ' The view is breathtaking in January. '  ' That movie was quite fascinating. '  ' That was certainly a gratifying experience.' ' The report was very alarming to me. '"}, {'frame': 'Personal_relationship', 'tfidf': 1.8331364393234253, 'lexical_unit': 'chummy.a / friend.n / husband.n', 'definition': "The words in this frame have to do with people and the personal Relationships they are or can be a part of.  Some of the words denote people engaged in a particular kind of Relationship, others denote the Relationship, yet others the events bringing about or ending the Relationships. Many of the words presuppose an understanding of states and events that must have occurred before another event takes place or before a person can be classified in a certain way. '' 'And of course that drippy boyfriend of hers backed her up.'  'As the happy couple took their places there was a stir and a rising babble behind them.'  'Pattie is living proof that if you live with a man, you discover a lot you didn't know when you were just dating him.'"}, {'frame': 'People_by_vocation', 'tfidf': 1.7713391780853271, 'lexical_unit': 'veterinarian.n / scientist.n / lawyer.n', 'definition': "This frame contains  words for Individuals as viewed in terms of their vocation.   The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'Humphrey Bogart was a great actor.'"}, {'frame': 'Text', 'tfidf': 1.7038387060165405, 'lexical_unit': 'fanzine.n / lyric.n / tractate.n', 'definition': "A Text is an entity that contains linguistic, symbolic information on a Topic, created by an Author at the Time_of_creation.  It may be a physical entity that is made of a certain Material etc.  It may be constructed for an Honoree.  'It was a good book.'"}, {'frame': 'Questioning', 'tfidf': 1.656715750694275, 'lexical_unit': 'questioning.n / inquiry.n / query.v', 'definition': "The words in this frame have to do with a Speaker asking an Addressee a question which calls for a reply (as opposed to making a request which calls for an action on the part of the Addressee).  '' 'We asked Ruby what kind of food they ate.'  'Yeats was able to interrogate the spirit world about his relationship with Maude.'"}, {'frame': 'Social_event', 'tfidf': 1.6283092498779297, 'lexical_unit': 'party.n / gala.n / festival.n', 'definition': "A Social_event occurs at which Attendees are present to conduct a social function or joint activity.  The Social_event is often a party or celebration, in which case it is possible to express someone who is being honored (the Honoree) or its function may be to celebrate an Occasion at which Attendees are present. Often, a specific Attendee, the Host, provides a venue for people to gather.  'Sue threw a party for Bob's birthday.'  'Who will host the Olympic games in eight years?'"}, {'frame': 'Forming_relationships', 'tfidf': 1.6118725538253784, 'lexical_unit': 'marry.v / wedding.n / divorce.v', 'definition': "Partner_1 interacts with Partner_2 (also collectively expressible as Partners) to change their social relationship.    'I befriended the little pony by giving him a piece of apple.'"}, {'frame': 'Kinship', 'tfidf': 1.5947275161743164, 'lexical_unit': 'clan.n / child.n / in-law.n', 'definition': "This frame contains words that denote Kinship relations. In annotating the directional uses of these words, we use the standard terms from anthropology, Ego and Alter.  'Matilde is Gilberto's cousin once removed' Compare to: Appellations."}, {'frame': 'Aesthetics', 'tfidf': 1.4633852243423462, 'lexical_unit': 'smart.a / handsome.a / ugly.a', 'definition': "An Entity is judged to be sensually pleasing or intellectually interesting to a (generally implicit) Judge.   'We saw this beautiful boat with the red sails several times' 'We camped here on the beach and had an absolutely lovely early morning walk through farm fields' "}, {'frame': 'Emotion_directed', 'tfidf': 1.4582363367080688, 'lexical_unit': 'happy.a / embarrassed.a / woebegone.a', 'definition': "The adjectives and nouns in this frame describe an Experiencer who is feeling or experiencing a particular emotional response to a Stimulus or about a Topic.  There can also be a Circumstances under which the response occurs or a Reason that the Stimulus evokes the particular response in the Experiencer.  'Mr. Whiskers is upset that there are no more cat treats.' 'The furious parent stormed into the office.' 'Franz gets infuriated at the thought of his ex-wife remarried.' ' She flashed a jubilant smile.' "}, {'frame': 'Chatting', 'tfidf': 1.3997479677200317, 'lexical_unit': 'converse.v / speak.v / banter.n', 'definition': "A group of people (the Interlocutors or Interlocutor_1 and Interlocutor_2 together) have a conversation.  No person is construed as only a speaker or only an addressee. Rather, it is understood that both (or all) participants do some speaking and some listening--the process is understood to be symmetrical or reciprocal.  In this frame, the purpose of the conversation is generally social, rather than specifically to decide something or exchange information, or to quarrel (see Discussion and Quarreling).  'If you ain't got nothin' better to do, I 'd like to shoot the breeze with you for a couple.' 'We used to chat about everything.'"}, {'frame': 'Communication', 'tfidf': 1.3914740085601807, 'lexical_unit': 'communication [entity].n / convey.v / signal.v', 'definition': "A Communicator conveys a Message to an Addressee; the Topic and Medium of the communication also may be expressed.  This frame includes no specification of the method of communication (speech, writing, gesture, etc.).  This frame and the frames that inherit the general Communication frame can add elaboration to the Medium in a variety of ways (in French, on the radio program, in a letter) or to the Manner of communication (babble, rant, shout, whisper). There are also frames related to Communication that either do not inherit all of the FEs of this frame or do not inherit them in a straightforward manner (such as Conversation, in which Communicator and Addressee alternate roles, and are often expressed by a single, plural NP).  'Let's hope it did n't have time to communicate any of its findings to its overlords.'  NB:  For many words in this domain (those which do not inherently ascribe cognitive/social processes to a Communicator, position a statement within a conversation, or specify Medium in detail), there is a metaphorical usage which maps Communication onto an alternate POV of Becoming_aware, with corresponding maps for frames related to Communication.  This metaphor is most felicitous with Means or Medium subjects, which are mapped onto the Evidence FE of Becoming_aware.  In many cases this metaphor maps Communication onto the Evidence frame, but not always.  Some words from the Communication domain are listed in the Evidence frame since they are deemed to be lexicalized.  'A flick of his gaze toward the doorway told me what he really wanted. (METAPHOR)' 'This painting really speaks to me. INI (MET) ' 'Putting his arm around her protectively achieved nothing but announcing to their captors their vulnerability. (MET)' 'It says a lot that he did n't come back. INI (MET) '"}, {'frame': 'Education_teaching', 'tfidf': 1.3791320323944092, 'lexical_unit': 'education.n / schoolmaster.n / learn.v', 'definition': 'This frame contains words referring to teaching and the participants in teaching.  A Student comes to learn either about a Subject; a Skill; a Precept; or a Fact as a result of instruction by a Teacher.  Some of the nouns (schoolmaster, -mistress) in this frame refer to administrative positions and do not take relevant frame elements; these will be moved.    \'Dad taught <fex name="">me that if you work hard, you will be OK - no matter what happens. \'  \'What Our Cat  taught Me  About Marketing!\'  \'For two years she taught me French\'  \'Mom and Dad taught me not to bullshit, because it always came back to bite me in the ass, without fail. \'  \'A young swiss girl up in a swiss chalet taught me how to yodel.\'  \'Young Murdock later met a blind martial arts master known as Stick, who taught him how to use his augmented senses and trained him as a fighter.\'  \' Maria, a woman studying to be a nun is sent from her convent to be the governess of the seven children of a widowed naval captain \'  Frame-Element relations:  Several Frame element relations hold in this frame. There is a core-set {Material, Teacher} (possibly also including Institution); these FE\'s can fill the subject slot of the teach-type verbs. There is another core-set  {Precept, Subject, Skill, Fact, Role} to do with what is learnt. In addition, the FE Qualification may occur with Subject and Role  \'My sister is studying for a maths degree    to be a teacher \' \'She\'s studying maths to be a teacher .\'  Phrases expressing Qualification also very often include information about the Subject (see below), which is to be annotated on the second layer.  \'Bill is studying for a BS in physics/a maths degree.\' \'Bill is studying for a BS in physics/a maths degree.\'  '}, {'frame': 'Offering', 'tfidf': 1.3760355710983276, 'lexical_unit': 'proffer.v / extend.v / serve.v', 'definition': "An Offerer indicates that he or she is able and willing to give a Theme to a Potential_recipient. In the absence of further qualifications, it is often understood that the Potential_recipient accepts the Theme.  'The host graciously offered us food and drink.'"}, {'frame': 'Success_or_failure', 'tfidf': 1.3709288835525513, 'lexical_unit': 'failing.n / failure.n / miss.v', 'definition': "An Agent has attempted to achieve a Goal, and the actual outcome of the Agent's action has been resolved, so that it either specifically matches the Agent's intent (e.g. success) or does not match it (e.g. failure).  'He pulled off his April Fool's Day prank by the barest of margins .' 'Unfortunately, we were n't successful. DNI' 'We failed miserably at getting the gay rights bill passed .'"}, {'frame': 'Businesses', 'tfidf': 1.3702239990234375, 'lexical_unit': 'shop.n / paper.n / establishment.n', 'definition': "A Proprietor owns or runs a Business which provides a Product (which may be goods or services).  'The consumer electronics company Apple has exploded with popularity in recent years.'"}, {'frame': 'Resolve_problem', 'tfidf': 1.354349136352539, 'lexical_unit': 'do something about.v / answer.n / result.n', 'definition': "An Agent resolves an outstanding Problem by finding its solution, explanation, answer, etc.  Alternatively, some non-agentive Cause may resolve the Problem.  The Means, Degree, Time and Place may also be expressed.  'As it turns out, putting all of my eggs in one basket completely solved all of my problems.' 'Students finally worked through all of the difficult problems by working together.'"}, {'frame': 'Desirability', 'tfidf': 1.3504515886306763, 'lexical_unit': 'wonderful.a / horrible.a / idyllic.a', 'definition': "This frame concerns an Evaluee being judged for its quality, i.e. how much it would probably be liked.  In many cases, the Evaluee is implicitly judged good or bad relative to other instances of its type. The Evaluee's desirability is determined by one or more Parameters, which are scalar properties of the Evaluee. The evaluation may also explicitly be relativized to a set of Circumstances, a Comparison_set of entities that belong to the same class as the Evaluee, or an Affected_party. The Degree of goodness or badness may also be expressed.  Note: With some targets, desirability is conventionally aligned with quantity, i.e., GOOD is MORE.  'The view was  astonishing.' 'On clear days, the view was excellent.' 'The book is astounding in its scope.' 'The games have been awful for the team.' "}, {'frame': 'Hit_or_miss', 'tfidf': 1.3363561630249023, 'lexical_unit': 'hit.v / hole in one.n / bullseye.n', 'definition': "An Agent succeeds or fails to interact perceptually or physically with the Target or Target_location.  The Instrument which is used to interact with the Target may stand in metonymically for the Agent.  'At first he shot very wide of his target .' 'Because I programmed the scope wrong , I kept missing Jupiter .' 'She scored two hits on the deer 's left side .'"}, {'frame': 'Required_event', 'tfidf': 1.3311470746994019, 'lexical_unit': 'better.v / hafta.v / best.v', 'definition': "Unless a particular Required_situation obtains, Negative_consequences will follow.  Alternatively, the Required_situation is required to achieve a Purpose (which avoids Negative_consequences). A set of Circumstances may be specified under which the requirement holds.  'You must turn in your test by 5 p.m.' 'You better have that fixed by tomorrow or else we'll fire you.' 'The book needs to be shorter to sell to such a young audience.'  Most, but not all, LUs of this frame are usable in a context that implies a duty or responsibility, concepts related to the Being_obligated frame. However, our analysis is that such interpretations are due to contextual pragmatic strengthening--in other words, a duty is a frequently salient type of purpose that has negative consequences if not achieved."}, {'frame': 'Cogitation', 'tfidf': 1.315055012702942, 'lexical_unit': 'wonder.v / reflection.n / deliberation.n', 'definition': "A person, the Cognizer, thinks about a Topic over a period of time. What is thought about may be a course of action that the person might take, or something more general.  'The men were silently mulling over the proposition of committing an assassination'"}, {'frame': 'Desirable_event', 'tfidf': 1.3077991008758545, 'lexical_unit': 'bad idea.n / ought to.v / be supposed to.v', 'definition': "A particular State_of_affairs is desirable.  The State_of_affairs may be required to achieve a Purpose.  A set of Circumstances may be specified under which the assessment of desirability holds.   'You should take the doses about 12 hours apart and at the same time each day.' ' If the metal is seriously rusted or warped, it should be repaired or replaced with a chimney top damper.' 'To ensure that, you should have no CLASSPATH set.'"}, {'frame': 'Performing_arts', 'tfidf': 1.3068469762802124, 'lexical_unit': 'play.n / music.n / performance.n', 'definition': 'The Performers, together with behind the scenes Personnel, execute a Performance according to a Script and/or Score.  The purpose of the Performance is to create an experience for an Audience, who then judge its merits.  Performances may be in many different Mediums and be of various Types.   This frame is very elaborate in modern society and there are a number of traditions and practices typically (but not necessarily) related to Performances:       The Performance is preceded by many practice sessions in which the Performers and other Personnel attempt to improve the quality and/or fidelity of their individual and collective performances to the Script and/or Score.         The Audience members pay a fee to experience the Performance.       The Performers (and Personnel) receive payment for contributing to the Performance.       Often there are other individuals involved in the specifically financial aspects of the Performance and Performers.       Critics act as part of the Audience and then write reviews that evaluate the merits of the Performance, describing the Performance to other potential Audience members.       Due to the high quality of previous Performances, Performers can become famous, i.e. well known and liked.  Those who like them particularly well become fans of the Performer.  (Shared with writers...)'}, {'frame': 'Request', 'tfidf': 1.3014791011810303, 'lexical_unit': 'tell.v / request.n / appeal.n', 'definition': "In this frame a Speaker asks an Addressee for something, or to carry out some action.  'The customer demanded a refund.' 'I begged my parents to let me stay up late.' "}, {'frame': 'Vehicle', 'tfidf': 1.3012803792953491, 'lexical_unit': 'chopper.n / cart.n / tram.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'People_by_origin', 'tfidf': 1.2905877828598022, 'lexical_unit': 'Persian.n / Mexican.n / Denverite.n', 'definition': "This frame contains  words for individuals, i.e. humans, with respect to their Origin. The Origin is generally incorporated, but may occasionally be specified separately.  The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have an Age, Descriptor, Persistent_characteristic, or Ethnicity.   'I'm a proud Brit.'"}, {'frame': 'Co-association', 'tfidf': 1.289614200592041, 'lexical_unit': 'co-worker.n / partner.n / sister.n', 'definition': 'Two or more individuals have a relationship by virtue of belonging to the same organization or institution. They may or may not be personally acquainted, and may or may not have chosen to have the relationship.'}, {'frame': 'Documents', 'tfidf': 1.246029257774353, 'lexical_unit': 'testimony.n / will.n / deposition.n', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Becoming_aware', 'tfidf': 1.242216944694519, 'lexical_unit': 'descry.v / register.v / find out.v', 'definition': "Words in this frame have to do with a Cognizer adding some Phenomenon to their model of the world. They are similar to Coming-to-believe words, except the latter generally involve reasoning from Evidence.  '' The words in this frame take direct objects that denote entities in the world, and indicate awareness of those entities, without necessarily giving any information about the content of the Cognizer's belief or knowledge. These words also resemble perception words, since creatures often become aware of things by perceiving them.  'Later that night, they found the barely-alive victim inside the Red Hall estate flat.'  'Almost immediately, the police discovered the wrought-iron crypt gate swinging open.'  'In the bag on the tableI could vaguelydiscern two bottles of wine and several cartons of cakes and other goodies.'  'People passing through recognize it from afar, by the clouds of coal dust darkening the air.'   General Grammatical Observations: Passive forms of the verbs in this frame can occur with extraposed clauses expressing Phenomenon: 'That year it was discovered that consumers preferred the older model.' 'It is not always recognized how much work goes into a dinner party.'"}, {'frame': 'Categorization', 'tfidf': 1.2375632524490356, 'lexical_unit': 'peg.v / typecast.v / deem.v', 'definition': "A Cognizer construes an Item as belonging to a certain Category.  In this process, the Cognizer may either passively perceive the Item and note that it fits the Criteria for a Category, or, alternatively, actively examine the Item for certain Criteria that define a Category (or set of Categorys).    Most members of the frame can also describe a resulting cognitive state of the Cognizer with respect to the Item and Category which no longer requires the current perception or consideration of the Item.  A few LUs (e.g. peg.v, pigeonhole.v) do not readily allow stative interpretation, and a few LUs (e.g. deem.v, regard.v) only allow stative interpretation.  'You 've already stereotyped me as a bimbo, have n't you?'"}, {'frame': 'Response', 'tfidf': 1.235084891319275, 'lexical_unit': 'act (on).v / react.v / reaction.n', 'definition': "An Agent performs a Response action in consequence of a Trigger event. In many cases, a non-agentive Responding_entity causes the Response after the Trigger occurs.  'I respond to earthquakes by hiding under my desk.'"}, {'frame': 'Resurrection', 'tfidf': 1.2255315780639648, 'lexical_unit': 'resurrect.v / come back.v / resurrection.n', 'definition': "A Protagonist which had been dead returns to life.  'He'll come back from the dead at 11:03PM exactly, since that's what his suicide note indicated.'"}, {'frame': 'Obviousness', 'tfidf': 1.2035492658615112, 'lexical_unit': 'clear.a / show.v / unclear.a', 'definition': "A Phenomenon is portrayed with respect to the Degree of likelihood that it will  be perceived and known, given the (usually implicit) Evidence, Perceiver, and the Circumstances in which it is considered.  For several of the LUs, such as visible, audible, etc., the type of the Evidence is fixed by the targets themselves being a perceptual experience.  'It's abundantly obvious that we'll need to spend more time on public perception.' 'Are you certain that the shovel was visible from the door of the apartment?' ' I think they miss some of the important impacts of the work that are not visible just from looking at the vote tally.' 'That the defense will declare a mistrial regardless is quite evident from their consistent obstructionist tactics.' 'In late July 2000 it was barely visible to the unaided eye.'"}, {'frame': 'Receiving', 'tfidf': 1.1799334287643433, 'lexical_unit': 'accept.v / receipt.n / receive.v', 'definition': "A Recipient comes into possession of the Theme as a result of the joint action of the Donor and the Recipient.  The Receiving frame like the Giving frame requires that the Donor first has possession of the Theme and that following the transfer, the Donorno longer has the Theme and the Recipient does.  'I recieved a box from him in the mail.'"}, {'frame': 'Making_faces', 'tfidf': 1.1743351221084595, 'lexical_unit': 'grimace.v / grin.v / smirk.v', 'definition': "An Agent makes a particular facial expression, generally in response to some Internal_cause (generally an emotional state).  Sometimes the Body_part involved in the expression is mentioned in lieu of the Agent.  'His eyes smile, but his lips do not.'"}, {'frame': 'Attention', 'tfidf': 1.1498759984970093, 'lexical_unit': 'keep an eye.v / attentive.a / closely.adv', 'definition': "This frame concerns a Perceiver's state of readiness to process and consider impressions of a Figure within a Ground.  It is often unknown to the Perceiver whether or not the Figure exists within the Ground. Alternatively, the Expressor may be expressed as showing signs of the Perceiver's state of attentiveness.  'Legislator tells consumers to be alert to dioxin levels.'  'They demand an attentive gaze, a careful accounting of parts.'"}, {'frame': 'Spelling_and_pronouncing', 'tfidf': 1.1436183452606201, 'lexical_unit': 'pronounce.v / say.v / mispronounce.v', 'definition': 'A Speaker realizes a Sign, usually a linguistic one, in some Formal_realization. The Formal_realization may be described as correct or incorrect in a Judgment expression, or it may be partially indicated as a Part_of_form.  Manner may be used as a more general indication of the Formal_realization  \'A person doesn\'t always pronounce a word the way they say  it in context\'  \'I can\'t spell. INI INI\'  \'Stephanopolous spells his name with a "ph".\'  \'On page 87465, you spelled the name of my dog incorrectly as "Checquers".\'  \'In German, the word for \'peace\' is written "Friede" CNI\''}, {'frame': 'Process_start', 'tfidf': 1.14164400100708, 'lexical_unit': 'onset.n / commencement.n / begin.v', 'definition': "An Event begins at a certain Time and Place. Reason may also be indicated.  NB:  Refer to Event frame.  'The project began.'"}, {'frame': 'Activity_start', 'tfidf': 1.135167121887207, 'lexical_unit': 'strike up.v / initiate.v / neophyte.n', 'definition': "An Agent initiates the beginning of an ongoing Activity in which he will be continuously involved. '' 'At the same time, city-states began to grow in influence on the southern Greek mainland.'  'Naturally, I started crying to get out of work.'  "}, {'frame': 'Encoding', 'tfidf': 1.1135835647583008, 'lexical_unit': 'phrasing.n / put.v / phrase.v', 'definition': "A person (Speaker) expresses a Message or mental content, broadly understood, in a particular Manner. The content may be emotional, as in 'Humans express  feelings through words' intellectual, as in 'Formulate the idea carefully'  or linguistic, as in 'Phrase your question as a comment.'    "}, {'frame': 'Statement', 'tfidf': 1.1106399297714233, 'lexical_unit': 'propose.v / caution.v / attest.v', 'definition': "This frame contains verbs and nouns that communicate the act of a Speaker to address a Message to some Addressee using language. Instead of (or in addition to) a Speaker, a Medium may also be mentioned. Likewise, a Topic may be stated instead of a Message. A number of the words can be used performatively, such as declare and insist.  'I now declare you members of this Society.'   'She said that I would be late .'  'The announcement about raffle winners came across the loudspeaker.' "}, {'frame': 'Condition_symptom_relation', 'tfidf': 1.1093803644180298, 'lexical_unit': 'associate.v / due to.prep / see.v', 'definition': "A Patient has a Medical_condition that can be understood by its Symptoms. This frame has been constructed to list all the ways to speak of relating a Patient, a Medical_condition, and Symptoms, including LUs that are also related to much more general frames like Causation (e.g. cause.v).  ' Neurally mediated syncope is thethe most common cause of syncope.'  'Tietze Syndrome and Costochondritis Tietze syndrome manifested by painful swelling of one or more costochondral articulations'"}, {'frame': 'Roadways', 'tfidf': 1.1040376424789429, 'lexical_unit': 'expressway.n / tunnel.n / street.n', 'definition': "This frame involves stable Roadways which connect two stable Endpoints, the Source and the Goal.  Being physical objects, these Roadways may have Names and Characteristics; they are also made of a Material.  They also cover ground, so they may have a Path or a Relative_location that the travel occurs in.  ' We crossed the brick road.' ' I prefer to travel on highway I-80.'  'This is the only highway between Lodi and Sonoma.' ' She dreaded turning onto the busy street.'"}, {'frame': 'Giving_birth', 'tfidf': 1.0979928970336914, 'lexical_unit': 'birth.n / whelp.v / propagate.v', 'definition': "A Mother and Father produce a Child or an Egg. 'Betty bore Gerry three intelligent daughters.'"}, {'frame': 'Buildings', 'tfidf': 1.0863317251205444, 'lexical_unit': 'mosque.n / bunker.n / kennel.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Purpose', 'tfidf': 1.0857294797897339, 'lexical_unit': 'aim.v / object.n / objective.n', 'definition': "An Agent wants to achieve a Goal,  or an object.  A Means  has been created or is used to allow the creator or a user to achieve a  Goal. The Goal is a state of the world that does not currently hold but which the Agent wants to realize and is planning and/or working towards. In some cases, it is difficult to decide whether a noun phrase metonymically stands for the Agent or the Means (e.g. The goal [of this paper/seminar/project] is to determine ...). We mark these phrases as Agent on the first layer but also annotate them as Means on a second annotation layer.  In some cases a Restrictor on the Goal state of affairs can be given prominence as a separate constituent. Talking about Goals frequently includes the mention of a Domain to which the Agent's Goal is relevant.  'The modest American goal of a threefold increase in capacity recognises this fact .' 'The object of the tutorial is to help a student concentrate on his writing skills ' ' The prime goal of the programme was to help develop processes of scientific thinking in children .' 'My goal in this book is to introduce the reader to Web programming applications.' 'The president's economic goal for the country was to overcome the recession.'"}, {'frame': 'Perception_experience', 'tfidf': 1.082051396369934, 'lexical_unit': 'feel.v / see.v / witness.v', 'definition': "This frame contains perception words whose Perceivers have perceptual experiences that they do not necessarily intend to. For this reason we call the Perceiver role Perceiver_passive. Comparing the Perception_experience frame to the Perception_active frame, we note that for some modalities there are different lexical items in each frame.  For instance, whereas Perception_experience has see, Perception_active has look at. For other sense modalities, we find the same lexical items in both frames.  To illustrate, consider the verb smell where I smell something rotten exemplifies its Perception_experience use and Smell this to see if it's fresh exemplifies its Perception_active sense. This frame also includes words which are not specific to any sense modality, including detect, perceive, perception, sense.  '' 'Abashed, realising that he had overheard her conversation with Victoria, Sheeley didn't try to make excuses.'  'She smelled the wine on Paul's breath, and bade him to sit down.'"}];
+        var frame_list_2 = [{'frame': 'People_by_age', 'tfidf': 4.548535804023204, 'lexical_unit': 'youngster.n / teenager.n / child.n', 'definition': "This frame contains words for individuals as viewed in terms of their age. The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'He is a 12-year-old kid.'"}, {'frame': 'Communication_response', 'tfidf': 3.674545523206559, 'lexical_unit': 'reply.n / retort.n / rejoinder.n', 'definition': 'This frame deals with a Speaker communicating a reply or response, a Message, to some prior communication or action, the Trigger.  \'\' \'The landlord has not yet replied in writing to the tenant objecting the proposed alterations.DNI\'  \'"No, I do not agree with you," responded another officer to the CEO. DNI\''}, {'frame': 'Robbery', 'tfidf': 3.5361552411872648, 'lexical_unit': 'mug.v / mugging.n / robber.n', 'definition': "These are words describing situations in which a Perpetrator wrongs a Victim by taking something (Goods) from them.  In some cases, the Source location from which the Goods were taken is used to metonymically refer to the Victim.  The robbery can be done in a particular Manner (for example, forcefully) and via a specific Means (for example, by threatening the Victim).  'Half of the team held up the tellers while the others were stationed to report the arrival of police.'  As opposed to Theft, Robbery focuses on the harm to the Victim and on the Source location from which the Goods have been removed, rather than the Goods themselves."}, {'frame': 'Stimulus_focus', 'tfidf': 2.4961246885984645, 'lexical_unit': 'absorbing.a / unfunny.a / unpleasing.a', 'definition': "In this frame either a Stimulus brings about a particular emotion or experience in the Experiencer or  saliently fails to bring about a particular experience. Some words indicate that the Stimulus is characterized by the experience it is likely to evoke in an Experiencer and for these, the Experiencer may rarely be present. There may also be a Degree to which the Stimulus affects the Experiencer and Circumstances under which the experience occurs. There may also be a Comparison_set to which the Stimulus is compared and a Parameter that indicates the area in which the Stimulus has its effect.  ' The view is breathtaking in January. '  ' That movie was quite fascinating. '  ' That was certainly a gratifying experience.' ' The report was very alarming to me. '"}, {'frame': 'Attention_getting', 'tfidf': 1.9971625370675319, 'lexical_unit': 'sir.n / hello there.intj / boy.n', 'definition': "This frame covers terms used to get someone's attention, including Interjections (e.g. hey, yo) and certain terms of address (Address_term), the latter of which may serve the function of attention getting.    'Hey.' 'Hey, boy.' 'Hey, boy, come over here now!'  "}, {'frame': 'Required_event', 'tfidf': 1.4775676038096466, 'lexical_unit': 'hafta.v / oughta.v / had better.v', 'definition': "Unless a particular Required_situation obtains, Negative_consequences will follow.  Alternatively, the Required_situation is required to achieve a Purpose (which avoids Negative_consequences). A set of Circumstances may be specified under which the requirement holds.  'You must turn in your test by 5 p.m.' 'You better have that fixed by tomorrow or else we'll fire you.' 'The book needs to be shorter to sell to such a young audience.'  Most, but not all, LUs of this frame are usable in a context that implies a duty or responsibility, concepts related to the Being_obligated frame. However, our analysis is that such interpretations are due to contextual pragmatic strengthening--in other words, a duty is a frequently salient type of purpose that has negative consequences if not achieved."}, {'frame': 'Hostile_encounter', 'tfidf': 1.4536747677272905, 'lexical_unit': 'dust-up.n / clash.v / war.v', 'definition': "This frame consists of words that describe a hostile encounter between opposing forces (Side_1 and Side_2, collectively conceptualizable as Sides) over a disputed Issue and/or in order to reach a specific  Purpose. '' 'He still wants to fight Mike Tyson in about 8 months.'  'Dennis Andries's European cruiserweight title clash against Akim Tafer of France in Beausoleil last February has been voted as the EBU's fight of the year.'"}, {'frame': 'Member_of_military', 'tfidf': 1.2950454137840788, 'lexical_unit': 'commando.n / troop.n / marine.n', 'definition': "A Person is a member of an organized military organization belonging to a nation-state or similar body. The military membership may be part-time, but is considered a job. This is in opposition to combatants who may be loyal to a particular cause but are not part of the military arm of a government.  'The British at one point had an occupying army of over a million well-trained soldiers.'  'After 9/11 she decided to become a full-time airman'.  'US soldiers have fought in the region for the past twenty years with no end in sight.'"}, {'frame': 'Personal_relationship', 'tfidf': 1.2783979585377823, 'lexical_unit': 'couple.n / mistress.n / divorced.a', 'definition': "The words in this frame have to do with people and the personal Relationships they are or can be a part of.  Some of the words denote people engaged in a particular kind of Relationship, others denote the Relationship, yet others the events bringing about or ending the Relationships. Many of the words presuppose an understanding of states and events that must have occurred before another event takes place or before a person can be classified in a certain way. '' 'And of course that drippy boyfriend of hers backed her up.'  'As the happy couple took their places there was a stir and a rising babble behind them.'  'Pattie is living proof that if you live with a man, you discover a lot you didn't know when you were just dating him.'"}, {'frame': 'Animals', 'tfidf': 1.2419072262042161, 'lexical_unit': 'cow.n / cat.n / sheep.n', 'definition': "The LUs in this frame refer to biological entities other than human beings and plants, which are labeled by the FE Animal.  ''  'My husband and I adopted a really sweet dog last year.'  'The cows that live on the farm down the road are always mooing loudly.'"}, {'frame': 'Appellations', 'tfidf': 1.197231431882153, 'lexical_unit': 'congresswoman.n / sister.n / director.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Social_event', 'tfidf': 1.1637287524435336, 'lexical_unit': 'gala.n / social.n / rave.n', 'definition': "A Social_event occurs at which Attendees are present to conduct a social function or joint activity.  The Social_event is often a party or celebration, in which case it is possible to express someone who is being honored (the Honoree) or its function may be to celebrate an Occasion at which Attendees are present. Often, a specific Attendee, the Host, provides a venue for people to gather.  'Sue threw a party for Bob's birthday.'  'Who will host the Olympic games in eight years?'"}, {'frame': 'Political_locales', 'tfidf': 1.1270836011800152, 'lexical_unit': 'realm.n / empire.n / borough.n', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'Documents', 'tfidf': 1.079748158385402, 'lexical_unit': 'deposition.n / ruling.n / document.n', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Emotion_directed', 'tfidf': 1.0165246846073712, 'lexical_unit': 'exasperation.n / downcast.a / covetous.a', 'definition': "The adjectives and nouns in this frame describe an Experiencer who is feeling or experiencing a particular emotional response to a Stimulus or about a Topic.  There can also be a Circumstances under which the response occurs or a Reason that the Stimulus evokes the particular response in the Experiencer.  'Mr. Whiskers is upset that there are no more cat treats.' 'The furious parent stormed into the office.' 'Franz gets infuriated at the thought of his ex-wife remarried.' ' She flashed a jubilant smile.' "}, {'frame': 'Obviousness', 'tfidf': 0.8969740334039126, 'lexical_unit': 'show up.v / show.v / evident.a', 'definition': "A Phenomenon is portrayed with respect to the Degree of likelihood that it will  be perceived and known, given the (usually implicit) Evidence, Perceiver, and the Circumstances in which it is considered.  For several of the LUs, such as visible, audible, etc., the type of the Evidence is fixed by the targets themselves being a perceptual experience.  'It's abundantly obvious that we'll need to spend more time on public perception.' 'Are you certain that the shovel was visible from the door of the apartment?' ' I think they miss some of the important impacts of the work that are not visible just from looking at the vote tally.' 'That the defense will declare a mistrial regardless is quite evident from their consistent obstructionist tactics.' 'In late July 2000 it was barely visible to the unaided eye.'"}, {'frame': 'Questioning', 'tfidf': 0.8866341437807347, 'lexical_unit': 'question.v / query.n / questioning.n', 'definition': "The words in this frame have to do with a Speaker asking an Addressee a question which calls for a reply (as opposed to making a request which calls for an action on the part of the Addressee).  '' 'We asked Ruby what kind of food they ate.'  'Yeats was able to interrogate the spirit world about his relationship with Maude.'"}, {'frame': 'Desirability', 'tfidf': 0.8864544773904487, 'lexical_unit': 'junk.n / superb.a / crap.n', 'definition': "This frame concerns an Evaluee being judged for its quality, i.e. how much it would probably be liked.  In many cases, the Evaluee is implicitly judged good or bad relative to other instances of its type. The Evaluee's desirability is determined by one or more Parameters, which are scalar properties of the Evaluee. The evaluation may also explicitly be relativized to a set of Circumstances, a Comparison_set of entities that belong to the same class as the Evaluee, or an Affected_party. The Degree of goodness or badness may also be expressed.  Note: With some targets, desirability is conventionally aligned with quantity, i.e., GOOD is MORE.  'The view was  astonishing.' 'On clear days, the view was excellent.' 'The book is astounding in its scope.' 'The games have been awful for the team.' "}, {'frame': 'Text', 'tfidf': 0.8561331850493671, 'lexical_unit': 'brochure.n / ode.n / record.n', 'definition': "A Text is an entity that contains linguistic, symbolic information on a Topic, created by an Author at the Time_of_creation.  It may be a physical entity that is made of a certain Material etc.  It may be constructed for an Honoree.  'It was a good book.'"}, {'frame': 'Desirable_event', 'tfidf': 0.8467477482963313, 'lexical_unit': 'be supposed to.v / bad idea.n / have to.v', 'definition': "A particular State_of_affairs is desirable.  The State_of_affairs may be required to achieve a Purpose.  A set of Circumstances may be specified under which the assessment of desirability holds.   'You should take the doses about 12 hours apart and at the same time each day.' ' If the metal is seriously rusted or warped, it should be repaired or replaced with a chimney top damper.' 'To ensure that, you should have no CLASSPATH set.'"}, {'frame': 'Expertise', 'tfidf': 0.8466139189331559, 'lexical_unit': 'specialist.n / incompetent.a / guru.n', 'definition': "This frame concerns people's knowledge or skill in certain domains.  It does not concern acquaintance or familiarity with people. With adjectives as targets in this frame, we annotate on two FE layers. 'FE Layer-1: He is an experienced programmer.' 'FE Layer-2: He is an experienced programmer.'"}, {'frame': 'Response', 'tfidf': 0.837088267266838, 'lexical_unit': 'reaction.n / respond.v / response.n', 'definition': "An Agent performs a Response action in consequence of a Trigger event. In many cases, a non-agentive Responding_entity causes the Response after the Trigger occurs.  'I respond to earthquakes by hiding under my desk.'"}, {'frame': 'Being_obligated', 'tfidf': 0.8328544875583502, 'lexical_unit': 'duty.n / obligation.n / obligated.a', 'definition': "Under some Condition, usually left implicit, a Responsible_party is required to perform some Duty.  If they do not perform the Duty, there may be some undesirable Consequence, which may or may not be stated overtly.  'It is my duty to fight any attack on the Brotherhood .' 'This country has the responsibility to support its citizens' right to express themselves.' 'I am obligated to pay or they'll double the fine.'  NB:  Contrast this frame with Likelihood and Preconditions frames, which involve many of the same lemmas.  Many LUs which might be expected to be found here (should, must, have to) are actually in the Required_event frame. Our analysis is that these LUs do not evoke an obligation directly, although they are frequently used in contexts that are consistent with an understanding of obligation and are pragmatically strengthened to (defeasibly) imply an obligation. "}, {'frame': 'Working_a_post', 'tfidf': 0.8315166384214263, 'lexical_unit': 'staff.v / man.v / work.v', 'definition': "The Agent is assigned to a Post where he or she performs a task associated with that Post. Alternatively, the Agent is expressed as acting with respect to a Salient_entity associated with the task. In most cases the Salient_entity is located at the Post.  'Volunteers were staffing the telephones.'  'Man your stations! CNI'"}, {'frame': 'Condition_symptom_relation', 'tfidf': 0.8157528121099922, 'lexical_unit': 'asymptomatic.a / present.a / lead.v', 'definition': "A Patient has a Medical_condition that can be understood by its Symptoms. This frame has been constructed to list all the ways to speak of relating a Patient, a Medical_condition, and Symptoms, including LUs that are also related to much more general frames like Causation (e.g. cause.v).  ' Neurally mediated syncope is thethe most common cause of syncope.'  'Tietze Syndrome and Costochondritis Tietze syndrome manifested by painful swelling of one or more costochondral articulations'"}, {'frame': 'Forming_relationships', 'tfidf': 0.8068693118871658, 'lexical_unit': 'wedding.n / leave.v / marriage.n', 'definition': "Partner_1 interacts with Partner_2 (also collectively expressible as Partners) to change their social relationship.    'I befriended the little pony by giving him a piece of apple.'"}, {'frame': 'Kinship', 'tfidf': 0.7957804970448549, 'lexical_unit': 'ancestor.n / dad.n / mother.n', 'definition': "This frame contains words that denote Kinship relations. In annotating the directional uses of these words, we use the standard terms from anthropology, Ego and Alter.  'Matilde is Gilberto's cousin once removed' Compare to: Appellations."}, {'frame': 'Suitability', 'tfidf': 0.7957353675873182, 'lexical_unit': 'inappropriate.a / fitting.a / unsuitable.a', 'definition': "This Frame is concerned with evaluating an Evaluee as being suitable for a Purpose or a User, presupposing some choice that is being made about which Evaluee to use for the Purpose or User.  An LU like suitable.a thus implies that, given a particular Purpose or User, the Evaluee is one which could be or ought to be chosen.  The Evaluee may be deemed suitable to a greater or lesser Degree. This frame has some similarity to the compatibility frame where two Items are evaluated with respect to their compatibility with each other against some background.  '(1) We need to build more houses suitable for local residents.' '(2) These chips are not verysuitable for parallel processing. ' '(3) We are not sure about the Cathedral's suitability for Philharmonic concerts.'"}, {'frame': 'Ranked_expectation', 'tfidf': 0.7850760257812299, 'lexical_unit': 'entire.a / mere.a / whole.a', 'definition': "An Entity is rated as unexpected for its context in terms of its magnitude.  Either some different type of Entity with a different scope would be expected, or a different amount of the Entity.    'The entire apple was riddled with worms .' 'The inevitable fate of the Warsaw Resistance fighters was not finally sealed until nine whole weeks of vicious fighting had taken a terrible toll on the people .'  'A mere two percent of Afghan women are registered to vote.' 'The crime scene doesn't wrap up in an hour, never mind an entire investigation . ' 'It 's a huge engineering project when you 're building a whole car .' Although there are some words that overlap between this frame and Completeness, the words in this frame indicate specifically that the magnitude of the Entity is different from what is expected, rather than grading an entity as to whether all its parts are present.  The Ranked_expectation uses must occur with an explicit or implicit quantification.  The Completeness uses can only occur with entities that have salient necessary parts and structure."}, {'frame': 'Capability', 'tfidf': 0.7821572244317984, 'lexical_unit': 'powerlessness.n / able.a / power [statistical].n', 'definition': "An Entity meets the pre-conditions for participating in an Event.  A Degree modifier may be included to indicate by how much the Entity exceeds or falls short of the minimum requirements.  'Conductor software gives us the hands-on capability to provide updates immediately'  'The GOP is afraid that it might not be capable of keeping the seat vacated by Dunn.'  'NASA is unable to communicate with Mars rover.'  'He can fly a kite.'"}, {'frame': 'Military', 'tfidf': 0.7716550814907356, 'lexical_unit': 'armed forces.n / military forces.n / air force.n', 'definition': 'Some Possessor, either a nation, institution, or private individual, controls a Force whose primary functions to defend the Possessor (or, in the case of an institution or individual, some area of land significant to them) and to carry out offensive actions for the Possessor.  The Domain of operation of the Force may be expressed.'}, {'frame': 'Importance', 'tfidf': 0.7687017072308864, 'lexical_unit': 'important.a / vital.a / significance.n', 'definition': "A Factor affects the outcome of an Undertaking, which  can be a goal-oriented activity or the maintenance of a desirable state, the work in a Field, or something portrayed as affecting an Interested_party. A Reason may be given for the importance of the Factor. The Degree of importance may also be specified.  'Temperature is the most critical factor in successful storage.' ' Timing will be critical.' 'Heathcliff is more important to me than myself . ' ' 1992 was of great importance to the business community. ' "}, {'frame': 'Timespan', 'tfidf': 0.7668807417190375, 'lexical_unit': 'time.n / day.n / life.n', 'definition': "The words in this frame describe a period of time, as opposed to a point in time.  'The best time of year for planting tends to be fairly regular.' "}, {'frame': 'Duration_relation', 'tfidf': 0.7632068882414759, 'lexical_unit': 'for.prep / persist.v / last.v', 'definition': "A Period or Eventuality is related to its Duration.  Alternatively, an Entity may stand in metonymically for an Eventuality that it is involved in.  'You wouldn't last five minutes!'"}, {'frame': 'Education_teaching', 'tfidf': 0.7543177224429312, 'lexical_unit': 'tutee.n / master.v / teach.v', 'definition': 'This frame contains words referring to teaching and the participants in teaching.  A Student comes to learn either about a Subject; a Skill; a Precept; or a Fact as a result of instruction by a Teacher.  Some of the nouns (schoolmaster, -mistress) in this frame refer to administrative positions and do not take relevant frame elements; these will be moved.    \'Dad taught <fex name="">me that if you work hard, you will be OK - no matter what happens. \'  \'What Our Cat  taught Me  About Marketing!\'  \'For two years she taught me French\'  \'Mom and Dad taught me not to bullshit, because it always came back to bite me in the ass, without fail. \'  \'A young swiss girl up in a swiss chalet taught me how to yodel.\'  \'Young Murdock later met a blind martial arts master known as Stick, who taught him how to use his augmented senses and trained him as a fighter.\'  \' Maria, a woman studying to be a nun is sent from her convent to be the governess of the seven children of a widowed naval captain \'  Frame-Element relations:  Several Frame element relations hold in this frame. There is a core-set {Material, Teacher} (possibly also including Institution); these FE\'s can fill the subject slot of the teach-type verbs. There is another core-set  {Precept, Subject, Skill, Fact, Role} to do with what is learnt. In addition, the FE Qualification may occur with Subject and Role  \'My sister is studying for a maths degree    to be a teacher \' \'She\'s studying maths to be a teacher .\'  Phrases expressing Qualification also very often include information about the Subject (see below), which is to be annotated on the second layer.  \'Bill is studying for a BS in physics/a maths degree.\' \'Bill is studying for a BS in physics/a maths degree.\'  '}, {'frame': 'Grasp', 'tfidf': 0.7518176362555545, 'lexical_unit': 'see.v / apprehend.v / unintelligible.a', 'definition': "A Cognizer possesses knowledge about the workings, significance, or meaning of an idea or object, which we call Phenomenon, and is able to make predictions about the behavior or  occurrence of the Phenomenon. The Phenomenon may be incorporated into the wider knowledge structure via categorization, which can be indicated by the mention of a Category. The Cognizer may possess knowledge only in part and this may be expressed in a Completeness expression. The Cognizer may also be realized as a cognitive-emotional Faculty that is conceived of as having understanding. Note that the knowledge may have been acquired either from instruction or from the Cognizer's own experimentation, observation, or mental operations.  Words in this frame are frequently used metonymically to denote the transition into the state described above.  'I figured this out last week and now I really understand it.'  'My father failed to comprehend that his explanations were based as much upon faith as mine'  'The draughtsman must fully comprehend what he is drawing'  'Nobody seems to have explained this to her, but finally she understands DNI'  'I realized I had not properly understood my own needs'  'The mind is often unable to comprehend the significance of what it perceives.'  'Our sensations are in some sense to be understood in terms of a set of stimulation levels (spiking frequencies) in the appropriate sensory pathways. CNI'"}, {'frame': 'Location_in_time', 'tfidf': 0.7496815246651711, 'lexical_unit': 'time.n / day.n / date.n', 'definition': "The word(s) in this frame detail a particular moment in time.These often occur with demonstratives such as this and that.  'Late that day, 1776, America declared sovereignty.'"}, {'frame': 'Categorization', 'tfidf': 0.7354365657181046, 'lexical_unit': 'class.v / typecast.v / see.v', 'definition': "A Cognizer construes an Item as belonging to a certain Category.  In this process, the Cognizer may either passively perceive the Item and note that it fits the Criteria for a Category, or, alternatively, actively examine the Item for certain Criteria that define a Category (or set of Categorys).    Most members of the frame can also describe a resulting cognitive state of the Cognizer with respect to the Item and Category which no longer requires the current perception or consideration of the Item.  A few LUs (e.g. peg.v, pigeonhole.v) do not readily allow stative interpretation, and a few LUs (e.g. deem.v, regard.v) only allow stative interpretation.  'You 've already stereotyped me as a bimbo, have n't you?'"}, {'frame': 'Residence', 'tfidf': 0.7306345233439737, 'lexical_unit': 'dwell.v / squat.v / dweller.n', 'definition': "This frame has to do with people (the Residents) residing in Locations, sometimes with a Co-resident.  'Peter lives in New York.' 'Sue is an inhabitant of Los Angeles.'"}, {'frame': 'Perception_experience', 'tfidf': 0.7287712056052313, 'lexical_unit': 'smell.v / perceive.v / hear.v', 'definition': "This frame contains perception words whose Perceivers have perceptual experiences that they do not necessarily intend to. For this reason we call the Perceiver role Perceiver_passive. Comparing the Perception_experience frame to the Perception_active frame, we note that for some modalities there are different lexical items in each frame.  For instance, whereas Perception_experience has see, Perception_active has look at. For other sense modalities, we find the same lexical items in both frames.  To illustrate, consider the verb smell where I smell something rotten exemplifies its Perception_experience use and Smell this to see if it's fresh exemplifies its Perception_active sense. This frame also includes words which are not specific to any sense modality, including detect, perceive, perception, sense.  '' 'Abashed, realising that he had overheard her conversation with Victoria, Sheeley didn't try to make excuses.'  'She smelled the wine on Paul's breath, and bade him to sit down.'"}, {'frame': 'Type', 'tfidf': 0.7263319705238426, 'lexical_unit': 'variety.n / make.n / sort.n', 'definition': "This frame has to do with nouns denoting types of entities. The Subtype refers to a collection of members of a more general Category which have certain defining characteristics; alternatively, the Subtype refers only to the type itself, i.e. a more restrictive set of characteristics than those of the more general Category.  The properties of the items that are included in the collection may be specified by the Item_Property.  Sometimes the Subtypes themselves are described by some Type_Property.  'I don't like this newfangled kind of  fish.' 'Kleo isn't our sort of people.' 'He argued against the formalist type of analysis of art.' 'I think that she was referring to the other type. DNI'"}, {'frame': 'Regard', 'tfidf': 0.7226247589815262, 'lexical_unit': 'appreciative.a / esteem.n / regard.n', 'definition': "A Cognizer has a Judgment of an Evaluee, expressing how high or low their regard for the Evaluee is.  'What do you think of him as a linguist?' 'She secretly thought well of him for his role in defrocking Mr. Matthews.' 'Please understand, I hold you in the highest regard.' 'My low opinion of him was of long standing.'"}, {'frame': 'Making_faces', 'tfidf': 0.7174636565838374, 'lexical_unit': 'smile.v / frown.v / grimace.v', 'definition': "An Agent makes a particular facial expression, generally in response to some Internal_cause (generally an emotional state).  Sometimes the Body_part involved in the expression is mentioned in lieu of the Agent.  'His eyes smile, but his lips do not.'"}, {'frame': 'Becoming_aware', 'tfidf': 0.7169816268812945, 'lexical_unit': 'find (oneself).v / tell.v / encounter.v', 'definition': "Words in this frame have to do with a Cognizer adding some Phenomenon to their model of the world. They are similar to Coming-to-believe words, except the latter generally involve reasoning from Evidence.  '' The words in this frame take direct objects that denote entities in the world, and indicate awareness of those entities, without necessarily giving any information about the content of the Cognizer's belief or knowledge. These words also resemble perception words, since creatures often become aware of things by perceiving them.  'Later that night, they found the barely-alive victim inside the Red Hall estate flat.'  'Almost immediately, the police discovered the wrought-iron crypt gate swinging open.'  'In the bag on the tableI could vaguelydiscern two bottles of wine and several cartons of cakes and other goodies.'  'People passing through recognize it from afar, by the clouds of coal dust darkening the air.'   General Grammatical Observations: Passive forms of the verbs in this frame can occur with extraposed clauses expressing Phenomenon: 'That year it was discovered that consumers preferred the older model.' 'It is not always recognized how much work goes into a dinner party.'"}, {'frame': 'Chatting', 'tfidf': 0.7119546859574583, 'lexical_unit': 'chit-chat.n / badinage.n / gab.v', 'definition': "A group of people (the Interlocutors or Interlocutor_1 and Interlocutor_2 together) have a conversation.  No person is construed as only a speaker or only an addressee. Rather, it is understood that both (or all) participants do some speaking and some listening--the process is understood to be symmetrical or reciprocal.  In this frame, the purpose of the conversation is generally social, rather than specifically to decide something or exchange information, or to quarrel (see Discussion and Quarreling).  'If you ain't got nothin' better to do, I 'd like to shoot the breeze with you for a couple.' 'We used to chat about everything.'"}, {'frame': 'Wearing', 'tfidf': 0.7053450732619938, 'lexical_unit': 'unclad.a / sport.v / nudity.n', 'definition': "The words in this frame refer to what Clothing the Wearer (or a specific Body_part of the Wearer) has on.  'I had on the most ridiculous monkey-suit you could imagine.' 'These two losers were wearing bras on their heads!'  Many targets incorporate the Clothing item, and some targets describe the state of not wearing something (when it might be expected).  'Do you think anyone would notice if I went topless?'    NB: There is a very common metonymy in which characteristics of the clothing stand for the clothing itself, such as   'the man clad in leather.' 'She was dressed all in red.'  Such sentences should be tagged METAPHOR on the sentence level."}, {'frame': 'Aggregate', 'tfidf': 0.7022993146611426, 'lexical_unit': 'party.n / claque.n / covey.n', 'definition': "This frame contains nouns denoting Aggregates of Individuals.  The Aggregates may be described by an Aggregate_property.   'An army of postal workers descended on my office.'  "}, {'frame': 'Resolve_problem', 'tfidf': 0.696786211838234, 'lexical_unit': 'result.n / do something about.v / resolve.v', 'definition': "An Agent resolves an outstanding Problem by finding its solution, explanation, answer, etc.  Alternatively, some non-agentive Cause may resolve the Problem.  The Means, Degree, Time and Place may also be expressed.  'As it turns out, putting all of my eggs in one basket completely solved all of my problems.' 'Students finally worked through all of the difficult problems by working together.'"}, {'frame': 'Choosing', 'tfidf': 0.6939491480645836, 'lexical_unit': 'settle on.v / choose.v / elect.v', 'definition': "A Cognizer decides upon the Chosen (either an item or a course of action) out of a set of  Possibilities .  The Cognizer may have an Inherent_purpose or a Larger_purpose for the Chosen.  Often an Explanation, which serves as the basis of the choice, is given.  'The council picked you out of all the pilots available to head this mission.' 'No one would choose to live in such squalor.' 'If no judge was unanimously selected in the previous round, play rock-paper-scissors pairwise. CNI' "}, {'frame': 'Becoming', 'tfidf': 0.693665674027152, 'lexical_unit': 'turn.v / become.v', 'definition': "An Entity ends up with some Final_quality--a new fact about the Entity. Alternatively, based on a cluster of changes of characteristics, the Entitynewly meets the conditions for being a member of a Final_category.  'The weather turned cold .' 'You can become a firefighter today !'  This frame should be compared with the Transition_to_state frame, which is more general in allowing arbitrary descriptions of a final situation:  'We ended up telling him to leave .'  There is no way to effectively paraphrase such a sentence in the Becoming frame.  "}];
+    </script>
+    <script type="text/javascript" src="word_cloud_prediction.js"></script>
+    <script type="text/javascript" src="../mturk.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 150px;
+            padding-right: 150px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel_1 canvas, #word_cloud_panel_2 canvas {
+            display: none;
+        }
+        .word_cloud_box canvas {
+            display:none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+        .word_cloud_box {
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 3px rgba(70, 70, 70, 1) solid;
+            padding: 20px;
+            margin-bottom: 20px; 
+        }
+        .word_cloud_box:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+        }
+        .selected_story_block {
+            border-color: #7BDFF2;
+            border-width: 3px;
+            box-shadow: 0 0 10px 10px rgba(123, 223, 242, 0.3);
+            background-color: rgba(239, 247, 246, 0.8);
+        }
+        .indicator {
+            /*font-family: Courier;
+            font-weight: bold;*/
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px black solid;
+            border-radius: 20px;
+        }
+
+        .selected_story_block .indicator {
+            background-color: rgb(123, 223, 242);
+        }
+
+        #story_content {
+            max-height: 600px;
+        }
+        .not_qualified {
+            color: red;
+            font-weight: 900;
+        }
+        .qualified {
+            color: black;
+            font-weight: 900;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Which word-cloud best represents the story snippet?</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that a computer automatically 
+            generated to characterize a story snippet. 
+            The words in the word cloud <strong>do NOT necessarily occur</strong> in the story snippet. 
+            These words can just be relevant or semantically similar. <br/><br/>
+
+            A <strong>word-cloud representation with nouns</strong> is a group of nouns a computer automatically 
+            generated to characterize a story snippet. 
+            These nouns can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            In this HIT, you will see a story snippet. <span class="highlight">Please read it carefully.</span>
+            The story is long so we have a <span class="highlight">3 minutes time lock</span> for submission.
+            <br/><br/>
+
+            At the bottom of the HIT, you will see three sets of word-cloud representations, 
+            where each consists of nouns, verbs, and adjectives. 
+            <span class="highlight">Please select the word-cloud representation that best represents the story.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following story snippet carefully!</h3>
+            You will need to select the word-cloud representation that best represents this story. 
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story</h4>
+                        <h5>(An excerpt from the book <span style="font-weight:bold;">"Of War And Women"</span>.)</h5>
+                        <span class="not_qualified" id="read_lock">Please read all the story.</span>
+                        <br/><br/>
+                        <pre id="story_content">
+That Lady Sutherland seems a witch to me."
+"Quite so," Annabeth volunteered agreeably, "Now, what say we three join forces for the evening.
+As I see it, we three have the power, if we stick together, to refute any attempts by Lady Sutherland to besmirch our collective reputations.
+There is safety in numbers, you know.
+So, what say you?"
+"Oh, I say, that is quite sporting of you, Miss Fletcher," Felicite agreed, "Please, count me in." "Me, too," Maryann added happily.
+"Thank you, my newfound friends," Annabeth responded, "And please, call me Annabeth.
+Now, let us join in the festivities and sniff out what nefarious plots there may be lurking about."
+And so saying, Annabeth smiled brilliantly and took her leave of the pair.
+"My, she was quite charismatic," Felicite whispered on her parting.
+Apparently deep in thought, Maryann responded, "Yes, she was.
+I don't know her all that well, but I've never seen her quite so engaging as tonight."
+"Well, I feel much safer with her in our camp," Felicite suggested, "Things seemed to be getting out of hand until we met up with Miss Fletcher."
+"I agree," Maryann replied, at which she turned to the bar and ordered a scotch and water.
+Turning back to Felicite, she queried, "How about you, Miss Fifi?
+Shall you throw caution to the wind?"
+"I think that I shall stick to French wine," Felicite responded cautiously.
+"My, my, is that French arrogance, or are you simply playing up your feline role?"
+"Neither," Felicite replied.
+"I am simply going slowly for the moment to keep my senses about me.
+I am still contemplating exactly what Lady Sutherland was getting at."
+"Seems clear to me, Fifi.
+She's looking out for the flyboys.
+And she is either doing a very good job of it or a very bad job of it, depending on one's point of view.
+Which one it is remains to be seen."
+"Why do you say that, Maryann?"
+"I'm just thinking out loud.
+Are you really serious about playing into her game, Felicite?"
+"I don't know what you mean by 'playing into her game', Maryann."
+"I mean, are you up for showing these flyboys a bit of your knickers?
+That's what I mean!"
+"I am not quite certain, Maryann.
+I'm saying that I'm not ruling out anything at the moment.
+Let us simply wait and see, shall we?
+At any rate, in this costume, I suppose that technically I am already showing a bit of my knickers!"
+"Ha!
+That is certainly true!"
+Maryann responded gleefully, but then, changing her demeanor, she added in all sincerity, "Still, I'm darned if I'm falling for her line.
+I am here to have a good time, but I intend to keep my clothes on, and I mean everything!"
+At that moment Robert the Robin came up beside them at the bar and interjected politely, "So, ladies, how did it go with Lady Sutherland in the sitting room?"
+"Perfect," Felicite replied noncommittally.
+Immediately contradicting her, Maryann interjected, "Quite bizarre, if you ask me, Mr. Rob Rob Robin."
+He chuckled at her seemingly endless misnomers, but then asked in evident confusion, "Exactly how do you mean?"
+"She seems to think that you flyboys deserve some special attention by the young ladies who are visiting this weekend."
+"Oh, that," he responded with embarrassment, "I am afraid my mother has some quite unusual ideas."
+"She's your mother?"
+Felicite blurted.
+"Yes, of course she is.
+At least she was the last time I checked my birth certificate," he replied with flippant arrogance.
+Glaring reprovingly at him, Maryann expostulated, "So you are the future Earl, and you're a part of this whole deplorable thing!"
+"I say, I'm not quite certain I get your meaning, Miss Amy," he replied with a mixture of bewilderment and politeness.
+At this she responded derisively, "I should bet you don't," and with that she abruptly turned and walked away.
+Clearly confused by Maryann's behavior, he asked Felicite, "What was that about?"
+"Oh, don't mind her.
+She's simply irritated."
+"Why ever on earth for?"
+"She thought that we were invited here this weekend because we are important," Felicite replied self-deprecatingly.
+"But you were, and you most certainly are, Miss Fifi!
+I assure you, you were invited for very special reasons.
+You were screened quite carefully by my mother.
+I just spoke to her, and she told me that she had extremely high hopes for you in particular.
+She seemed to think that you might be the key to the success of the entire party!"
+Now herself insulted, she responded carefully, "And what do you mean by that, Mr. Robert the Robin?"
+He returned her gaze doubtfully, as if he had no idea why she looked so irritated to him, but she knew better - she could see that he was most certainly in on his mother's clandestine scheme.
+"Well, I'm sure I have no idea what you mean," he responded in apparent confusion and, plunging yet deeper, he added, "My mother indicated to me that she thought that your French background might be just the ingredient needed to rouse things up.
+I'm certain that she said it just so, Miss Fifi."
+Downright affronted by his insinuating remark, Felicite was now convinced that this was all nothing more than a devious ploy by him to entrap a few naive young ladies into a weekend of frolicking with his fellow soldiers.
+And to think, she had at first fallen for it.
+It was now apparent to her that he was nothing more than an aristocratic fop, and an immoral one at that.
+Accordingly, she responded with obvious annoyance, "I doubt very seriously that I shall be anything of the sort, Mr. Robin.
+Now, if you will excuse me, I think that I shall make the rounds and meet some of the lads who are not so opinionated about people of French ancestry."
+Having said this last, she forthwith turned on her heel and marched to the adjacent room as nonchalantly as possible.
+For his part, Mr. Robin was left to gape in confusion at the two lovely but enigmatic young ladies who had both succeeded in insulting him within an hour of the party's commencement.
+Quickly finding Maryann already surrounded by a half-dozen entranced airmen, Felicite nestled up beside her as if to say, "Introduce me, please."
+Maryann caught on immediately, announcing, "Gentlemen, this is my roommate - Miss Fifi the Feline."
+"Hello, gentlemen," Felicite volunteered seductively.
+Suddenly there were numerous pairs of eyes glued to the attractive young lady before them, her costume clearly striking her intended mark.
+From there events improved quickly, so much so that within an hour Felicite and Maryann were the life of the party.
+Things were by now going so swimmingly that all thoughts of Mr. Robin and his mother fleeted from the minds of Maryann and Felicite.
+Both pleasantly tipsy, they found themselves flirting with a captive group of intelligent and attentive young males.
+Life was at that moment quite as perfect as it could possibly be.
+Within the Library
+Robert the Robin found himself approaching the lovely young lady in the royal blue evening gown.
+Reaching her side, he offered, "I say, that is quite a lovely gown, Miss, er...?"
+"Why, thank you, Mr. Robin.
+I am, for the evening, Miss Eloise," she responded turning to face him head-on and, presenting him with her most impressive smile, she continued with, "Of course, I already know you, at least by name, Mr. Sutherland."
+"Oh?"
+he replied in confusion.
+At this, she volunteered, "Annabeth Fletcher, daughter of the Viscount Morton Fletcher, of Oxfordshire," subsequently holding out her gloved hand for his.
+Accepting the proffered hand, he leaned forward and supplied the requisite feigned kiss, subsequently responding politely, "Ah yes, I've met your father, and a brother, too, if I am not mistaken."
+"Yes, of course, that would be my older brother, also named Morton, after my father."
+"Ah, yes," Robert the Robin responded, "Sooo, we two appear to be the only members of the nobility here tonight, excepting Lady Sutherland, of course."
+Evading the obvious implications, she replied pleasantly, "Yes, so it would appear."
+"I assume from my mother that you are a student at Oxford?"
+he queried.
+"Yes, and quite lucky, I suppose," she responded.
+"How so?"
+he inquired vacuously.
+"Actually, although women's colleges were founded in the nineteenth century at Oxford, it hasn't been that long ago that women were accorded full equality at Oxford."
+"Yes, of course," he replied, "Silly, isn't it?"
+Her eyes flashing defensively, she responded, "Silly?
+In what way?"
+Sensing his gaff, he responded, "Oh, I say!
+I'm quite sorry.
+I meant no offense.
+What I meant to imply is how truly unfair it is that it has taken so long for women to receive full equality within the British Empire."
+"Ah," she replied, her frown disappearing, "Well said, sir.
+You seem to have extracted yourself quite nicely from that one.
+I trust you meant it."
+"Of course I did," he replied, still embarrassed, and searching for a face-saving means of retreat, he offered, "I say, Miss Fletcher, I must admit I find you quite lovely."
+"Thank you," she replied noncommittally, "And?"
+"And..."
+he stammered, "Well, er, one cannot predict what shall transpire over the next few months, but if all goes well, might you consent for me to call upon you?"
+"Why, that is most kind of you, Trant.
+May I call you Trant?"
+"Yes, of course, Miss Fletcher."
+"Please, call me Annabeth, if you will."
+"Yes, of course.
+Then shall we say, when the battle is ended, I shall search you out, Annabeth?"
+"Nothing could possibly please me more so," she responded politely, and seeing he was about to make his withdrawal, she took his outstretched hand and added pleasantly, "I shall look forward to it, Trant."
+For his part, Trant found a new spring in his step as he made his way to the ballroom, whereas, having achieved her first and only objective for the evening, Annabeth secretly pronounced the party a perfect success.
+At eleven-thirty the butler circled through each room, announcing, "Gentlemen, it is time to gather in the bar for Lady Sutherland's surprise entertainment.
+Please make your way there now.
+This way, please!"
+"Ladies, if you will please follow me to the library," he subsequently entreated, upon which the young ladies commenced twittering to one another as to the meaning of this development.
+The lads all crowded within the bar and, as a means of preparing for the upcoming festivity, they served themselves with potent nightcaps, thereby heightening their already libidinous anticipations.
+"I say," Trant's friend Walter offered, "What is going on, Trant?"
+"I'm certain I've no idea," Trant responded sheepishly.
+"Surely you should know something, if indeed anyone should," Walter queried.
+"What?
+Why should I?"
+Trant inquired vacuously.
+"Just tell me this, Birdman," Walter said accusingly, "Who is planning the evening's final event?"
+"Oh, that," Trant murmured dismissively, "My mother is, of course.
+I should have thought you would know that, Walter."
+"Aha!"
+Walter exclaimed pointedly, "I knew it!
+I knew something untoward was going on!"
+Self-consciously brushing back a wayward feather, Trant replied, "What the...what in tarnation are you talking about, Walter?"
+"How soon we forget!"
+Walter expostulated, "How soon we forget!"
+"Forget?
+Forget what?"
+"Trant!
+You seem to have forgotten telling me not three days since of your concern that your mother had something up her sleeve."
+"Oh, right..."
+Trant mumbled, "Supposing I did.
+What has that got to do with it?"
+"Everything!
+It's got everything to do with it, my friend."
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+
+        <h3>Select the word-cloud representation that best represents the above story.</h3>
+        Below, there are three word-cloud representations. Read them carefully and select the one that best represent the above story.
+        <br/><br/>
+
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_1" value="1">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 1</h3>
+                The following three word clouds jointly represent the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_2" value="2">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 2</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_2">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_2">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_2">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_2-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <!--div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_3" value="3">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 3</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_3">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_3-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_3">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_3-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_3">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_3-png-container" class="text-center"></div>
+            </div>
+        </div-->
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="6">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_150">
+            <input name="note" type="hidden" value="BERT, LGBM">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+    </div>
+
+</body>
+</html>

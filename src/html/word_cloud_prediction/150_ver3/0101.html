@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="text/javascript">
+        var frame_list_1 = [{'frame': 'Weapon', 'tfidf': 3.847616672515869, 'lexical_unit': 'dynamite.n / explosive.a / atomic bomb.n', 'definition': "A Weapon is an artifact created specifically to cause harm or damage.  In some cases, a Use, Material of construction, Part or Type may be more narrowly specified.  'Did you, or did you not, fire this gun with intent to harm my client?'  'Cyra tried to swing her sword to parry, but it was to heavy.'  'I investigated a specialist precious metal firearms manufacturer.'  'My neighbor, a member of the NRA since birth, has got an AK-47 fully automatic assault rifle.'  'Let 's just say that he 's the kind of guy who likes guns with hair triggers.' "}, {'frame': 'Vehicle', 'tfidf': 3.087571144104004, 'lexical_unit': 'submarine.n / van.n / ferry.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'Connecting_architecture', 'tfidf': 2.128404378890991, 'lexical_unit': 'stairs.n / door.n / staircase.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  The Part itself connects locations within the building to each other, Connected_locations. If a particular point of view is adopted in the context of real or imagined motion, then one of the locations can be construed as Goal and the other as Source.   'It was of great interest to me to see the star signs of Taurus the Bull and Leo the Lion on the staircase to the upper Palace.'  'All visitors may use the elevator between the Main Level and the Upper Level instead of the main staircase'  'The window into the garden was open.'"}, {'frame': 'Buildings', 'tfidf': 1.9505473375320435, 'lexical_unit': 'tepee.n / maisonette.n / tenement.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Architectural_part', 'tfidf': 1.8067693710327148, 'lexical_unit': 'mantel.n / ceiling.n / landing.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  'We need new counters for the kitchen'  'The storm ripped off the bathroom's roof'  "}, {'frame': 'Protecting', 'tfidf': 1.7515666484832764, 'lexical_unit': 'safeguard.v / bulwark.n / protection [entity].n', 'definition': "Some Protection prevents a Danger from harming an Asset.  'The rubber on her sneakers protected her from the mud.'  'The coral reefs shielded the coastline from the worst of the waves.'  'A growing number of sustainable farmers are preserving agricultural variety and protecting biodiversity by raising ?heritage? or ?heirloom? varieties.'  'The man responsible for this entire ordeal cowardly shielded himself from justice with the little boy's struggling body.'"}, {'frame': 'Be_on_alert', 'tfidf': 1.7507423162460327, 'lexical_unit': 'alert.n / guard.n', 'definition': "A Protagonist has become aware of a possible Danger (a dangerous event or a Dangerous_entity that might participate in an event harmful to the Protagonist) and is ready to engage in an Activity in response to that Danger.  'All tropps are on high alert for possible intruders following an attack on a nearby compound.'  'we're on alert to stop anyone trying to sneak in.'  'we're on guard for possible sabotage.'"}, {'frame': 'Member_of_military', 'tfidf': 1.6942262649536133, 'lexical_unit': 'sailor.n / soldier.n / marine.n', 'definition': "A Person is a member of an organized military organization belonging to a nation-state or similar body. The military membership may be part-time, but is considered a job. This is in opposition to combatants who may be loyal to a particular cause but are not part of the military arm of a government.  'The British at one point had an occupying army of over a million well-trained soldiers.'  'After 9/11 she decided to become a full-time airman'.  'US soldiers have fought in the region for the past twenty years with no end in sight.'"}, {'frame': 'Vehicle_subpart', 'tfidf': 1.65755295753479, 'lexical_unit': 'engine.n / window.n / windshield.n', 'definition': "An entity is integrated into a vehicle as a Part of a (possibly unexpressed) Whole which may refer to the whole vehicle or merely to a sub-part of the vehicle.  '' 'The car's engine started smoking so we pulled over.' 'Put the bags in the trunk.' 'One should always wear a seatbelt while driving.' "}, {'frame': 'Roadways', 'tfidf': 1.5838477611541748, 'lexical_unit': 'driveway.n / thoroughfare.n / pathway.n', 'definition': "This frame involves stable Roadways which connect two stable Endpoints, the Source and the Goal.  Being physical objects, these Roadways may have Names and Characteristics; they are also made of a Material.  They also cover ground, so they may have a Path or a Relative_location that the travel occurs in.  ' We crossed the brick road.' ' I prefer to travel on highway I-80.'  'This is the only highway between Lodi and Sonoma.' ' She dreaded turning onto the busy street.'"}, {'frame': 'Building_subparts', 'tfidf': 1.5729331970214844, 'lexical_unit': 'storeroom.n / salon.n / family room.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}, {'frame': 'Being_at_risk', 'tfidf': 1.464212417602539, 'lexical_unit': 'insecure.a / susceptible.a / safety.n', 'definition': 'An Asset is in a state where it is exposed to or otherwise liable to be affected by a Harmful_event, which may be metonymically evoked by reference to a Dangerous_entity. Words expressing relative safety (i.e., lack of risk) are also in this frame.  \'If you are a farmer, you are at risk for hearing loss caused by noise exposure in your work.\'  \'No child is secure from the temptation to do what "my friends" are doing.\'  \'Our nation is making a disastrous mistake thinking that we can have security from people: There is only security with people. \'  \'You don\'t have security against impersonation unless you have security against eavesdropping.\''}, {'frame': 'Temporary_stay', 'tfidf': 1.4551608562469482, 'lexical_unit': 'guest.v / quarter.v / stay.v', 'definition': "A Guest stays for a time at a Location, which is not his or her permanent residence, for some Duration. The Location is often the permanent residence of a Host.  'I usually stay with my aunt at her summer house when I go to Seville.'  'For a few days my father lodged at a hotel with a buddy who was a biology student.'"}, {'frame': 'Attack', 'tfidf': 1.4219472408294678, 'lexical_unit': 'bombard.v / bombing.n / attack.n', 'definition': "An Assailant physically attacks a Victim (which is usually but not always sentient), causing or intending to cause the Victim physical damage.   A Weapon used by the Assailant may also be mentioned, in addition to the usual Place, Time, Purpose, Explanation, etc.  Sometimes a location is used metonymically to stand for the Assailant or the Victim, and in such cases the Place FE will be annotated on a second FE layer.  'As soon as he stepped out of the bar he was set upon by four men in ski-masks.' 'Is he invading Iraq just to cover other shortcomings?' 'Then Jon-O's forces ambushed them on the left flank from a line of low hills.'"}, {'frame': 'Appellations', 'tfidf': 1.3932151794433594, 'lexical_unit': 'representative.n / leader.n / duchess.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Locale_by_use', 'tfidf': 1.3904881477355957, 'lexical_unit': 'restaurant.n / pub.n / depot.n', 'definition': "Geography as defined by its use.   'You must land in the next airfield, as this one is currently having difficulties.' 'The new sports complex was the tallest building on campus, oddly enough.' 'Cities of the Northeast tend to be dingier.'"}, {'frame': 'Use_firearm', 'tfidf': 1.383897066116333, 'lexical_unit': 'shoot.v / fire.v / discharge.v', 'definition': "An Agent causes a Firearm to discharge, usually directing the projectile from the barrel of the Firearm (the Source), along a Path, and to a Goal. 'The Germans wouldn't stop shooting cannons at them.' 'Oswald fired twice through the window.'"}, {'frame': 'Political_locales', 'tfidf': 1.3726643323898315, 'lexical_unit': 'village.n / international.a / diocese.n', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'People_by_vocation', 'tfidf': 1.3705662488937378, 'lexical_unit': 'oilman.n / biologist.n / private eye.n', 'definition': "This frame contains  words for Individuals as viewed in terms of their vocation.   The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'Humphrey Bogart was a great actor.'"}, {'frame': 'Ammunition', 'tfidf': 1.3686144351959229, 'lexical_unit': 'round.n / ordnance.n / munitions.n', 'definition': "A piece of Ammunition is a disposable artifact to be fired as a projectile in a weapon with the purpose of causing harm or damage.    'The octagenarian inventor's vest repels armor-piercing bullets. '  'It is armed with a automatic loaded 105 mm gun firing anti-tank rounds'  'Depleted uranium munitions are primarily used by the US and the UK.'"}, {'frame': 'Documents', 'tfidf': 1.3350054025650024, 'lexical_unit': 'visa.n / affidavit.n / testament.n', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Hostile_encounter', 'tfidf': 1.317833662033081, 'lexical_unit': 'bout.n / conflict.n / fight.n', 'definition': "This frame consists of words that describe a hostile encounter between opposing forces (Side_1 and Side_2, collectively conceptualizable as Sides) over a disputed Issue and/or in order to reach a specific  Purpose. '' 'He still wants to fight Mike Tyson in about 8 months.'  'Dennis Andries's European cruiserweight title clash against Akim Tafer of France in Beausoleil last February has been voted as the EBU's fight of the year.'"}, {'frame': 'Containing', 'tfidf': 1.3046550750732422, 'lexical_unit': 'contain.v / store.v / house.v', 'definition': "In this frame a Container holds within its physical boundaries the Contents.  'The box holds three hundred pictures.'"}, {'frame': 'Measure_linear_extent', 'tfidf': 1.2609630823135376, 'lexical_unit': 'furlong.n / inch.n / centimeter.n', 'definition': "This frame is concerned with nouns that denote Units of measurement for linear extent. The Frame Elements are Unit, Count,  and Stuff.'The shirt is made from 12 miles of pure cotton.''81 miles of dyke are still visible from this point.'"}, {'frame': 'Dead_or_alive', 'tfidf': 1.260360836982727, 'lexical_unit': 'lifeless.a / live.v / nonliving.a', 'definition': "A Protagonist is in the dynamic, maintained state of being alive or has exited this state.  'Frank's dead body was apalling.'"}, {'frame': 'Residence', 'tfidf': 1.2568296194076538, 'lexical_unit': 'inhabitant.n / camp.v / occupy.v', 'definition': "This frame has to do with people (the Residents) residing in Locations, sometimes with a Co-resident.  'Peter lives in New York.' 'Sue is an inhabitant of Los Angeles.'"}, {'frame': 'Killing', 'tfidf': 1.2209466695785522, 'lexical_unit': 'do in.v / smothering.n / slaughter.n', 'definition': "A Killer or Cause causes the death of the Victim. 'John drowned Martha.'"}, {'frame': 'Military', 'tfidf': 1.21774160861969, 'lexical_unit': 'naval.a / force.n / militia.n', 'definition': 'Some Possessor, either a nation, institution, or private individual, controls a Force whose primary functions to defend the Possessor (or, in the case of an institution or individual, some area of land significant to them) and to carry out offensive actions for the Possessor.  The Domain of operation of the Force may be expressed.'}, {'frame': 'Kinship', 'tfidf': 1.2051208019256592, 'lexical_unit': 'stepbrother.n / stepfather.n / stepdaughter.n', 'definition': "This frame contains words that denote Kinship relations. In annotating the directional uses of these words, we use the standard terms from anthropology, Ego and Alter.  'Matilde is Gilberto's cousin once removed' Compare to: Appellations."}, {'frame': 'Working_a_post', 'tfidf': 1.2037891149520874, 'lexical_unit': 'man.v / staff.v / work.v', 'definition': "The Agent is assigned to a Post where he or she performs a task associated with that Post. Alternatively, the Agent is expressed as acting with respect to a Salient_entity associated with the task. In most cases the Salient_entity is located at the Post.  'Volunteers were staffing the telephones.'  'Man your stations! CNI'"}, {'frame': 'Path_shape', 'tfidf': 1.194179892539978, 'lexical_unit': 'meander.v / cross.v / winding.a', 'definition': 'The words in this frame describe the "fictive" motion of a stationary Road.  Some of the targets cast the scene primarily in terms of the Path_shape:  \'The long mountain road meandered through the woods.\'  Some of the words in this frame imply a Source or Goal which is expressed by a direct object:  \'The path entered the garden on the west side.\'  Other members of the frame refer to a Direction: \'Then the path bears a little to the right.\'  Yet others indicate a Path which requires mention of a landmark:  \'The otherwise arrow-straight highway veers north and skirts the lake.\''}, {'frame': 'Part_inner_outer', 'tfidf': 1.1933178901672363, 'lexical_unit': 'inside.n / outside.n / center.n', 'definition': 'This frame concerns Parts of objects that are defined relative to the center or edge of the object.  The Part is a part of the Whole and the Part_prop describes a property of the Part.  \'She discarded the exterior of the walnut.\' \' She preferred a sparse church interior . \'  In cases where the Target is an adjective, it has a special relationship with the noun that it modifies such that a phrase which is a syntactic argument of the noun is semantically available to fill the argument structure of the adjective, as in "the outside row of the class"\'The inner shelf of the bookcase was lying on the floor.\'  '}, {'frame': 'People_by_origin', 'tfidf': 1.191798210144043, 'lexical_unit': 'Denverite.n / foreigner.n / german.n', 'definition': "This frame contains  words for individuals, i.e. humans, with respect to their Origin. The Origin is generally incorporated, but may occasionally be specified separately.  The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have an Age, Descriptor, Persistent_characteristic, or Ethnicity.   'I'm a proud Brit.'"}, {'frame': 'Organization', 'tfidf': 1.1882179975509644, 'lexical_unit': 'brotherhood.n / delegation.n / board.n', 'definition': "This frame describes intentionally formed human social groups (here termed Organizations) with some definite structure and Members.  They may be relatively informal, consisting only of a group of individuals who are aware of who is and who is not a fellow member, or they may be complex and long-lasting, such as the Roman Catholic Church or the Conservative Party.   'Lucien is in the brotherhood.'"}, {'frame': 'Natural_features', 'tfidf': 1.1784098148345947, 'lexical_unit': 'floe.n / butte.n / crevasse.n', 'definition': "The Locale is a geographical location as defined by shape.  This frame includes natural geographic features, including land/ice forms and bodies of water.  ' We climbed up the rock cliff.' "}, {'frame': 'Scrutiny', 'tfidf': 1.1686972379684448, 'lexical_unit': 'scour.v / sweep.v / analysis.n', 'definition': "This frame concerns a Cognizer (a person or other intelligent being) paying close attention to something, the Ground, in order to discover and note its salient characteristics.  The Cognizer may be interested in a particular characteristic or entity, the Phenomenon, that belongs to the Ground or is contained in the Ground (or to ensure that such a property of entity is not present).  Some words in this frame allow alternate expressions of the Groundand the Phenomenon: 'We searched the yard  for my contact lens.'"}, {'frame': 'Ground_up', 'tfidf': 1.15596604347229, 'lexical_unit': 'crushed.a / ground.a / shredded.a', 'definition': "In this frame a Patient is in a state of having been broken into smaller pieces.  ' We enjoy eating ground beef . '"}, {'frame': 'Cause_harm', 'tfidf': 1.139600157737732, 'lexical_unit': 'belt.v / cudgel.v / beat.v', 'definition': "The words in this frame describe situations in which an Agent or a Cause injures a Victim. The Body_part of the Victim which is most directly affected may also be mentioned in the place of the Victim.  In such cases, the Victim is often indicated as a genitive modifier of the Body_part, in which case the Victim FE is indicated on a second FE layer. '' 'Rod saw his father beating his mother.'  'In the end Wormtongue is fed up with being beaten so he cuts Saruman's throat to free himself.'  'A mother stabbed to death by her husband made a secret will stating that he must never be allowed to care for their son.'"}, {'frame': 'Provide_lodging', 'tfidf': 1.1346194744110107, 'lexical_unit': 'host.v / lodge.v / house.v', 'definition': "A Host provides a temporary Residence for a Lodger.  'We housed her in our home for a while.'"}, {'frame': 'Food', 'tfidf': 1.1199074983596802, 'lexical_unit': 'basil.n / vegetable.n / honey.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Containers', 'tfidf': 1.1164531707763672, 'lexical_unit': 'snifter.n / reservoir.n / wallet.n', 'definition': "This frame covers entities which are prototypically conceived of and created to fulfill the function of containing--i.e. Containers  that contain objects or substances, the Contents.  This can be expressed as a complement , and includes potential or intended contents.   A Container may also have an Owner, a current Relative_location, Material from which it is constructed, a method of Construction, and a Type.  Note the connection between words in this frame and those in the Filling, Emptying, and Fullness frames. 'a bag of popcorn' 'underwear drawer' 'Chuck's suitcase' 'the suitcase in Chuck's office' 'straw basket' 'woven basket' 'Erlenmeyer flask'"}, {'frame': 'Cotheme', 'tfidf': 1.112405776977539, 'lexical_unit': 'shadow.v / dog.v / escort.v', 'definition': "This frame contains words that necessarily indicate the motion of two distinct objects. The Theme is typically animate and is expressed the same way a Self-mover is expressed in the Self-motion frame--i.e. as the subject of a target verb. The Cotheme may or may not be animate and is typically expressed as a direct object or an oblique. Source, Path, Goal, and the other frame elements common to motion words also regularly occur with the words in this frame.  '' 'She accompanied him in the ambulance to Hollywood Memorial Hospital.'  'Police persue teenage joyrider across three counties.'  'My pursuit of academic superiority shows that I was still striving to be the person my parents wanted me to be.'"}, {'frame': 'Substance', 'tfidf': 1.1095408201217651, 'lexical_unit': 'methane.n / metal.n / cement.n', 'definition': 'This frame concerns internally undifferentiated Substances.   \'As their gut bacteria ferment cellulose , they generate methane gas , which escapes from the rear ends of the insects.\'  \' The pipes are leaking noxious gas.\'  \'Some CH-47 "Bombers" were equipped to roll-out riot control gas or napalm onto Viet Cong bunker complexes from the rear cargo ramp.\''}, {'frame': 'Assistance', 'tfidf': 1.1060768365859985, 'lexical_unit': 'aid [act].n / aid.v / help.n', 'definition': "A Helper benefits a Benefited_party by enabling the culmination of a Goal that the Benefited_party has.  A Focal_entity that is involved in reaching the Goal may stand in for it.  This Frame has unique Frame-to-Frame Relations: it inherits from and uses the Intentionally_act frame. This is atypical of FrameNet's frame relations.  'Will you help the Government find your brother?' 'Maybe Stephen should assist him with the last manuscript.' 'They helped me psychologically to overcome the physical loss I had suffered.' 'You have helped him tremendously by showing him  how to stand up for himself and by being his friend.' 'By bringing assistance to his troops wherever they were in trouble he aided them greatly.'"}, {'frame': 'Shoot_projectiles', 'tfidf': 1.096369981765747, 'lexical_unit': 'fire off.v / launch.v / fire.v', 'definition': "An Agent causes a Firearm to discharge which induces the rapid motion of the Projectile.  'The bank robber shot at the clerks with an AK-47.' 'Shooting a cannonball isn't as easy as it looks.  CNI'  Note that usages with the Firearm as object are out of frame, belonging to Use_firearm."}, {'frame': 'Leadership', 'tfidf': 1.0953240394592285, 'lexical_unit': 'kaiser.n / khedive.n / pasha.n', 'definition': "These are words referring to control by a Leader over a particular entity  or group (the Governed) or an Activity. The frame contains both nouns referring to a title or position (e.g. director, king, president), and verbs describing the action of leadership (e.g. rule, reign). With verbs, it is possible to mention the Role played by the Leader (often a name of a leading position, e.g., king)  'Sebek em hat was a Leader of Priests. ca. 1780 BC' 'In 1789 Fletcher Christian led the mutiny on HMS Bounty' 'Louis XIV ruled over his people as king for the longest period of any European monarch.' Compare to: Appellations. "}, {'frame': 'Sending', 'tfidf': 1.0939323902130127, 'lexical_unit': 'barge.v / mail.v / shipment [items].n', 'definition': "A Sender plans the Path (along with Source and Goal) of a Theme and places it in circumstances such that it travels along this Path under the power of some entity other than the Sender.  This frame also has a Recipient distinct from the Goal, as both can be present: 'I sent the manuscript to England to Bill.' 'I forwarded the grain to a dealer in Frankfurt.'  This frame contains verbs that participate in the ditransitive construction, with a recipient as the direct object, as in the following: 'I sent Bill the manuscript.' Certain Verbs in this Frame focus on the initial sending act, while others do not.  For example, I sent it rapidly can either mean the act of sending was initiated quickly or that it moved quickly. However, the in following sentence: I exported/dispatched it rapidly, meaning that the act was begun quickly, both types of verbs are included."}, {'frame': 'Front_for', 'tfidf': 1.091248631477356, 'lexical_unit': 'blind.n / front.n / front.v', 'definition': "An individual or organization, the Front, serves as a cover for an Illicit_activity or an Illicit_organization.  'The laundromat is a front for the Yakuza.'"}, {'frame': 'Being_located', 'tfidf': 1.0828843116760254, 'lexical_unit': 'lie.v / sit.v / whereabouts.n', 'definition': "A Theme is in a stable position with respect to a Location.  'Our offices are located about two miles south of I-85 .' "}, {'frame': 'Patrolling', 'tfidf': 1.0828495025634766, 'lexical_unit': 'police.v / patrol.v / patrol [entity].n', 'definition': "An individual or group, the Patrol moves through and examines a Ground in order to ensure that it is in a generally Desired_state_of_affairs, particularly that it is safe and contains no dangerous Unwanted_entity. Rather than moving through the Ground, the Patrol may simply move such that all the (relevant portions of) Ground can be observed and checked.  'Detective Jones patrolled the northern half of the building.'  'Security guards patrolled for intruders while the game was in progress.'"}];
+        var frame_list_2 = [{'frame': 'Vehicle', 'tfidf': 2.9602504311977977, 'lexical_unit': 'toboggan.n / bus.n / automobile.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'People_by_vocation', 'tfidf': 1.8877438296758686, 'lexical_unit': 'magistrate.n / server.n / actress.n', 'definition': "This frame contains  words for Individuals as viewed in terms of their vocation.   The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'Humphrey Bogart was a great actor.'"}, {'frame': 'Appellations', 'tfidf': 1.4643218510339522, 'lexical_unit': 'sheik.n / dr.n / child.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Weapon', 'tfidf': 1.4366164520716596, 'lexical_unit': 'strategic.a / crossbow.n / strategic nuclear weapon.n', 'definition': "A Weapon is an artifact created specifically to cause harm or damage.  In some cases, a Use, Material of construction, Part or Type may be more narrowly specified.  'Did you, or did you not, fire this gun with intent to harm my client?'  'Cyra tried to swing her sword to parry, but it was to heavy.'  'I investigated a specialist precious metal firearms manufacturer.'  'My neighbor, a member of the NRA since birth, has got an AK-47 fully automatic assault rifle.'  'Let 's just say that he 's the kind of guy who likes guns with hair triggers.' "}, {'frame': 'Operate_vehicle', 'tfidf': 1.2963199557550447, 'lexical_unit': 'tack.v / raft.v / drive.v', 'definition': "The words in this frame describe motion involving a Vehicle and someone who controls it, the Driver. Some words normally allow the Vehicle to be expressed as a separate constituent. 'Tim drove his car all the way across North America.' 'Tom paddled my canoe across the Canadian border.'  Other words in this domain are based on the names of vehicles, and do not normally allow the Vehicle to be expressed as a separate constituent. 'The group biked all the way across the country.'  However, a separate Vehicle constituent can occur if it adds information not included in the verb. 'Tim biked across the country on an old 10-speed.'"}, {'frame': 'Killing', 'tfidf': 1.1096455499030857, 'lexical_unit': 'murder.v / butchery.n / assassinate.v', 'definition': "A Killer or Cause causes the death of the Victim. 'John drowned Martha.'"}, {'frame': 'Offenses', 'tfidf': 1.072680438312338, 'lexical_unit': 'sabotage.n / larceny.n / possession.n', 'definition': "Words in this frame describe acts in violation of a legal code.  'He was accused of hijacking a tour bus full of people.'"}, {'frame': 'Employing', 'tfidf': 0.962601092240319, 'lexical_unit': 'employee.n / employ.v / worker.n', 'definition': "An Employer employs an Employee whose Position entails that the Employee perform certain Tasks in exchange for Compensation.  'I employed him as Chief Gardener for ten years.'"}, {'frame': 'Questioning', 'tfidf': 0.9470636749765654, 'lexical_unit': 'query.n / question.n / inquiry.n', 'definition': "The words in this frame have to do with a Speaker asking an Addressee a question which calls for a reply (as opposed to making a request which calls for an action on the part of the Addressee).  '' 'We asked Ruby what kind of food they ate.'  'Yeats was able to interrogate the spirit world about his relationship with Maude.'"}, {'frame': 'Communication', 'tfidf': 0.9288290176893023, 'lexical_unit': 'signal.v / contact.n / communication [entity].n', 'definition': "A Communicator conveys a Message to an Addressee; the Topic and Medium of the communication also may be expressed.  This frame includes no specification of the method of communication (speech, writing, gesture, etc.).  This frame and the frames that inherit the general Communication frame can add elaboration to the Medium in a variety of ways (in French, on the radio program, in a letter) or to the Manner of communication (babble, rant, shout, whisper). There are also frames related to Communication that either do not inherit all of the FEs of this frame or do not inherit them in a straightforward manner (such as Conversation, in which Communicator and Addressee alternate roles, and are often expressed by a single, plural NP).  'Let's hope it did n't have time to communicate any of its findings to its overlords.'  NB:  For many words in this domain (those which do not inherently ascribe cognitive/social processes to a Communicator, position a statement within a conversation, or specify Medium in detail), there is a metaphorical usage which maps Communication onto an alternate POV of Becoming_aware, with corresponding maps for frames related to Communication.  This metaphor is most felicitous with Means or Medium subjects, which are mapped onto the Evidence FE of Becoming_aware.  In many cases this metaphor maps Communication onto the Evidence frame, but not always.  Some words from the Communication domain are listed in the Evidence frame since they are deemed to be lexicalized.  'A flick of his gaze toward the doorway told me what he really wanted. (METAPHOR)' 'This painting really speaks to me. INI (MET) ' 'Putting his arm around her protectively achieved nothing but announcing to their captors their vulnerability. (MET)' 'It says a lot that he did n't come back. INI (MET) '"}, {'frame': 'Spelling_and_pronouncing', 'tfidf': 0.8858035576019948, 'lexical_unit': 'sound.n / misspell.v / pronounce.v', 'definition': 'A Speaker realizes a Sign, usually a linguistic one, in some Formal_realization. The Formal_realization may be described as correct or incorrect in a Judgment expression, or it may be partially indicated as a Part_of_form.  Manner may be used as a more general indication of the Formal_realization  \'A person doesn\'t always pronounce a word the way they say  it in context\'  \'I can\'t spell. INI INI\'  \'Stephanopolous spells his name with a "ph".\'  \'On page 87465, you spelled the name of my dog incorrectly as "Checquers".\'  \'In German, the word for \'peace\' is written "Friede" CNI\''}, {'frame': 'Change_operational_state', 'tfidf': 0.8855111192605853, 'lexical_unit': 'cut.v / turn off.v / deactivate.v', 'definition': "A Device or machine is put in (or out of) service either by a volitional Agent or by a Cause event or force acting on the Device. The Time when and the Place where the Device is put in or out of use may be specified, as may be the Purpose of the human Agent in changing the operational state of the Device.  'The laborer realized that he activated the machine but did not know how to stop it.'  "}, {'frame': 'Locale_by_use', 'tfidf': 0.8587100263621475, 'lexical_unit': 'green.n / institute.n / courtyard.n', 'definition': "Geography as defined by its use.   'You must land in the next airfield, as this one is currently having difficulties.' 'The new sports complex was the tallest building on campus, oddly enough.' 'Cities of the Northeast tend to be dingier.'"}, {'frame': 'Dead_or_alive', 'tfidf': 0.8508896298868203, 'lexical_unit': 'living.a / life.n / deceased.a', 'definition': "A Protagonist is in the dynamic, maintained state of being alive or has exited this state.  'Frank's dead body was apalling.'"}, {'frame': 'Cause_harm', 'tfidf': 0.850736342447214, 'lexical_unit': 'pelt.v / pummel.v / smack.v', 'definition': "The words in this frame describe situations in which an Agent or a Cause injures a Victim. The Body_part of the Victim which is most directly affected may also be mentioned in the place of the Victim.  In such cases, the Victim is often indicated as a genitive modifier of the Body_part, in which case the Victim FE is indicated on a second FE layer. '' 'Rod saw his father beating his mother.'  'In the end Wormtongue is fed up with being beaten so he cuts Saruman's throat to free himself.'  'A mother stabbed to death by her husband made a secret will stating that he must never be allowed to care for their son.'"}, {'frame': 'Protecting', 'tfidf': 0.838733866834223, 'lexical_unit': 'safeguard.n / shelter.n / secure.v', 'definition': "Some Protection prevents a Danger from harming an Asset.  'The rubber on her sneakers protected her from the mud.'  'The coral reefs shielded the coastline from the worst of the waves.'  'A growing number of sustainable farmers are preserving agricultural variety and protecting biodiversity by raising ?heritage? or ?heirloom? varieties.'  'The man responsible for this entire ordeal cowardly shielded himself from justice with the little boy's struggling body.'"}, {'frame': 'Request', 'tfidf': 0.8376702630128093, 'lexical_unit': 'demand.v / instruct.v / beg.v', 'definition': "In this frame a Speaker asks an Addressee for something, or to carry out some action.  'The customer demanded a refund.' 'I begged my parents to let me stay up late.' "}, {'frame': 'Connecting_architecture', 'tfidf': 0.8297354748221102, 'lexical_unit': 'door.n / elevator.n / step.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  The Part itself connects locations within the building to each other, Connected_locations. If a particular point of view is adopted in the context of real or imagined motion, then one of the locations can be construed as Goal and the other as Source.   'It was of great interest to me to see the star signs of Taurus the Bull and Leo the Lion on the staircase to the upper Palace.'  'All visitors may use the elevator between the Main Level and the Upper Level instead of the main staircase'  'The window into the garden was open.'"}, {'frame': 'Businesses', 'tfidf': 0.8060532027531941, 'lexical_unit': 'chain.n / business.n / operation.n', 'definition': "A Proprietor owns or runs a Business which provides a Product (which may be goods or services).  'The consumer electronics company Apple has exploded with popularity in recent years.'"}, {'frame': 'Documents', 'tfidf': 0.8025895939734368, 'lexical_unit': 'passport.n / permit.n / papers.n', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Sending', 'tfidf': 0.783760522320133, 'lexical_unit': 'shipment [items].n / mail.v / shipping.n', 'definition': "A Sender plans the Path (along with Source and Goal) of a Theme and places it in circumstances such that it travels along this Path under the power of some entity other than the Sender.  This frame also has a Recipient distinct from the Goal, as both can be present: 'I sent the manuscript to England to Bill.' 'I forwarded the grain to a dealer in Frankfurt.'  This frame contains verbs that participate in the ditransitive construction, with a recipient as the direct object, as in the following: 'I sent Bill the manuscript.' Certain Verbs in this Frame focus on the initial sending act, while others do not.  For example, I sent it rapidly can either mean the act of sending was initiated quickly or that it moved quickly. However, the in following sentence: I exported/dispatched it rapidly, meaning that the act was begun quickly, both types of verbs are included."}, {'frame': 'Text_creation', 'tfidf': 0.7673486459600516, 'lexical_unit': 'chronicle.v / print out.v / jot.v', 'definition': "An Author creates a Text, either written, such as a letter, or spoken, such as a speech,  that contains meaningful linguistic tokens, and may have a particular Addressee in mind.  The Text may include information about its topic, although the latter is not an FE in this frame.  'I penned a letter concerning racism  to Congress.' 'The brothers said not two words to each other.' 'Jot any notes you need below the line in red pen only.'"}, {'frame': 'Guilt_or_innocence', 'tfidf': 0.7636667868720989, 'lexical_unit': 'blood on hands.n / guilt.n / innocent.a', 'definition': "An Accused individual is deemed by a (usually implicit) Judge to be involved (or not) in a Misdeed.    'I am innocent of this crime and so is James Griffiths . ' 'It is possible that the Frauleins Krabbe , Breuer and Moller are guilty of serious wrongdoing.'  '' Note that this frame is not  limited to technical, legal uses. The use of guilty in this frame is also to be distinguished from that in the Contrition frame by not referring to an emotional state. Innocent has several other meanings that are distinct from the one it has in this frame. It can mean 'ignorant of'; 'innocuous'; 'pure and unsullied by experience'."}, {'frame': 'Process_stop', 'tfidf': 0.7598664913619548, 'lexical_unit': 'discontinue.v / stop.v / quit.v', 'definition': "A Process stops at a certain Time and Place.  Reason may also be specified.  A Duration may be included in order to indicate the length of the persistence of the Paused-state before action resumes.  NB:  Refer to Process frame. '' 'The strident, static-like hiss ceased abruptly.'  'The use of railway-owned vehicles on aggregates traffic ceased altogether in 1989.'"}, {'frame': 'Contacting', 'tfidf': 0.7294448575918268, 'lexical_unit': 'ring.v / get through.v / radio.v', 'definition': "A Communicator (whose Location may be indicated) directs a Communication to an Addressee at a particular Address.  Note that no actual successful communicative act is implied, only the successful completion of acts which would establish the communication.  (In other words, Mari can e-mail Jon without Jon ever reading it.) NB:  The Address or Location_of_communicator may be a virtual address, such as an e-mail or telephone number.'Disgruntled voters phoned Congressman Neil at his Washington residence with complaints about the recent increases in corporate welfare.''She tried to call from the payphone down the street.' "}, {'frame': 'Erasing', 'tfidf': 0.7196015497413908, 'lexical_unit': 'expunge.v / strike.v / delete.v', 'definition': "An Agent or Cause removes a piece of Information from a Document such that it cannot be retrieved.  'I deleted the last line from my essay.'"}, {'frame': 'Be_on_alert', 'tfidf': 0.7192045415305096, 'lexical_unit': 'guard.n / alert.n', 'definition': "A Protagonist has become aware of a possible Danger (a dangerous event or a Dangerous_entity that might participate in an event harmful to the Protagonist) and is ready to engage in an Activity in response to that Danger.  'All tropps are on high alert for possible intruders following an attack on a nearby compound.'  'we're on alert to stop anyone trying to sneak in.'  'we're on guard for possible sabotage.'"}, {'frame': 'Money', 'tfidf': 0.7090020958925929, 'lexical_unit': 'fund.n / dinero.n / capital.n', 'definition': "Money is a medium used for exchanging goods and services. It is in most cases issued by a government (its Creator) in the form of coins and banknotes. Particular amounts of it may have a designated or planned Use, or may have come from some Origin.  'The money for our daughter's college education is currently earning interest in a savings account.'  'The entire project ended up being funded with Swiss funds.'  'The use of paper money really caught on in Europe in the 1700s'"}, {'frame': 'Biological_area', 'tfidf': 0.7067576135263517, 'lexical_unit': 'heathland.n / mire.n / swamp.n', 'definition': " This frame contains words that denote large ecological areas as well as smaller locations characterized by the type of life present--in other words, geography locations as defined by biota.  'I've spent a long time in the rugged prairies of northern Llorwyn.'"}, {'frame': 'Vehicle_subpart', 'tfidf': 0.6918879970075476, 'lexical_unit': 'tire.n / part.n / seat.n', 'definition': "An entity is integrated into a vehicle as a Part of a (possibly unexpressed) Whole which may refer to the whole vehicle or merely to a sub-part of the vehicle.  '' 'The car's engine started smoking so we pulled over.' 'Put the bags in the trunk.' 'One should always wear a seatbelt while driving.' "}, {'frame': 'Personal_relationship', 'tfidf': 0.6842223967065448, 'lexical_unit': 'bachelor.n / break-up.n / chummy.a', 'definition': "The words in this frame have to do with people and the personal Relationships they are or can be a part of.  Some of the words denote people engaged in a particular kind of Relationship, others denote the Relationship, yet others the events bringing about or ending the Relationships. Many of the words presuppose an understanding of states and events that must have occurred before another event takes place or before a person can be classified in a certain way. '' 'And of course that drippy boyfriend of hers backed her up.'  'As the happy couple took their places there was a stir and a rising babble behind them.'  'Pattie is living proof that if you live with a man, you discover a lot you didn't know when you were just dating him.'"}, {'frame': 'Judgment_communication', 'tfidf': 0.6747686488186817, 'lexical_unit': 'denunciation.n / harangue.n / execrative.a', 'definition': "A Communicator communicates a judgment of an Evaluee to an Addressee.  The judgment may be positive (e.g. praise) or negative (e.g. criticize), and this is indicated by the semantic types Positive and Negative attached to the lexical units.  This frame does not contain words where Evaluee and the Addressee are necessarily the same .  'I commended his handling of the crisis.' 'Gaston denounced him to the committee.' This is distinct from the Judgment frame in that it involves the communication of an evaluation, rather than merely forming and holding a particular evaluation."}, {'frame': 'Natural_features', 'tfidf': 0.6710418713758057, 'lexical_unit': 'cataract.n / iceberg.n / tor.n', 'definition': "The Locale is a geographical location as defined by shape.  This frame includes natural geographic features, including land/ice forms and bodies of water.  ' We climbed up the rock cliff.' "}, {'frame': 'Architectural_part', 'tfidf': 0.664305504583097, 'lexical_unit': 'rail.n / landing.n / foundation.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  'We need new counters for the kitchen'  'The storm ripped off the bathroom's roof'  "}, {'frame': 'Prevarication', 'tfidf': 0.6605849195448315, 'lexical_unit': 'misrepresent.v / lie.v / hoodwink.v', 'definition': "A Speaker communicates about a Topic in such a way as to mislead an Addressee, either by telling outright lies or by presenting a message in a misleading form.  'I lied to you about your Christmas present.'"}, {'frame': 'Hearsay', 'tfidf': 0.6599154172078547, 'lexical_unit': 'hear.v / read.v', 'definition': "The Hearer receives a Message or communication on a particular Topic. Words in this frame denote events of verbal communication, but express the Hearer rather than the Speaker as an External Argument.   'Teenage fans first heard about the tragedy on a popular radio show.'   'Teenage fans first heard the tragic news on a popular radio show'"}, {'frame': 'Education_teaching', 'tfidf': 0.655095838987794, 'lexical_unit': 'educational.a / graduate.n / education.n', 'definition': 'This frame contains words referring to teaching and the participants in teaching.  A Student comes to learn either about a Subject; a Skill; a Precept; or a Fact as a result of instruction by a Teacher.  Some of the nouns (schoolmaster, -mistress) in this frame refer to administrative positions and do not take relevant frame elements; these will be moved.    \'Dad taught <fex name="">me that if you work hard, you will be OK - no matter what happens. \'  \'What Our Cat  taught Me  About Marketing!\'  \'For two years she taught me French\'  \'Mom and Dad taught me not to bullshit, because it always came back to bite me in the ass, without fail. \'  \'A young swiss girl up in a swiss chalet taught me how to yodel.\'  \'Young Murdock later met a blind martial arts master known as Stick, who taught him how to use his augmented senses and trained him as a fighter.\'  \' Maria, a woman studying to be a nun is sent from her convent to be the governess of the seven children of a widowed naval captain \'  Frame-Element relations:  Several Frame element relations hold in this frame. There is a core-set {Material, Teacher} (possibly also including Institution); these FE\'s can fill the subject slot of the teach-type verbs. There is another core-set  {Precept, Subject, Skill, Fact, Role} to do with what is learnt. In addition, the FE Qualification may occur with Subject and Role  \'My sister is studying for a maths degree    to be a teacher \' \'She\'s studying maths to be a teacher .\'  Phrases expressing Qualification also very often include information about the Subject (see below), which is to be annotated on the second layer.  \'Bill is studying for a BS in physics/a maths degree.\' \'Bill is studying for a BS in physics/a maths degree.\'  '}, {'frame': 'Bringing', 'tfidf': 0.6510033199800205, 'lexical_unit': 'cart.v / wheel.v / fly.v', 'definition': "This frame concerns the movement of a Theme and an Agent and/or Carrier.   The Agent, a person or other sentient entity, controls the shared Path by moving the Theme during the motion. In other words, the Agent has overall motion in directing the motion of the Theme.  The Carrier may be a separate entity, or it may be the Agent's body. The Constant_location may be a subregion of the Agent's body or (a subregion of) a vehicle that the Agent uses.  'Karl carried the books across campus to the library on his head.' 'Karl carried the books across campus to the library in his truck.' 'Karl carried the books across campus to the library by truck.' 'The truck carried the books across campus to the library in specially designed boxes.' The  FEs include Path, Goal, and Source.  Area is an area that contains the motion when the path is understood as irregular.   This frame emphasizes the path of movement as opposed to the FEs Source or Goal as in Filling or Placing. "}, {'frame': 'Change_posture', 'tfidf': 0.6472151620620284, 'lexical_unit': 'squat.v / kneel up.v / stoop.v', 'definition': "A Protagonist changes the overall position and posture of the body.  'Smithers leaned forward to grab the folder on the far side.'"}, {'frame': 'Temporary_stay', 'tfidf': 0.6436849915198188, 'lexical_unit': 'sleep over.v / quarter.v / overnight.v', 'definition': "A Guest stays for a time at a Location, which is not his or her permanent residence, for some Duration. The Location is often the permanent residence of a Host.  'I usually stay with my aunt at her summer house when I go to Seville.'  'For a few days my father lodged at a hotel with a buddy who was a biology student.'"}, {'frame': 'Ride_vehicle', 'tfidf': 0.6432391919910513, 'lexical_unit': 'coast.v / ride.v / fly.v', 'definition': "In this frame a Theme is moved by a Vehicle which is not directly under their power. The Source, Path, Goal, or Area of the motion may be indicated. The Distance traveled or the Speed of motion may also be indicated. A Route or Roadmay be present and the Manner in which the Theme moves may be given. 'Mrs. Smith rode on the train.' 'Sally flew 3000 miles from San Francisco to New York.' 'Every day, Martin rode the bus on highway 880.' 'Mr. Bigglesworth rides route 51.'  There is shared vocabulary between this frame and Carrying and Operate_vehicle. It is differentiated from Operate_vehicle in that the vehicle is not under the subject's control. It is differentiated from Carrying because the vehicle is not being used to transport goods."}, {'frame': 'Communication_response', 'tfidf': 0.6430071825188277, 'lexical_unit': 'answer.v / comeback.n / reply.n', 'definition': 'This frame deals with a Speaker communicating a reply or response, a Message, to some prior communication or action, the Trigger.  \'\' \'The landlord has not yet replied in writing to the tenant objecting the proposed alterations.DNI\'  \'"No, I do not agree with you," responded another officer to the CEO. DNI\''}, {'frame': 'Being_located', 'tfidf': 0.6427603657033799, 'lexical_unit': 'stand.v / whereabouts.n / situated.a', 'definition': "A Theme is in a stable position with respect to a Location.  'Our offices are located about two miles south of I-85 .' "}, {'frame': 'Containing', 'tfidf': 0.6395909743134152, 'lexical_unit': 'hold.v / contain.v / store.v', 'definition': "In this frame a Container holds within its physical boundaries the Contents.  'The box holds three hundred pictures.'"}, {'frame': 'Death', 'tfidf': 0.6374217593921513, 'lexical_unit': 'starvation.n / pass away.v / perish.v', 'definition': "The words in this frame describe the death of a Protagonist.  A Cause of death may also be expressed obliquely. '' 'The machine was not switched off, but Mr. Lavelle died of natural causes, police said.'  'To avenge the death of a son is not hasty work, if he is to be honored.'"}, {'frame': 'Perception_experience', 'tfidf': 0.6372482016497709, 'lexical_unit': 'see.v / detect.v / taste.v', 'definition': "This frame contains perception words whose Perceivers have perceptual experiences that they do not necessarily intend to. For this reason we call the Perceiver role Perceiver_passive. Comparing the Perception_experience frame to the Perception_active frame, we note that for some modalities there are different lexical items in each frame.  For instance, whereas Perception_experience has see, Perception_active has look at. For other sense modalities, we find the same lexical items in both frames.  To illustrate, consider the verb smell where I smell something rotten exemplifies its Perception_experience use and Smell this to see if it's fresh exemplifies its Perception_active sense. This frame also includes words which are not specific to any sense modality, including detect, perceive, perception, sense.  '' 'Abashed, realising that he had overheard her conversation with Victoria, Sheeley didn't try to make excuses.'  'She smelled the wine on Paul's breath, and bade him to sit down.'"}, {'frame': 'Reason', 'tfidf': 0.635122414371956, 'lexical_unit': 'basis.n / motivation.n / motive.n', 'definition': "A volitional  Agent is responding to a State_of_affairs by performing some Action.  'And was that your reason for becoming an actor ?' 'But Giles is the reason that I am here .' 'Oh my reason for including it was Section fifty four A.'  "}, {'frame': 'Resurrection', 'tfidf': 0.6302934461059466, 'lexical_unit': 'resurrection.n / rise.v / return.v', 'definition': "A Protagonist which had been dead returns to life.  'He'll come back from the dead at 11:03PM exactly, since that's what his suicide note indicated.'"}, {'frame': 'Cotheme', 'tfidf': 0.630012486590591, 'lexical_unit': 'chase.v / lead.v / pursuer.n', 'definition': "This frame contains words that necessarily indicate the motion of two distinct objects. The Theme is typically animate and is expressed the same way a Self-mover is expressed in the Self-motion frame--i.e. as the subject of a target verb. The Cotheme may or may not be animate and is typically expressed as a direct object or an oblique. Source, Path, Goal, and the other frame elements common to motion words also regularly occur with the words in this frame.  '' 'She accompanied him in the ambulance to Hollywood Memorial Hospital.'  'Police persue teenage joyrider across three counties.'  'My pursuit of academic superiority shows that I was still striving to be the person my parents wanted me to be.'"}, {'frame': 'Attack', 'tfidf': 0.6270095051824613, 'lexical_unit': 'fire.n / assault.v / charge.v', 'definition': "An Assailant physically attacks a Victim (which is usually but not always sentient), causing or intending to cause the Victim physical damage.   A Weapon used by the Assailant may also be mentioned, in addition to the usual Place, Time, Purpose, Explanation, etc.  Sometimes a location is used metonymically to stand for the Assailant or the Victim, and in such cases the Place FE will be annotated on a second FE layer.  'As soon as he stepped out of the bar he was set upon by four men in ski-masks.' 'Is he invading Iraq just to cover other shortcomings?' 'Then Jon-O's forces ambushed them on the left flank from a line of low hills.'"}];
+    </script>
+    <script type="text/javascript" src="word_cloud_prediction.js"></script>
+    <script type="text/javascript" src="../mturk.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 150px;
+            padding-right: 150px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel_1 canvas, #word_cloud_panel_2 canvas {
+            display: none;
+        }
+        .word_cloud_box canvas {
+            display:none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+        .word_cloud_box {
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 3px rgba(70, 70, 70, 1) solid;
+            padding: 20px;
+            margin-bottom: 20px; 
+        }
+        .word_cloud_box:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+        }
+        .selected_story_block {
+            border-color: #7BDFF2;
+            border-width: 3px;
+            box-shadow: 0 0 10px 10px rgba(123, 223, 242, 0.3);
+            background-color: rgba(239, 247, 246, 0.8);
+        }
+        .indicator {
+            /*font-family: Courier;
+            font-weight: bold;*/
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px black solid;
+            border-radius: 20px;
+        }
+
+        .selected_story_block .indicator {
+            background-color: rgb(123, 223, 242);
+        }
+
+        #story_content {
+            max-height: 600px;
+        }
+        .not_qualified {
+            color: red;
+            font-weight: 900;
+        }
+        .qualified {
+            color: black;
+            font-weight: 900;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Which word-cloud best represents the story snippet?</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that a computer automatically 
+            generated to characterize a story snippet. 
+            The words in the word cloud <strong>do NOT necessarily occur</strong> in the story snippet. 
+            These words can just be relevant or semantically similar. <br/><br/>
+
+            A <strong>word-cloud representation with nouns</strong> is a group of nouns a computer automatically 
+            generated to characterize a story snippet. 
+            These nouns can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            In this HIT, you will see a story snippet. <span class="highlight">Please read it carefully.</span>
+            The story is long so we have a <span class="highlight">3 minutes time lock</span> for submission.
+            <br/><br/>
+
+            At the bottom of the HIT, you will see three sets of word-cloud representations, 
+            where each consists of nouns, verbs, and adjectives. 
+            <span class="highlight">Please select the word-cloud representation that best represents the story.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following story snippet carefully!</h3>
+            You will need to select the word-cloud representation that best represents this story. 
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story</h4>
+                        <h5>(An excerpt from the book <span style="font-weight:bold;">"Return To Rabaul"</span>.)</h5>
+                        <span class="not_qualified" id="read_lock">Please read all the story.</span>
+                        <br/><br/>
+                        <pre id="story_content">
+"Look at this," said Lawson.
+He held up a diagram of the Rabaul waterfront, which showed gun emplacements and Japanese writing.
+Amongst the papers, they found a list of residents the Japanese were to arrest and execute when they captured Rabaul.
+Both their names were on it.
+"So that little scumbag has been drawing up lists of people to be shot!"
+shouted Lawson.
+"He goes around smiling and bowing to everyone, but all the time he's making it easier for his mates to capture Rabaul and execute the residents they don't like.
+He's a dead man."
+They collected all the papers and diagrams they could find and took them to the car.
+Driving back to headquarters, Milne walked in and found his commander and several senior officers in conference.
+His ashen-faced commander said, "The Japanese attacked the American naval base at Pearl Harbour several hours ago.
+America and Australia have declared war on Japan."
+Chapter 25
+Milne knew that it was only a matter of time before the Japanese tried to capture Rabaul.
+A day after the attack on Pearl Harbour, a group of settlers gathered around the radio at his house listening to Prime Minister John Curtin's war speech: "Men and women of Australia...we are at war with Japan.
+This is the gravest hour of our history.
+We Australians have imperishable traditions.
+We shall maintain them.
+We shall hold this country and keep it as a citadel for the British-speaking race and as a place where civilisation will persist."
+Some settlers wanted to return to Australia while others said they would stay.
+A plantation owner from Kokopo said he would stay until it became clear the Japanese were going to attack Rabaul.
+"Bloody hell," said Lawson.
+"Are you all living in fucking wonderland?
+The Japanese will attack.
+Best port in the area.
+And you can forget about your plantations - the Japanese will take those and you'll end up prisoners.
+And we all know how the Japs treat prisoners."
+"It's not over yet," said another.
+"The Japs have to get down here.
+The British navy will stop them.
+They have the battle cruisers HMS Prince of Wales and Repulse patrolling the sea lanes, as soon as the Japs leave land, these ships will deal with them."
+A Rabaul shop owner joined them saying he had heard that Curtin had ordered the immediate return home of Australian divisions fighting in North Africa.
+He added that these battle-hardened divisions would give the Japanese a sound thrashing if they came near Malaya or New Guinea.
+"And how long before they get here?"
+demanded Lawson.
+"Bloody months.
+By then the Japs will be on top of us."
+"What about you Francis?"
+asked a settler.
+"I hear Mary is setting up house in Sydney, are you going to join her?"
+"No, not yet.
+I have some unfinished business.
+Tankara slipped through our fingers and I'm going find him if it's the last thing I do."
+Lawson added, "And I'm not going anywhere.
+Me and Francis are going to stick it out."
+A few days later, coast watchers spotted the first of many Japanese aircraft flying over Rabaul.
+Rumours flew around the town that an attack on Rabaul was imminent.
+Every day, more alarming news filtered in; a day after the assault on Pearl Harbour, the Japanese attacked Hong Kong and invaded Malaya.
+A day later, Japanese aircraft sank the Prince of Wales and Repulse, which was a huge blow to morale of the soldiers and settlers in Rabaul.
+Japanese troops overwhelmed the small American garrison on Guam the same day, and advanced south into Indo-China and Thailand.
+Meanwhile, Milne's commanding officer ordered him to hunt down the spy network.
+Milne decided to use Jansen as bait to catch Frickner and Tankara.
+He threatened that unless she cooperated, he would charge her with spying which carried a long prison sentence in Australia.
+She agreed to cooperate and said that Frickner might be hiding on her plantation and she offered to show them all the places he might be.
+They drove to Jansen's house, Lawson driving and Milne in the back seat with Jansen keeping an eye on her.
+He took the precaution of handcuffing her in case she tried something.
+She protested and begged but Milne refused to take the handcuffs off.
+They parked in the jungle near her house and peered through the foliage.
+There were no signs of activity.
+Lawson, gun in hand, walked towards the house while Milne remained with Jansen in the jungle.
+A few minutes later, he signalled to them.
+"Everything is gone!"
+she cried, when she stepped into her empty house.
+"They took all the furniture and my clothes."
+A plantation worker said that two days before, Frickner and Tankara had forced several workers to help them load up the car and truck with clothes, bedding and pots and pans, and then left, saying they would be back in a few weeks.
+They paid several men to guard her property but as soon as they had left, the local villagers had helped themselves to what was left of her property.
+Milne questioned her servants and one of them said that Frickner and Tankara might have gone to Toma.
+They searched the plantation grounds.
+Milne kept hold of her while they were searching.
+She showed them a cottage, which was one of Frickner's hideouts.
+After searching the area around the plantation, they sought out John Marsden.
+He had not seen or heard anything suspicious in the area but he said everyone was preoccupied with the war.
+"What will become of us if the Japanese come?"
+he asked Milne.
+"Should I leave the island?"
+"I can't answer that," he replied.
+"Each person needs to decide what to do."
+"My advice is to get out while you can," added Lawson.
+"Unless you intend to fight the Japs you should get back to Australia quick smart before Tojo arrives in town."
+Marsden nodded and started making plans to exit New Guinea.
+Milne and Lawson took Jansen back to Rabaul.
+While Jansen had been cooperative and minimised her guilt, there was no doubt in their minds that she had engaged in espionage.
+"The question now, Mrs Jansen, is what we are to do with you," said Milne back at HQ.
+Lawson sat opposite her with a smirk.
+As far as he was concerned, there was no question of her guilt.
+She bowed her head admitting she had done wrong but she had not engaged in spying activity.
+It was all Frickner, Friberg and Tankara.
+She said she was in love with Friberg and supported him but did not know about the spying.
+As she minimised her role in the network, she wept tears of remorse at the loss of her lover, her property and her freedom.
+Lawson leaned forward, "You must think we were born yesterday.
+What a load of crap you are telling us.
+You are a spy.
+We have enough evidence to charge you with espionage."
+"Please, you must believe me.
+I'm innocent.
+I knew nothing about what they were doing.
+They used me as cover and threatened to kill me if I reported on them."
+"If you help us, we might reduce the charges, but you will be deported to Australia for internment as an enemy alien."
+She looked up and wiped the tears from her eyes.
+"I'll help in any way I can."
+Milne asked where in Toma Tankara might be hiding.
+She replied that her husband had owned a house and land on the edge of the town.
+They often went there to escape the tropical heat of the lowlands.
+She gave him the exact location of the house.
+Milne placed her in custody and recommended to his commander that the military deport her to Australia for internment.
+His commander agreed and she was imprisoned pending deportation.
+They drove to Toma, parked near the house and hid in the trees to watch.
+The house appeared to be uninhabited.
+An hour after they staked out the house, they saw Tankara's servant walk out the back door, hang washing and go back inside.
+"What do you reckon?"
+asked Milne.
+"Tankara and Frickner might be inside."
+He pulled out his gun and walked slowly to the back of the house while Lawson covered him.
+Milne pushed the door open and pointed his gun at the servant.
+"Where's Frickner and Tankara?"
+He stood staring at Milne, a look of terror on his face.
+"I'm not going to hurt you.
+Where are they?"
+He pointed into the room at the front of the house.
+Milne called in Lawson and asked him to cover the servant.
+He crept into the front room and saw Tankara lying asleep on the couch.
+He called Lawson in. Milne motioned to him to search the rest of the house to find Frickner but he was not there.
+Lawson walked over to Tankara and pushed him with his foot.
+"What is it...I'm trying to ..."
+He turned and saw Lawson pointing his gun at his head.
+Milne stepped forward.
+"You are under arrest for espionage."
+Tankara sat up rubbing his eyes.
+He did not seem worried, and declared his innocence arguing that he fled from Rabaul after the attack on Pearl Harbour because he feared the authorities would intern him.
+He denied spying on the Australian military.
+"Search him," said Milne.
+Lawson walked over to Tankara and said, "Stand up and don't try anything."
+Tankara stood up put his hands in the air.
+He roughly searched him.
+"Thought you'd get away with it did you?
+You'll be lucky if we don't shoot you on the spot."
+"Don't move or you're both dead," said a voice behind them.
+"Throw your guns on the floor and put your hands up."
+Milne looked over his shoulder.
+It was Klaus Frickner pointing a rifle at them.
+Milne realised that if he turned to shoot, Frickner would kill him and Lawson.
+They threw their weapons down.
+Tankara picked up their guns.
+He laughed.
+"What fools you Australians are.
+What amateurs.
+If this is the best that your pathetic government sends against the might of Japan, your insignificant little country will soon belong to us.
+Yes, I am a spy.
+You have found out my little secret.
+But it will do you no good because your world is about to change forever."
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+
+        <h3>Select the word-cloud representation that best represents the above story.</h3>
+        Below, there are three word-cloud representations. Read them carefully and select the one that best represent the above story.
+        <br/><br/>
+
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_1" value="1">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 1</h3>
+                The following three word clouds jointly represent the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_2" value="2">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 2</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_2">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_2">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_2">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_2-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <!--div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_3" value="3">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 3</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_3">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_3-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_3">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_3-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_3">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_3-png-container" class="text-center"></div>
+            </div>
+        </div-->
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="101">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_150">
+            <input name="note" type="hidden" value="BERT, LGBM">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+    </div>
+
+</body>
+</html>

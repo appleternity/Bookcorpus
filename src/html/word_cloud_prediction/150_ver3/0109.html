@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="text/javascript">
+        var frame_list_1 = [{'frame': 'Money', 'tfidf': 2.786444758125407, 'lexical_unit': 'capital.n / fund.n / money.n', 'definition': "Money is a medium used for exchanging goods and services. It is in most cases issued by a government (its Creator) in the form of coins and banknotes. Particular amounts of it may have a designated or planned Use, or may have come from some Origin.  'The money for our daughter's college education is currently earning interest in a savings account.'  'The entire project ended up being funded with Swiss funds.'  'The use of paper money really caught on in Europe in the 1700s'"}, {'frame': 'Kinship', 'tfidf': 2.7697992000363816, 'lexical_unit': 'mom.n / filial.a / people.n', 'definition': "This frame contains words that denote Kinship relations. In annotating the directional uses of these words, we use the standard terms from anthropology, Ego and Alter.  'Matilde is Gilberto's cousin once removed' Compare to: Appellations."}, {'frame': 'People_by_age', 'tfidf': 2.385784245860662, 'lexical_unit': 'spring chicken.n / youth.n / baby.n', 'definition': "This frame contains words for individuals as viewed in terms of their age. The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'He is a 12-year-old kid.'"}, {'frame': 'Color', 'tfidf': 2.206616043053031, 'lexical_unit': 'indigo.a / pitchblack.a / black.a', 'definition': "A Color serves as a landmark in color-space, either a point-like landmark (e.g. burnt sienna) or a broader region (e.g. blue).  Especially when the Color designates a broad region in color-space, it may be defined with a specific Type, further specified by comparison to the color of a Comparand, modified by a Color_qualifier, or evaluated with a Descriptor.  All color words are generally used to specify the color of some (physical) Entity. 'I really like that shade of blue.' 'The welts on his side had already turned an angry red.' 'The room was bathed in a soft pink light.' 'They promptly set up a zillion bright vermilion pavilions.' 'His face and hands were brown from a life spent in the bright sun of the fields.' "}, {'frame': 'Appellations', 'tfidf': 1.9108398920881284, 'lexical_unit': 'officer.n / mogul.n / commander.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Working_a_post', 'tfidf': 1.8300615627439214, 'lexical_unit': 'man.v / staff.v / work.v', 'definition': "The Agent is assigned to a Post where he or she performs a task associated with that Post. Alternatively, the Agent is expressed as acting with respect to a Salient_entity associated with the task. In most cases the Salient_entity is located at the Post.  'Volunteers were staffing the telephones.'  'Man your stations! CNI'"}, {'frame': 'Co-association', 'tfidf': 1.8256031791501692, 'lexical_unit': 'associate.n / comrade.n / partner.n', 'definition': 'Two or more individuals have a relationship by virtue of belonging to the same organization or institution. They may or may not be personally acquainted, and may or may not have chosen to have the relationship.'}, {'frame': 'Weapon', 'tfidf': 1.7665122698110773, 'lexical_unit': 'biological weapon.n / weaponry.n / mustard gas.n', 'definition': "A Weapon is an artifact created specifically to cause harm or damage.  In some cases, a Use, Material of construction, Part or Type may be more narrowly specified.  'Did you, or did you not, fire this gun with intent to harm my client?'  'Cyra tried to swing her sword to parry, but it was to heavy.'  'I investigated a specialist precious metal firearms manufacturer.'  'My neighbor, a member of the NRA since birth, has got an AK-47 fully automatic assault rifle.'  'Let 's just say that he 's the kind of guy who likes guns with hair triggers.' "}, {'frame': 'Race_descriptor', 'tfidf': 1.5951587852192564, 'lexical_unit': 'black.a / color.n / white.a', 'definition': "This frame covers LUs that describe the race of a Person.  'Carlos is hispanic, or so he says.'"}, {'frame': 'Communication', 'tfidf': 1.554964997689257, 'lexical_unit': 'contact.n / convey.v / speech.n', 'definition': "A Communicator conveys a Message to an Addressee; the Topic and Medium of the communication also may be expressed.  This frame includes no specification of the method of communication (speech, writing, gesture, etc.).  This frame and the frames that inherit the general Communication frame can add elaboration to the Medium in a variety of ways (in French, on the radio program, in a letter) or to the Manner of communication (babble, rant, shout, whisper). There are also frames related to Communication that either do not inherit all of the FEs of this frame or do not inherit them in a straightforward manner (such as Conversation, in which Communicator and Addressee alternate roles, and are often expressed by a single, plural NP).  'Let's hope it did n't have time to communicate any of its findings to its overlords.'  NB:  For many words in this domain (those which do not inherently ascribe cognitive/social processes to a Communicator, position a statement within a conversation, or specify Medium in detail), there is a metaphorical usage which maps Communication onto an alternate POV of Becoming_aware, with corresponding maps for frames related to Communication.  This metaphor is most felicitous with Means or Medium subjects, which are mapped onto the Evidence FE of Becoming_aware.  In many cases this metaphor maps Communication onto the Evidence frame, but not always.  Some words from the Communication domain are listed in the Evidence frame since they are deemed to be lexicalized.  'A flick of his gaze toward the doorway told me what he really wanted. (METAPHOR)' 'This painting really speaks to me. INI (MET) ' 'Putting his arm around her protectively achieved nothing but announcing to their captors their vulnerability. (MET)' 'It says a lot that he did n't come back. INI (MET) '"}, {'frame': 'Spelling_and_pronouncing', 'tfidf': 1.4812264349830893, 'lexical_unit': 'sound.n / mispronounce.v / say.v', 'definition': 'A Speaker realizes a Sign, usually a linguistic one, in some Formal_realization. The Formal_realization may be described as correct or incorrect in a Judgment expression, or it may be partially indicated as a Part_of_form.  Manner may be used as a more general indication of the Formal_realization  \'A person doesn\'t always pronounce a word the way they say  it in context\'  \'I can\'t spell. INI INI\'  \'Stephanopolous spells his name with a "ph".\'  \'On page 87465, you spelled the name of my dog incorrectly as "Checquers".\'  \'In German, the word for \'peace\' is written "Friede" CNI\''}, {'frame': 'Political_locales', 'tfidf': 1.430241910016064, 'lexical_unit': 'local.a / locality.n / borough.n', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'Text_creation', 'tfidf': 1.3954425267261068, 'lexical_unit': 'print.v / utter.v / print out.v', 'definition': "An Author creates a Text, either written, such as a letter, or spoken, such as a speech,  that contains meaningful linguistic tokens, and may have a particular Addressee in mind.  The Text may include information about its topic, although the latter is not an FE in this frame.  'I penned a letter concerning racism  to Congress.' 'The brothers said not two words to each other.' 'Jot any notes you need below the line in red pen only.'"}, {'frame': 'Buildings', 'tfidf': 1.321932114124205, 'lexical_unit': 'shelter.n / library.n / high-rise.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Businesses', 'tfidf': 1.233648121805008, 'lexical_unit': 'establishment.n / bank.n / operation.n', 'definition': "A Proprietor owns or runs a Business which provides a Product (which may be goods or services).  'The consumer electronics company Apple has exploded with popularity in recent years.'"}, {'frame': 'Personal_relationship', 'tfidf': 1.2020764459638043, 'lexical_unit': 'widowed.a / estranged.a / crush.n', 'definition': "The words in this frame have to do with people and the personal Relationships they are or can be a part of.  Some of the words denote people engaged in a particular kind of Relationship, others denote the Relationship, yet others the events bringing about or ending the Relationships. Many of the words presuppose an understanding of states and events that must have occurred before another event takes place or before a person can be classified in a certain way. '' 'And of course that drippy boyfriend of hers backed her up.'  'As the happy couple took their places there was a stir and a rising babble behind them.'  'Pattie is living proof that if you live with a man, you discover a lot you didn't know when you were just dating him.'"}, {'frame': 'Education_teaching', 'tfidf': 1.171383295386202, 'lexical_unit': 'schoolmaster.n / instruct.v / master.v', 'definition': 'This frame contains words referring to teaching and the participants in teaching.  A Student comes to learn either about a Subject; a Skill; a Precept; or a Fact as a result of instruction by a Teacher.  Some of the nouns (schoolmaster, -mistress) in this frame refer to administrative positions and do not take relevant frame elements; these will be moved.    \'Dad taught <fex name="">me that if you work hard, you will be OK - no matter what happens. \'  \'What Our Cat  taught Me  About Marketing!\'  \'For two years she taught me French\'  \'Mom and Dad taught me not to bullshit, because it always came back to bite me in the ass, without fail. \'  \'A young swiss girl up in a swiss chalet taught me how to yodel.\'  \'Young Murdock later met a blind martial arts master known as Stick, who taught him how to use his augmented senses and trained him as a fighter.\'  \' Maria, a woman studying to be a nun is sent from her convent to be the governess of the seven children of a widowed naval captain \'  Frame-Element relations:  Several Frame element relations hold in this frame. There is a core-set {Material, Teacher} (possibly also including Institution); these FE\'s can fill the subject slot of the teach-type verbs. There is another core-set  {Precept, Subject, Skill, Fact, Role} to do with what is learnt. In addition, the FE Qualification may occur with Subject and Role  \'My sister is studying for a maths degree    to be a teacher \' \'She\'s studying maths to be a teacher .\'  Phrases expressing Qualification also very often include information about the Subject (see below), which is to be annotated on the second layer.  \'Bill is studying for a BS in physics/a maths degree.\' \'Bill is studying for a BS in physics/a maths degree.\'  '}, {'frame': 'People_by_vocation', 'tfidf': 1.1158127956281398, 'lexical_unit': 'scientist.n / carpenter.n / musician.n', 'definition': "This frame contains  words for Individuals as viewed in terms of their vocation.   The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'Humphrey Bogart was a great actor.'"}, {'frame': 'Locale_by_use', 'tfidf': 1.0891093702027284, 'lexical_unit': 'installation.n / plantation.n / rural.a', 'definition': "Geography as defined by its use.   'You must land in the next airfield, as this one is currently having difficulties.' 'The new sports complex was the tallest building on campus, oddly enough.' 'Cities of the Northeast tend to be dingier.'"}, {'frame': 'Visiting', 'tfidf': 1.081460386838189, 'lexical_unit': 'visit.n / visitor.n / call.n', 'definition': "An Agent matches location with an Entity in order to fulfill some  Purpose.  Quite often, the Purpose is social- or entertainment-oriented.  'I ca n't remember how many times he visited ! DNI' 'Now she was on an inspection visit .' 'You have to visit your parents every once in a while .'"}, {'frame': 'Documents', 'tfidf': 1.0771311472258704, 'lexical_unit': 'deposition.n / contractual.a / authorization.n', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Aesthetics', 'tfidf': 1.050975447155976, 'lexical_unit': 'lovely.a / beautiful.a / elegant.a', 'definition': "An Entity is judged to be sensually pleasing or intellectually interesting to a (generally implicit) Judge.   'We saw this beautiful boat with the red sails several times' 'We camped here on the beach and had an absolutely lovely early morning walk through farm fields' "}, {'frame': 'Patrolling', 'tfidf': 1.036173785171057, 'lexical_unit': 'patrol [act].n / patrol [entity].n / police.v', 'definition': "An individual or group, the Patrol moves through and examines a Ground in order to ensure that it is in a generally Desired_state_of_affairs, particularly that it is safe and contains no dangerous Unwanted_entity. Rather than moving through the Ground, the Patrol may simply move such that all the (relevant portions of) Ground can be observed and checked.  'Detective Jones patrolled the northern half of the building.'  'Security guards patrolled for intruders while the game was in progress.'"}, {'frame': 'Commerce_pay', 'tfidf': 1.0329005278801007, 'lexical_unit': 'payment.n / disburse.v / shell out.v', 'definition': "This frame involves Buyers paying Money for Goods.  In this frame the Money is the direct object, and is mapped to the theme of the transfer.  'I paid her $50 for a video game.'"}, {'frame': 'Activity_start', 'tfidf': 1.023382684675765, 'lexical_unit': 'start.v / launch (into).v / open.v', 'definition': "An Agent initiates the beginning of an ongoing Activity in which he will be continuously involved. '' 'At the same time, city-states began to grow in influence on the southern Greek mainland.'  'Naturally, I started crying to get out of work.'  "}, {'frame': 'Cause_harm', 'tfidf': 1.0031649115222736, 'lexical_unit': 'drug.v / poison.v / smack.v', 'definition': "The words in this frame describe situations in which an Agent or a Cause injures a Victim. The Body_part of the Victim which is most directly affected may also be mentioned in the place of the Victim.  In such cases, the Victim is often indicated as a genitive modifier of the Body_part, in which case the Victim FE is indicated on a second FE layer. '' 'Rod saw his father beating his mother.'  'In the end Wormtongue is fed up with being beaten so he cuts Saruman's throat to free himself.'  'A mother stabbed to death by her husband made a secret will stating that he must never be allowed to care for their son.'"}, {'frame': 'Process_start', 'tfidf': 0.9922705471896104, 'lexical_unit': 'onset.n / begin.v / break out.v', 'definition': "An Event begins at a certain Time and Place. Reason may also be indicated.  NB:  Refer to Event frame.  'The project began.'"}, {'frame': 'Dead_or_alive', 'tfidf': 0.9738872663962309, 'lexical_unit': 'deceased.a / alive.a / undead.a', 'definition': "A Protagonist is in the dynamic, maintained state of being alive or has exited this state.  'Frank's dead body was apalling.'"}, {'frame': 'Deserving', 'tfidf': 0.9618596890440043, 'lexical_unit': 'grounds.n / deserve.v / merit.v', 'definition': 'The existence of a State_of_affairs is sufficient reason for taking an Action . The agent who is justified in taking the suggested Action is not part of the immediate scene, however.  \'The underwater sequences warrant the price of the admission alone.\'  \' \'Desperate situations call  for desperate measures ," said Mr Eames grandly.\''}, {'frame': 'Bringing', 'tfidf': 0.9585669009643122, 'lexical_unit': 'drive.v / bus.v / wheel.v', 'definition': "This frame concerns the movement of a Theme and an Agent and/or Carrier.   The Agent, a person or other sentient entity, controls the shared Path by moving the Theme during the motion. In other words, the Agent has overall motion in directing the motion of the Theme.  The Carrier may be a separate entity, or it may be the Agent's body. The Constant_location may be a subregion of the Agent's body or (a subregion of) a vehicle that the Agent uses.  'Karl carried the books across campus to the library on his head.' 'Karl carried the books across campus to the library in his truck.' 'Karl carried the books across campus to the library by truck.' 'The truck carried the books across campus to the library in specially designed boxes.' The  FEs include Path, Goal, and Source.  Area is an area that contains the motion when the path is understood as irregular.   This frame emphasizes the path of movement as opposed to the FEs Source or Goal as in Filling or Placing. "}, {'frame': 'Forming_relationships', 'tfidf': 0.9580662819842167, 'lexical_unit': 'betroth.v / marriage (into).n / divorce.n', 'definition': "Partner_1 interacts with Partner_2 (also collectively expressible as Partners) to change their social relationship.    'I befriended the little pony by giving him a piece of apple.'"}, {'frame': 'Frequency', 'tfidf': 0.9538972264713094, 'lexical_unit': 'always.adv / once in a while.adv / occasional.a', 'definition': "This frame has to do with the repetition (and especially the frequency of repetition) of an event. Many of the adjectives and adverbs in this frame are based on nouns in the Calendric_unit frame.   'China will have to face a high frequency of sand storms in the years to come.' "}, {'frame': 'People_by_origin', 'tfidf': 0.9491452428834232, 'lexical_unit': 'Brit.n / Californian.n / italian.n', 'definition': "This frame contains  words for individuals, i.e. humans, with respect to their Origin. The Origin is generally incorporated, but may occasionally be specified separately.  The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have an Age, Descriptor, Persistent_characteristic, or Ethnicity.   'I'm a proud Brit.'"}, {'frame': 'Telling', 'tfidf': 0.9469007186787919, 'lexical_unit': 'inform.v / notification.n / tell.v', 'definition': "A Speaker addresses an Addressee with a Message, which may be indirectly referred to as a Topic. Instead of (or in addition to) a Speaker, a Medium may also be mentioned.  'I told him about the party.'"}, {'frame': 'Biological_classification', 'tfidf': 0.946350503595892, 'lexical_unit': 'class.n / genus.n / variety.n', 'definition': "This frame has to do with scientific taxonomy.  The lexical units in this frame include the seven major classifications in which organisms are grouped based on common biological characteristics.  These classifications are labeled Rank in this frame.  The Members or Subtype of the Rank is often expressed with the use of the target-denoting noun. '' 'Phylum Arthropoda contains crustaceans, insects, spiders and other creepy-crawlies.' '' 'The snow leopard belongs to the kingdom Animalia.'"}, {'frame': 'Vehicle', 'tfidf': 0.9458574639858954, 'lexical_unit': 'schooner.n / bicycle.n / car.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'Contacting', 'tfidf': 0.944376669818197, 'lexical_unit': 'e-mail.v / write in.v / phone in.v', 'definition': "A Communicator (whose Location may be indicated) directs a Communication to an Addressee at a particular Address.  Note that no actual successful communicative act is implied, only the successful completion of acts which would establish the communication.  (In other words, Mari can e-mail Jon without Jon ever reading it.) NB:  The Address or Location_of_communicator may be a virtual address, such as an e-mail or telephone number.'Disgruntled voters phoned Congressman Neil at his Washington residence with complaints about the recent increases in corporate welfare.''She tried to call from the payphone down the street.' "}, {'frame': 'Prevarication', 'tfidf': 0.9313906179908323, 'lexical_unit': 'prevarication.n / dissembler.n / lie.v', 'definition': "A Speaker communicates about a Topic in such a way as to mislead an Addressee, either by telling outright lies or by presenting a message in a misleading form.  'I lied to you about your Christmas present.'"}, {'frame': 'Timespan', 'tfidf': 0.9304368778160422, 'lexical_unit': 'day.n / life.n / time.n', 'definition': "The words in this frame describe a period of time, as opposed to a point in time.  'The best time of year for planting tends to be fairly regular.' "}, {'frame': 'Wearing', 'tfidf': 0.924463062487739, 'lexical_unit': 'braless.a / undressed.a / wear.v', 'definition': "The words in this frame refer to what Clothing the Wearer (or a specific Body_part of the Wearer) has on.  'I had on the most ridiculous monkey-suit you could imagine.' 'These two losers were wearing bras on their heads!'  Many targets incorporate the Clothing item, and some targets describe the state of not wearing something (when it might be expected).  'Do you think anyone would notice if I went topless?'    NB: There is a very common metonymy in which characteristics of the clothing stand for the clothing itself, such as   'the man clad in leather.' 'She was dressed all in red.'  Such sentences should be tagged METAPHOR on the sentence level."}, {'frame': 'Food', 'tfidf': 0.9175507643182135, 'lexical_unit': 'ketchup.n / water.n / meat.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Cause_to_amalgamate', 'tfidf': 0.9115288731641878, 'lexical_unit': 'mix.v / coalesce.v / blend.v', 'definition': "These words refer to an Agent joining Parts to form a Whole.  (The Parts may also be encoded as Part_1 and Part_2.)  There is a symmetrical relationship between the components that undergo the process, and afterwards the Parts are consumed and are no longer distinct entities that are easily discernable or separable in the Whole.  'Chuck merged the corpora.'' Chuck merged the corpora into a database.' 'Chuck merged the BNC with the AP Corpus into a database.' 'The two forces merged into a single, undifferentiated mass of murderous mayhem.(Sense 2)' 'Melt the butter, then blend it with the room temperature milk. CNI'  "}, {'frame': 'Building_subparts', 'tfidf': 0.9069640537000241, 'lexical_unit': 'tower.n / cellar.n / ward.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}, {'frame': 'Giving_birth', 'tfidf': 0.8923846069743395, 'lexical_unit': 'kid.v / lay.v / generate.v', 'definition': "A Mother and Father produce a Child or an Egg. 'Betty bore Gerry three intelligent daughters.'"}, {'frame': 'Communication_means', 'tfidf': 0.8892564247128907, 'lexical_unit': 'telephone.v / fax.v / semaphore.v', 'definition': "This frame concerns Communicators communicating with each other with the aid of a Means of communication such as a telephone.  'I faxed him a resume.'"}, {'frame': 'Intoxicants', 'tfidf': 0.8865876352469308, 'lexical_unit': 'hashish.n / speed.n / amphetamine.n', 'definition': "An Intoxicant is ingested in order to achieve an altered state of consciousness. A Type or Descriptor may be indicated as well.  ' We smoked some high-grade marijuana.'  'They smoked freebase cocaine.'"}, {'frame': 'Transition_to_state', 'tfidf': 0.8754712717483596, 'lexical_unit': 'end up.v / grow.v / get.v', 'definition': "An Entity ends up in a Final_category, Final_situation, or Final_quality which it was not in before.  Some members of the frame (e.g. grow.v) tend to emphasize a gradual change, while most members of the frame do not indicate whether a change is gradual or not.    'Why I became an Emacs user'  'I left the ministry and became an atheist.'  'Surprisingly, various veteran organizations also turned vehemently antiwar.'  ' Over the years she grew to hate him.'  This frame should be compared to Undergoing_change.  Undergoing_change is different in that it much more emphasizes the difference between the pre- and post-states of the Entity.  This shows up both in Undergoing_change's increased occurrence with Initial_category and Initial_state (change from red to blue) and in its increased occurrence with Final_category (changed into a toad) rather than Final_situation or Final_quality (?changed to red vs. became/turned red).  In addition, when Undergoing_change occurs with the Final_category frame element, it presents a deep difference between the Initial_category and the Final_category, so that it is humorous to say 'she turned into a Republican', because it presents this as a fundamental change of identity; compare to 'she became a Republican', which is quite normal.  In a less humorous example, someone can 'turn into a Mac user', strongly implying that they no longer use their former operating system, while if they 'become a Mac user', this is either as a replacement of other OS's or potentially as an addition to the use of other OS's."}, {'frame': 'Text', 'tfidf': 0.8750714713632441, 'lexical_unit': 'ode.n / screenplay.n / elegy.n', 'definition': "A Text is an entity that contains linguistic, symbolic information on a Topic, created by an Author at the Time_of_creation.  It may be a physical entity that is made of a certain Material etc.  It may be constructed for an Honoree.  'It was a good book.'"}, {'frame': 'Organization', 'tfidf': 0.8724070172900739, 'lexical_unit': 'delegation.n / board.n / union.n', 'definition': "This frame describes intentionally formed human social groups (here termed Organizations) with some definite structure and Members.  They may be relatively informal, consisting only of a group of individuals who are aware of who is and who is not a fellow member, or they may be complex and long-lasting, such as the Roman Catholic Church or the Conservative Party.   'Lucien is in the brotherhood.'"}, {'frame': 'Roadways', 'tfidf': 0.8641577445350407, 'lexical_unit': 'avenue.n / railroad.n / bridge.n', 'definition': "This frame involves stable Roadways which connect two stable Endpoints, the Source and the Goal.  Being physical objects, these Roadways may have Names and Characteristics; they are also made of a Material.  They also cover ground, so they may have a Path or a Relative_location that the travel occurs in.  ' We crossed the brick road.' ' I prefer to travel on highway I-80.'  'This is the only highway between Lodi and Sonoma.' ' She dreaded turning onto the busy street.'"}];
+        var frame_list_2 = [{'frame': 'Money', 'tfidf': 3.6522936820983887, 'lexical_unit': 'dinero.n / dough.n / sterling.n', 'definition': "Money is a medium used for exchanging goods and services. It is in most cases issued by a government (its Creator) in the form of coins and banknotes. Particular amounts of it may have a designated or planned Use, or may have come from some Origin.  'The money for our daughter's college education is currently earning interest in a savings account.'  'The entire project ended up being funded with Swiss funds.'  'The use of paper money really caught on in Europe in the 1700s'"}, {'frame': 'Color', 'tfidf': 2.388918399810791, 'lexical_unit': 'orange.a / pitchblack.a / blue.a', 'definition': "A Color serves as a landmark in color-space, either a point-like landmark (e.g. burnt sienna) or a broader region (e.g. blue).  Especially when the Color designates a broad region in color-space, it may be defined with a specific Type, further specified by comparison to the color of a Comparand, modified by a Color_qualifier, or evaluated with a Descriptor.  All color words are generally used to specify the color of some (physical) Entity. 'I really like that shade of blue.' 'The welts on his side had already turned an angry red.' 'The room was bathed in a soft pink light.' 'They promptly set up a zillion bright vermilion pavilions.' 'His face and hands were brown from a life spent in the bright sun of the fields.' "}, {'frame': 'People_by_vocation', 'tfidf': 2.2412049770355225, 'lexical_unit': 'dancer.n / engineer.n / programmer.n', 'definition': "This frame contains  words for Individuals as viewed in terms of their vocation.   The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'Humphrey Bogart was a great actor.'"}, {'frame': 'People_by_age', 'tfidf': 1.9283924102783203, 'lexical_unit': 'teenager.n / baby.n / kid.n', 'definition': "This frame contains words for individuals as viewed in terms of their age. The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'He is a 12-year-old kid.'"}, {'frame': 'Vehicle', 'tfidf': 1.9263845682144165, 'lexical_unit': 'warplane.n / cart.n / bus.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'Businesses', 'tfidf': 1.899340033531189, 'lexical_unit': 'business.n / operation.n / firm.n', 'definition': "A Proprietor owns or runs a Business which provides a Product (which may be goods or services).  'The consumer electronics company Apple has exploded with popularity in recent years.'"}, {'frame': 'Weapon', 'tfidf': 1.7618857622146606, 'lexical_unit': 'dynamite.n / shotgun.n / flame-thrower.n', 'definition': "A Weapon is an artifact created specifically to cause harm or damage.  In some cases, a Use, Material of construction, Part or Type may be more narrowly specified.  'Did you, or did you not, fire this gun with intent to harm my client?'  'Cyra tried to swing her sword to parry, but it was to heavy.'  'I investigated a specialist precious metal firearms manufacturer.'  'My neighbor, a member of the NRA since birth, has got an AK-47 fully automatic assault rifle.'  'Let 's just say that he 's the kind of guy who likes guns with hair triggers.' "}, {'frame': 'Forming_relationships', 'tfidf': 1.7532413005828857, 'lexical_unit': 'divorce.v / befriend.v / marriage (into).n', 'definition': "Partner_1 interacts with Partner_2 (also collectively expressible as Partners) to change their social relationship.    'I befriended the little pony by giving him a piece of apple.'"}, {'frame': 'Commerce_buy', 'tfidf': 1.7282216548919678, 'lexical_unit': 'purchase [act].n / purchase.v / purchaser.n', 'definition': "These are words describing a basic commercial transaction involving a Buyer and a Seller exchanging Money and Goods, taking the perspective of the Buyer.  The words vary individually in the patterns of frame element realization they allow.  For example, the typical pattern for the verb BUY: Buyer buys Goods from Seller for Money. '' 'Abby bought a car from Robin for $5,000.'"}, {'frame': 'Clothing', 'tfidf': 1.6752396821975708, 'lexical_unit': 'undergarment.n / nightgown.n / bodice.n', 'definition': "This frame refers to clothing and its characteristics,  including anything that people conventionally wear.  The Wearer wears a Garment that has a certain Style, is made of a certain Material, and can be otherwise characterized by a Descriptor.  In some cases, the Body_location (where the garment is worn) and Subregion of the clothing may also be specified.  'Claudia dressed in a dark green cotton DRESS clasped round her slender waist with a broad yellow belt , drank a cup of coffee and opened her neglected post .'"}, {'frame': 'Food', 'tfidf': 1.657381534576416, 'lexical_unit': 'roll.n / pea.n / sweetener.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Race_descriptor', 'tfidf': 1.6429853439331055, 'lexical_unit': 'black.a / yellow.a / color.n', 'definition': "This frame covers LUs that describe the race of a Person.  'Carlos is hispanic, or so he says.'"}, {'frame': 'Commerce_pay', 'tfidf': 1.6358157396316528, 'lexical_unit': 'disburse.v / payer.n / pay.v', 'definition': "This frame involves Buyers paying Money for Goods.  In this frame the Money is the direct object, and is mapped to the theme of the transfer.  'I paid her $50 for a video game.'"}, {'frame': 'People_by_origin', 'tfidf': 1.6337586641311646, 'lexical_unit': 'Mexican.n / Kraut.n / Turk.n', 'definition': "This frame contains  words for individuals, i.e. humans, with respect to their Origin. The Origin is generally incorporated, but may occasionally be specified separately.  The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have an Age, Descriptor, Persistent_characteristic, or Ethnicity.   'I'm a proud Brit.'"}, {'frame': 'Working_a_post', 'tfidf': 1.5760283470153809, 'lexical_unit': 'work.v / man.v / staff.v', 'definition': "The Agent is assigned to a Post where he or she performs a task associated with that Post. Alternatively, the Agent is expressed as acting with respect to a Salient_entity associated with the task. In most cases the Salient_entity is located at the Post.  'Volunteers were staffing the telephones.'  'Man your stations! CNI'"}, {'frame': 'Trendiness', 'tfidf': 1.562687635421753, 'lexical_unit': 'trendy.a / chic.a / fashionable.a', 'definition': "A Behavior, attributed to an Evaluee, conforms with or is heavily influenced by a popular trend or practice, often in the realm of fashion, design, though extending social and interactional behavior in general. Trendiness differs from Popularity in adding a factor of aesthetic or other judgment to behaviors and individuals, and judging these with respect to social behavior; Popularity is about amount of acceptability or utilization based on general (often non-aesthetic) desirability.  'Wearing flowered brocaded silks was fashionable in the first few years of the decade.'"}, {'frame': 'Personal_relationship', 'tfidf': 1.5510528087615967, 'lexical_unit': 'chum.n / lover.n / marriage.n', 'definition': "The words in this frame have to do with people and the personal Relationships they are or can be a part of.  Some of the words denote people engaged in a particular kind of Relationship, others denote the Relationship, yet others the events bringing about or ending the Relationships. Many of the words presuppose an understanding of states and events that must have occurred before another event takes place or before a person can be classified in a certain way. '' 'And of course that drippy boyfriend of hers backed her up.'  'As the happy couple took their places there was a stir and a rising babble behind them.'  'Pattie is living proof that if you live with a man, you discover a lot you didn't know when you were just dating him.'"}, {'frame': 'Building_subparts', 'tfidf': 1.5433833599090576, 'lexical_unit': 'sacristy.n / elevator.n / flat.n', 'definition': "This frame includes words that name subparts of buildings that can be occupied by people.  'Mary left the room in a huff.'"}, {'frame': 'Body_description_holistic', 'tfidf': 1.512691855430603, 'lexical_unit': 'tall.a / scrawny.a / female.a', 'definition': "This frame covers descriptions of an entire human body, viewed as a gestalt (as opposed to descriptions based on salient body parts).  The Frame Elements are Individual and Figure.    'Chuck is muscular.'  'Chuck has a muscular body.' "}, {'frame': 'Kinship', 'tfidf': 1.4950356483459473, 'lexical_unit': 'brother.n / grandfather.n / kinship.n', 'definition': "This frame contains words that denote Kinship relations. In annotating the directional uses of these words, we use the standard terms from anthropology, Ego and Alter.  'Matilde is Gilberto's cousin once removed' Compare to: Appellations."}, {'frame': 'Buildings', 'tfidf': 1.4038879871368408, 'lexical_unit': 'lodge.n / high-rise.n / tower.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Dead_or_alive', 'tfidf': 1.379970669746399, 'lexical_unit': 'dead.a / lifeless.a / alive.a', 'definition': "A Protagonist is in the dynamic, maintained state of being alive or has exited this state.  'Frank's dead body was apalling.'"}, {'frame': 'Intoxicants', 'tfidf': 1.361346960067749, 'lexical_unit': 'pot.n / alcohol.n / opium.n', 'definition': "An Intoxicant is ingested in order to achieve an altered state of consciousness. A Type or Descriptor may be indicated as well.  ' We smoked some high-grade marijuana.'  'They smoked freebase cocaine.'"}, {'frame': 'Political_locales', 'tfidf': 1.3260691165924072, 'lexical_unit': 'kingdom.n / multinational.a / commonwealth.n', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'Cause_harm', 'tfidf': 1.325670838356018, 'lexical_unit': 'sting.v / thwack.v / twist.v', 'definition': "The words in this frame describe situations in which an Agent or a Cause injures a Victim. The Body_part of the Victim which is most directly affected may also be mentioned in the place of the Victim.  In such cases, the Victim is often indicated as a genitive modifier of the Body_part, in which case the Victim FE is indicated on a second FE layer. '' 'Rod saw his father beating his mother.'  'In the end Wormtongue is fed up with being beaten so he cuts Saruman's throat to free himself.'  'A mother stabbed to death by her husband made a secret will stating that he must never be allowed to care for their son.'"}, {'frame': 'Aesthetics', 'tfidf': 1.3208813667297363, 'lexical_unit': 'lovely.a / beautiful.a / ugly.a', 'definition': "An Entity is judged to be sensually pleasing or intellectually interesting to a (generally implicit) Judge.   'We saw this beautiful boat with the red sails several times' 'We camped here on the beach and had an absolutely lovely early morning walk through farm fields' "}, {'frame': 'Appellations', 'tfidf': 1.297240138053894, 'lexical_unit': 'superintendent.n / supervisor.n / father.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Text', 'tfidf': 1.2590843439102173, 'lexical_unit': 'paper [article].n / lyric.n / bulletin.n', 'definition': "A Text is an entity that contains linguistic, symbolic information on a Topic, created by an Author at the Time_of_creation.  It may be a physical entity that is made of a certain Material etc.  It may be constructed for an Honoree.  'It was a good book.'"}, {'frame': 'Attention_getting', 'tfidf': 1.2567697763442993, 'lexical_unit': 'sir.n / pal.n / hey.intj', 'definition': "This frame covers terms used to get someone's attention, including Interjections (e.g. hey, yo) and certain terms of address (Address_term), the latter of which may serve the function of attention getting.    'Hey.' 'Hey, boy.' 'Hey, boy, come over here now!'  "}, {'frame': 'Performing_arts', 'tfidf': 1.2477144002914429, 'lexical_unit': 'music.n / play.n / performance.n', 'definition': 'The Performers, together with behind the scenes Personnel, execute a Performance according to a Script and/or Score.  The purpose of the Performance is to create an experience for an Audience, who then judge its merits.  Performances may be in many different Mediums and be of various Types.   This frame is very elaborate in modern society and there are a number of traditions and practices typically (but not necessarily) related to Performances:       The Performance is preceded by many practice sessions in which the Performers and other Personnel attempt to improve the quality and/or fidelity of their individual and collective performances to the Script and/or Score.         The Audience members pay a fee to experience the Performance.       The Performers (and Personnel) receive payment for contributing to the Performance.       Often there are other individuals involved in the specifically financial aspects of the Performance and Performers.       Critics act as part of the Audience and then write reviews that evaluate the merits of the Performance, describing the Performance to other potential Audience members.       Due to the high quality of previous Performances, Performers can become famous, i.e. well known and liked.  Those who like them particularly well become fans of the Performer.  (Shared with writers...)'}, {'frame': 'Locale_by_use', 'tfidf': 1.2162319421768188, 'lexical_unit': 'shop.n / headquarters.n / city.n', 'definition': "Geography as defined by its use.   'You must land in the next airfield, as this one is currently having difficulties.' 'The new sports complex was the tallest building on campus, oddly enough.' 'Cities of the Northeast tend to be dingier.'"}, {'frame': 'Commerce_sell', 'tfidf': 1.208009958267212, 'lexical_unit': 'vendor.n / sale.n / vend.v', 'definition': "These are words describing basic commercial transactions involving a buyer and a seller exchanging money and goods, taking the perspective of the seller.  The words vary individually in the patterns of frame element realization they allow. For example, the typical patterns for SELL: SELLER sells GOODS to BUYER for MONEY.  'Robin sold a car to Abby for $5,000.'"}, {'frame': 'Transition_to_state', 'tfidf': 1.1951720714569092, 'lexical_unit': 'grow.v / get.v / end up.v', 'definition': "An Entity ends up in a Final_category, Final_situation, or Final_quality which it was not in before.  Some members of the frame (e.g. grow.v) tend to emphasize a gradual change, while most members of the frame do not indicate whether a change is gradual or not.    'Why I became an Emacs user'  'I left the ministry and became an atheist.'  'Surprisingly, various veteran organizations also turned vehemently antiwar.'  ' Over the years she grew to hate him.'  This frame should be compared to Undergoing_change.  Undergoing_change is different in that it much more emphasizes the difference between the pre- and post-states of the Entity.  This shows up both in Undergoing_change's increased occurrence with Initial_category and Initial_state (change from red to blue) and in its increased occurrence with Final_category (changed into a toad) rather than Final_situation or Final_quality (?changed to red vs. became/turned red).  In addition, when Undergoing_change occurs with the Final_category frame element, it presents a deep difference between the Initial_category and the Final_category, so that it is humorous to say 'she turned into a Republican', because it presents this as a fundamental change of identity; compare to 'she became a Republican', which is quite normal.  In a less humorous example, someone can 'turn into a Mac user', strongly implying that they no longer use their former operating system, while if they 'become a Mac user', this is either as a replacement of other OS's or potentially as an addition to the use of other OS's."}, {'frame': 'Communication_means', 'tfidf': 1.1778531074523926, 'lexical_unit': 'call.v / semaphore.v / phone.v', 'definition': "This frame concerns Communicators communicating with each other with the aid of a Means of communication such as a telephone.  'I faxed him a resume.'"}, {'frame': 'Organization', 'tfidf': 1.1663094758987427, 'lexical_unit': 'club.n / news outlet.n / committee.n', 'definition': "This frame describes intentionally formed human social groups (here termed Organizations) with some definite structure and Members.  They may be relatively informal, consisting only of a group of individuals who are aware of who is and who is not a fellow member, or they may be complex and long-lasting, such as the Roman Catholic Church or the Conservative Party.   'Lucien is in the brotherhood.'"}, {'frame': 'Destiny', 'tfidf': 1.16373610496521, 'lexical_unit': 'destined.a / the breaks.n / doom.n', 'definition': "An State_of_affairs will come to hold with respect to a Protagonist at some future time. The Protagonist is not conceived of as having control over whether the State_of_affairs will hold: obscurely related previous actions or circumstances, or some hidden power may have already determined that it will occur.  'Exile was his fate and he triumphantly turned it into the fruit of his life.'  'One could say that it was Indonesia's destiny to initiate the decolonization process.'  'The sun's ultimate fate is as a white dwarf, a dense, cold core the size of the earth.'  'At the time it did not appear that greatness was in her stars.'  'Nine for mortal men , doomed to die .'  'This seemingly predestined meeting between a creator and the model he has pursued all his life suggests a kind of miracle . ' "}, {'frame': 'Disembarking', 'tfidf': 1.15445077419281, 'lexical_unit': 'disembark.v / alight.v / debus.v', 'definition': "A Traveller leaves from or dismounts a Vehicle.  'The passengers disembarked in Southampton.'  'They then informed the passengers that, if the aircraft were to leave the runway, they would likely be deplaning through the rear cabin doors.'"}, {'frame': 'Social_event', 'tfidf': 1.1432311534881592, 'lexical_unit': 'rave.n / jollification.n / ball.n', 'definition': "A Social_event occurs at which Attendees are present to conduct a social function or joint activity.  The Social_event is often a party or celebration, in which case it is possible to express someone who is being honored (the Honoree) or its function may be to celebrate an Occasion at which Attendees are present. Often, a specific Attendee, the Host, provides a venue for people to gather.  'Sue threw a party for Bob's birthday.'  'Who will host the Olympic games in eight years?'"}, {'frame': 'Killing', 'tfidf': 1.1387959718704224, 'lexical_unit': 'bloodshed.n / crucifixion.n / regicide.n', 'definition': "A Killer or Cause causes the death of the Victim. 'John drowned Martha.'"}, {'frame': 'Architectural_part', 'tfidf': 1.1224772930145264, 'lexical_unit': 'wall.n / window.n / fireplace.n', 'definition': "An entity is integrated into a building as a Part of a (possibly unexpressed) Whole which may refer to the whole building or merely to a sub-part of the building.  'We need new counters for the kitchen'  'The storm ripped off the bathroom's roof'  "}, {'frame': 'Roadways', 'tfidf': 1.101007342338562, 'lexical_unit': 'motorway.n / autobahn.n / expressway.n', 'definition': "This frame involves stable Roadways which connect two stable Endpoints, the Source and the Goal.  Being physical objects, these Roadways may have Names and Characteristics; they are also made of a Material.  They also cover ground, so they may have a Path or a Relative_location that the travel occurs in.  ' We crossed the brick road.' ' I prefer to travel on highway I-80.'  'This is the only highway between Lodi and Sonoma.' ' She dreaded turning onto the busy street.'"}, {'frame': 'Come_down_with', 'tfidf': 1.0952240228652954, 'lexical_unit': 'catch.v / get.v / come down (with).v', 'definition': "A Protagonist comes to suffer from a Disease, often implicitly acquired from a Source.  'She got the measles .' 'The virus when acquired from environmental sources is often less severe .' 'I 'm afraid I 've come down with a cold .' "}, {'frame': 'Vehicle_subpart', 'tfidf': 1.0926861763000488, 'lexical_unit': 'hood.n / wheel.n / windshield.n', 'definition': "An entity is integrated into a vehicle as a Part of a (possibly unexpressed) Whole which may refer to the whole vehicle or merely to a sub-part of the vehicle.  '' 'The car's engine started smoking so we pulled over.' 'Put the bags in the trunk.' 'One should always wear a seatbelt while driving.' "}, {'frame': 'Level_of_light', 'tfidf': 1.083135962486267, 'lexical_unit': 'dim.a / bright.a / unlighted.a', 'definition': "There is a gradable amount of light in a particular Location.  In some cases the Source of light may be indicated instead of the Location. '' 'The small print was bearly readable by the light of the very dim torch.' '' 'Tal flew over the barrier and into the dark tunnel.' ''  The negetive LUs in this frame can be used metaphorically to describe time periods which can be characterized as bad or lacking in awareness, as shown in the following examples: '' 'The custody of the era brought about a dark period during which the written word was forgotten and art had disappeared.' '' 'Clinton is shrewd to solidify political support during these dark days.'"}, {'frame': 'Contacting', 'tfidf': 1.074971318244934, 'lexical_unit': 'phone.v / reach.v / write in.v', 'definition': "A Communicator (whose Location may be indicated) directs a Communication to an Addressee at a particular Address.  Note that no actual successful communicative act is implied, only the successful completion of acts which would establish the communication.  (In other words, Mari can e-mail Jon without Jon ever reading it.) NB:  The Address or Location_of_communicator may be a virtual address, such as an e-mail or telephone number.'Disgruntled voters phoned Congressman Neil at his Washington residence with complaints about the recent increases in corporate welfare.''She tried to call from the payphone down the street.' "}, {'frame': 'Hair_configuration', 'tfidf': 1.0478955507278442, 'lexical_unit': 'hairdo.n / lock.n / curl.v', 'definition': "Temporary or permanent Styles and Configurations of Hair, as well as its inherent Nature.  Note that Attachment and Body Part will generally be incorporated in the lexical meanings.  Subregions (e.g. roots, ends) are often not specified, and sometimes incorporated (e.g. in 'bangs')  'On either side her head gleamed coiled braids of dark-gold hair , almost pale copper in the subdued light of the room .'"}, {'frame': 'Wearing', 'tfidf': 1.0449482202529907, 'lexical_unit': 'bare.a / sport.v / attired.a', 'definition': "The words in this frame refer to what Clothing the Wearer (or a specific Body_part of the Wearer) has on.  'I had on the most ridiculous monkey-suit you could imagine.' 'These two losers were wearing bras on their heads!'  Many targets incorporate the Clothing item, and some targets describe the state of not wearing something (when it might be expected).  'Do you think anyone would notice if I went topless?'    NB: There is a very common metonymy in which characteristics of the clothing stand for the clothing itself, such as   'the man clad in leather.' 'She was dressed all in red.'  Such sentences should be tagged METAPHOR on the sentence level."}, {'frame': 'Physical_artworks', 'tfidf': 1.0396652221679688, 'lexical_unit': 'statuette.n / photo.n / drawing.n', 'definition': "A physical object, the Artifact, is produced by a Creator to stimulate the perceptions, emotions, or cognition of an audience. Though it need not, in many cases, the created Artifact is intended to represent an actual or imagined entity or event, the Represented. The Represented may be specifically shown in a particular state (State_of_represented).    'Sir Denis Mahon is the owner of the most important private collection of Italian Baroque paintings.'  'He presented Eddie with a watercolour painting and a bouquet of flowers to his wife Frances'  'I just took a picture of the screen and plan to share it with 6.4 billion of my closest friends on the Internet tonight.'"}, {'frame': 'Accoutrements', 'tfidf': 1.0396273136138916, 'lexical_unit': 'toupee.n / choker.n / veil.n', 'definition': "A Wearer wears accessories, which are made of  some Material and may have a Style.  Most of the accessories are non-essential (clothing) items. 'She wore a black velvet hat on her head.'"}, {'frame': 'Accuracy', 'tfidf': 1.0343776941299438, 'lexical_unit': 'inaccurately.adv / inaccuracy.n / off.prep', 'definition': "An Agent is involved in an activity whose degree of success is dependent on a parameter of the action matching a particular set of values of a continuous variable or variables (e.g. quantity, location, time).    The Agent, or metonymically the Instrument or Means action, is described in terms of the actual or expected Deviation between the location, time, or quantity in the activity and the location, time, or quantity which is necessary for the intended event.  'The Longview Rangefinder is accurate to within one foot per hundred yards .' 'His estimate was off by an order of magnitude .'  'The fork truck operator must be fairly accurate in his aim.'  'The precision of the daily measurements is dependent on a number of factors.'"}];
+    </script>
+    <script type="text/javascript" src="word_cloud_prediction.js"></script>
+    <script type="text/javascript" src="../mturk.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 150px;
+            padding-right: 150px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel_1 canvas, #word_cloud_panel_2 canvas {
+            display: none;
+        }
+        .word_cloud_box canvas {
+            display:none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+        .word_cloud_box {
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 3px rgba(70, 70, 70, 1) solid;
+            padding: 20px;
+            margin-bottom: 20px; 
+        }
+        .word_cloud_box:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+        }
+        .selected_story_block {
+            border-color: #7BDFF2;
+            border-width: 3px;
+            box-shadow: 0 0 10px 10px rgba(123, 223, 242, 0.3);
+            background-color: rgba(239, 247, 246, 0.8);
+        }
+        .indicator {
+            /*font-family: Courier;
+            font-weight: bold;*/
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px black solid;
+            border-radius: 20px;
+        }
+
+        .selected_story_block .indicator {
+            background-color: rgb(123, 223, 242);
+        }
+
+        #story_content {
+            max-height: 600px;
+        }
+        .not_qualified {
+            color: red;
+            font-weight: 900;
+        }
+        .qualified {
+            color: black;
+            font-weight: 900;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Which word-cloud best represents the story snippet?</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that a computer automatically 
+            generated to characterize a story snippet. 
+            The words in the word cloud <strong>do NOT necessarily occur</strong> in the story snippet. 
+            These words can just be relevant or semantically similar. <br/><br/>
+
+            A <strong>word-cloud representation with nouns</strong> is a group of nouns a computer automatically 
+            generated to characterize a story snippet. 
+            These nouns can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            In this HIT, you will see a story snippet. <span class="highlight">Please read it carefully.</span>
+            The story is long so we have a <span class="highlight">3 minutes time lock</span> for submission.
+            <br/><br/>
+
+            At the bottom of the HIT, you will see three sets of word-cloud representations, 
+            where each consists of nouns, verbs, and adjectives. 
+            <span class="highlight">Please select the word-cloud representation that best represents the story.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following story snippet carefully!</h3>
+            You will need to select the word-cloud representation that best represents this story. 
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story</h4>
+                        <h5>(An excerpt from the book <span style="font-weight:bold;">"Feshaa Whore And A Houswife First Edition"</span>.)</h5>
+                        <span class="not_qualified" id="read_lock">Please read all the story.</span>
+                        <br/><br/>
+                        <pre id="story_content">
+When she glanced over at him.
+He was a god in her eye's.
+His smooth chocolate skin  and well groom body that stuck out its chest like a soldier from all the push ups at one hundred and eighty five pounds Paul body made Tissy wet between her legs.she was so very  attracted to him.
+Paul had his drink in his hand about to sit down Tissy  went over to him  to  ask for a dance Paul said yea if I can have one for free. she agreed and they began to.
+Tissy invited Paul to Lunch he agreed to have lunch with her the next day. but he decided to warn her that he was in a relationship.
+His woman was out of town.
+Tissy was disappointed but she still wanted to be around him.
+She started spending money on Paul because he wouldn't give her no dick.
+Tissy couldn't understand not  too many black men would turn her down.
+She have them all married, single, gay, perverts and all Paul and Tissy ran into Fesha at the store .Fesha was like oh, shit Tissy may.
+Paul how you know Tissy.
+The club so stay out my business.
+Paul said do me a favor let Tissy hang with you guys today.
+Tissy said naw i'm a stripper I don't whoe no more.
+Fesha and here girls started doing a swag dance and breaking it down.
+Bitch what he saying is your going with us.
+What you fucking with Paul for if you not trying to bring him no  money.
+Fesha said.
+Bitch Paul a gold digger nigga never been a good pimp that's why he don't do it.
+Tissy said what we going to do.
+Bitch we go show you the ropes and block just in case you change your mind.
+Paul said take care of her. don't let nothing happen to her. need to run a few errands.
+You have my number.
+Tameka was blowing Paul  cell phone up. she sent a text saying that she will be home early.
+Paul said what the fuck.
+Paul said change of plans.
+Tameka coming home early .I can't come back to get you.
+You can roll with them or I can take you back to the club.
+Tissy of course wanted to roll with Paul but this time before she got out the car he couldn't get her off of him .
+Paul was wrestling with her saying  that he was  inlove with his lady .
+Tissy was kissing on his neck.
+Paul said girl stop making a fool of yourself.
+Tissy was burning with desire and he was going to give her some dick even if she had to take it.
+Tissy say well why you with me than.
+Paul said because your cool to hang out with.
+Tissy started wrestling with him again saying that she didn't want to here the shit .finally Tissy broke Paul button off his slacks his hard on was in her pussy. she had slid herself on his penis  in the middle of wrestling with him.
+Paul said Lord I didn't mean it.
+I really don't want to hurt Tameka.
+Tissy started sucking his dick all while Tameka was blowing up the text messaging.
+Paul said baby I met you at the house.
+I'm driving now from L.A.
+He made it a few hours because he decided to stay in the car for a while Tissy  sucked his dick so good.
+After Tissy damn near raped Paul he said they shouldn't see each other anymore.
+Tissy said okay we will see.
+And walked in the club.
+Paul received another text from Fesha  saying by the way Paul remember  our visit in jail.you owe me bro fifteen grand.
+I know I have half  of your money right here.
+Paul stopped by the block to pick up Fesha to take her to the bank so she could deposit her money and they chatted like old times sake.
+Paul gave her seven hundred and fifty dollars  Fesha stayed on the block getting her money.
+After Paul dropped her back off  with wild cat sandy, and Olivia.
+They out there selling pussy ,weed,ass and all Paul said.
+That fucking trifling ass momma of ours Berneice did this shit to Fesha. what a bitch because her life fucked up she had to fuck up her daughter's life. what  a bitch Paul was saying to himself as he was driving home .
+Paul was thinking to himself that Tameka was different than all the women he had dated most were hood lovers.but his baby momma Markele was a straight hood rat the kind that would have sex with your brother, uncle ,and cousin if he's fine.
+Fesha never understand what Paul saw in Markele welfare ass .Markele collected welfare and sucked dick for Paul when it was really necessary.  none of Markele children are his except the first born Paul Jr.  Paul say's Markele  been sexting and cymber sexing other dudes for three years he don't know who she fucking .Fesha said she explained to Paul that he is her brother he can live with her when he gets out to get his life right he said that's cool his bitch will hold it down for him now.
+Markele fucking some nigga called Juice what is Paul locked up for Drug distribution charges say's desire .Desiree say's rumors is she wants to marry juice because Paul will not do shit for his children or her's . he is too risky with his drug dealing ways.
+She  and Juice has falling for each other.
+Desiree replied with a smirk on her face that whoe just love dick.
+That bitch ain't never love nobody but Paul.
+Fesha started laughing telling Desiree about the time her and  Markele went to beat Mann Mann up for setting Paul up.
+Girl we beat the shit out of Mann Mann.
+I didn't have a clue what was going on .all I know is the bitch said Mann Mann and my brother.
+I snapped and went to his house with her.
+Mann Mann was beating our asses until Markele picked up the knife and stabbed his ass in his ass. you should have seen Mann Mann face girl after we went in his ass with that toilet bowl plunger.
+Girl,can you image our sixteen year old  asses whipping on this big black Samoan looking motherfucker.
+Girl, I think Markele taught me how to fight that day. i have never beat a man ass like that since.
+And its due bitch it's time me and you  go whip up on some of these streets nigga's about Paul. they trying to keep Paul locked up . those dirty ass cops right with them.
+Yep, by the way juice uncle is a cop Paul told me at visit and guess what else I heard Bam is the cop son.Thats why he wouldn't take no one to his house. don't mention it to Bam that you heard.
+I'm going to find out for real so I can relay this to Paul.
+Bam is about to be ransom if this cop want too play dirty.
+Bam gone need a gun and we sending that bitch to the pen or a sore ass if that dirty ass cop fuck over Paul for juice. people can say a lot of things about Berneice but she will not fuck with no cops not even for money.
+Berneice been a whoe all her life and never been to jail for it. because she stay away from fake ass bitches who stay in and out of  the jail smiling about the cops and she stay away from cops.
+De I do the same .so we expect you too do the same.
+You know Mann Mann wouldn't do business with Paul any more after that .Paul never knew why because none of told. we were all to scared to go to jail even Mann Mann was hoping his warrants wasn't showing up in the hospital. we didn't go to jail because Mann Mann wouldn't talk to the cops  he knew that he had set Paul up for the cops. girl we beat his ass.still to this day he runs when he see either of us.he think we still hanging out.
+They started laughing out loud.
+Markele is nothing but a dick down dutch bag now .Desiree said and started laughing.
+Fesha said well get ready because this time we gone tie up a cops son and ransom his ass to expose his dirty as cop father to the world of internet and the streets. open pussy whoe Markele can take the fall for this one.
+Paul  is cool with Tameka he even talking about marriage. now that's something new that he didn't do.
+I met her when I went to see Paul last week.
+Fesha said why didn't you tell me that you were going to the jail to visit .she would have went with you.
+Desiree said anyways.
+Tameka got her shit together.
+That one whoe Berneice was calling one silly ass bitch last week is her real sister.
+Fesha said or you serious.
+De said yes I am. the one big Mike always whipping on  her and treating her like shit is her sister.
+I didn't tell her that shit.
+But I'm sure she has heard its all around town. she's not taking anymore charges.
+Markele claims to be getting her life together and that she is not taking anymore charges for a bum ass nigga.
+Desire looking painfully as they talk about her brother Paul its only the three of them and she seem to have all the sense for the three of them.
+Paul has been in and out of jail since he was nine. momma said Paul should have been a boxer because he never lost a fight but he wanted what was in the streets instead. momma said  there is nothing in them streets but trouble and that's all Paul ever got from it. a jail sentence , a stab womb and  children .He say's he's not the daddy of the other two only Paul Jr. the first born .
+Paul Jr. is a little fanatic of video games at four.
+Really he nearly mastered .
+Hard To Kill some shooting game .but I guess it impresses people.
+''Really''  Fesha looked with such facial of  amazement.
+No one in her family really did anything but  the streets except her dad and he didn't even come around since they all grew up.  she refuse to call a dad who knows that he has children out here.
+She use to go see Jr. all the time.
+Now she is all about her money.so it's in the way and Markele not with her brother no more so she don't really go around her as much.
+Fesha thought to herself she needs to go pay a visit to her nephew.
+De and Fesha started laughing.
+Desiree stated damn I miss Paul,'' he crazy as hell always have a smile on his face .His baby mama Markele claiming that she pregnant with this other dudes baby she said Paul need to be a man and step it up.
+Patricia  started yelling''that was Desiree niece which was Fesha eight year old daughter .
+I'm telling on you boom boom .I'm telling auntie what you did or you better give me some of that candy. or I'm telling Auntie.
+I saw you Humping Tenesha in the bathtub boom boom ''.Desiree is  anxious to get off the telephone with Fesha ''see you when you get home sis.
+Stated Desire stated .
+I need to go now those brats of yours are up to something .Fesha responded with okay sis. talk later babe.
+Sis when Shawn arrive tell him that I will be there in a about fifteen minutes.
+Desiree proclaim with an nonchalant jester whatever.
+That loser.
+Desiree  started to call Patricia,'' in a child like voice what were you yelling about telling me what ?
+Patricia said nothing Auntie.
+Jeremiah began to raise his voice while they were  saying uh no I didn't auntie. don't believe that we were  playing .
+But he gave her some candy that's why she won't tell you.
+Desiree said he gave Tenesha some candy.
+Okay well you getting  a whooping for lying and hiding something from and I told not to be humping and going on with each other.
+Little nasty selves.
+Auntie Desiree started to yell at them all.
+I told all you guys that's bad for family to do to one another.
+Matter of fact no television tonight or tomorrow , stand in a corner for thirty minutes no sweets for two weeks.
+Jeremiah you and Nate can go play basketball at the park be home by the first shade of dark take this cell phone in case of emergencies.
+Jeremiah and Nate took off to go play ball at the  park.
+As Nate walked out the door his dad Shawn is walking up to the entrance.
+Shawn grabs his son and hug him than he gave Nate a hug because he knew Nate Dad Samuel.
+Samuel was sentence for arm robbery and Murder .
+Samuel was  a champ a bread winner.
+He now resided in Wall Walla state Penal system in Washington state .Being from Oakland California he didn't get a lot of visit's.
+He had female pen pals who  would visit him and write him letters from time to time until they found real boyfriends .he did his crime in Seattle Washington .He ran major dope on occasions from Portland to Seattle to Tacoma, and Oakland he knew people when it came to getting his money.
+Those people weren't reliable when it came to the joint and never was Fesha .Fesha got to eat to she would say. she couldn't continue to wait for Samuel. on the social tip Samuel was scarce it was just him and his lady.
+He did most of his dirt alone.
+If he needed a hand with his dope getting in the streets . he knew a few young foot soldiers who had his back that he could give a brick or two to and  they would come back with his money.
+Samuel was a child who grew up fast .Samuel was pimping three months after he left his mothers  home .Although they were rivals from different hoods.
+Shawn  respected the brother for being loyal in more than one way.
+Even thou he always looked at Samuel as being a damn fool for doing that crime to get Fesha the best things in life.
+That's why he will never  really know who Jeremiah is unless he gets a miracle. he always had one of his siblings dad's as a dad .Jeremiah dad is doing life in prison on arm robbery and murder. occasionally his mom will take him to see  Samuel his dad.
+Samuel  was a hard core gang-banger  and street hustler before he went into the pen .Samuel loved Fesha he would give Fesha the world if she asked him too. but he was also very jealous hearted of anyone that came between him and Fesha even his own child if It needed to much attention .Samuel would kill for Fesha if he had too .In a literal sense.
+Samuel jealousy and constant being under her made Fesha crazy sometimes.
+Samuel wouldn't ever trust another man around Fesha .
+She was his man chic  his rib, ride or die chic he could get her to whoe for him, strip,and still make love to him like he was real man her one and only man .Fesha and Samuel was definitely a boss ass couple two years ago.
+She played around with Mike and Samuel  hearts than.
+Samuel won here because he was a boss ass gangsta nigga.
+This nigga said that he refuse to let her handle the streets alone if he was constantly having sex with her.
+He explain he wasn't trying to be that other nigga.
+Fesha used Mike for what he was worth because they had a  daughter together.
+Mike never really took Fresha serious the sex was convenient easy and maintained.
+Mike had no street ability college boy from a wealthy family.
+How he got with a whoe he didn't know .All he could say was that she wasn't always like that.
+If you  were someone who knew about it.
+If you question him about it.
+Fesha's behavior.
+Samuel and Fesha kept the block hot with their decked out in gear, jewelry,  weed, cars, dope and homies .Samuel was a king pin than, he ran the whoe track dope trap and the stick up game.
+Samuel was better known as Mr. Menace to those streets .
+Paul knew Samuel growing up in school in the seventh grade he was actually from a good family and home.
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+
+        <h3>Select the word-cloud representation that best represents the above story.</h3>
+        Below, there are three word-cloud representations. Read them carefully and select the one that best represent the above story.
+        <br/><br/>
+
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_1" value="1">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 1</h3>
+                The following three word clouds jointly represent the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_2" value="2">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 2</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_2">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_2">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_2">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_2-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <!--div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_3" value="3">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 3</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_3">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_3-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_3">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_3-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_3">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_3-png-container" class="text-center"></div>
+            </div>
+        </div-->
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="109">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_150">
+            <input name="note" type="hidden" value="LGBM, BERT">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+    </div>
+
+</body>
+</html>

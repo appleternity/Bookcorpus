@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<body>
+    <script src="https://d3js.org/d3.v3.min.js"></script>
+    <!-- <script src="https://rawgit.com/jasondavies/d3-cloud/master/build/d3.layout.cloud.js"></script> -->
+    <script src="d3.layout.cloud.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Recursive:wght@400;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script type="text/javascript">
+        var frame_list_1 = [{'frame': 'Organization', 'tfidf': 5.673721997095025, 'lexical_unit': 'committee.n / organization.n / order.n', 'definition': "This frame describes intentionally formed human social groups (here termed Organizations) with some definite structure and Members.  They may be relatively informal, consisting only of a group of individuals who are aware of who is and who is not a fellow member, or they may be complex and long-lasting, such as the Roman Catholic Church or the Conservative Party.   'Lucien is in the brotherhood.'"}, {'frame': 'People_by_origin', 'tfidf': 5.530752263420775, 'lexical_unit': 'American.n / Greek.n / italian.n', 'definition': "This frame contains  words for individuals, i.e. humans, with respect to their Origin. The Origin is generally incorporated, but may occasionally be specified separately.  The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have an Age, Descriptor, Persistent_characteristic, or Ethnicity.   'I'm a proud Brit.'"}, {'frame': 'Alliance', 'tfidf': 3.8992009960292355, 'lexical_unit': 'coalition.n / alliance.n', 'definition': "After having worked separately for some time, two or more organizational or individual Members are now organized in an Alliance so that they may better pursue some common Purposes.  The formerly separate Members may be presented separately as Member_1 and Member_2.  'They formed a loose coalition.'"}, {'frame': 'Political_locales', 'tfidf': 2.6841257207430664, 'lexical_unit': 'district.n / commonwealth.n / nation.n', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'Hostile_encounter', 'tfidf': 2.3666058465775457, 'lexical_unit': 'wrangling.n / skirmish.n / combat.n', 'definition': "This frame consists of words that describe a hostile encounter between opposing forces (Side_1 and Side_2, collectively conceptualizable as Sides) over a disputed Issue and/or in order to reach a specific  Purpose. '' 'He still wants to fight Mike Tyson in about 8 months.'  'Dennis Andries's European cruiserweight title clash against Akim Tafer of France in Beausoleil last February has been voted as the EBU's fight of the year.'"}, {'frame': 'People_by_vocation', 'tfidf': 2.07933998607885, 'lexical_unit': 'manager.n / technician.n / anthropologist.n', 'definition': "This frame contains  words for Individuals as viewed in terms of their vocation.   The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'Humphrey Bogart was a great actor.'"}, {'frame': 'Appellations', 'tfidf': 2.064136878649487, 'lexical_unit': 'chief.n / shah.n / mr.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Military', 'tfidf': 1.9964456382301046, 'lexical_unit': 'army.n / militia.n / force.n', 'definition': 'Some Possessor, either a nation, institution, or private individual, controls a Force whose primary functions to defend the Possessor (or, in the case of an institution or individual, some area of land significant to them) and to carry out offensive actions for the Possessor.  The Domain of operation of the Force may be expressed.'}, {'frame': 'Color', 'tfidf': 1.781844272688837, 'lexical_unit': 'brown.a / gray.a / purple.a', 'definition': "A Color serves as a landmark in color-space, either a point-like landmark (e.g. burnt sienna) or a broader region (e.g. blue).  Especially when the Color designates a broad region in color-space, it may be defined with a specific Type, further specified by comparison to the color of a Comparand, modified by a Color_qualifier, or evaluated with a Descriptor.  All color words are generally used to specify the color of some (physical) Entity. 'I really like that shade of blue.' 'The welts on his side had already turned an angry red.' 'The room was bathed in a soft pink light.' 'They promptly set up a zillion bright vermilion pavilions.' 'His face and hands were brown from a life spent in the bright sun of the fields.' "}, {'frame': 'Change_of_leadership', 'tfidf': 1.7228831139389762, 'lexical_unit': 'mutiny.n / revolutionary.n / freedom.n', 'definition': "This frame concerns the appointment of a New_leader or removal from office of an Old_leader.  The Selector brings about the change in leadership, for example, by electing or overthrowing a leader. Some words in the frame describe the successful removal from office of a leader (e.g. depose, oust), others simply the attempt (e.g. uprising, rebellion).   'On March 17 , Mamedov appointed Rakhim Gasiyev as Defence Minister .'    "}, {'frame': 'Membership', 'tfidf': 1.5913518374127806, 'lexical_unit': 'associated.a / member.n / part.n', 'definition': "A Member is semi-permanently part of a socially constructed Group.   'Victor is part of the Red Crescent'"}, {'frame': 'Military_operation', 'tfidf': 1.523114030945169, 'lexical_unit': 'campaign.n / operate.v / operation.n', 'definition': "The Military of a Possessor (either a nation, institution, or private individual) conducts large-scale activities in a Area to accomplish military or combined military/non-military goals.  'These groups are known to have carried out attacks on international coalition forces operating in Afghanistan.'  'Anti-piracy operations will continue while new strategies are developed.'  This frame construes the operation asymmetrically: the Military acts with respect to military and political entities in the target Area. Compare this to (usually, but not always, lower-level and violent) military actions that can be understood symmetrically (war, battle, encounter, engagement, etc)."}, {'frame': 'Discussion', 'tfidf': 1.485104441017434, 'lexical_unit': 'consultation.n / talk.n / conference.n', 'definition': "Two (or more) people (the Interlocutors, also encodable as Interlocutor_1 and Interlocutor_2) talk to one another. No person is construed as only a speaker or only an addressee. Rather, it is understood that both (or all) participants do some speaking and some listening--the process is understood to be symmetrical or reciprocal.  This frame differs from the Chatting frame in that the Interlocutors have a particular question that they are attempting to decide or understand.  'I would rather discuss politics with anyone but him.'   'World leaders met to discuss global warming on the coldest day of the year.'"}, {'frame': 'Type', 'tfidf': 1.4753917225962074, 'lexical_unit': 'brand.n / shade.n / type.n', 'definition': "This frame has to do with nouns denoting types of entities. The Subtype refers to a collection of members of a more general Category which have certain defining characteristics; alternatively, the Subtype refers only to the type itself, i.e. a more restrictive set of characteristics than those of the more general Category.  The properties of the items that are included in the collection may be specified by the Item_Property.  Sometimes the Subtypes themselves are described by some Type_Property.  'I don't like this newfangled kind of  fish.' 'Kleo isn't our sort of people.' 'He argued against the formalist type of analysis of art.' 'I think that she was referring to the other type. DNI'"}, {'frame': 'Natural_features', 'tfidf': 1.4207345610246722, 'lexical_unit': 'canyon.n / declivity.n / lake.n', 'definition': "The Locale is a geographical location as defined by shape.  This frame includes natural geographic features, including land/ice forms and bodies of water.  ' We climbed up the rock cliff.' "}, {'frame': 'Race_descriptor', 'tfidf': 1.2646646917322821, 'lexical_unit': 'white.a / yellow.a / asian.a', 'definition': "This frame covers LUs that describe the race of a Person.  'Carlos is hispanic, or so he says.'"}, {'frame': 'Firefighting', 'tfidf': 1.2541651425970357, 'lexical_unit': 'battle.v / control.v / attack.v', 'definition': 'This frame characterizes the situation or state of affairs in which someone acts to prevent a Fire_disaster from occurring, accelerating, or affecting any area not identified as a Controlled_area. The named Burn_area, targeted by the Fire_disaster, is more salient than "fire" itself and is often used for reference instead. The organizational methods for Firefighting are of utmost importance in this frame.'}, {'frame': 'Leadership', 'tfidf': 1.2233125773293227, 'lexical_unit': 'congresswoman.n / shah.n / rector.n', 'definition': "These are words referring to control by a Leader over a particular entity  or group (the Governed) or an Activity. The frame contains both nouns referring to a title or position (e.g. director, king, president), and verbs describing the action of leadership (e.g. rule, reign). With verbs, it is possible to mention the Role played by the Leader (often a name of a leading position, e.g., king)  'Sebek em hat was a Leader of Priests. ca. 1780 BC' 'In 1789 Fletcher Christian led the mutiny on HMS Bounty' 'Louis XIV ruled over his people as king for the longest period of any European monarch.' Compare to: Appellations. "}, {'frame': 'Terrorism', 'tfidf': 1.2193364844675683, 'lexical_unit': 'ecoterrorist.n / ecoterrorism.n / bioterrorist.n', 'definition': "A Terrorist commits a violent or otherwise harmful Act upon a Victim in order to coerce or terrorize a government or populace. The Act may be committed in particular for political or ideological reasons, and is often directed at civilians, as opposed to government or military officials. It is most often in violation of one or many laws.  'Their terrorism against civilians will not be tolerated.'"}, {'frame': 'Locale_by_use', 'tfidf': 1.217991726644557, 'lexical_unit': 'safe house.n / countryside.n / green.n', 'definition': "Geography as defined by its use.   'You must land in the next airfield, as this one is currently having difficulties.' 'The new sports complex was the tallest building on campus, oddly enough.' 'Cities of the Northeast tend to be dingier.'"}, {'frame': 'Importance', 'tfidf': 1.2173949721166297, 'lexical_unit': 'crucial.a / important.a / key.a', 'definition': "A Factor affects the outcome of an Undertaking, which  can be a goal-oriented activity or the maintenance of a desirable state, the work in a Field, or something portrayed as affecting an Interested_party. A Reason may be given for the importance of the Factor. The Degree of importance may also be specified.  'Temperature is the most critical factor in successful storage.' ' Timing will be critical.' 'Heathcliff is more important to me than myself . ' ' 1992 was of great importance to the business community. ' "}, {'frame': 'Member_of_military', 'tfidf': 1.1762741815366162, 'lexical_unit': 'service member.n / troop.n / commando.n', 'definition': "A Person is a member of an organized military organization belonging to a nation-state or similar body. The military membership may be part-time, but is considered a job. This is in opposition to combatants who may be loyal to a particular cause but are not part of the military arm of a government.  'The British at one point had an occupying army of over a million well-trained soldiers.'  'After 9/11 she decided to become a full-time airman'.  'US soldiers have fought in the region for the past twenty years with no end in sight.'"}, {'frame': 'Law', 'tfidf': 1.1676624055116904, 'lexical_unit': 'regulation.n / code.n / act.n', 'definition': "A Law regulates activities or states of affairs within a Jurisdiction, dictating what Required states should be the case and what Forbidden states should not.  Often it also indicates negative consequences for individuals that violate it, and these negative consequences are generally enforced by some official authority.  They may or may not be created by some official legislative body.  'The new act banning smoking in public will pass soon.'"}, {'frame': 'Participation', 'tfidf': 1.1410355508483612, 'lexical_unit': 'concerned.a / involved.a / participation.n', 'definition': "An Event with multiple Participants takes place. It can be presented either symmetrically with Participants or asymmetrically, giving Participant_1 greater prominence over Participant_2. If the Event is engaged in intentionally, then there is typically a shared Purpose between the Participants. It is, however, possible that an expressed Purpose only applies to Participant_1.   'MATAC looks forward to your participation in helping promote telework in the Mid-Atlantic region.'  ' FOAP provides participants with comprehensive clerical skills. DNI' ' FOAP provides participants with comprehensive clerical skills. '   'Our eight-year-old son was recently  peripherally involved in an incident which resulted in him being threatened with the strap.'  'A New York press agent must scramble when his major client becomes embroiled in a huge scandal.'  'In his time as a first-team all-league player, Rife was in on 86 solo tackles.'"}, {'frame': 'First_rank', 'tfidf': 1.1322368973242476, 'lexical_unit': 'lead.n / principal.a / primary.a', 'definition': 'An Item is located at the top end of a scale of importance or social rank (or some other Attribute) in comparison to other members of a Contrast_set (usually, implicit) that is otherwise similar in kind to the Item. Oftentimes, the limits of the Contrast_set are determined by an expression of the Limits_of_consideration.  \'The main problem is that the administration has not yet clarified "Regime change." INI\' \'Oh, he had a great many concerns -- chief among them his own boredom.\' \'Their primary objective in Bosnia was bringing about a lasting peace. INI\''}, {'frame': 'Food', 'tfidf': 1.0928007113041354, 'lexical_unit': 'poultry.n / veal.n / potato.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Attack', 'tfidf': 1.032528711317811, 'lexical_unit': 'bombard.v / attack.v / raid.v', 'definition': "An Assailant physically attacks a Victim (which is usually but not always sentient), causing or intending to cause the Victim physical damage.   A Weapon used by the Assailant may also be mentioned, in addition to the usual Place, Time, Purpose, Explanation, etc.  Sometimes a location is used metonymically to stand for the Assailant or the Victim, and in such cases the Place FE will be annotated on a second FE layer.  'As soon as he stepped out of the bar he was set upon by four men in ski-masks.' 'Is he invading Iraq just to cover other shortcomings?' 'Then Jon-O's forces ambushed them on the left flank from a line of low hills.'"}, {'frame': 'Accomplishment', 'tfidf': 1.0198974345029763, 'lexical_unit': 'accomplishment.n / achieve.v / effect.v', 'definition': "After a period in which the Agent has been working on a Goal, the Agent manages to attain it.  The Goal may be a desired state, or be conceptualized as an event. '' 'Jeremey obediently accomplished this task.'  'In response, the Prime Minister has simply cited his free-market accomplishments. '  "}, {'frame': 'Absorb_heat', 'tfidf': 1.0120989183303633, 'lexical_unit': 'parboil.v / toast.v / deep fry.v', 'definition': "An Entity (generally food) is exposed to a Heat_source whose Temperature may also be specified.  Generally, the Entity undergoes some sort of change as a result of this process.  'Bacon was frying in the pan, and a great heap of eggs already lay steaming on a plate.' 'If it cooks at 400 for an hour, it 'll be nothing but a pile of ash!'"}, {'frame': 'Employing', 'tfidf': 0.9986825512559038, 'lexical_unit': 'personnel.n / employment.n / employee.n', 'definition': "An Employer employs an Employee whose Position entails that the Employee perform certain Tasks in exchange for Compensation.  'I employed him as Chief Gardener for ten years.'"}, {'frame': 'Text', 'tfidf': 0.9984528875399664, 'lexical_unit': 'essay.n / booklet.n / paper [newspaper].n', 'definition': "A Text is an entity that contains linguistic, symbolic information on a Topic, created by an Author at the Time_of_creation.  It may be a physical entity that is made of a certain Material etc.  It may be constructed for an Honoree.  'It was a good book.'"}, {'frame': 'Directional_locative_relation', 'tfidf': 0.9954114157062978, 'lexical_unit': 'west.n / southeast.adv / northwest.adv', 'definition': "A Figure is located relative to a (presumably more easily located) Ground, asserting that the Figure lies (approximately) on line from the Ground whose direction is established by semantic types of the particular LUs.  'The plane landed 10 miles due north of Lake Travis in an empty field .' "}, {'frame': 'Social_event', 'tfidf': 0.9905832581832845, 'lexical_unit': 'festival.n / fete.n / reception.n', 'definition': "A Social_event occurs at which Attendees are present to conduct a social function or joint activity.  The Social_event is often a party or celebration, in which case it is possible to express someone who is being honored (the Honoree) or its function may be to celebrate an Occasion at which Attendees are present. Often, a specific Attendee, the Host, provides a venue for people to gather.  'Sue threw a party for Bob's birthday.'  'Who will host the Olympic games in eight years?'"}, {'frame': 'Businesses', 'tfidf': 0.9761586558662033, 'lexical_unit': 'establishment.n / firm.n / company.n', 'definition': "A Proprietor owns or runs a Business which provides a Product (which may be goods or services).  'The consumer electronics company Apple has exploded with popularity in recent years.'"}, {'frame': 'Project', 'tfidf': 0.967194642113547, 'lexical_unit': 'project.n / scheme.n / program.n', 'definition': "An Agent, which may be an individual or group, is engaged in a complex Activity.  A larger Goal which motivates the Agent carrying out the Activity may be indicated. Instead of a particular  Activity, a Field of endeavor may be indicated. The project may also have a Name and the Time when as well as the Place where it is ongoing may be specified.  'The New Car Assessment Program (NCAP) is dedicated to helping the public buy a safer car.'  'The school will continue with its project to end all violence related to racism, xenophobia and intolerance.'"}, {'frame': 'Weapon', 'tfidf': 0.9540751551363108, 'lexical_unit': 'cannon.n / nuclear.a / biological.a', 'definition': "A Weapon is an artifact created specifically to cause harm or damage.  In some cases, a Use, Material of construction, Part or Type may be more narrowly specified.  'Did you, or did you not, fire this gun with intent to harm my client?'  'Cyra tried to swing her sword to parry, but it was to heavy.'  'I investigated a specialist precious metal firearms manufacturer.'  'My neighbor, a member of the NRA since birth, has got an AK-47 fully automatic assault rifle.'  'Let 's just say that he 's the kind of guy who likes guns with hair triggers.' "}, {'frame': 'Documents', 'tfidf': 0.9408583537510491, 'lexical_unit': 'agreement.n / identification.n / testimony.n', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Fame', 'tfidf': 0.9345423633502513, 'lexical_unit': 'big name.n / notorious.a / well known.a', 'definition': "An Entity is well-known among a wide range of people (in general or in a particular domain) for a particular Reason, which may be a behavior, characteristic, or some other associated item. In the case of events, fame entails a large number of people being aware of the event's occurence; in the case of concrete entities, including humans, fame entails awareness of existence. In both cases, often fame is accompanied by awareness of the Entity's significance in historical, cultural, or social contexts.  'Shakespeare was famous during his life because he performed in front of Queen Elizabeth I more than anyone else.'"}, {'frame': 'Size', 'tfidf': 0.9204855607970046, 'lexical_unit': 'puny.a / medium-sized.a / massive.a', 'definition': 'The size of an Entity is assessed in terms of the Degree by which it deviates from the norm. The size generally refers to the amount of three-dimensional space that is occupied by the Entity, not primarily to its weight, density, or length, which is why it is peculiar to refer to a bullet as "large", even if it is heavy, unless it actually has larger dimensions than usual, or to a rope as "big", even if it is long, unless its other, cross-sectional dimensions are also significant.  \'I own a very small home.\' \'Where is my little notebook?\' \'That dog is huge!\' \'\'  There are an enormous number of productive metaphors that involve this frame as the source domain; two of the most frequent metaphors come from the target domains of quantity/amount and importance.    \'He gave me a small sum of money.\' \'The novel was a substantial achievement.\' \'\'  Subcases of the quantity/amount and importance metaphors are also prominent. These involve cases describing the extent of an action\'s, event\'s, or person\'s effect ("his influence on her work was massive"), as well as those related to events ("big party"), similarity ("gigantic difference"), communication ("giant misunderstanding"), and emotions ("great joy", "little joys").  Other productive metaphors include those dealing with groups (in terms of their number of members, net worth, importance to the economy, i.e. "giant electronics company") and those describing sound volume ("in a tiny voice", "the enormous thundering of her heart").  \'\'  The target domain of fame, by contrast, occurs in a non-productive metaphor, found especially with big.a and huge.a. Maturity and age also occur in non-productive metaphors ("big boy", "little baby").'}, {'frame': 'Purpose', 'tfidf': 0.910817550009356, 'lexical_unit': 'goal.n / object.n / target.n', 'definition': "An Agent wants to achieve a Goal,  or an object.  A Means  has been created or is used to allow the creator or a user to achieve a  Goal. The Goal is a state of the world that does not currently hold but which the Agent wants to realize and is planning and/or working towards. In some cases, it is difficult to decide whether a noun phrase metonymically stands for the Agent or the Means (e.g. The goal [of this paper/seminar/project] is to determine ...). We mark these phrases as Agent on the first layer but also annotate them as Means on a second annotation layer.  In some cases a Restrictor on the Goal state of affairs can be given prominence as a separate constituent. Talking about Goals frequently includes the mention of a Domain to which the Agent's Goal is relevant.  'The modest American goal of a threefold increase in capacity recognises this fact .' 'The object of the tutorial is to help a student concentrate on his writing skills ' ' The prime goal of the programme was to help develop processes of scientific thinking in children .' 'My goal in this book is to introduce the reader to Web programming applications.' 'The president's economic goal for the country was to overcome the recession.'"}, {'frame': 'Occupy_rank', 'tfidf': 0.8997006029938018, 'lexical_unit': 'stand.v / top.a / rank.v', 'definition': "This frame is about Items in the state of occupying a certain Rank within a hierarchy.  'He ranks second in his class in mathematics.'"}, {'frame': 'Secrecy_status', 'tfidf': 0.8793606170922588, 'lexical_unit': 'covert.a / concealed.a / confidential.a', 'definition': "A Phenomenon, which may be an activity, state or object, is purposefully hidden from the awareness of a potential Cognizer. The person responsible for the hiding of the Phenomenon is not part of this frame and cannot be syntactically realized. The potential Cognizer may be realized, but is in fact rarely expressed. A period of Time during which the Phenomenon is secret may be indicated.   'Few people would use ATMs if the content of their transaction was secret from their bank and there was no paper trail verifying the transaction. .'  'The protesters were not on her list, and weren't allowed in, despite the fact that the meeting was public.'  'Student disciplinary matters are confidential and should only be discussed with appropriate university officials'"}, {'frame': 'Measurable_attributes', 'tfidf': 0.8707865256767565, 'lexical_unit': 'deep.a / light [weight].a / broad.a', 'definition': "An Entity has a particular scalar Attribute with a value exceeding a contextually-specified or generally-understood standard. Except where there is a difference in FEs, we place all adjectives related to measurable quantities in this frame. Note that when an adjective appears with a quantity expression (e.g., 6 feet long), it belongs to the Dimension frame.  'That ladder is really tall.'  'After his back injury, he won't lift heavy boxes.'"}, {'frame': 'Roadways', 'tfidf': 0.865228592546611, 'lexical_unit': 'motorway.n / cul-de-sac.n / way.n', 'definition': "This frame involves stable Roadways which connect two stable Endpoints, the Source and the Goal.  Being physical objects, these Roadways may have Names and Characteristics; they are also made of a Material.  They also cover ground, so they may have a Path or a Relative_location that the travel occurs in.  ' We crossed the brick road.' ' I prefer to travel on highway I-80.'  'This is the only highway between Lodi and Sonoma.' ' She dreaded turning onto the busy street.'"}, {'frame': 'Being_obligated', 'tfidf': 0.8624807118378492, 'lexical_unit': 'job.n / responsibility.n / mission.n', 'definition': "Under some Condition, usually left implicit, a Responsible_party is required to perform some Duty.  If they do not perform the Duty, there may be some undesirable Consequence, which may or may not be stated overtly.  'It is my duty to fight any attack on the Brotherhood .' 'This country has the responsibility to support its citizens' right to express themselves.' 'I am obligated to pay or they'll double the fine.'  NB:  Contrast this frame with Likelihood and Preconditions frames, which involve many of the same lemmas.  Many LUs which might be expected to be found here (should, must, have to) are actually in the Required_event frame. Our analysis is that these LUs do not evoke an obligation directly, although they are frequently used in contexts that are consistent with an understanding of obligation and are pragmatically strengthened to (defeasibly) imply an obligation. "}, {'frame': 'Body_description_holistic', 'tfidf': 0.8511483030697587, 'lexical_unit': 'rangy.a / portly.a / fat.a', 'definition': "This frame covers descriptions of an entire human body, viewed as a gestalt (as opposed to descriptions based on salient body parts).  The Frame Elements are Individual and Figure.    'Chuck is muscular.'  'Chuck has a muscular body.' "}, {'frame': 'Part_whole', 'tfidf': 0.8379494337864734, 'lexical_unit': 'tenth.n / development.n / quarter.n', 'definition': "This frame is concerned with nouns denoting a part or parts of a Whole entity . The Part is not defined relative to the Whole's orientation, center, or edge and is not ordered.  We also annotate properties of the Part, e.g. relating to its size.  'Kim forgot a large part of the story.'  'Abby ate only the top half of the cake.'"}, {'frame': 'Protecting', 'tfidf': 0.8268040747831327, 'lexical_unit': 'shelter.v / bulwark.n / cover.n', 'definition': "Some Protection prevents a Danger from harming an Asset.  'The rubber on her sneakers protected her from the mud.'  'The coral reefs shielded the coastline from the worst of the waves.'  'A growing number of sustainable farmers are preserving agricultural variety and protecting biodiversity by raising ?heritage? or ?heirloom? varieties.'  'The man responsible for this entire ordeal cowardly shielded himself from justice with the little boy's struggling body.'"}, {'frame': 'Finish_competition', 'tfidf': 0.813557951009042, 'lexical_unit': 'draw.n / tie.v / victor.n', 'definition': "A Competition comes to an end, with a Competitor tying, winning, or losing against an Opponent (or opponents) according to their Score.  (In the symmetrical situation of a tie, the Competitor and Opponent may be jointly mentioned as Competitors.)  According to the Score that the Competitor and Opponent have achieved, they may receive a Rank or a Prize.  The Margin may also be mentioned.  'Unbelievable--he lost the gold medal by just .02 points!' 'Looks like it will came to a draw between Woods and Stephenson.'"}, {'frame': 'Killing', 'tfidf': 0.8130848315890966, 'lexical_unit': 'kill.v / lethal.a / carnage.n', 'definition': "A Killer or Cause causes the death of the Victim. 'John drowned Martha.'"}];
+        var frame_list_2 = [{'frame': 'People_by_vocation', 'tfidf': 3.298496961593628, 'lexical_unit': 'oilman.n / homemaker.n / pilot.n', 'definition': "This frame contains  words for Individuals as viewed in terms of their vocation.   The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'Humphrey Bogart was a great actor.'"}, {'frame': 'Organization', 'tfidf': 2.9232070446014404, 'lexical_unit': 'order.n / news outlet.n / delegation.n', 'definition': "This frame describes intentionally formed human social groups (here termed Organizations) with some definite structure and Members.  They may be relatively informal, consisting only of a group of individuals who are aware of who is and who is not a fellow member, or they may be complex and long-lasting, such as the Roman Catholic Church or the Conservative Party.   'Lucien is in the brotherhood.'"}, {'frame': 'Education_teaching', 'tfidf': 2.7988288402557373, 'lexical_unit': 'schoolmistress.n / training.n / study.v', 'definition': 'This frame contains words referring to teaching and the participants in teaching.  A Student comes to learn either about a Subject; a Skill; a Precept; or a Fact as a result of instruction by a Teacher.  Some of the nouns (schoolmaster, -mistress) in this frame refer to administrative positions and do not take relevant frame elements; these will be moved.    \'Dad taught <fex name="">me that if you work hard, you will be OK - no matter what happens. \'  \'What Our Cat  taught Me  About Marketing!\'  \'For two years she taught me French\'  \'Mom and Dad taught me not to bullshit, because it always came back to bite me in the ass, without fail. \'  \'A young swiss girl up in a swiss chalet taught me how to yodel.\'  \'Young Murdock later met a blind martial arts master known as Stick, who taught him how to use his augmented senses and trained him as a fighter.\'  \' Maria, a woman studying to be a nun is sent from her convent to be the governess of the seven children of a widowed naval captain \'  Frame-Element relations:  Several Frame element relations hold in this frame. There is a core-set {Material, Teacher} (possibly also including Institution); these FE\'s can fill the subject slot of the teach-type verbs. There is another core-set  {Precept, Subject, Skill, Fact, Role} to do with what is learnt. In addition, the FE Qualification may occur with Subject and Role  \'My sister is studying for a maths degree    to be a teacher \' \'She\'s studying maths to be a teacher .\'  Phrases expressing Qualification also very often include information about the Subject (see below), which is to be annotated on the second layer.  \'Bill is studying for a BS in physics/a maths degree.\' \'Bill is studying for a BS in physics/a maths degree.\'  '}, {'frame': 'Political_locales', 'tfidf': 2.7171826362609863, 'lexical_unit': 'township.n / internationally.adv / land.n', 'definition': "This frame covers words that name Locations as defined politically, or administratively.  'Berkeley is a wonderful city.'"}, {'frame': 'People_by_origin', 'tfidf': 2.620119333267212, 'lexical_unit': 'Frenchwoman.n / Dubliner.n / Mexican.n', 'definition': "This frame contains  words for individuals, i.e. humans, with respect to their Origin. The Origin is generally incorporated, but may occasionally be specified separately.  The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have an Age, Descriptor, Persistent_characteristic, or Ethnicity.   'I'm a proud Brit.'"}, {'frame': 'Appellations', 'tfidf': 2.0688774585723877, 'lexical_unit': 'aunt.n / miss.n / empress.n', 'definition': "This frame is only for words that are used as the Titles of individuals. The Title is applied to a Name (surname or full name) and often designates their rank within a man-made institution (e.g. chief, king, bishop, brother) or general social status (mr., miss), or may indicate a kinship relationship (cousin, aunt). Pairings of Title and Name can be used as vocatives (see Attention_getting), while the Titles may not always be vocative on their own.  'He saluted General Fightmeister walking into the room.' 'Everyone stood as Captain Jack Aubrey delivered a toast.' 'Supreme Court Chief Justice John Roberts is sticking to his guns .' 'Captain Mike Eruzione of the USA Miracle on Ice hockey team in 1980 turns 58 today.'  Most LUs of this frame are related to LUs of the Leadership or Kinship frames, but some (e.g. Lady, Mr., Brother) occur only here.  These LUs differ from normal examples of LUs in Leadership or Kinship in that the LUs are used simply as vocatives or as modifiers of names, to indicate how the individual fits into the general or specific social context."}, {'frame': 'Locale_by_use', 'tfidf': 2.0159709453582764, 'lexical_unit': 'park.n / bathhouse.n / country.n', 'definition': "Geography as defined by its use.   'You must land in the next airfield, as this one is currently having difficulties.' 'The new sports complex was the tallest building on campus, oddly enough.' 'Cities of the Northeast tend to be dingier.'"}, {'frame': 'Kinship', 'tfidf': 1.785449743270874, 'lexical_unit': 'mom.n / great-grandson.n / people.n', 'definition': "This frame contains words that denote Kinship relations. In annotating the directional uses of these words, we use the standard terms from anthropology, Ego and Alter.  'Matilde is Gilberto's cousin once removed' Compare to: Appellations."}, {'frame': 'Social_event', 'tfidf': 1.6584078073501587, 'lexical_unit': 'dance.n / dinner-party.n / ball.n', 'definition': "A Social_event occurs at which Attendees are present to conduct a social function or joint activity.  The Social_event is often a party or celebration, in which case it is possible to express someone who is being honored (the Honoree) or its function may be to celebrate an Occasion at which Attendees are present. Often, a specific Attendee, the Host, provides a venue for people to gather.  'Sue threw a party for Bob's birthday.'  'Who will host the Olympic games in eight years?'"}, {'frame': 'Hostile_encounter', 'tfidf': 1.546677589416504, 'lexical_unit': 'battle.n / cw.n / fight.v', 'definition': "This frame consists of words that describe a hostile encounter between opposing forces (Side_1 and Side_2, collectively conceptualizable as Sides) over a disputed Issue and/or in order to reach a specific  Purpose. '' 'He still wants to fight Mike Tyson in about 8 months.'  'Dennis Andries's European cruiserweight title clash against Akim Tafer of France in Beausoleil last February has been voted as the EBU's fight of the year.'"}, {'frame': 'People_by_age', 'tfidf': 1.5246176719665527, 'lexical_unit': 'geezer.n / adult.n / boy.n', 'definition': "This frame contains words for individuals as viewed in terms of their age. The Person is conceived of as independent of other specific individuals with whom they have relationships and independent of their participation in any particular activity. They may have a Descriptor, Origin, Persistent_characteristic, or Ethnicity. A specific Age may sometimes be specified as well.  'He is a 12-year-old kid.'"}, {'frame': 'Text', 'tfidf': 1.5163474082946777, 'lexical_unit': 'material.n / rhyme.n / obituary.n', 'definition': "A Text is an entity that contains linguistic, symbolic information on a Topic, created by an Author at the Time_of_creation.  It may be a physical entity that is made of a certain Material etc.  It may be constructed for an Honoree.  'It was a good book.'"}, {'frame': 'Discussion', 'tfidf': 1.506410002708435, 'lexical_unit': 'meeting.n / confer.v / talk over.v', 'definition': "Two (or more) people (the Interlocutors, also encodable as Interlocutor_1 and Interlocutor_2) talk to one another. No person is construed as only a speaker or only an addressee. Rather, it is understood that both (or all) participants do some speaking and some listening--the process is understood to be symmetrical or reciprocal.  This frame differs from the Chatting frame in that the Interlocutors have a particular question that they are attempting to decide or understand.  'I would rather discuss politics with anyone but him.'   'World leaders met to discuss global warming on the coldest day of the year.'"}, {'frame': 'Buildings', 'tfidf': 1.4956098794937134, 'lexical_unit': 'blockhouse.n / hippodrome.n / garage.n', 'definition': "This frame contains words which name permanent fixed structures forming an enclosure and providing protection from the elements.   'The baroque church, built in 1635, has a very rich interior' 'The city tour includes the 16th-century monastery of the Transfiguration and Church of Elijah the Prophet' 'An ancient stone church stands amid the fields'  'Jack built his house in the style of the day.'"}, {'frame': 'Law', 'tfidf': 1.4911516904830933, 'lexical_unit': 'regime.n / regulation.n / policy.n', 'definition': "A Law regulates activities or states of affairs within a Jurisdiction, dictating what Required states should be the case and what Forbidden states should not.  Often it also indicates negative consequences for individuals that violate it, and these negative consequences are generally enforced by some official authority.  They may or may not be created by some official legislative body.  'The new act banning smoking in public will pass soon.'"}, {'frame': 'Personal_relationship', 'tfidf': 1.4478908777236938, 'lexical_unit': 'affianced.a / paramour.n / buddy.n', 'definition': "The words in this frame have to do with people and the personal Relationships they are or can be a part of.  Some of the words denote people engaged in a particular kind of Relationship, others denote the Relationship, yet others the events bringing about or ending the Relationships. Many of the words presuppose an understanding of states and events that must have occurred before another event takes place or before a person can be classified in a certain way. '' 'And of course that drippy boyfriend of hers backed her up.'  'As the happy couple took their places there was a stir and a rising babble behind them.'  'Pattie is living proof that if you live with a man, you discover a lot you didn't know when you were just dating him.'"}, {'frame': 'Businesses', 'tfidf': 1.4448310136795044, 'lexical_unit': 'shop.n / paper.n / business.n', 'definition': "A Proprietor owns or runs a Business which provides a Product (which may be goods or services).  'The consumer electronics company Apple has exploded with popularity in recent years.'"}, {'frame': 'Money', 'tfidf': 1.427390217781067, 'lexical_unit': 'funds.n / cash.n / dough.n', 'definition': "Money is a medium used for exchanging goods and services. It is in most cases issued by a government (its Creator) in the form of coins and banknotes. Particular amounts of it may have a designated or planned Use, or may have come from some Origin.  'The money for our daughter's college education is currently earning interest in a savings account.'  'The entire project ended up being funded with Swiss funds.'  'The use of paper money really caught on in Europe in the 1700s'"}, {'frame': 'Food', 'tfidf': 1.4137115478515625, 'lexical_unit': 'cheese.n / pastry.n / fish.n', 'definition': "This frame contains words referring to items of food.  'Specialties include deep fried shredded beef , duck , prawn dishes and hand-made noodles.'"}, {'frame': 'Aggregate', 'tfidf': 1.3770201206207275, 'lexical_unit': 'multiplicity.n / variety.n / force.n', 'definition': "This frame contains nouns denoting Aggregates of Individuals.  The Aggregates may be described by an Aggregate_property.   'An army of postal workers descended on my office.'  "}, {'frame': 'Colonization', 'tfidf': 1.3745555877685547, 'lexical_unit': 'people.v / colonize.v / settler.n', 'definition': "A group of Colonists from a Homeland migrate to and proceed to settle in a New_area. The New_area then becomes their permanent home. The New_area and Homeland are in some way construed as being part of the same organization or system. In the case of (people from) nation-states colonizing other areas, the colony and nation-state are considered a single political entity. In the extended sense of living things in general colonizing or settling a new area, the original Homeland must still inhabited by some of the same group. In this sense Colonization is distinct from migration or exodus.  'In the 7th century BC, Phoenicians colonized the eastern section of Libya.' 'In the 7th century BC, Phoenicians colonized the eastern section of Libya.' 'Finns colonized the land from the south some 2,000 to 4,000 years ago' 'If a colony from Britain was established in that large tract of Country, and if we were at war with Holland or Spain, we might very powerfully annoy either state from our new settlement.'  This frame also includes metaphorical uses involving animals or plants, or abstract domains such as ideas.  'Deciduous trees such as red alder subsequently colonized the logged area.'  'Conservatives don't get what the left gets, which is that the left has already colonized and converted whole university departments.'  'As the years progressed and adaptations occurred new species and subspecies began to populate the islands.'"}, {'frame': 'Change_of_leadership', 'tfidf': 1.350195288658142, 'lexical_unit': 'oust.v / rising.n / depose.v', 'definition': "This frame concerns the appointment of a New_leader or removal from office of an Old_leader.  The Selector brings about the change in leadership, for example, by electing or overthrowing a leader. Some words in the frame describe the successful removal from office of a leader (e.g. depose, oust), others simply the attempt (e.g. uprising, rebellion).   'On March 17 , Mamedov appointed Rakhim Gasiyev as Defence Minister .'    "}, {'frame': 'Vehicle', 'tfidf': 1.3349065780639648, 'lexical_unit': 'chopper.n / tricycle.n / tram.n', 'definition': "The frame concerns the vehicles that human beings use for the purpose of transportation.  'I drove a limo to the school dance.'"}, {'frame': 'Color', 'tfidf': 1.2716290950775146, 'lexical_unit': 'colored.a / pitchblack.a / pink.a', 'definition': "A Color serves as a landmark in color-space, either a point-like landmark (e.g. burnt sienna) or a broader region (e.g. blue).  Especially when the Color designates a broad region in color-space, it may be defined with a specific Type, further specified by comparison to the color of a Comparand, modified by a Color_qualifier, or evaluated with a Descriptor.  All color words are generally used to specify the color of some (physical) Entity. 'I really like that shade of blue.' 'The welts on his side had already turned an angry red.' 'The room was bathed in a soft pink light.' 'They promptly set up a zillion bright vermilion pavilions.' 'His face and hands were brown from a life spent in the bright sun of the fields.' "}, {'frame': 'Importance', 'tfidf': 1.24892258644104, 'lexical_unit': 'count.v / import.n / vital.a', 'definition': "A Factor affects the outcome of an Undertaking, which  can be a goal-oriented activity or the maintenance of a desirable state, the work in a Field, or something portrayed as affecting an Interested_party. A Reason may be given for the importance of the Factor. The Degree of importance may also be specified.  'Temperature is the most critical factor in successful storage.' ' Timing will be critical.' 'Heathcliff is more important to me than myself . ' ' 1992 was of great importance to the business community. ' "}, {'frame': 'Employing', 'tfidf': 1.2315467596054077, 'lexical_unit': 'personnel.n / employer.n / employment.n', 'definition': "An Employer employs an Employee whose Position entails that the Employee perform certain Tasks in exchange for Compensation.  'I employed him as Chief Gardener for ten years.'"}, {'frame': 'Biological_classification', 'tfidf': 1.224562168121338, 'lexical_unit': 'kingdom.n / order.n / genus.n', 'definition': "This frame has to do with scientific taxonomy.  The lexical units in this frame include the seven major classifications in which organisms are grouped based on common biological characteristics.  These classifications are labeled Rank in this frame.  The Members or Subtype of the Rank is often expressed with the use of the target-denoting noun. '' 'Phylum Arthropoda contains crustaceans, insects, spiders and other creepy-crawlies.' '' 'The snow leopard belongs to the kingdom Animalia.'"}, {'frame': 'Rite', 'tfidf': 1.2040586471557617, 'lexical_unit': 'evensong.n / ordain.v / communion.n', 'definition': "This frame concerns rituals performed in line with religious beliefs or tradition.  'In certain fertility rites in Burma , a woman desirous of offspring is required not only to approach the King Cobra but to plant a kiss on its mouth .'  'He was ordered a priest in 1944. CNI '"}, {'frame': 'Participation', 'tfidf': 1.1597074270248413, 'lexical_unit': 'participation.n / embroiled.a / entangled.a', 'definition': "An Event with multiple Participants takes place. It can be presented either symmetrically with Participants or asymmetrically, giving Participant_1 greater prominence over Participant_2. If the Event is engaged in intentionally, then there is typically a shared Purpose between the Participants. It is, however, possible that an expressed Purpose only applies to Participant_1.   'MATAC looks forward to your participation in helping promote telework in the Mid-Atlantic region.'  ' FOAP provides participants with comprehensive clerical skills. DNI' ' FOAP provides participants with comprehensive clerical skills. '   'Our eight-year-old son was recently  peripherally involved in an incident which resulted in him being threatened with the strap.'  'A New York press agent must scramble when his major client becomes embroiled in a huge scandal.'  'In his time as a first-team all-league player, Rife was in on 86 solo tackles.'"}, {'frame': 'Military', 'tfidf': 1.149611473083496, 'lexical_unit': 'armed forces.n / force.n / marines.n', 'definition': 'Some Possessor, either a nation, institution, or private individual, controls a Force whose primary functions to defend the Possessor (or, in the case of an institution or individual, some area of land significant to them) and to carry out offensive actions for the Possessor.  The Domain of operation of the Force may be expressed.'}, {'frame': 'Body_description_holistic', 'tfidf': 1.142892837524414, 'lexical_unit': 'stocky.a / female.a / wiry.a', 'definition': "This frame covers descriptions of an entire human body, viewed as a gestalt (as opposed to descriptions based on salient body parts).  The Frame Elements are Individual and Figure.    'Chuck is muscular.'  'Chuck has a muscular body.' "}, {'frame': 'Documents', 'tfidf': 1.1113556623458862, 'lexical_unit': 'visa.n / ruling.n / opinion.n', 'definition': "Words in the frame refer to any Document that has a legal status or conventional social significance.  Some Documents empower the Bearer of the Document to execute the Right.  Others indicate the Obligation of the Bearer.  Still others show the identity or Status of the Bearer.  'They got their marriage licence from Canada.'"}, {'frame': 'Offering', 'tfidf': 1.109718680381775, 'lexical_unit': 'extend.v / serve.v / proffer.v', 'definition': "An Offerer indicates that he or she is able and willing to give a Theme to a Potential_recipient. In the absence of further qualifications, it is often understood that the Potential_recipient accepts the Theme.  'The host graciously offered us food and drink.'"}, {'frame': 'Roadways', 'tfidf': 1.100173830986023, 'lexical_unit': 'parkway.n / roadway.n / tunnel.n', 'definition': "This frame involves stable Roadways which connect two stable Endpoints, the Source and the Goal.  Being physical objects, these Roadways may have Names and Characteristics; they are also made of a Material.  They also cover ground, so they may have a Path or a Relative_location that the travel occurs in.  ' We crossed the brick road.' ' I prefer to travel on highway I-80.'  'This is the only highway between Lodi and Sonoma.' ' She dreaded turning onto the busy street.'"}, {'frame': 'Information', 'tfidf': 1.093116283416748, 'lexical_unit': 'skinny.n / intelligence.n / scoop.n', 'definition': "A Cognizer knows or comes to know some piece of Information about a Topic.  In this frame, many LUs encode a specific Means_of_Gathering and/or Source, but these may also be expressed separately.  'Also, the big problem is that our intel about WMD's has many times been wrong.'   ' Anyone got the straight dope on this? '  'Get the inside scoop on sprint football player Austin Wilson. CNI'  'I know him pretty well and I have a lot of dirt on him so I can always hold him over a barrel.'  'What's the info about the new scanner chip? INI'"}, {'frame': 'Dead_or_alive', 'tfidf': 1.0884442329406738, 'lexical_unit': 'late.a / live.v / lifeless.a', 'definition': "A Protagonist is in the dynamic, maintained state of being alive or has exited this state.  'Frank's dead body was apalling.'"}, {'frame': 'Leadership', 'tfidf': 1.058305263519287, 'lexical_unit': 'maharaja.n / congressman.n / rule.n', 'definition': "These are words referring to control by a Leader over a particular entity  or group (the Governed) or an Activity. The frame contains both nouns referring to a title or position (e.g. director, king, president), and verbs describing the action of leadership (e.g. rule, reign). With verbs, it is possible to mention the Role played by the Leader (often a name of a leading position, e.g., king)  'Sebek em hat was a Leader of Priests. ca. 1780 BC' 'In 1789 Fletcher Christian led the mutiny on HMS Bounty' 'Louis XIV ruled over his people as king for the longest period of any European monarch.' Compare to: Appellations. "}, {'frame': 'Attention_getting', 'tfidf': 1.046265721321106, 'lexical_unit': 'boy.n / guy.n / homes.n', 'definition': "This frame covers terms used to get someone's attention, including Interjections (e.g. hey, yo) and certain terms of address (Address_term), the latter of which may serve the function of attention getting.    'Hey.' 'Hey, boy.' 'Hey, boy, come over here now!'  "}, {'frame': 'Measure_duration', 'tfidf': 1.0356018543243408, 'lexical_unit': 'century.n / time.n / hour.n', 'definition': 'This frame contains (transparent ) nouns that are Units of measurement for time. The frame elements are Count, Unit and Process.  \'The final total was 606, scored in only 10 hours of excellent batsmanship.\'  In this frame, we will NOT annotate deictic, calendric uses of nouns like week, month, etc. as in "next week, this month, in the 21st century".'}, {'frame': 'Commerce_pay', 'tfidf': 1.0272693634033203, 'lexical_unit': 'shell out.v / disburse.v / payment.n', 'definition': "This frame involves Buyers paying Money for Goods.  In this frame the Money is the direct object, and is mapped to the theme of the transfer.  'I paid her $50 for a video game.'"}, {'frame': 'Secrecy_status', 'tfidf': 1.015446424484253, 'lexical_unit': 'surreptitious.a / secretly.adv / shadowy.a', 'definition': "A Phenomenon, which may be an activity, state or object, is purposefully hidden from the awareness of a potential Cognizer. The person responsible for the hiding of the Phenomenon is not part of this frame and cannot be syntactically realized. The potential Cognizer may be realized, but is in fact rarely expressed. A period of Time during which the Phenomenon is secret may be indicated.   'Few people would use ATMs if the content of their transaction was secret from their bank and there was no paper trail verifying the transaction. .'  'The protesters were not on her list, and weren't allowed in, despite the fact that the meeting was public.'  'Student disciplinary matters are confidential and should only be discussed with appropriate university officials'"}, {'frame': 'Race_descriptor', 'tfidf': 1.0045322179794312, 'lexical_unit': 'hispanic.a / black.a / yellow.a', 'definition': "This frame covers LUs that describe the race of a Person.  'Carlos is hispanic, or so he says.'"}, {'frame': 'Being_obligated', 'tfidf': 0.9943400025367737, 'lexical_unit': 'responsibility.n / commission.n / task.n', 'definition': "Under some Condition, usually left implicit, a Responsible_party is required to perform some Duty.  If they do not perform the Duty, there may be some undesirable Consequence, which may or may not be stated overtly.  'It is my duty to fight any attack on the Brotherhood .' 'This country has the responsibility to support its citizens' right to express themselves.' 'I am obligated to pay or they'll double the fine.'  NB:  Contrast this frame with Likelihood and Preconditions frames, which involve many of the same lemmas.  Many LUs which might be expected to be found here (should, must, have to) are actually in the Required_event frame. Our analysis is that these LUs do not evoke an obligation directly, although they are frequently used in contexts that are consistent with an understanding of obligation and are pragmatically strengthened to (defeasibly) imply an obligation. "}, {'frame': 'Calendric_unit', 'tfidf': 0.9934478402137756, 'lexical_unit': 'Saturday.n / August.n / spring.n', 'definition': "Words in this frame name the different parts of the calendric cycle, both man-made and natural. The Unit (e.g. Tuesday) specifies some time period as part of a specific larger temporal Whole (Tuesday of next week), or may be resolved to an exact time span by a Relative_time (next Tuesday).   'Jo's mother will visit on this coming Tuesday.' '' Very frequently, the Whole or Relative_time are left out (i.e., DNI), and often should be interpreted as a time period overlapping with the communication, but more generally must be understood from context.  So, for example, in the first sentence below, we can imagine that the Whole refers to a year (e.g., 1983) that was already mentioned or established in context.  In the second example below, the most likely interpretation is the nearest April, whether in this year or the next, and this interpretation is best indicated by indicating the Relative_time is DNI.  'On April 2 , she finally found her mother . DNI. '  'I 'll come back in April .DNI' '' Most members of this frame can be used with iterative events, either with a plural Unit (on Tuesdays), or marked with every (every April).   'On Tuesday and Thursday afternoons , we have tea .' In this use, when the Whole is omitted, the Whole should be marked INI. 'On Tuesdays , we have tea . INI ' '' Words of this frame often occur in a non-lexical construction that uses some Calendric_unit expressions to establish when an event occurred.  To capture this information, we use the extra-thematic FEs Landmark_period and Trajector_event (see Temporal_collocation) on the second layer, as in the following: 'Last Tuesday she said I 'd have to come back .' 'Last Tuesday she said I 'd have to come back .' We do not use these FEs for cases where the temporal relationship is introduced by an overt word of the Temporal_collocation frame (like on, in, at, before, etc.).  Most lexical units of this frame occur in this construction, with or without requiring a Relative_time, while some idiosyncratically do not, so information on the use with the extra-thematic FE Trajector_event is lexically specific. '' There are a number of non-lexical constructions that evoke this frame, including date constructions (the third, May 5), decade constructions (the oughts), year constructions (1975, 24 BCE, 10 AH, year 19, etc.), and time-of-day constructions. Although not annotated in this frame, examples such as the following show that the FEs Unit and Whole are quite appropriate: 'The 4th of April dawned clear and cold .' 'December 11 was when Alix finally left .' 'The 23rd will be snowy . DNI ' 'Nothing much happened in the 90s , did it ? DNI ' As described above for the lexical targets that evoke this frame, some non-lexical versions of the frame may also occur in a non-lexical Temporal_collocation construction: 'No-one has forgotten what happened the 5th of November !' 'No-one has forgotten what happened the 5th of November !' ''  Words in this frame figure into a variety of temporal schemas, realized as constructions, primarily cases in which the Calendric_unit serves as a Landmark_period in the Temporal_collocation frame. There are families of constructions in which these words occur, including ones in which weekday names combine with day part names using particular prepositions (e.g. on Wednesday morning, cf. on Wednesday, but  in the morning) and ones in which  calendric terms fill the slots in multi-word expressions such as  N-after-N (e.g. day after day),  N-by-N (e.g. week by week),  N-to-N (e.g. month to month), etc. More can be found on these in Fillmore (2002).  Note, also, the connection between this frame and Frequency, specifically that many iterative adjectives and adverbs are based on calendric terms (e.g. daily, weekly, monthly, etc.).      "}, {'frame': 'People_by_jurisdiction', 'tfidf': 0.9899706840515137, 'lexical_unit': 'citizenry.n / national.n / subject.n', 'definition': "This frame contains words for individuals, i.e. humans, who are governed by virtue of being registered in a certain Jurisdiction. Alternatively, they may be conceptualized with respect to their  governance by a political or religious Authority  They may have an Age, Descriptor, Persistent_characteristic, or Ethnicity.  'A Somali national entered our office.'"}, {'frame': 'Forming_relationships', 'tfidf': 0.9844605326652527, 'lexical_unit': 'separation.n / woo.v / betroth.v', 'definition': "Partner_1 interacts with Partner_2 (also collectively expressible as Partners) to change their social relationship.    'I befriended the little pony by giving him a piece of apple.'"}, {'frame': 'Death', 'tfidf': 0.9822893738746643, 'lexical_unit': 'death.n / drown.v / starve.v', 'definition': "The words in this frame describe the death of a Protagonist.  A Cause of death may also be expressed obliquely. '' 'The machine was not switched off, but Mr. Lavelle died of natural causes, police said.'  'To avenge the death of a son is not hasty work, if he is to be honored.'"}, {'frame': 'Working_a_post', 'tfidf': 0.9804942011833191, 'lexical_unit': 'work.v / man.v / staff.v', 'definition': "The Agent is assigned to a Post where he or she performs a task associated with that Post. Alternatively, the Agent is expressed as acting with respect to a Salient_entity associated with the task. In most cases the Salient_entity is located at the Post.  'Volunteers were staffing the telephones.'  'Man your stations! CNI'"}, {'frame': 'Purpose', 'tfidf': 0.9722012281417847, 'lexical_unit': 'intent.a / goal.n / intend.v', 'definition': "An Agent wants to achieve a Goal,  or an object.  A Means  has been created or is used to allow the creator or a user to achieve a  Goal. The Goal is a state of the world that does not currently hold but which the Agent wants to realize and is planning and/or working towards. In some cases, it is difficult to decide whether a noun phrase metonymically stands for the Agent or the Means (e.g. The goal [of this paper/seminar/project] is to determine ...). We mark these phrases as Agent on the first layer but also annotate them as Means on a second annotation layer.  In some cases a Restrictor on the Goal state of affairs can be given prominence as a separate constituent. Talking about Goals frequently includes the mention of a Domain to which the Agent's Goal is relevant.  'The modest American goal of a threefold increase in capacity recognises this fact .' 'The object of the tutorial is to help a student concentrate on his writing skills ' ' The prime goal of the programme was to help develop processes of scientific thinking in children .' 'My goal in this book is to introduce the reader to Web programming applications.' 'The president's economic goal for the country was to overcome the recession.'"}, {'frame': 'Destiny', 'tfidf': 0.9707418084144592, 'lexical_unit': 'stars.n / kismet.n / fated.a', 'definition': "An State_of_affairs will come to hold with respect to a Protagonist at some future time. The Protagonist is not conceived of as having control over whether the State_of_affairs will hold: obscurely related previous actions or circumstances, or some hidden power may have already determined that it will occur.  'Exile was his fate and he triumphantly turned it into the fruit of his life.'  'One could say that it was Indonesia's destiny to initiate the decolonization process.'  'The sun's ultimate fate is as a white dwarf, a dense, cold core the size of the earth.'  'At the time it did not appear that greatness was in her stars.'  'Nine for mortal men , doomed to die .'  'This seemingly predestined meeting between a creator and the model he has pursued all his life suggests a kind of miracle . ' "}];
+    </script>
+    <script type="text/javascript" src="word_cloud_prediction.js"></script>
+    <script type="text/javascript" src="../mturk.js"></script>
+
+    <style type="text/css">
+        body {
+            font-size: 14pt;
+            padding-bottom:50px;
+            padding-top: 20px;
+        }
+        .container-fluid {
+            padding-left: 150px;
+            padding-right: 150px;
+        }
+        svg {
+            border: 1px solid black;
+            display: none;
+        }
+        #word_cloud_panel_1 canvas, #word_cloud_panel_2 canvas {
+            display: none;
+        }
+        .word_cloud_box canvas {
+            display:none;
+        }
+
+        .my_container {
+            /*display: inline-block;*/
+        }
+
+        .my_container h2 {
+            text-align: center;
+        }
+        #instruction {
+            font-size: 16pt;
+            border-radius: 2px;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+            padding: 15px;
+        }
+        #instruction strong {
+            background-color: yellow;
+        }
+        .highlight {
+            text-decoration: underline;
+            font-weight: 900;
+            color:red;
+        }
+        .story_block pre {
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
+            font-size: 100%;
+        }
+        .options {
+            font-size: 17pt;
+            text-align: center;
+        }
+        .options:hover {
+            /*text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);*/
+            /*text-decoration: underline;*/
+        }
+        .options label {
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            height: 30px;
+            width: 30px;
+            vertical-align: middle;
+            border-width: 5px;
+        }
+        .options input[type="radio"]:checked+span {
+            text-decoration: underline;
+        }
+        .box {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border-radius: 25px;
+            border: 3px black solid;
+            position: relative;
+            margin-right: 5px;
+            top: 8px;
+        }
+        .selected_box::after {
+            display: inline-block;
+            content:"";
+            width: 15px;
+            height: 15px;
+            background: black;
+            border-radius: 15px;
+            top:-8px;
+            position: relative;
+        }
+        #warning {
+            text-align: center;
+            color:red;
+            font-weight: bold;
+        }
+        .story_block {
+            border-radius: 5px;
+            border: 2px rgba(70, 70, 70, 1) solid;
+            margin-top:10px;
+            margin-bottom:10px;
+            /*box-shadow: 0 0 3px black;*/
+            padding: 10px;
+            word-wrap: break-word;
+        }
+
+        .wordcloud_img {
+            border: 1px solid black;
+        }
+        .word_cloud_box {
+            margin-left: 10px;
+            margin-right: 10px;
+            border-radius: 5px;
+            border: 3px rgba(70, 70, 70, 1) solid;
+            padding: 20px;
+            margin-bottom: 20px; 
+        }
+        .word_cloud_box:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            cursor: pointer;
+        }
+        .selected_story_block {
+            border-color: #7BDFF2;
+            border-width: 3px;
+            box-shadow: 0 0 10px 10px rgba(123, 223, 242, 0.3);
+            background-color: rgba(239, 247, 246, 0.8);
+        }
+        .indicator {
+            /*font-family: Courier;
+            font-weight: bold;*/
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 3px black solid;
+            border-radius: 20px;
+        }
+
+        .selected_story_block .indicator {
+            background-color: rgb(123, 223, 242);
+        }
+
+        #story_content {
+            max-height: 600px;
+        }
+        .not_qualified {
+            color: red;
+            font-weight: 900;
+        }
+        .qualified {
+            color: black;
+            font-weight: 900;
+        }
+
+    </style>
+    <div class="container-fluid">
+        <!-- Intro -->
+        <h1>Which word-cloud best represents the story snippet?</h1>
+
+        <div id="instruction">
+            <h3>Instruction</h3>
+            A <strong>word-cloud representation</strong> is a group of words that a computer automatically 
+            generated to characterize a story snippet. 
+            The words in the word cloud <strong>do NOT necessarily occur</strong> in the story snippet. 
+            These words can just be relevant or semantically similar. <br/><br/>
+
+            A <strong>word-cloud representation with nouns</strong> is a group of nouns a computer automatically 
+            generated to characterize a story snippet. 
+            These nouns can either be in the story snippet or be somewhat relevant.<br/><br/>
+
+            In this HIT, you will see a story snippet. <span class="highlight">Please read it carefully.</span>
+            The story is long so we have a <span class="highlight">3 minutes time lock</span> for submission.
+            <br/><br/>
+
+            At the bottom of the HIT, you will see three sets of word-cloud representations, 
+            where each consists of nouns, verbs, and adjectives. 
+            <span class="highlight">Please select the word-cloud representation that best represents the story.</span>
+        </div>
+        <br><hr><br>
+
+        <!-- Story -->
+        <div>
+            <h3>Read the following story snippet carefully!</h3>
+            You will need to select the word-cloud representation that best represents this story. 
+            <br><br>
+            <div class="row justify-content-md-center">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="story_block" value="story_1" id="story_block_id_1">
+                        <h4>Story</h4>
+                        <h5>(An excerpt from the book <span style="font-weight:bold;">"The End Of Texas"</span>.)</h5>
+                        <span class="not_qualified" id="read_lock">Please read all the story.</span>
+                        <br/><br/>
+                        <pre id="story_content">
+Call for Independence From Texas: Do Not Let the Rightwing Loons Take Us Out of the USA!
+We Will Make the New American State of Aztlan!
+The most patriotic group in Texas, the most reliably gung ho super Americans...They are Mexicans!
+Mexican-Americans, probably some of you would insist on calling us, or Latino, or Hispanic.
+But we're not from Hispania!
+Or any other mythical place in Anglo imaginations.
+We will not let you pretend we are Europeans when most of us don't have family from there.
+We are Mexicans plain and simple, and proud to be called that.
+Not Mexican American as a label most of us drop because it's too long to say, unless Cheech Marin is joking about it in that cool song he sang while Chong played terrible guitar.
+Just Mexicans, and it doesn't matter if you confuse us with Mexicans from Mexico.
+Land and culture don't necessarily tie to nation.
+Mexico's government doesn't inspire loyalty, even within Mexico, not even to Mexican citizens.
+But American government, except for the pinche migra and abusive cops, does.
+It inspires passionate devotion in Mexicans both US-born and immigrants, and even so called illegals, those without papers.
+As a nation and a government, America inspires love, like Romeo was inspired by Juliet, like Mary was inspired by the angels sent by Almighty God.
+Meanwhile, at the same time, the most disloyal, the most distrusting traitorous people in Texas are a peculiar strain of Anglo conservatives and Republicans.
+Not old time small government pragmatic conservatives who want less regulation, but angry, vindictive, hostile, foaming at the mouth, how-dare-anyone-disagree-with-me types.
+They rant about lynching, shooting, or executing politicians or appointed officials for imagined offenses, see black helicopters in the sky, and sinister re education camps in Black and brown inner city kids going off to Job Corps.
+There are none more disloyal as to see all government as "tyranny."
+Anarchists, but without any sense of community except their common hatreds, and without any sense of cooperation except to make sure the average working man can't do that same cooperation for better wages.
+They want others to have the right to work for less than minimum wages and die in the street or the emergency room because of no insurance.
+They are Social Darwinists who hate Darwin almost as much as they don't understand him.
+They are Hobbesians who haven't thought it through, even while driving a car made safe by government standards down a highway (not toll roads) paid for by government on the way to a Fourth of July or Memorial holiday celebrating victories won by soldiers (the ultimate bureaucracy) and not mercenaries.
+The more extreme conservative white Texas may see government as evil, but Texas Mexicans, Tejanos, sure don't.
+We wish there was more of it, doing more.
+Being your brother's keeper, after all, is a good Catholic principle, as it was a good indigenous tribal principle less than a century and a half ago when most Mexicans were still in tribes.
+Half a dozen generations haven't erased the fealty to that principle, only circumstances called for a transfer of it to the church and even more so to the nation-state.
+Like any good socialist instinct, most Mexicans know We The People Are The Government.
+It is not some outside oppressing force, as white conservatives often believe.
+So I'm pretty fed up with these radical conservative (or maybe rightwing anarchists) Anglos bashing We The People.
+I want to stay part of the United States!
+I don't want to be dragged out of it by these loons!
+And I know many of you agree with me.
+Yes, I've done my share of protests over the years.
+But I would never have done them if I didn't care, care deeply, passionately, with all my heart, about this country and its people, all of its people.
+I also care deeply about a nation that (some cops and government agents aside) lets me do all the protesting I've done by word, deed, pen, and with my big mouth.
+I couldn't get away with half of this in Mexico, and my ancestors have been here since before Stephen Austin and Sam Houston, and way before Davy Crockett's foolish little trip.
+That's why you see so many deeply loyal, deeply patriotic Mexicans.
+That's why so many of us are over in Iraq and Afghanistan, in uniform.
+And that's why most Mexicans want nothing to do with this crazy, unpatriotic, disloyal, verminous, traitorous, malformed, pipe dream foolish notion of a so called independent nation of Texas.
+Texas was a lousy nation for a Mexican to be trapped in before, a place where you'd get killed by a racist Anglo at the drop of a hat, with your daughter raped and dishonored.
+That will happen again if they should somehow succeed and secede.
+So, first thing: Stop the crazy drive towards secession.
+Second thing, and the easiest way to make sure secession can't succeed: Break away from Texas!
+Send them a message!
+The law says quite clearly we have the right to do so.
+(Unlike their crazy claim of being able to secede.
+Que chingas es eso!
+Que pendejos!)
+Texas can break into as many as five states.
+OK, let's make one of them the new state of Aztlan, named after the Aztec homeland, which may well have been Texas anyway.
+Everything in a line from Del Rio to San Antonio to Corpus Christi, all the way south, should be the new state of Aztlan.
+El Paso and the western panhandle, why don't you form your own state too?
+You have more in common with New Mexico than Texas.
+Austin, they have never liked you progressives, greens, and free thinking artistic types.
+Why not break away and form your own state?
+And west Texas Mexicanos, why not form your own state too?
+I know it can't be easy out there for you, surrounded by Bible Belt types, such as Rick Perry himself.
+What would it say to the world if Rick Perry's own hometown does not want to be part of Texas anymore?
+How much easier will life be for us to never have to listen to rightwing fundamentalist Christian conservatives again?
+These are people constantly trying to refight the Civil War, but along religious lines.
+They are American Taliban against everyone else.
+How much easier will life be for us to never have to put up with nonsense like Official English or immigrant bashers who don't stop to think that we Mexicans have been here far longer than them, or their ancestors?
+And these new states, these will all definitely be blue states, free from red state domination.
+They want secession?
+Secede from Texas!
+Aztlan Now!
+Sincerely, Carlos Guerrero
+Guerrero's editorial sent a shockwave throughout the state.
+Within days, numerous volunteers set up Aztlan Now petitions for statehood, websites, organizing drives, and sought out their elected officials to press their calls for separation from Texas.
+Aztlan Now movement members had the simplest approach.
+"Do you want to leave America?"
+"Hell no!"
+was the typical answer of most Texans, about 70%.
+But for white Republicans (frankly there weren't that many Republicans in the state who weren't white), about half wanted secession.
+For Mexican-Americans, the numbers were a strong statement of patriotism and loyalty, over 95% opposing secession and treason.
+For Democrats (the majority of whom in the state were Mexican) numbers ran over 80% against secession.
+Blacks were even more opposed, over 98%.
+Just like with the Confederate symbol, nearly all nonwhites can see the Texan symbol and identity does not include them.
+Unfortunately most of the Black population lived in Dallas-Fort Worth and Houston, or in the many east Texas small towns.
+A few Black leaders considered a separate state for Black Texans, but there was no way to form one with a Black majority short of the craziest kind of gerrymandering.
+Many joked (and some seriously planned for) how they would leave Texas if secession somehow succeeded.
+Getting support from some segments of the general public was one thing.
+Mostly the newness of the idea was the largest barrier.
+But unlike most white Texans, most Black or Latino or "other" Texans aren't heavily invested in the idea of Texan identity.
+The same is true of plenty of leftist white Texans, who see people with pride in living in or being from Texas as hicks at best, rednecks at worst.
+Getting support from political leaders was much harder.
+Most feared being labeled as fringe thinkers, and if the separate states idea was not carried out, relations with their fellow politicians on the other side of the aisle would be that much more difficult.
+Outside of some small town councilmen and a few state congressmen, most elected leaders in the future Aztlan had a wait and see approach.
+Of all the media, Fox was predictably the most hysterical and angry.
+Hannity went on a tear, insisting without proof, like always, that these groups were somehow "racist."
+O'Reilly, true to form, repeated a slur he had used in the past, calling the movement "led by wetbacks."
+Limbaugh also repeated some prior race baiting of his.
+"Lazy Mexicans...I didn't know they had it in them to work hard for anything."
+Michael Savage, of course, was somehow convinced it was all a conspiracy by Muslims.
+Probably the funniest reaction came from Bill Maher.
+On his New Rules segment he took a shot at Perry and the secession vote:
+"New Rule- Conservatives, you can't call yourself patriots...if you want to leave America or overthrow America!
+It's getting pretty screwy when a Mexican named Carlos is showing himself to be a one hell of a lot more patriotic than any of you white guys!
+(The audience laughed and cheered.)
+When did conservatives become so disloyal?
+Remember when conservatives used to say 'Love it or Leave It?
+Now they don't love America anymore, and they want to leave it!"
+(The audience laughed and cheered again, followed by applause.)
+The strongest reaction to the editorial actually came from secession supporters.
+Guerrero received his first death threats within minutes of the essay being published.
+His email and voicemail overflowed with angry secessionists spouting bile and venom.
+Racist taunts accompanying most threats were about what one would typically expect: "If you know what's good for you beaner..."
+"Go back to Mexico you commie..."
+"I'll shove a shotgun up your wetback greaser ass..."
+But Guerrero could not arm himself in self-defense.
+In 1979, he had been caught smuggling several pounds of marijuana across the border.
+The jury included two Latinos, and they and an Anglo member had voted to acquit him.
+With a split decision, he would have gone free.
+But the judge intervened, ruled that the dissenting jurors were ignoring clear evidence of lawbreaking, and declared Guerrero guilty.
+The judge sentenced him to the maximum of twenty years to life as a "large scale" smuggler.
+Public outrage at the heavy handedness and clearly political motive for the harsh sentence became a minor cause celebre.
+Two years of appeals followed, with Guerrero finally getting time served and the rest of the sentence suspended.
+But no governor had ever granted him a pardon, so he was not allowed to either own or carry a gun.
+Getting a pardon in Texas, while technically a rigorous process screened by the governor's office, was usually a routine matter bureaucratic procedure.
+But no governor ever wanted to be seen as soft on crime, especially with a famous leftist radical and drug smuggler.
+Guerrero would never get a pardon.
+For protection, Guerrero had to turn to moving from friend's house to friend's house, keeping an irregular schedule, and always living and traveling with those who could possess a gun legally.
+College students groups or veterans' groups were most often his bodyguards.
+At a news conference, a reporter asked Rick Perry what he thought of the burgeoning breakaway movement from Texas.
+Governor Perry's reaction was as ignorant and reckless as on anything else he typically said: "Oh, it doesn't worry me one bit.
+I know we've got a great state, and I know most of our Hispanic voters want to stay part of it.
+Tell you what, I'd even let them put it to a vote!
+County by county, why not?
+I bet you right now every last county would vote to stay part of good old Texas."
+The reporter couldn't believe his ears.
+"Will you commit yourself to allowing a vote, Governor?
+Will you publicly promise that?"
+"You bet!
+I'll make you a bet right now, I'll eat your hat if these breakaway movements get anywhere."
+True to his word, Perry confidently pushed for a resolution in the state legislature, and used his bully pulpit to rush it through.
+The state's Republicans and conservative Democrats, confident any breakaway movement would never succeed, voted for Perry's "Loyalty to Texas" resolution.
+So did the minority and progressive members of the legislature, eager to placate their own voters.
+The resolution read:
+Be it resolved that Texas has nothing but people who are loyal to this great state, once an independent republic.
+That Texas, in the finest republican tradition, wishes to give its citizens an opportunity to show their loyalty.
+Therefore the State of Texas, and formerly an independent republic, will hereby allow each individual county to vote whether to form any separate state, to remain part of the State of Texas, or to join any return to an independent Republic of Texas.
+When Guerrero first heard Perry's public declaration, he could not believe his ears and good fortune.
+Seemingly this allowed Texas to balkanize.
+Potentially there could be individual isolated counties side by side, some breaking away, some remaining part of the state.
+And were Texas to actually secede, there could be war as vicious as the Balkans had.
+It was more important than ever to make certain entire regions voted to break away.
+But this also gave Aztlan Now a firm legal footing.
+Now the only thing necessary was to win the hearts and minds of local voters.
+And both Perry and the secessionists were making that so easy!
+                        </pre>
+                    </div>
+                </div>
+            </div>
+
+        <br><hr><br>
+
+        <!-- Display -->
+
+        <h3>Select the word-cloud representation that best represents the above story.</h3>
+        Below, there are three word-cloud representations. Read them carefully and select the one that best represent the above story.
+        <br/><br/>
+
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_1" value="1">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 1</h3>
+                The following three word clouds jointly represent the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_2" value="2">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 2</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_2">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_2">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_2-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_2">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_2-png-container" class="text-center"></div>
+            </div>
+        </div>
+
+        <!-- Display -->
+        <!--div class="row justify-content-md-center word_cloud_box" id="word_cloud_panel_3" value="3">
+            <div class="col-12">
+                <h3><span class="indicator"></span> Word-Cloud Representation 3</h3>
+                The following three word clouds jointly represent one of the stories you just read.<br/>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="noun_3">
+                <h2>Noun</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="noun_3-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="verb_3">
+                <h2>Verb</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="verb_3-png-container" class="text-center"></div>
+            </div>
+            <div class="my_container col-lg-4 col-md-12 col-sm-12" id="adj_3">
+                <h2>Adj</h2>
+                <canvas width="500" height="500"></canvas>
+                <div id="adj_3-png-container" class="text-center"></div>
+            </div>
+        </div-->
+
+        <form id="mturk_form" name="mturk_form">
+            <input name="id" type="hidden" value="103">
+            <input name="story" type="hidden" value="-1" id="story_answer">
+            <input name="setting" type="hidden" value="block_150">
+            <input name="note" type="hidden" value="LGBM, BERT">
+        </form>
+
+        <div id="warning"></div>
+        <button class="btn btn-outline-primary btn-sm btn-block" id="submit_button" disabled>Submit</button>
+    </div>
+
+</body>
+</html>
